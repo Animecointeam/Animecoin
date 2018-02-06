@@ -142,7 +142,7 @@ CAddress GetLocalAddress(const CNetAddr *paddrPeer)
 bool RecvLine(SOCKET hSocket, string& strLine)
 {
     strLine = "";
-    loop
+    while (true)
     {
         char c;
         int nBytes = recv(hSocket, &c, 1, 0);
@@ -314,7 +314,7 @@ bool GetMyExternalIP2(const CService& addrConnect, const char* pszGet, const cha
     {
         if (strLine.empty()) // HTTP response is separated from headers by blank line
         {
-            loop
+            while (true)
             {
                 if (!RecvLine(hSocket, strLine))
                 {
@@ -757,7 +757,7 @@ static list<CNode*> vNodesDisconnected;
 void ThreadSocketHandler()
 {
     unsigned int nPrevNodeCount = 0;
-    loop
+    while (true)
     {
         //
         // Disconnect nodes
@@ -1128,7 +1128,7 @@ void ThreadMapPort()
         string strDesc = "Bitcoin " + FormatFullVersion();
 
         try {
-            loop {
+            while (true) {
 #ifndef UPNPDISCOVER_SUCCESS
                 /* miniupnpc 1.5 */
                 r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
@@ -1205,13 +1205,21 @@ void MapPort(bool)
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strMainNetDNSSeed[][2] = {
+    {"96.43.130.251", "96.43.130.251"},
+    {"91.121.8.23", "91.121.8.23"},
+    {"62.210.151.205", "62.210.151.205"},
+    {"222.78.67.174", "222.78.67.174"},
+    {"5.9.158.79", "5.9.158.79"},
+    {"186.237.174.48", "186.237.174.48"},
+    {"82.117.232.30", "82.117.232.30"},
+
     {"151.236.22.84", "151.236.22.84"},
     {"158.255.208.40", "158.255.208.40"},
     {"151.236.15.106", "151.236.15.106"},
     {"91.121.8.23", "91.121.8.23"},
-	{"213.183.56.176", "213.183.56.176"},
-	{"151.236.13.37", "151.236.13.37"},
-	{"115.29.49.156", "115.29.49.156"},
+    {"213.183.56.176", "213.183.56.176"},
+    {"151.236.13.37", "151.236.13.37"},
+    {"115.29.49.156", "115.29.49.156"},
     {NULL, NULL}
 };
 
@@ -1319,7 +1327,7 @@ void ThreadOpenConnections()
 
     // Initiate network connections
     int64 nStart = GetTime();
-    loop
+    while (true)
     {
         ProcessOneShot();
 
@@ -1370,7 +1378,7 @@ void ThreadOpenConnections()
         int64 nANow = GetAdjustedTime();
 
         int nTries = 0;
-        loop
+        while (true)
         {
             // use an nUnkBias between 10 (no outgoing connections) and 90 (8 outgoing connections)
             CAddress addr = addrman.Select(10 + min(nOutbound,8)*10);
