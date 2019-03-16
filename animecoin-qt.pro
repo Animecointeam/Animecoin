@@ -7,6 +7,7 @@ QT += network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
+CONFIG += static
 greaterThan(QT_MAJOR_VERSION, 4) {
      QT += widgets
      DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
@@ -21,6 +22,9 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 # Dependency library locations can be customized with:
 #    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
 #    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
+
+BDB_INCLUDE_PATH = /usr/include/db4.8
+BDB_LIB_SUFFIX=-4.8
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -41,7 +45,7 @@ contains(RELEASE, 1) {
 
 !win32 {
     # for extra security against potential buffer overflows: enable GCCs Stack Smashing Protection
-    QMAKE_CXXFLAGS *= -fstack-protector-all
+	QMAKE_CXXFLAGS *= -fstack-protector-all
     QMAKE_LFLAGS *= -fstack-protector-all
     # Exclude on Windows cross compile with MinGW 4.2.x, as it will result in a non-working executable!
     # This can be enabled for Windows, when we switch to MinGW >= 4.4.x.
@@ -426,7 +430,7 @@ macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
+LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
@@ -440,4 +444,8 @@ contains(RELEASE, 1) {
     }
 }
 
+!windows:!macx {
+    DEFINES += LINUX
+    LIBS += -lrt -ldl
+}
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)

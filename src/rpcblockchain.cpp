@@ -42,6 +42,36 @@ double GetDifficulty(const CBlockIndex* blockindex)
     return dDiff;
 }
 
+double GetNetworkHashPS()
+{
+    CBlockIndex* pindex = pindexBest ;
+
+    if (pindex == NULL || !pindex->nHeight)
+        return 0;
+
+    CBlockIndex* pindexPrevWork = pindex;
+
+    int nPoWInterval = std::min(pindex->nHeight, pindex->nHeight % 80 + 1);
+
+    int64_t minTime = pindexPrevWork->GetBlockTime();
+    int64_t maxTime = minTime;
+    for (int i = 0; i < nPoWInterval; i++)
+    {
+            pindexPrevWork = pindexPrevWork->pprev;
+            int64_t time = pindexPrevWork->GetBlockTime();
+            minTime = std::min(time, minTime);
+            maxTime = std::max(time, maxTime);
+    }
+
+    // In case there's a situation where minTime == maxTime, we don't want a divide by zero exception.
+    if (minTime == maxTime)
+        return 0;
+
+    uint256 workDiff = pindex->nChainWork - pindexPrevWork->nChainWork;
+    int64_t timeDiff = maxTime - minTime;
+
+    return (workDiff.getdouble() / timeDiff);
+}
 
 Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex)
 {

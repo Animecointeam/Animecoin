@@ -129,6 +129,7 @@ extern int64 nWalletUnlockTime;
 extern int64 AmountFromValue(const json_spirit::Value& value);
 extern json_spirit::Value ValueFromAmount(int64 amount);
 extern double GetDifficulty(const CBlockIndex* blockindex = NULL);
+extern double GetNetworkHashPS();
 extern std::string HexBits(unsigned int nBits);
 extern std::string HelpRequiringPassphrase();
 extern void EnsureWalletIsUnlocked();
@@ -144,6 +145,7 @@ extern json_spirit::Value getgenerate(const json_spirit::Array& params, bool fHe
 extern json_spirit::Value setgenerate(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value gethashespersec(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getmininginfo(const json_spirit::Array& params, bool fHelp);
+extern json_spirit::Value getnetworkhashps(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getwork(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getwork2(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getblocktemplate(const json_spirit::Array& params, bool fHelp);

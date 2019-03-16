@@ -448,7 +448,7 @@ public:
         if (scriptPubKey.size() < 6)
             return "CTxOut(error)";
 
-        return strprintf("CTxOut(nValue=%"PRI64d".%05"PRI64d", scriptPubKey=%s)", nValue / COIN, nValue % COIN, scriptPubKey.ToString().substr(0,30).c_str());
+        return strprintf("CTxOut(nValue=%" PRI64d ".%05" PRI64d ", scriptPubKey=%s)", nValue / COIN, nValue % COIN, scriptPubKey.ToString().substr(0,30).c_str());
     }
 
     void print() const
@@ -641,7 +641,7 @@ public:
     std::string ToString() const
     {
         std::string str;
-        str += strprintf("CTransaction(hash=%s, ver=%d, vin.size=%"PRIszu", vout.size=%"PRIszu", nLockTime=%u, strTxComment=%s)\n",
+        str += strprintf("CTransaction(hash=%s, ver=%d, vin.size=%" PRIszu ", vout.size=%" PRIszu ", nLockTime=%u, strTxComment=%s)\n",
             GetHash().ToString().c_str(),
             nVersion,
             vin.size(),
@@ -1534,7 +1534,7 @@ public:
 
     void print() const
     {
-        printf("CBlock(hash=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%"PRIszu")\n",
+        printf("CBlock(hash=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%" PRIszu ")\n",
             GetHash().ToString().c_str(),
             nVersion,
             hashPrevBlock.ToString().c_str(),

@@ -359,6 +359,7 @@ static const CRPCCommand vRPCCommands[] =
     { "gethashespersec",        &gethashespersec,        true,      false },
     { "getinfo",                &getinfo,                true,      false },
     { "getmininginfo",          &getmininginfo,          true,      false },
+    { "getnetworkhashps",       &getnetworkhashps,       true,      false },
     { "getnewaddress",          &getnewaddress,          true,      false },
     { "getaccountaddress",      &getaccountaddress,      true,      false },
     { "setaccount",             &setaccount,             true,      false },
@@ -503,7 +504,7 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
             "HTTP/1.1 %d %s\r\n"
             "Date: %s\r\n"
             "Connection: %s\r\n"
-            "Content-Length: %"PRIszu"\r\n"
+            "Content-Length: %" PRIszu "\r\n"
             "Content-Type: application/json\r\n"
             "Server: animecoin-json-rpc/%s\r\n"
             "\r\n"
