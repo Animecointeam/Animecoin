@@ -1,8 +1,8 @@
-Animecoin 0.8.3 BETA
+Animecoin 0.9 BETA
 ====================
 
-Copyright (c) 2009-2013 Bitcoin Developers
-Copyright (c) 2014 Animecoin Developers
+Copyright (c) 2009-2019 Bitcoin Developers
+Copyright (c) 2014-2019 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying
 file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -21,18 +21,4 @@ with each other, with the help of a P2P network to check for double-spending.
 
 Setup
 ---------------------
-You need the Qt4 run-time libraries to run Animecoin-Qt. On Debian or Ubuntu:
-	`sudo apt-get install libqtgui4`
-
-
-Other Pages
----------------------
-- [Unix Build Notes](build-unix.md)
-- [OSX Build Notes](build-osx.md)
-- [Windows Build Notes](build-msw.md)
-- [Coding Guidelines](coding.md)
-- [Release Process](release-process.md)
-- [Release Notes](release-notes.md)
-- [Multiwallet Qt Development](multiwallet-qt.md)
-- [Unit Tests](unit-tests.md)
-- [Translation Process](translation_process.md)
+You need the Qt5 (or Qt4) run-time libraries to run Animecoin-Qt.
