@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_TW">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,18 +10,31 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;位元幣&lt;/b&gt;版本</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">&lt;b&gt;位元幣&lt;/b&gt;版本</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
 這是一套實驗性的軟體.
 
 此軟體是依據 MIT/X11 軟體授權條款散布, 詳情請見附帶的 COPYING 檔案, 或是以下網站: http://www.opensource.org/licenses/mit-license.php.
@@ -28,12 +42,18 @@ This product includes software developed by the OpenSSL Project for use in the O
 此產品也包含了由 OpenSSL Project 所開發的 OpenSSL Toolkit (http://www.openssl.org/) 軟體, 由 Eric Young (eay@cryptsoft.com) 撰寫的加解密軟體, 以及由 Thomas Bernard 所撰寫的 UPnP 軟體.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>版權</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>位元幣開發人員</translation>
     </message>
@@ -61,7 +81,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>複製目前選取的位址到系統剪貼簿</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>新增位址</translation>
     </message>
@@ -81,17 +106,21 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>顯示 &amp;QR 條碼</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>簽署訊息是用來證明位元幣位址是你的</translation>
+        <translation type="vanished">簽署訊息是用來證明位元幣位址是你的</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>訊息簽署</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>從列表中刪除目前選取的位址</translation>
     </message>
@@ -106,12 +135,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>匯出</translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>驗證訊息是用來確認訊息是用指定的位元幣位址簽署的</translation>
+        <translation type="vanished">驗證訊息是用來確認訊息是用指定的位元幣位址簽署的</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>訊息驗證</translation>
     </message>
@@ -257,7 +285,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>你確定要將錢包加密嗎?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>重要: 請改用新產生有加密的錢包檔, 來取代之前錢包檔的備份. 為了安全性的理由, 當你開始使用新的有加密的錢包時, 舊錢包的備份就不能再使用了.</translation>
     </message>
@@ -274,12 +307,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>錢包已加密</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>位元幣現在要關閉以完成加密程序. 請記住, 加密錢包無法完全防止入侵電腦的惡意程式偷取你的位元幣.</translation>
+        <translation type="vanished">位元幣現在要關閉以完成加密程序. 請記住, 加密錢包無法完全防止入侵電腦的惡意程式偷取你的位元幣.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -323,17 +355,17 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>訊息簽署...</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>網路同步中...</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>總覽</translation>
     </message>
@@ -407,8 +439,15 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>&amp;Change Passphrase...</source>
         <translation>密碼變更...</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>從磁碟匯入區塊中...</translation>
     </message>
@@ -418,7 +457,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>重建磁碟區塊索引中...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>付錢到位元幣位址</translation>
     </message>
@@ -438,7 +477,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>變更錢包加密用的密碼</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>除錯視窗</translation>
     </message>
@@ -453,18 +492,22 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>驗證訊息...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>位元幣</translation>
+        <translation type="vanished">位元幣</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>錢包</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>付出</translation>
     </message>
@@ -500,6 +543,26 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>用位元幣位址簽署訊息來證明那是你的</translation>
     </message>
@@ -509,7 +572,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>驗證訊息來確認是用指定的位元幣位址簽署的</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>檔案</translation>
     </message>
@@ -520,6 +583,11 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>求助</translation>
     </message>
@@ -535,17 +603,18 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>[testnet]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>位元幣客戶端軟體</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>與位元幣網路有 %n 個連線在使用中</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>與位元幣網路有 %n 個連線在使用中</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
         <translation>目前沒有區塊來源...</translation>
     </message>
@@ -562,17 +631,23 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n 個小時</numerusform></translation>
+        <translation>
+            <numerusform>%n 個小時</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n 天</numerusform></translation>
+        <translation>
+            <numerusform>%n 天</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n 個星期</numerusform></translation>
+        <translation>
+            <numerusform>%n 個星期</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -590,7 +665,22 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>會看不見在這之後的交易.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
@@ -610,7 +700,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>這筆交易的資料大小超過限制了. 你還是可以付出 %1 的費用來傳送, 這筆費用會付給處理你的交易的節點, 並幫助維持整個網路. 你願意支付這項費用嗎?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>最新狀態</translation>
     </message>
@@ -620,7 +710,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>進度追趕中...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>確認交易手續費</translation>
     </message>
@@ -677,9 +767,289 @@ Address: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>網路警報</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">金額:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">金額</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">位址</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">日期</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">已確認</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">複製位址</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">複製標記</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">複製金額</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">複製交易識別碼</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(沒有標記)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -843,9 +1213,13 @@ Address: %4
         <translation>網路</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>自動在路由器上開啟 Anime 的客戶端通訊埠. 只有在你的路由器支援 UPnP 且開啟時才有作用.</translation>
+        <translation type="vanished">自動在路由器上開啟 Anime 的客戶端通訊埠. 只有在你的路由器支援 UPnP 且開啟時才有作用.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -929,11 +1303,20 @@ Address: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>可以在這裡設定使用者介面的語言. 這個設定在位元幣程式重啓後才會生效.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">可以在這裡設定使用者介面的語言. 這個設定在位元幣程式重啓後才會生效.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>金額顯示單位:</translation>
     </message>
@@ -943,14 +1326,23 @@ Address: %4
         <translation>選擇操作界面與付錢時預設顯示的細分單位.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>是否要在交易列表中顯示位元幣位址.</translation>
+        <translation type="vanished">是否要在交易列表中顯示位元幣位址.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>在交易列表顯示位址</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>在交易列表顯示位址</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -973,7 +1365,7 @@ Address: %4
         <translation>預設</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>確認回復選項</translation>
     </message>
@@ -1013,13 +1405,11 @@ Address: %4
         <translation>表單</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>顯示的資訊可能是過期的. 與位元幣網路的連線建立後, 你的錢包會自動和網路同步, 但這個步驟還沒完成.</translation>
+        <translation type="vanished">顯示的資訊可能是過期的. 與位元幣網路的連線建立後, 你的錢包會自動和網路同步, 但這個步驟還沒完成.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>餘額:</translation>
     </message>
@@ -1034,7 +1424,13 @@ Address: %4
         <translation>錢包</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>未熟成</translation>
     </message>
@@ -1044,12 +1440,12 @@ Address: %4
         <translation>尚未熟成的開採金額</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;最近交易&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>目前餘額</translation>
     </message>
@@ -1208,7 +1604,12 @@ Address: %4
         <translation>最近區塊時間</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>開啓</translation>
     </message>
@@ -1219,8 +1620,12 @@ Address: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>顯示位元幣-Qt的求助訊息, 來取得可用的命令列選項列表.</translation>
+        <translation type="vanished">顯示位元幣-Qt的求助訊息, 來取得可用的命令列選項列表.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1253,12 +1658,11 @@ Address: %4
         <translation>除錯紀錄檔</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>從目前的資料目錄下開啓位元幣的除錯紀錄檔. 當紀錄檔很大時可能要花好幾秒的時間.</translation>
+        <translation type="vanished">從目前的資料目錄下開啓位元幣的除錯紀錄檔. 當紀錄檔很大時可能要花好幾秒的時間.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>清主控台</translation>
     </message>
@@ -1282,7 +1686,7 @@ Address: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1293,7 +1697,82 @@ Address: %4
         <translation>付錢</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">金額:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>一次付給多個人</translation>
     </message>
@@ -1319,8 +1798,12 @@ Address: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 BTC</translation>
+        <translation type="vanished">123.456 BTC</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1333,7 +1816,52 @@ Address: %4
         <translation>付出</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">複製金額</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; 給 %2 (%3)</translation>
     </message>
@@ -1353,7 +1881,7 @@ Address: %4
         <translation>和</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>無效的收款位址, 請再檢查看看.</translation>
     </message>
@@ -1387,6 +1915,21 @@ Address: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>錯誤: 交易被拒絕. 有時候會發生這種錯誤, 是因為你錢包中的一些錢已經被花掉了. 比如說你複製了錢包檔 wallet.dat, 然後用複製的錢包花掉了錢, 你現在所用的原來的錢包中卻沒有該筆交易紀錄.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(沒有標記)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1406,12 +1949,11 @@ Address: %4
         <translation>付給:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>付款的目標位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">付款的目標位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>輸入一個標記給這個位址, 並加到位址簿中</translation>
@@ -1422,7 +1964,12 @@ Address: %4
         <translation>標記:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>從位址簿中選一個位址</translation>
     </message>
@@ -1447,9 +1994,13 @@ Address: %4
         <translation>去掉這個收款人</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>輸入位元幣位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">輸入位元幣位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1470,9 +2021,13 @@ Address: %4
         <translation>你可以用自己的位址來簽署訊息, 以證明你對它的所有權. 但是請小心, 不要簽署語意含糊不清的內容, 因為釣魚式詐騙可能會用騙你簽署的手法來冒充是你. 只有在語句中的細節你都同意時才簽署.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>用來簽署訊息的位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">用來簽署訊息的位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1513,11 +2068,25 @@ Address: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>簽署訊息是用來證明這個位元幣位址是你的</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">簽署訊息是用來證明這個位元幣位址是你的</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>訊息簽署</translation>
     </message>
@@ -1543,17 +2112,15 @@ Address: %4
         <translation>請在下面輸入簽署的位址, 訊息(請確認完整複製了所包含的換行, 空格, 跳位符號等等), 與簽章, 以驗證該訊息. 請小心, 除了訊息內容外, 不要對簽章本身過度解讀, 以避免被用&quot;中間人攻擊法&quot;詐騙.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>簽署該訊息的位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">簽署該訊息的位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>驗證訊息是用來確認訊息是用指定的位元幣位址簽署的</translation>
+        <translation type="vanished">驗證訊息是用來確認訊息是用指定的位元幣位址簽署的</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>訊息驗證</translation>
     </message>
@@ -1563,10 +2130,14 @@ Address: %4
         <translation>重置所有訊息驗證欄位</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">輸入位元幣位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>輸入位元幣位址 (比如說 Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1649,6 +2220,11 @@ Address: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>位元幣開發人員</translation>
     </message>
@@ -1688,7 +2264,9 @@ Address: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, 已公告至 %n 個節點</numerusform></translation>
+        <translation>
+            <numerusform>, 已公告至 %n 個節點</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1741,7 +2319,9 @@ Address: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>將在 %n 個區塊產出後熟成</numerusform></translation>
+        <translation>
+            <numerusform>將在 %n 個區塊產出後熟成</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1783,8 +2363,16 @@ Address: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">生產出來的錢要再等 80 個區塊熟成之後, 才能夠花用. 當你產出區塊時, 它會被公布到網路上, 以被串連至區塊鎖鏈. 如果串連失敗了, 它的狀態就會變成&quot;不被接受&quot;, 且不能被花用. 當你產出區塊的幾秒鐘內, 也有其他節點產出區塊的話, 有時候就會發生這種情形. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">生產出來的錢要再等 80 個區塊熟成之後, 才能夠花用. 當你產出區塊時, 它會被公布到網路上, 以被串連至區塊鎖鏈. 如果串連失敗了, 它的狀態就會變成&quot;不被接受&quot;, 且不能被花用. 當你產出區塊的幾秒鐘內, 也有其他節點產出區塊的話, 有時候就會發生這種情形. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>生產出來的錢要再等 80 個區塊熟成之後, 才能夠花用. 當你產出區塊時, 它會被公布到網路上, 以被串連至區塊鎖鏈. 如果串連失敗了, 它的狀態就會變成&quot;不被接受&quot;, 且不能被花用. 當你產出區塊的幾秒鐘內, 也有其他節點產出區塊的話, 有時候就會發生這種情形.</translation>
+        <translation type="vanished">生產出來的錢要再等 80 個區塊熟成之後, 才能夠花用. 當你產出區塊時, 它會被公布到網路上, 以被串連至區塊鎖鏈. 如果串連失敗了, 它的狀態就會變成&quot;不被接受&quot;, 且不能被花用. 當你產出區塊的幾秒鐘內, 也有其他節點產出區塊的話, 有時候就會發生這種情形.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1824,7 +2412,9 @@ Address: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>在接下來 %n 個區塊產出前未定</numerusform></translation>
+        <translation>
+            <numerusform>在接下來 %n 個區塊產出前未定</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1870,7 +2460,9 @@ Address: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>在接下來 %n 個區塊產出前未定</numerusform></translation>
+        <translation>
+            <numerusform>在接下來 %n 個區塊產出前未定</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1895,7 +2487,9 @@ Address: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>開採金額將可在 %n 個區塊熟成後可用</numerusform></translation>
+        <translation>
+            <numerusform>開採金額將可在 %n 個區塊熟成後可用</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2135,7 +2729,7 @@ Address: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>付錢</translation>
     </message>
@@ -2196,13 +2790,12 @@ Address: %4
         <translation>用法:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>送指令給 -server 或 animed
+        <translation type="vanished">送指令給 -server 或 animed
 </translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>列出指令
 </translation>
@@ -2243,12 +2836,11 @@ Address: %4
         <translation>設定資料庫快取大小為多少百萬位元組(MB, 預設: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>在通訊埠 &lt;port&gt; 聽候連線 (預設: 8333, 或若為測試網路: 18333)</translation>
+        <translation type="vanished">在通訊埠 &lt;port&gt; 聽候連線 (預設: 8333, 或若為測試網路: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>維持與節點連線數的上限為 &lt;n&gt; 個 (預設: 125)</translation>
     </message>
@@ -2278,12 +2870,11 @@ Address: %4
         <translation>在 IPv4 網路上以通訊埠 %u 聽取 RPC 連線時發生錯誤: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>在通訊埠 &lt;port&gt; 聽候 JSON-RPC 連線 (預設: 8332, 或若為測試網路: 18332)</translation>
+        <translation type="vanished">在通訊埠 &lt;port&gt; 聽候 JSON-RPC 連線 (預設: 8332, 或若為測試網路: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>接受命令列與 JSON-RPC 指令
 </translation>
@@ -2366,7 +2957,12 @@ alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.com
         <translation>當錢包有交易改變時所要執行的指令 (指令中的 %s 會被取代為交易識別碼)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">在通訊埠 &lt;port&gt; 聽候 JSON-RPC 連線 (預設: 8332, 或若為測試網路: 18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>設定高優先權或低手續費的交易資料大小上限為多少位元組 (預設: 27000)</translation>
     </message>
@@ -2541,7 +3137,12 @@ alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.com
         <translation>區塊檢查的仔細程度 (0 至 4, 預設: 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">在通訊埠 &lt;port&gt; 聽候連線 (預設: 8333, 或若為測試網路: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>檔案描述器不足.</translation>
     </message>
@@ -2551,7 +3152,12 @@ alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.com
         <translation>從目前的區塊檔 blk000??.dat 重建鎖鏈索引</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>設定處理 RPC 服務請求的執行緒數目 (預設為 4)</translation>
     </message>

@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,18 +10,31 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Anime&lt;/b&gt; verze</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">&lt;b&gt;Anime&lt;/b&gt; verze</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
 Tohle je experimentální program.
 
 Šířen pod licencí MIT/X11, viz přiložený soubor COPYING nebo http://www.opensource.org/licenses/mit-license.php.
@@ -28,12 +42,18 @@ Tohle je experimentální program.
 Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v OpenSSL Toolkitu (http://www.openssl.org/) a kryptografický program od Erika Younga (eay@cryptsoft.com) a program UPnP od Thomase Bernarda.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>Copyright</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Vývojáři Animeu</translation>
     </message>
@@ -61,7 +81,12 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Zkopíruj aktuálně vybranou adresu do systémové schránky</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>Nová &amp;adresa</translation>
     </message>
@@ -81,17 +106,21 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Zobraz &amp;QR kód</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>Podepiš zprávu, čímž prokážeš, že jsi vlastníkem Animeové adresy</translation>
+        <translation type="vanished">Podepiš zprávu, čímž prokážeš, že jsi vlastníkem Animeové adresy</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>Po&amp;depiš zprávu</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Smaž zvolenou adresu ze seznamu</translation>
     </message>
@@ -106,12 +135,11 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>&amp;Export</translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>Ověř zprávu, aby ses ujistil, že byla podepsána danou Animeovou adresou</translation>
+        <translation type="vanished">Ověř zprávu, aby ses ujistil, že byla podepsána danou Animeovou adresou</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>&amp;Ověř zprávu</translation>
     </message>
@@ -257,7 +285,12 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Jsi si jistý, že chceš peněženku zašifrovat?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>DŮLEŽITÉ: Všechny předchozí zálohy peněženky by měly být nahrazeny nově vygenerovanou, zašifrovanou peněženkou. Z bezpečnostních důvodů budou předchozí zálohy nešifrované peněženky nepoužitelné, jakmile začneš používat novou zašifrovanou peněženku.</translation>
     </message>
@@ -274,12 +307,11 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Peněženka je zašifrována</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>Anime se teď ukončí, aby dokončil zašifrování. Pamatuj však, že pouhé zašifrování peněženky úplně nezabraňuje krádeži tvých animeů malwarem, kterým se může počítač nakazit.</translation>
+        <translation type="vanished">Anime se teď ukončí, aby dokončil zašifrování. Pamatuj však, že pouhé zašifrování peněženky úplně nezabraňuje krádeži tvých animeů malwarem, kterým se může počítač nakazit.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -323,17 +355,17 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>Po&amp;depiš zprávu...</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>Synchronizuji se se sítí...</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>&amp;Přehled</translation>
     </message>
@@ -407,8 +439,17 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <source>&amp;Change Passphrase...</source>
         <translation>Změň &amp;heslo...</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>Importuji bloky z disku...</translation>
     </message>
@@ -418,7 +459,7 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Vytvářím nový index bloků na disku...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>Pošli mince na Animeovou adresu</translation>
     </message>
@@ -438,7 +479,7 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Změň heslo k šifrování peněženky</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>&amp;Ladicí okno</translation>
     </message>
@@ -453,18 +494,22 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>&amp;Ověř zprávu...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>Anime</translation>
+        <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>Peněženka</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>&amp;Pošli</translation>
     </message>
@@ -500,6 +545,26 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>Podepiš zprávy svými Animeovými adresami, čímž prokážeš, že jsi jejich vlastníkem</translation>
     </message>
@@ -509,7 +574,7 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Ověř zprávy, aby ses ujistil, že byly podepsány danými Animeovými adresami</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>&amp;Soubor</translation>
     </message>
@@ -520,6 +585,11 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>Ná&amp;pověda</translation>
     </message>
@@ -535,17 +605,20 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>[testnet]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>Anime klient</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>%n aktivní spojení do Animeové sítě</numerusform><numerusform>%n aktivní spojení do Animeové sítě</numerusform><numerusform>%n aktivních spojení do Animeové sítě</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>%n aktivní spojení do Animeové sítě</numerusform>
+            <numerusform>%n aktivní spojení do Animeové sítě</numerusform>
+            <numerusform>%n aktivních spojení do Animeové sítě</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
         <translation>Není dostupný žádný zdroj bloků...</translation>
     </message>
@@ -562,17 +635,29 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>hodinu</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodin</numerusform></translation>
+        <translation>
+            <numerusform>hodinu</numerusform>
+            <numerusform>%n hodiny</numerusform>
+            <numerusform>%n hodin</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>den</numerusform><numerusform>%n dny</numerusform><numerusform>%n dnů</numerusform></translation>
+        <translation>
+            <numerusform>den</numerusform>
+            <numerusform>%n dny</numerusform>
+            <numerusform>%n dnů</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>týden</numerusform><numerusform>%n týdny</numerusform><numerusform>%n týdnů</numerusform></translation>
+        <translation>
+            <numerusform>týden</numerusform>
+            <numerusform>%n týdny</numerusform>
+            <numerusform>%n týdnů</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -590,7 +675,22 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Následné transakce ještě nebudou vidět.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
@@ -610,7 +710,7 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Tahle transakce přesahuje velikostní limit. I tak ji ale můžeš poslat, pokud za ni zaplatíš poplatek %1, který půjde uzlům, které tvou transakci zpracují, a navíc tak podpoříš síť. Chceš zaplatit poplatek?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>Aktuální</translation>
     </message>
@@ -620,7 +720,7 @@ Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v Open
         <translation>Stahuji...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>Potvrď transakční poplatek</translation>
     </message>
@@ -678,9 +778,289 @@ Adresa: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>Upozornění sítě</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Částka:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">Částka</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">Adresa</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">Potvrzeno</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">Kopíruj adresu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">Kopíruj její označení</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Kopíruj částku</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">Kopíruj ID transakce</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(bez označení)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -843,9 +1223,13 @@ Adresa: %4
         <translation>&amp;Síť</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automaticky otevře potřebný port na routeru. Tohle funguje jen za předpokladu, že tvůj router podporuje UPnP a že je UPnP povolené.</translation>
+        <translation type="vanished">Automaticky otevře potřebný port na routeru. Tohle funguje jen za předpokladu, že tvůj router podporuje UPnP a že je UPnP povolené.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -929,11 +1313,20 @@ Adresa: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>Tady lze nastavit jazyk uživatelského rozhraní. Nastavení se projeví až po restartování Animeu.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">Tady lze nastavit jazyk uživatelského rozhraní. Nastavení se projeví až po restartování Animeu.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>J&amp;ednotka pro částky: </translation>
     </message>
@@ -943,14 +1336,23 @@ Adresa: %4
         <translation>Zvol výchozí podjednotku, která se bude zobrazovat v programu a při posílání mincí.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>Zda ukazovat animeové adresy ve výpisu transakcí nebo ne.</translation>
+        <translation type="vanished">Zda ukazovat animeové adresy ve výpisu transakcí nebo ne.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>Ukazo&amp;vat adresy ve výpisu transakcí</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>Ukazo&amp;vat adresy ve výpisu transakcí</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -973,7 +1375,7 @@ Adresa: %4
         <translation>výchozí</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Potvrzení obnovení nastavení</translation>
     </message>
@@ -1013,13 +1415,11 @@ Adresa: %4
         <translation>Formulář</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>Zobrazené informace nemusí být aktuální. Tvá peněženka se automaticky sesynchronizuje s Animeovou sítí, jakmile se s ní spojí. Zatím ale ještě není synchronizace dokončena.</translation>
+        <translation type="vanished">Zobrazené informace nemusí být aktuální. Tvá peněženka se automaticky sesynchronizuje s Animeovou sítí, jakmile se s ní spojí. Zatím ale ještě není synchronizace dokončena.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>Stav účtu:</translation>
     </message>
@@ -1034,7 +1434,13 @@ Adresa: %4
         <translation>Peněženka</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>Nedozráno:</translation>
     </message>
@@ -1044,12 +1450,12 @@ Adresa: %4
         <translation>Vytěžené mince, které ještě nejsou zralé</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;Poslední transakce&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>Aktuální stav tvého účtu</translation>
     </message>
@@ -1208,7 +1614,12 @@ Adresa: %4
         <translation>Čas posledního bloku</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>&amp;Otevřít</translation>
     </message>
@@ -1219,8 +1630,12 @@ Adresa: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>Seznam parametrů Animeu pro příkazovou řádku získáš v nápovědě Animeu Qt.</translation>
+        <translation type="vanished">Seznam parametrů Animeu pro příkazovou řádku získáš v nápovědě Animeu Qt.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1253,12 +1668,11 @@ Adresa: %4
         <translation>Soubor s ladicími záznamy</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Otevři soubor s ladicími záznamy Animeu z aktuálního datového adresáře. U velkých logů to může pár vteřin zabrat.</translation>
+        <translation type="vanished">Otevři soubor s ladicími záznamy Animeu z aktuálního datového adresáře. U velkých logů to může pár vteřin zabrat.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>Vyčistit konzoli</translation>
     </message>
@@ -1282,7 +1696,7 @@ Adresa: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1293,7 +1707,82 @@ Adresa: %4
         <translation>Pošli mince</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Částka:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>Pošli více příjemcům naráz</translation>
     </message>
@@ -1319,8 +1808,12 @@ Adresa: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 BTC</translation>
+        <translation type="vanished">123.456 BTC</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1333,7 +1826,52 @@ Adresa: %4
         <translation>P&amp;ošli</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Kopíruj částku</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; pro %2 (%3)</translation>
     </message>
@@ -1353,7 +1891,7 @@ Adresa: %4
         <translation> a </translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>Adresa příjemce je neplatná, překontroluj ji prosím.</translation>
     </message>
@@ -1387,6 +1925,21 @@ Adresa: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>Chyba: Transakce byla odmítnuta. Tohle může nastat, pokud nějaké mince z tvé peněženky už jednou byly utraceny, například pokud používáš kopii souboru wallet.dat a mince byly utraceny v druhé kopii, ale nebyly označeny jako utracené v této.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(bez označení)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1406,12 +1959,11 @@ Adresa: %4
         <translation>&amp;Komu:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Adresa příjemce (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Adresa příjemce (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>Zadej označení této adresy; obojí se ti pak uloží do adresáře</translation>
@@ -1422,7 +1974,12 @@ Adresa: %4
         <translation>O&amp;značení:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>Vyber adresu z adresáře</translation>
     </message>
@@ -1447,9 +2004,13 @@ Adresa: %4
         <translation>Smaž tohoto příjemce</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Zadej Animeovou adresu (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Zadej Animeovou adresu (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1470,9 +2031,13 @@ Adresa: %4
         <translation>Podepsáním zprávy svými adresami můžeš prokázat, že je skutečně vlastníš. Buď opatrný a nepodepisuj nic vágního; například při phishingových útocích můžeš být lákán, abys něco takového podepsal. Podepisuj pouze zcela úplná a detailní prohlášení, se kterými souhlasíš.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Adresa, kterou se zpráva podepíše (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Adresa, kterou se zpráva podepíše (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1513,11 +2078,25 @@ Adresa: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>Podepiš zprávu, čímž prokážeš, že jsi vlastníkem této Animeové adresy</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">Podepiš zprávu, čímž prokážeš, že jsi vlastníkem této Animeové adresy</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>Po&amp;depiš zprávu</translation>
     </message>
@@ -1543,17 +2122,15 @@ Adresa: %4
         <translation>K ověření podpisu zprávy zadej podepisující adresu, zprávu (ověř si, že správně kopíruješ zalomení řádků, mezery, tabulátory apod.) a podpis. Dávej pozor na to, abys nezkopíroval do podpisu víc, než co je v samotné podepsané zprávě, abys nebyl napálen man-in-the-middle útokem.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Adresa, kterou je zpráva podepsána (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Adresa, kterou je zpráva podepsána (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>Ověř zprávu, aby ses ujistil, že byla podepsána danou Animeovou adresou</translation>
+        <translation type="vanished">Ověř zprávu, aby ses ujistil, že byla podepsána danou Animeovou adresou</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>O&amp;věř zprávu</translation>
     </message>
@@ -1563,10 +2140,14 @@ Adresa: %4
         <translation>Vymaž všechna pole formuláře pro ověření zrávy</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">Zadej Animeovou adresu (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Zadej Animeovou adresu (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1649,6 +2230,11 @@ Adresa: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Vývojáři Animeu</translation>
     </message>
@@ -1688,7 +2274,11 @@ Adresa: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, rozesláno přes 1 uzel</numerusform><numerusform>, rozesláno přes %n uzly</numerusform><numerusform>, rozesláno přes %n uzlů</numerusform></translation>
+        <translation>
+            <numerusform>, rozesláno přes 1 uzel</numerusform>
+            <numerusform>, rozesláno přes %n uzly</numerusform>
+            <numerusform>, rozesláno přes %n uzlů</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1741,7 +2331,11 @@ Adresa: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>dozraje po jednom bloku</numerusform><numerusform>dozraje po %n blocích</numerusform><numerusform>dozraje po %n blocích</numerusform></translation>
+        <translation>
+            <numerusform>dozraje po jednom bloku</numerusform>
+            <numerusform>dozraje po %n blocích</numerusform>
+            <numerusform>dozraje po %n blocích</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1783,8 +2377,16 @@ Adresa: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">Vygenerované mince musí čekat 80 bloků, než mohou být utraceny. Když jsi vygeneroval tenhle blok, tak byl rozposlán do sítě, aby byl přidán do řetězce bloků. Pokud se mu nepodaří dostat se do řetězce, změní se na &quot;neakceptovaný&quot; a nepůjde utratit. To se občas může stát, pokud jiný uzel vygeneruje blok zhruba ve stejném okamžiku jako ty. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">Vygenerované mince musí čekat 80 bloků, než mohou být utraceny. Když jsi vygeneroval tenhle blok, tak byl rozposlán do sítě, aby byl přidán do řetězce bloků. Pokud se mu nepodaří dostat se do řetězce, změní se na &quot;neakceptovaný&quot; a nepůjde utratit. To se občas může stát, pokud jiný uzel vygeneruje blok zhruba ve stejném okamžiku jako ty. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Vygenerované mince musí čekat 80 bloků, než mohou být utraceny. Když jsi vygeneroval tenhle blok, tak byl rozposlán do sítě, aby byl přidán do řetězce bloků. Pokud se mu nepodaří dostat se do řetězce, změní se na &quot;neakceptovaný&quot; a nepůjde utratit. To se občas může stát, pokud jiný uzel vygeneruje blok zhruba ve stejném okamžiku jako ty.</translation>
+        <translation type="vanished">Vygenerované mince musí čekat 80 bloků, než mohou být utraceny. Když jsi vygeneroval tenhle blok, tak byl rozposlán do sítě, aby byl přidán do řetězce bloků. Pokud se mu nepodaří dostat se do řetězce, změní se na &quot;neakceptovaný&quot; a nepůjde utratit. To se občas může stát, pokud jiný uzel vygeneruje blok zhruba ve stejném okamžiku jako ty.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1824,7 +2426,11 @@ Adresa: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Otevřeno pro 1 další blok</numerusform><numerusform>Otevřeno pro %n další bloky</numerusform><numerusform>Otevřeno pro %n dalších bloků</numerusform></translation>
+        <translation>
+            <numerusform>Otevřeno pro 1 další blok</numerusform>
+            <numerusform>Otevřeno pro %n další bloky</numerusform>
+            <numerusform>Otevřeno pro %n dalších bloků</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1870,7 +2476,11 @@ Adresa: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Otevřeno pro 1 další blok</numerusform><numerusform>Otevřeno pro %n další bloky</numerusform><numerusform>Otevřeno pro %n dalších bloků</numerusform></translation>
+        <translation>
+            <numerusform>Otevřeno pro 1 další blok</numerusform>
+            <numerusform>Otevřeno pro %n další bloky</numerusform>
+            <numerusform>Otevřeno pro %n dalších bloků</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1895,7 +2505,11 @@ Adresa: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>Vytěžené mince budou použitelné po dozrání, tj. po jednom bloku</numerusform><numerusform>Vytěžené mince budou použitelné po dozrání, tj. po %n blocích</numerusform><numerusform>Vytěžené mince budou použitelné po dozrání, tj. po %n blocích</numerusform></translation>
+        <translation>
+            <numerusform>Vytěžené mince budou použitelné po dozrání, tj. po jednom bloku</numerusform>
+            <numerusform>Vytěžené mince budou použitelné po dozrání, tj. po %n blocích</numerusform>
+            <numerusform>Vytěžené mince budou použitelné po dozrání, tj. po %n blocích</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2135,7 +2749,7 @@ Adresa: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>Pošli mince</translation>
     </message>
@@ -2196,12 +2810,11 @@ Adresa: %4
         <translation>Užití:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>Poslat příkaz pro -server nebo animed</translation>
+        <translation type="vanished">Poslat příkaz pro -server nebo animed</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>Výpis příkazů</translation>
     </message>
@@ -2236,12 +2849,11 @@ Adresa: %4
         <translation>Nastavit velikost databázové vyrovnávací paměti v megabajtech (výchozí: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Čekat na spojení na &lt;portu&gt; (výchozí: 8333 nebo testnet: 18333)</translation>
+        <translation type="vanished">Čekat na spojení na &lt;portu&gt; (výchozí: 8333 nebo testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Povolit nejvýše &lt;n&gt; připojení k uzlům (výchozí: 125)</translation>
     </message>
@@ -2271,12 +2883,11 @@ Adresa: %4
         <translation>Při nastavování naslouchacího RPC portu %i pro IPv4 nastala chyba: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Čekat na JSON RPC spojení na &lt;portu&gt; (výchozí: 8332 nebo testnet: 18332)</translation>
+        <translation type="vanished">Čekat na JSON RPC spojení na &lt;portu&gt; (výchozí: 8332 nebo testnet: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Akceptovat příkazy z příkazové řádky a přes JSON-RPC</translation>
     </message>
@@ -2356,7 +2967,12 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Spustit příkaz, když se objeví transakce týkající se peněženky (%s se v příkazu nahradí za TxID)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">Čekat na JSON RPC spojení na &lt;portu&gt; (výchozí: 8332 nebo testnet: 18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Nastavit maximální velikost prioritních/nízkopoplatkových transakcí v bajtech (výchozí: 27000)</translation>
     </message>
@@ -2531,7 +3147,12 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Jak moc důkladná má být verifikace bloků (0-4, výchozí: 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">Čekat na spojení na &lt;portu&gt; (výchozí: 8333 nebo testnet: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>Je nedostatek deskriptorů souborů.</translation>
     </message>
@@ -2541,7 +3162,12 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Znovu vytvořit index řetězce bloků z aktuálních blk000??.dat souborů</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>Nastavení počtu vláken pro servisní RPC volání (výchozí: 4)</translation>
     </message>

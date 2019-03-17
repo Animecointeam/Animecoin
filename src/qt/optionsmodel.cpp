@@ -59,6 +59,7 @@ void OptionsModel::Init()
         SoftSetArg("-socks", settings.value("nSocksVersion").toString().toStdString());
     if (!language.isEmpty())
         SoftSetArg("-lang", language.toStdString());
+    fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 }
 
 void OptionsModel::Reset()
@@ -196,6 +197,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return QVariant(bDisplayAddresses);
         case Language:
             return settings.value("language", "");
+        case CoinControlFeatures:
+            return QVariant(fCoinControlFeatures);
         default:
             return QVariant();
         }
@@ -264,6 +267,7 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case Fee:
             nTransactionFee = value.toLongLong();
             settings.setValue("nTransactionFee", nTransactionFee);
+            emit transactionFeeChanged(nTransactionFee);
             break;
         case DisplayUnit:
             nDisplayUnit = value.toInt();
@@ -277,6 +281,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case Language:
             settings.setValue("language", value);
             break;
+        case CoinControlFeatures: {
+            fCoinControlFeatures = value.toBool();
+            settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
+            emit coinControlFeaturesChanged(fCoinControlFeatures);
+        }
+        break;
         default:
             break;
         }
@@ -284,6 +294,11 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
     emit dataChanged(index, index);
 
     return successful;
+}
+
+bool OptionsModel::getCoinControlFeatures()
+{
+    return fCoinControlFeatures;
 }
 
 qint64 OptionsModel::getTransactionFee()

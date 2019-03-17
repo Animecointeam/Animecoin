@@ -20,6 +20,7 @@
 
 class CAccountingEntry;
 class CWalletTx;
+class CCoinControl;
 class CReserveKey;
 class COutput;
 
@@ -68,7 +69,7 @@ public:
 class CWallet : public CCryptoKeyStore
 {
 private:
-    bool SelectCoins(int64 nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64& nValueRet) const;
+    bool SelectCoins(int64_t nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t& nValueRet, const CCoinControl *coinControl=NULL) const;
 
     CWalletDB *pwalletdbEncryption;
 
@@ -124,8 +125,8 @@ public:
     // check whether we are allowed to upgrade (or already support) to the named feature
     bool CanSupportFeature(enum WalletFeature wf) { return nWalletMaxVersion >= wf; }
 
-    void AvailableCoins(std::vector<COutput>& vCoins, bool fOnlyConfirmed=true) const;
-    bool SelectCoinsMinConf(int64 nTargetValue, int nConfMine, int nConfTheirs, std::vector<COutput> vCoins, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64& nValueRet) const;
+    void AvailableCoins(std::vector<COutput>& vCoins, bool fOnlyConfirmed=true, const CCoinControl *coinControl=NULL) const;
+    bool SelectCoinsMinConf(int64 nTargetValue, int nConfMine, int nConfTheirs, std::vector<COutput> vCoins, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t &nValueRet) const;
     bool IsLockedCoin(uint256 hash, unsigned int n) const;
     void LockCoin(COutPoint& output);
     void UnlockCoin(COutPoint& output);
@@ -179,9 +180,9 @@ public:
     int64 GetUnconfirmedBalance() const;
     int64 GetImmatureBalance() const;
     bool CreateTransaction(const std::vector<std::pair<CScript, int64> >& vecSend,
-                           CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, std::string& strFailReason);
+                           CWalletTx& wtxNew, CReserveKey& reservekey, int64_t& nFeeRet, std::string& strFailReason, const CCoinControl *coinControl=NULL);
     bool CreateTransaction(CScript scriptPubKey, int64 nValue,
-                           CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, std::string& strFailReason);
+                           CWalletTx& wtxNew, CReserveKey& reservekey, int64_t& nFeeRet, std::string& strFailReason, const CCoinControl *coinControl=NULL);
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey);
     std::string SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew, bool fAskFee=false);
     std::string SendMoneyToDestination(const CTxDestination &address, int64 nValue, CWalletTx& wtxNew, bool fAskFee=false);

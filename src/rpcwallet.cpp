@@ -693,7 +693,7 @@ Value sendmany(const Array& params, bool fHelp)
 
     // Send
     CReserveKey keyChange(pwalletMain);
-    int64 nFeeRequired = 0;
+    int64_t nFeeRequired = 0;
     string strFailReason;
     bool fCreated = pwalletMain->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, strFailReason);
     if (!fCreated)

@@ -5,6 +5,7 @@
 #ifndef BITCOIN_MAIN_H
 #define BITCOIN_MAIN_H
 
+#include "core.h"
 #include "bignum.h"
 #include "sync.h"
 #include "net.h"
@@ -37,6 +38,10 @@ static const unsigned int MAX_STANDARD_TX_SIZE = MAX_BLOCK_SIZE_GEN/5;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 /** The maximum number of orphan transactions kept in memory */
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
+static const int64_t MIN_TX_FEE = 0.0001*COIN;
+/** Fees smaller than this (in satoshi) are considered zero fee (for relaying) */
+static const int64_t MIN_RELAY_TX_FEE = MIN_TX_FEE;
+static const int64_t MIN_CHANGE = CENT;
 /** The maximum number of entries in an 'inv' protocol message */
 static const unsigned int MAX_INV_SZ = 50000;
 /** The maximum size of a blk?????.dat file (since 0.8) */
@@ -252,213 +257,6 @@ struct CDiskTxPos : public CDiskBlockPos
     }
 };
 
-
-/** An inpoint - a combination of a transaction and an index n into its vin */
-class CInPoint
-{
-public:
-    CTransaction* ptx;
-    unsigned int n;
-
-    CInPoint() { SetNull(); }
-    CInPoint(CTransaction* ptxIn, unsigned int nIn) { ptx = ptxIn; n = nIn; }
-    void SetNull() { ptx = NULL; n = (unsigned int) -1; }
-    bool IsNull() const { return (ptx == NULL && n == (unsigned int) -1); }
-};
-
-
-
-/** An outpoint - a combination of a transaction hash and an index n into its vout */
-class COutPoint
-{
-public:
-    uint256 hash;
-    unsigned int n;
-
-    COutPoint() { SetNull(); }
-    COutPoint(uint256 hashIn, unsigned int nIn) { hash = hashIn; n = nIn; }
-    IMPLEMENT_SERIALIZE( READWRITE(FLATDATA(*this)); )
-    void SetNull() { hash = 0; n = (unsigned int) -1; }
-    bool IsNull() const { return (hash == 0 && n == (unsigned int) -1); }
-
-    friend bool operator<(const COutPoint& a, const COutPoint& b)
-    {
-        return (a.hash < b.hash || (a.hash == b.hash && a.n < b.n));
-    }
-
-    friend bool operator==(const COutPoint& a, const COutPoint& b)
-    {
-        return (a.hash == b.hash && a.n == b.n);
-    }
-
-    friend bool operator!=(const COutPoint& a, const COutPoint& b)
-    {
-        return !(a == b);
-    }
-
-    std::string ToString() const
-    {
-        return strprintf("COutPoint(%s, %u)", hash.ToString().c_str(), n);
-    }
-
-    void print() const
-    {
-        printf("%s\n", ToString().c_str());
-    }
-};
-
-
-
-
-/** An input of a transaction.  It contains the location of the previous
- * transaction's output that it claims and a signature that matches the
- * output's public key.
- */
-class CTxIn
-{
-public:
-    COutPoint prevout;
-    CScript scriptSig;
-    unsigned int nSequence;
-
-    CTxIn()
-    {
-        nSequence = std::numeric_limits<unsigned int>::max();
-    }
-
-    explicit CTxIn(COutPoint prevoutIn, CScript scriptSigIn=CScript(), unsigned int nSequenceIn=std::numeric_limits<unsigned int>::max())
-    {
-        prevout = prevoutIn;
-        scriptSig = scriptSigIn;
-        nSequence = nSequenceIn;
-    }
-
-    CTxIn(uint256 hashPrevTx, unsigned int nOut, CScript scriptSigIn=CScript(), unsigned int nSequenceIn=std::numeric_limits<unsigned int>::max())
-    {
-        prevout = COutPoint(hashPrevTx, nOut);
-        scriptSig = scriptSigIn;
-        nSequence = nSequenceIn;
-    }
-
-    IMPLEMENT_SERIALIZE
-    (
-        READWRITE(prevout);
-        READWRITE(scriptSig);
-        READWRITE(nSequence);
-    )
-
-    bool IsFinal() const
-    {
-        return (nSequence == std::numeric_limits<unsigned int>::max());
-    }
-
-    friend bool operator==(const CTxIn& a, const CTxIn& b)
-    {
-        return (a.prevout   == b.prevout &&
-                a.scriptSig == b.scriptSig &&
-                a.nSequence == b.nSequence);
-    }
-
-    friend bool operator!=(const CTxIn& a, const CTxIn& b)
-    {
-        return !(a == b);
-    }
-
-    std::string ToString() const
-    {
-        std::string str;
-        str += "CTxIn(";
-        str += prevout.ToString();
-        if (prevout.IsNull())
-            str += strprintf(", coinbase %s", HexStr(scriptSig).c_str());
-        else
-            str += strprintf(", scriptSig=%s", scriptSig.ToString().substr(0,24).c_str());
-        if (nSequence != std::numeric_limits<unsigned int>::max())
-            str += strprintf(", nSequence=%u", nSequence);
-        str += ")";
-        return str;
-    }
-
-    void print() const
-    {
-        printf("%s\n", ToString().c_str());
-    }
-};
-
-
-
-
-/** An output of a transaction.  It contains the public key that the next input
- * must be able to sign with to claim it.
- */
-class CTxOut
-{
-public:
-    int64 nValue;
-    CScript scriptPubKey;
-
-    CTxOut()
-    {
-        SetNull();
-    }
-
-    CTxOut(int64 nValueIn, CScript scriptPubKeyIn)
-    {
-        nValue = nValueIn;
-        scriptPubKey = scriptPubKeyIn;
-    }
-
-    IMPLEMENT_SERIALIZE
-    (
-        READWRITE(nValue);
-        READWRITE(scriptPubKey);
-    )
-
-    void SetNull()
-    {
-        nValue = -1;
-        scriptPubKey.clear();
-    }
-
-    bool IsNull() const
-    {
-        return (nValue == -1);
-    }
-
-    uint256 GetHash() const
-    {
-        return SerializeHash(*this);
-    }
-
-    friend bool operator==(const CTxOut& a, const CTxOut& b)
-    {
-        return (a.nValue       == b.nValue &&
-                a.scriptPubKey == b.scriptPubKey);
-    }
-
-    friend bool operator!=(const CTxOut& a, const CTxOut& b)
-    {
-        return !(a == b);
-    }
-
-    bool IsDust() const;
-
-    std::string ToString() const
-    {
-        if (scriptPubKey.size() < 6)
-            return "CTxOut(error)";
-
-        return strprintf("CTxOut(nValue=%" PRI64d ".%05" PRI64d ", scriptPubKey=%s)", nValue / COIN, nValue % COIN, scriptPubKey.ToString().substr(0,30).c_str());
-    }
-
-    void print() const
-    {
-        printf("%s\n", ToString().c_str());
-    }
-};
-
-
-
 enum GetMinFee_mode
 {
     GMF_BLOCK,
@@ -622,7 +420,7 @@ public:
         return dPriority > COIN * 144 / 250;
     }
 
-    int64 GetMinFee(unsigned int nBlockSize=1, bool fAllowFree=true, enum GetMinFee_mode mode=GMF_BLOCK) const;
+    int64_t GetMinFee(unsigned int nBytes, bool fAllowFree, enum GetMinFee_mode mode) const;
 
     friend bool operator==(const CTransaction& a, const CTransaction& b)
     {

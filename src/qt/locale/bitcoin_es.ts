@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,18 +10,31 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>Versión de &lt;b&gt;Anime&lt;/b&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">Versión de &lt;b&gt;Anime&lt;/b&gt;</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
 Este es un software experimental.
 
 Distribuido bajo la licencia MIT/X11, vea el archivo adjunto
@@ -31,12 +45,18 @@ el OpenSSL Toolkit (http://www.openssl.org/) y software criptográfico escrito p
 Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>Copyright</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Los programadores Anime</translation>
     </message>
@@ -64,7 +84,12 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Copiar la dirección seleccionada al portapapeles del sistema</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>&amp;Añadir dirección</translation>
     </message>
@@ -84,17 +109,21 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Mostrar código &amp;QR </translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>Firmar un mensaje para demostrar que se posee una dirección Anime</translation>
+        <translation type="vanished">Firmar un mensaje para demostrar que se posee una dirección Anime</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>&amp;Firmar mensaje</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Borrar de la lista la dirección seleccionada</translation>
     </message>
@@ -109,12 +138,11 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>&amp;Exportar</translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>Verificar un mensaje para comprobar que fue firmado con la dirección Anime indicada</translation>
+        <translation type="vanished">Verificar un mensaje para comprobar que fue firmado con la dirección Anime indicada</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>&amp;Verificar mensaje</translation>
     </message>
@@ -260,7 +288,12 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>¿Seguro que desea cifrar su monedero?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>IMPORTANTE: Cualquier copia de seguridad que haya realizado previamente de su archivo de monedero debe reemplazarse con el nuevo archivo de monedero cifrado. Por razones de seguridad, las copias de seguridad previas del archivo de monedero no cifradas serán inservibles en cuanto comience a usar el nuevo monedero cifrado.</translation>
     </message>
@@ -277,12 +310,11 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Monedero cifrado</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>Anime se cerrará para finalizar el proceso de cifrado. Recuerde que el cifrado de su monedero no puede proteger totalmente sus animes de robo por malware que infecte su sistema.</translation>
+        <translation type="vanished">Anime se cerrará para finalizar el proceso de cifrado. Recuerde que el cifrado de su monedero no puede proteger totalmente sus animes de robo por malware que infecte su sistema.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -326,17 +358,17 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>Firmar &amp;mensaje...</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>Sincronizando con la red…</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>&amp;Vista general</translation>
     </message>
@@ -410,8 +442,16 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <source>&amp;Change Passphrase...</source>
         <translation>&amp;Cambiar la contraseña…</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>Importando bloques de disco...</translation>
     </message>
@@ -421,7 +461,7 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Reindexando bloques en disco...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>Enviar monedas a una dirección Anime</translation>
     </message>
@@ -441,7 +481,7 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Cambiar la contraseña utilizada para el cifrado del monedero</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>Ventana de &amp;depuración</translation>
     </message>
@@ -456,18 +496,22 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>&amp;Verificar mensaje...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>Anime</translation>
+        <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>Monedero</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>&amp;Enviar</translation>
     </message>
@@ -503,6 +547,26 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>Firmar mensajes con sus direcciones Anime para demostrar la propiedad</translation>
     </message>
@@ -512,7 +576,7 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Verificar mensajes comprobando que están firmados con direcciones Anime concretas</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>&amp;Archivo</translation>
     </message>
@@ -523,6 +587,11 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>A&amp;yuda</translation>
     </message>
@@ -538,17 +607,19 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>[testnet]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>Cliente Anime</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>%n conexión activa hacia la red Anime</numerusform><numerusform>%n conexiones activas hacia la red Anime</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>%n conexión activa hacia la red Anime</numerusform>
+            <numerusform>%n conexiones activas hacia la red Anime</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
         <translation>Ninguna fuente de bloques disponible ...</translation>
     </message>
@@ -565,17 +636,26 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform></translation>
+        <translation>
+            <numerusform>%n hora</numerusform>
+            <numerusform>%n horas</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n día</numerusform><numerusform>%n días</numerusform></translation>
+        <translation>
+            <numerusform>%n día</numerusform>
+            <numerusform>%n días</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n semana</numerusform><numerusform>%n semanas</numerusform></translation>
+        <translation>
+            <numerusform>%n semana</numerusform>
+            <numerusform>%n semanas</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -593,7 +673,22 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Las transacciones posteriores a esta aún no están visibles.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -613,7 +708,7 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Esta transacción supera el límite de tamaño. Puede enviarla con una comisión de %1, destinada a los nodos que procesen su transacción para contribuir al mantenimiento de la red. ¿Desea pagar esta comisión?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>Actualizado</translation>
     </message>
@@ -623,7 +718,7 @@ Eric Young (eay@cryptsoft.com) y el software UPnP escrito por Thomas Bernard.</t
         <translation>Actualizando...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>Confirme la tarifa de la transacción</translation>
     </message>
@@ -681,9 +776,289 @@ Dirección: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>Alerta de red</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Cuantía:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">Cantidad</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">Dirección</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">Fecha</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">Confirmado</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">Copiar dirección</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">Copiar etiqueta</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Copiar cuantía</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">Copiar identificador de transacción</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(sin etiqueta)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -846,9 +1221,13 @@ Dirección: %4
         <translation>&amp;Red</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abrir automáticamente el puerto del cliente Anime en el router. Esta opción solo funciona si el router admite UPnP y está activado.</translation>
+        <translation type="vanished">Abrir automáticamente el puerto del cliente Anime en el router. Esta opción solo funciona si el router admite UPnP y está activado.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -932,11 +1311,20 @@ Dirección: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>El idioma de la interfaz de usuario puede establecerse aquí. Este ajuste se aplicará cuando se reinicie Anime.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">El idioma de la interfaz de usuario puede establecerse aquí. Este ajuste se aplicará cuando se reinicie Anime.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>Mostrar las cantidades en la &amp;unidad:</translation>
     </message>
@@ -946,14 +1334,23 @@ Dirección: %4
         <translation>Elegir la subdivisión predeterminada para mostrar cantidades en la interfaz y cuando se envían monedas.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>Mostrar o no las direcciones Anime en la lista de transacciones.</translation>
+        <translation type="vanished">Mostrar o no las direcciones Anime en la lista de transacciones.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>&amp;Mostrar las direcciones en la lista de transacciones</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>&amp;Mostrar las direcciones en la lista de transacciones</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -976,7 +1373,7 @@ Dirección: %4
         <translation>predeterminado</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Confirme el restablecimiento de las opciones</translation>
     </message>
@@ -1016,13 +1413,11 @@ Dirección: %4
         <translation>Desde</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>La información mostrada puede estar desactualizada. Su monedero se sincroniza automáticamente con la red Anime después de que se haya establecido una conexión , pero este proceso aún no se ha completado.</translation>
+        <translation type="vanished">La información mostrada puede estar desactualizada. Su monedero se sincroniza automáticamente con la red Anime después de que se haya establecido una conexión , pero este proceso aún no se ha completado.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -1037,7 +1432,13 @@ Dirección: %4
         <translation>Monedero</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>No disponible:</translation>
     </message>
@@ -1047,12 +1448,12 @@ Dirección: %4
         <translation>Saldo recién minado que aún no está disponible.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;Movimientos recientes&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>Su saldo actual</translation>
     </message>
@@ -1211,7 +1612,12 @@ Dirección: %4
         <translation>Hora del último bloque</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>&amp;Abrir</translation>
     </message>
@@ -1222,8 +1628,12 @@ Dirección: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>Mostrar el mensaje de ayuda de Anime-Qt que enumera las opciones disponibles de línea de órdenes para Anime.</translation>
+        <translation type="vanished">Mostrar el mensaje de ayuda de Anime-Qt que enumera las opciones disponibles de línea de órdenes para Anime.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1256,12 +1666,11 @@ Dirección: %4
         <translation>Archivo de registro de depuración</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Abrir el archivo de registro de depuración en el directorio actual de datos. Esto puede llevar varios segundos para archivos de registro grandes.</translation>
+        <translation type="vanished">Abrir el archivo de registro de depuración en el directorio actual de datos. Esto puede llevar varios segundos para archivos de registro grandes.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>Borrar consola</translation>
     </message>
@@ -1285,7 +1694,7 @@ Dirección: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1296,7 +1705,82 @@ Dirección: %4
         <translation>Enviar monedas</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Cuantía:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>Enviar a multiples destinatarios de una vez</translation>
     </message>
@@ -1322,8 +1806,12 @@ Dirección: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 BTC</translation>
+        <translation type="vanished">123.456 BTC</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1336,7 +1824,52 @@ Dirección: %4
         <translation>&amp;Enviar</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Copiar cuantía</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; a %2 (%3)</translation>
     </message>
@@ -1356,7 +1889,7 @@ Dirección: %4
         <translation>y</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>La dirección de recepción no es válida, compruébela de nuevo.</translation>
     </message>
@@ -1390,6 +1923,21 @@ Dirección: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>Error: transacción rechazada. Puede haber ocurrido si alguna de las monedas ya estaba gastada o si ha usado una copia de wallet.dat y las monedas se gastaron en la copia pero no se han marcado así aquí.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(sin etiqueta)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1409,12 +1957,11 @@ Dirección: %4
         <translation>&amp;Pagar a:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>La dirección a la que enviar el pago (p. ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">La dirección a la que enviar el pago (p. ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>Etiquete esta dirección para añadirla a la libreta</translation>
@@ -1425,7 +1972,12 @@ Dirección: %4
         <translation>&amp;Etiqueta:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>Elija una dirección de la libreta de direcciones</translation>
     </message>
@@ -1450,9 +2002,13 @@ Dirección: %4
         <translation>Eliminar destinatario</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Introduzca una dirección Anime (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Introduzca una dirección Anime (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1473,9 +2029,13 @@ Dirección: %4
         <translation>Puede firmar mensajes con sus direcciones para demostrar que las posee. Tenga cuidado de no firmar cualquier cosa vaga, ya que los ataques de phishing pueden tratar de engañarle para suplantar su identidad. Firme solo declaraciones totalmente detalladas con las que usted esté de acuerdo.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>La dirección con la que firmar el mensaje (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">La dirección con la que firmar el mensaje (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1516,11 +2076,25 @@ Dirección: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>Firmar el mensaje para demostrar que se posee esta dirección Anime</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">Firmar el mensaje para demostrar que se posee esta dirección Anime</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>Firmar &amp;mensaje</translation>
     </message>
@@ -1546,17 +2120,15 @@ Dirección: %4
         <translation>Introduzca la dirección para la firma, el mensaje (asegurándose de copiar tal cual los saltos de línea, espacios, tabulaciones, etc.) y la firma a continuación para verificar el mensaje. Tenga cuidado de no asumir más información de lo que dice el propio mensaje firmado para evitar fraudes basados en ataques de tipo man-in-the-middle.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>La dirección con la que se firmó el mensaje (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">La dirección con la que se firmó el mensaje (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>Verificar el mensaje para comprobar que fue firmado con la dirección Anime indicada</translation>
+        <translation type="vanished">Verificar el mensaje para comprobar que fue firmado con la dirección Anime indicada</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>Verificar &amp;mensaje</translation>
     </message>
@@ -1566,10 +2138,14 @@ Dirección: %4
         <translation>Limpiar todos los campos de la verificación de mensaje</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">Introduzca una dirección Anime (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Introduzca una dirección Anime (ej. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1652,6 +2228,11 @@ Dirección: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Los programadores Anime</translation>
     </message>
@@ -1691,7 +2272,10 @@ Dirección: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, transmitir a través de %n nodo</numerusform><numerusform>, transmitir a través de %n nodos</numerusform></translation>
+        <translation>
+            <numerusform>, transmitir a través de %n nodo</numerusform>
+            <numerusform>, transmitir a través de %n nodos</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1744,7 +2328,10 @@ Dirección: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>disponible en %n bloque más</numerusform><numerusform>disponible en %n bloques más</numerusform></translation>
+        <translation>
+            <numerusform>disponible en %n bloque más</numerusform>
+            <numerusform>disponible en %n bloques más</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1786,8 +2373,16 @@ Dirección: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">Las monedas generadas deben esperar 80 bloques antes de que se puedan gastar. Cuando se generó este bloque, se emitió a la red para ser agregado a la cadena de bloques. Si no consigue incorporarse a la cadena, su estado cambiará a &quot;no aceptado&quot; y las monedas no se podrán gastar. Esto puede ocurrir ocasionalmente si otro nodo genera un bloque casi al mismo tiempo que el suyo. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">Las monedas generadas deben esperar 80 bloques antes de que se puedan gastar. Cuando se generó este bloque, se emitió a la red para ser agregado a la cadena de bloques. Si no consigue incorporarse a la cadena, su estado cambiará a &quot;no aceptado&quot; y las monedas no se podrán gastar. Esto puede ocurrir ocasionalmente si otro nodo genera un bloque casi al mismo tiempo que el suyo. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Las monedas generadas deben esperar 80 bloques antes de que se puedan gastar. Cuando se generó este bloque, se emitió a la red para ser agregado a la cadena de bloques. Si no consigue incorporarse a la cadena, su estado cambiará a &quot;no aceptado&quot; y las monedas no se podrán gastar. Esto puede ocurrir ocasionalmente si otro nodo genera un bloque casi al mismo tiempo que el suyo.</translation>
+        <translation type="vanished">Las monedas generadas deben esperar 80 bloques antes de que se puedan gastar. Cuando se generó este bloque, se emitió a la red para ser agregado a la cadena de bloques. Si no consigue incorporarse a la cadena, su estado cambiará a &quot;no aceptado&quot; y las monedas no se podrán gastar. Esto puede ocurrir ocasionalmente si otro nodo genera un bloque casi al mismo tiempo que el suyo.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1827,7 +2422,10 @@ Dirección: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Abrir para %n bloque más</numerusform><numerusform>Abrir para %n bloques más</numerusform></translation>
+        <translation>
+            <numerusform>Abrir para %n bloque más</numerusform>
+            <numerusform>Abrir para %n bloques más</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1873,7 +2471,10 @@ Dirección: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Abrir para %n bloque más</numerusform><numerusform>Abrir para %n bloques más</numerusform></translation>
+        <translation>
+            <numerusform>Abrir para %n bloque más</numerusform>
+            <numerusform>Abrir para %n bloques más</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1898,7 +2499,10 @@ Dirección: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>El saldo recién minado estará disponible cuando venza el plazo en %n bloque más</numerusform><numerusform>El saldo recién minado estará disponible cuando venza el plazo en %n bloques más</numerusform></translation>
+        <translation>
+            <numerusform>El saldo recién minado estará disponible cuando venza el plazo en %n bloque más</numerusform>
+            <numerusform>El saldo recién minado estará disponible cuando venza el plazo en %n bloques más</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2138,7 +2742,7 @@ Dirección: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>Enviar monedas</translation>
     </message>
@@ -2199,12 +2803,11 @@ Dirección: %4
         <translation>Uso:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>Envíar comando a -server o animed</translation>
+        <translation type="vanished">Envíar comando a -server o animed</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>Muestra comandos
 </translation>
@@ -2244,12 +2847,11 @@ Dirección: %4
         <translation>Establecer el tamaño de caché de la base de datos en megabytes (predeterminado: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Escuchar conexiones en &lt;puerto&gt; (predeterminado: 8333 o testnet: 18333)</translation>
+        <translation type="vanished">Escuchar conexiones en &lt;puerto&gt; (predeterminado: 8333 o testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Mantener como máximo &lt;n&gt; conexiones a pares (predeterminado: 125)</translation>
     </message>
@@ -2279,12 +2881,11 @@ Dirección: %4
         <translation>Ha ocurrido un error al configurar el puerto RPC %u para escucha en IPv4: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Escuchar conexiones JSON-RPC en &lt;puerto&gt; (predeterminado: 8332 o testnet:18332)</translation>
+        <translation type="vanished">Escuchar conexiones JSON-RPC en &lt;puerto&gt; (predeterminado: 8332 o testnet:18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Aceptar comandos consola y JSON-RPC
 </translation>
@@ -2367,7 +2968,12 @@ Por ejemplo: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Ejecutar comando cuando una transacción del monedero cambia (%s en cmd se remplazará por TxID)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">Escuchar conexiones JSON-RPC en &lt;puerto&gt; (predeterminado: 8332 o testnet:18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Establecer el tamaño máximo de las transacciones de alta prioridad/comisión baja en bytes (predeterminado:27000)</translation>
     </message>
@@ -2542,7 +3148,12 @@ Por ejemplo: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Como es de exhaustiva la verificación de bloques (0-4, por defecto 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">Escuchar conexiones en &lt;puerto&gt; (predeterminado: 8333 o testnet: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>No hay suficientes descriptores de archivo disponibles. </translation>
     </message>
@@ -2552,7 +3163,12 @@ Por ejemplo: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Reconstruir el índice de la cadena de bloques a partir de los archivos blk000??.dat actuales</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>Establecer el número de hilos para atender las llamadas RPC (predeterminado: 4)</translation>
     </message>

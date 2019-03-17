@@ -46,7 +46,7 @@ contains(RELEASE, 1) {
 !win32 {
     # for extra security against potential buffer overflows: enable GCCs Stack Smashing Protection
 	QMAKE_CXXFLAGS *= -fstack-protector-all
-    QMAKE_LFLAGS *= -fstack-protector-all
+	QMAKE_LFLAGS *= -fstack-protector-all
     # Exclude on Windows cross compile with MinGW 4.2.x, as it will result in a non-working executable!
     # This can be enabled for Windows, when we switch to MinGW >= 4.4.x.
 }
@@ -182,6 +182,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/json/json_spirit_error_position.h \
     src/json/json_spirit.h \
     src/qt/clientmodel.h \
+	src/qt/coincontroltreewidget.h \
     src/qt/guiutil.h \
     src/qt/transactionrecord.h \
     src/qt/guiconstants.h \
@@ -216,6 +217,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/version.h \
     src/netbase.h \
     src/clientversion.h \
+	src/coincontrol.h \
     src/txdb.h \
     src/leveldb.h \
     src/threadsafety.h \
@@ -228,7 +230,11 @@ HEADERS += src/qt/bitcoingui.h \
     src/sph_jh.h \
     src/sph_groestl.h \
     src/sph_bmw.h \
-    src/sph_types.h
+    src/sph_types.h \
+    src/coincontrol.h \
+    src/qt/coincontroldialog.h \
+    src/qt/coincontroltreewidget.h \
+    src/core.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -258,6 +264,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/db.cpp \
     src/walletdb.cpp \
     src/qt/clientmodel.cpp \
+	src/qt/coincontroldialog.cpp \
+	src/qt/coincontroltreewidget.cpp \
     src/qt/guiutil.cpp \
     src/qt/transactionrecord.cpp \
     src/qt/optionsmodel.cpp \
@@ -302,7 +310,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/groestl.c \
     src/jh.c \
     src/keccak.c \
-    src/skein.c
+    src/skein.c \
+    src/core.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
 
@@ -315,8 +324,9 @@ FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/overviewpage.ui \
     src/qt/forms/sendcoinsentry.ui \
     src/qt/forms/askpassphrasedialog.ui \
+	src/qt/forms/coincontroldialog.ui \
     src/qt/forms/rpcconsole.ui \
-    src/qt/forms/optionsdialog.ui
+    src/qt/forms/optionsdialog.ui \
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h
@@ -449,3 +459,6 @@ contains(RELEASE, 1) {
     LIBS += -lrt -ldl
 }
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
+
+DISTFILES += \
+    src/makefile.unix

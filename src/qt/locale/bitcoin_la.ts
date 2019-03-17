@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="la" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="la">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,30 +10,49 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Anime&lt;/b&gt; versio</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">&lt;b&gt;Anime&lt;/b&gt; versio</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>Hoc est experimentale programma.
+        <translation type="vanished">Hoc est experimentale programma.
 
 Distributum sub MIT/X11 licentia programmatum, vide comitantem plicam COPYING vel http://www.opensource.org/licenses/mit-license.php.
 
 Hoc productum continet programmata composita ab OpenSSL Project pro utendo in OpenSSL Toolkit (http://www.openssl.org/) et programmata cifrarum scripta ab Eric Young (eay@cryptsoft.com) et UPnP programmata scripta ab Thomas Bernard.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>Copyright</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Anime curatores</translation>
     </message>
@@ -60,7 +80,12 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Copia inscriptionem iam selectam in latibulum systematis</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>&amp;Nova Inscriptio</translation>
     </message>
@@ -80,17 +105,21 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Monstra codicem &amp;QR</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>Signa nuntium ut demonstres inscriptionem Anime a te possessam esse</translation>
+        <translation type="vanished">Signa nuntium ut demonstres inscriptionem Anime a te possessam esse</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>Signa &amp;Nuntium</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Dele active selectam inscriptionem ex enumeratione</translation>
     </message>
@@ -105,12 +134,11 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>&amp;Exporta</translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>Verifica nuntium ut cures signatum esse cum specificata inscriptione Anime</translation>
+        <translation type="vanished">Verifica nuntium ut cures signatum esse cum specificata inscriptione Anime</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>&amp;Verifica Nuntium</translation>
     </message>
@@ -256,7 +284,12 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Certusne es te velle tuum cassidile cifrare?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>GRAVE: Oportet ulla prioria conservata quae fecisti de plica tui cassidilis reponi a nove generata cifrata plica cassidilis.  Propter securitatem, prioria conservata de plica non cifrata cassidilis inutilia fiet simul atque incipis uti novo cifrato cassidili.</translation>
     </message>
@@ -273,12 +306,11 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Cassidile cifratum</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>Anime iam desinet ut finiat actionem cifrandi.  Memento cassidile cifrare non posse cuncte curare ne tui nummi clepantur ab malis programatibus in tuo computatro.</translation>
+        <translation type="vanished">Anime iam desinet ut finiat actionem cifrandi.  Memento cassidile cifrare non posse cuncte curare ne tui nummi clepantur ab malis programatibus in tuo computatro.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -322,17 +354,17 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>Signa &amp;nuntium...</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>Synchronizans cum rete...</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>&amp;Summarium</translation>
     </message>
@@ -406,8 +438,16 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <source>&amp;Change Passphrase...</source>
         <translation>&amp;Muta tesseram...</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>Importans frusta ab disco...</translation>
     </message>
@@ -417,7 +457,7 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Recreans indicem frustorum in disco...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>Mitte nummos ad inscriptionem Anime</translation>
     </message>
@@ -437,7 +477,7 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Muta tesseram utam pro cassidilis cifrando</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>Fenestra &amp;Debug</translation>
     </message>
@@ -452,18 +492,22 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>&amp;Verifica nuntium...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>Anime</translation>
+        <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>Cassidile</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>&amp;Mitte</translation>
     </message>
@@ -499,6 +543,26 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>Signa nuntios cum tuis inscriptionibus Anime ut demonstres te eas possidere</translation>
     </message>
@@ -508,7 +572,7 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus Anime</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>&amp;Plica</translation>
     </message>
@@ -519,6 +583,11 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>&amp;Auxilium</translation>
     </message>
@@ -534,17 +603,19 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>[testnet]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>Anime cliens</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>%n activa conexio ad rete Anime</numerusform><numerusform>%n activae conexiones ad rete Anime</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>%n activa conexio ad rete Anime</numerusform>
+            <numerusform>%n activae conexiones ad rete Anime</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
         <translation>Nulla fons frustorum absens...</translation>
     </message>
@@ -561,17 +632,26 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hora</numerusform><numerusform>%n horae</numerusform></translation>
+        <translation>
+            <numerusform>%n hora</numerusform>
+            <numerusform>%n horae</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n dies</numerusform><numerusform>%n dies</numerusform></translation>
+        <translation>
+            <numerusform>%n dies</numerusform>
+            <numerusform>%n dies</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n hebdomas</numerusform><numerusform>%n hebdomades</numerusform></translation>
+        <translation>
+            <numerusform>%n hebdomas</numerusform>
+            <numerusform>%n hebdomades</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -589,7 +669,22 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Transactiones post hoc nondum visibiles erunt.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -609,7 +704,7 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Haec transactio maior est quam limen magnitudinis.  Adhuc potes id mittere mercede %1, quae it nodis qui procedunt tuam transactionem et adiuvat sustinere rete.  Visne mercedem solvere?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>Recentissimo</translation>
     </message>
@@ -619,7 +714,7 @@ Hoc productum continet programmata composita ab OpenSSL Project pro utendo in Op
         <translation>Persequens...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>Confirma mercedem transactionis</translation>
     </message>
@@ -677,9 +772,289 @@ Inscriptio: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>Monitio Retis</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Quantitas:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">Quantitas</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">Inscriptio</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">Dies</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">Confirmatum</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">Copia inscriptionem</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">Copia titulum</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Copia quantitatem</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">Copia transactionis ID</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(nullus titulus)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -842,9 +1217,13 @@ Inscriptio: %4
         <translation>&amp;Rete</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Aperi per se portam clientis Anime in itineratore.  Hoc tantum effectivum est si itineratrum tuum supportat UPnP et id activum est.</translation>
+        <translation type="vanished">Aperi per se portam clientis Anime in itineratore.  Hoc tantum effectivum est si itineratrum tuum supportat UPnP et id activum est.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -928,11 +1307,20 @@ Inscriptio: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>Lingua monstranda utenti hic constitui potest.  Haec configuratio effectiva erit postquam Anime iterum initiatum erit.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">Lingua monstranda utenti hic constitui potest.  Haec configuratio effectiva erit postquam Anime iterum initiatum erit.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>&amp;Unita qua quantitates monstrare:</translation>
     </message>
@@ -942,14 +1330,23 @@ Inscriptio: %4
         <translation>Selige praedefinitam unitam subdivisionis monstrare in interfacie et quando nummos mittere</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>Num monstrare inscriptiones Anime in enumeratione transactionum.</translation>
+        <translation type="vanished">Num monstrare inscriptiones Anime in enumeratione transactionum.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>&amp;Monstra inscriptiones in enumeratione transactionum</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>&amp;Monstra inscriptiones in enumeratione transactionum</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -972,7 +1369,7 @@ Inscriptio: %4
         <translation>praedefinitum</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Confirma optionum reconstituere</translation>
     </message>
@@ -1012,13 +1409,11 @@ Inscriptio: %4
         <translation>Schema</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>Monstrata informatio fortasse non recentissima est.  Tuum cassidile per se synchronizat cum rete Anime postquam conexio constabilita est, sed hoc actio nondum perfecta est.</translation>
+        <translation type="vanished">Monstrata informatio fortasse non recentissima est.  Tuum cassidile per se synchronizat cum rete Anime postquam conexio constabilita est, sed hoc actio nondum perfecta est.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>Pendendum:</translation>
     </message>
@@ -1033,7 +1428,13 @@ Inscriptio: %4
         <translation>Cassidile</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>Immatura:</translation>
     </message>
@@ -1043,12 +1444,12 @@ Inscriptio: %4
         <translation>Fossum pendendum quod nondum maturum est</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;Recentes transactiones&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>Tuum pendendum iam nunc</translation>
     </message>
@@ -1207,7 +1608,12 @@ Inscriptio: %4
         <translation>Hora postremi frusti</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>&amp;Aperi</translation>
     </message>
@@ -1218,8 +1624,12 @@ Inscriptio: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>Monstra nuntium auxilii Anime-Qt ut videas enumerationem possibilium optionum Anime mandati initiantis.</translation>
+        <translation type="vanished">Monstra nuntium auxilii Anime-Qt ut videas enumerationem possibilium optionum Anime mandati initiantis.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1252,12 +1662,11 @@ Inscriptio: %4
         <translation>Debug catalogi plica</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Aperi plicam catalogi de Anime debug ex activo indice datorum.  Hoc possit pauca secunda pro plicis magnis catalogi.</translation>
+        <translation type="vanished">Aperi plicam catalogi de Anime debug ex activo indice datorum.  Hoc possit pauca secunda pro plicis magnis catalogi.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>Vacuefac terminale</translation>
     </message>
@@ -1281,7 +1690,7 @@ Inscriptio: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1292,7 +1701,82 @@ Inscriptio: %4
         <translation>Mitte Nummos</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Quantitas:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>Mitte pluribus accipientibus simul</translation>
     </message>
@@ -1318,8 +1802,12 @@ Inscriptio: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 BTC</translation>
+        <translation type="vanished">123.456 BTC</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1332,7 +1820,52 @@ Inscriptio: %4
         <translation>&amp;Mitte</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Copia quantitatem</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; ad %2 (%3)</translation>
     </message>
@@ -1352,7 +1885,7 @@ Inscriptio: %4
         <translation>et</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>Inscriptio accipientis non est valida, sodes reproba.</translation>
     </message>
@@ -1386,6 +1919,21 @@ Inscriptio: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>Error: transactio reiecta est.  Hoc fiat si alii nummorum in tuo cassidili iam soluti sunt, ut si usus es exemplar de wallet.dat et nummi soluti sunt in exemplari sed non hic notati ut soluti.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(nullus titulus)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1405,12 +1953,11 @@ Inscriptio: %4
         <translation>Pensa &amp;Ad:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Inscriptio cui mittere pensitationem (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Inscriptio cui mittere pensitationem (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>Insero titulum huic inscriptioni ut eam in tuum librum inscriptionum addas.</translation>
@@ -1421,7 +1968,12 @@ Inscriptio: %4
         <translation>&amp;Titulus:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>Selige inscriptionem ex libro inscriptionum</translation>
     </message>
@@ -1446,9 +1998,13 @@ Inscriptio: %4
         <translation>Remove hunc accipientem</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Insero inscriptionem Anime (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Insero inscriptionem Anime (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1469,9 +2025,13 @@ Inscriptio: %4
         <translation>Potes nuntios signare inscriptionibus tuis ut demonstres te eas possidere.  Cautus es non amibiguum signare, quia impetus phiscatorum conentur te fallere ut signes identitatem tuam ad eos.  Solas signa sententias cuncte descriptas quibus convenis.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Inscriptio qua signare nuntium (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Inscriptio qua signare nuntium (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1512,11 +2072,25 @@ Inscriptio: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>Signa nuntium ut demonstres hanc inscriptionem Anime a te possessa esse</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">Signa nuntium ut demonstres hanc inscriptionem Anime a te possessa esse</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>Signa &amp;Nuntium</translation>
     </message>
@@ -1542,17 +2116,15 @@ Inscriptio: %4
         <translation>Insere inscriptionem signantem, nuntium (cura ut copias intermissiones linearum, spatia, tabs, et cetera exacte) et signationem infra ut nuntium verifices.  Cautus esto ne magis legas in signationem quam in nuntio signato ipso est, ut vites falli ab impetu homo-in-medio.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Inscriptio qua nuntius signatus est (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Inscriptio qua nuntius signatus est (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione Anime</translation>
+        <translation type="vanished">Verifica nuntium ut cures signatum esse cum specifica inscriptione Anime</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>Verifica &amp;Nuntium</translation>
     </message>
@@ -1562,10 +2134,14 @@ Inscriptio: %4
         <translation>Reconstitue omnes campos verificandi nuntii</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">Insere inscriptionem Anime (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Insere inscriptionem Anime (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1648,6 +2224,11 @@ Inscriptio: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Anime curatores</translation>
     </message>
@@ -1687,7 +2268,10 @@ Inscriptio: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, disseminatum per %n nodo</numerusform><numerusform>, disseminata per %n nodis</numerusform></translation>
+        <translation>
+            <numerusform>, disseminatum per %n nodo</numerusform>
+            <numerusform>, disseminata per %n nodis</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1740,7 +2324,10 @@ Inscriptio: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>maturum erit in %n plure frusto</numerusform><numerusform>maturum erit in %n pluribus frustis</numerusform></translation>
+        <translation>
+            <numerusform>maturum erit in %n plure frusto</numerusform>
+            <numerusform>maturum erit in %n pluribus frustis</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1782,8 +2369,16 @@ Inscriptio: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">Nummis generatis necesse est maturitas 80 frustorum antequam illi transmitti possunt.  Cum hoc frustum generavisti, disseminatum est ad rete ut addatur ad catenam frustorum.  Si aboritur inire catenam, status eius mutabit in &quot;non acceptum&quot; et non transmittabile erit.  Hoc interdum accidat si alter nodus frustum generat paucis secundis ante vel post tuum. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">Nummis generatis necesse est maturitas 80 frustorum antequam illi transmitti possunt.  Cum hoc frustum generavisti, disseminatum est ad rete ut addatur ad catenam frustorum.  Si aboritur inire catenam, status eius mutabit in &quot;non acceptum&quot; et non transmittabile erit.  Hoc interdum accidat si alter nodus frustum generat paucis secundis ante vel post tuum. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Nummis generatis necesse est maturitas 80 frustorum antequam illi transmitti possunt.  Cum hoc frustum generavisti, disseminatum est ad rete ut addatur ad catenam frustorum.  Si aboritur inire catenam, status eius mutabit in &quot;non acceptum&quot; et non transmittabile erit.  Hoc interdum accidat si alter nodus frustum generat paucis secundis ante vel post tuum.</translation>
+        <translation type="vanished">Nummis generatis necesse est maturitas 80 frustorum antequam illi transmitti possunt.  Cum hoc frustum generavisti, disseminatum est ad rete ut addatur ad catenam frustorum.  Si aboritur inire catenam, status eius mutabit in &quot;non acceptum&quot; et non transmittabile erit.  Hoc interdum accidat si alter nodus frustum generat paucis secundis ante vel post tuum.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1823,7 +2418,10 @@ Inscriptio: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform>Aperi pro %n pluribus frustis</numerusform></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform>Aperi pro %n pluribus frustis</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1869,7 +2467,10 @@ Inscriptio: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Aperi pro %n plure frusto</numerusform><numerusform>Aperi pro %n pluribus frustis</numerusform></translation>
+        <translation>
+            <numerusform>Aperi pro %n plure frusto</numerusform>
+            <numerusform>Aperi pro %n pluribus frustis</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1894,7 +2495,10 @@ Inscriptio: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>Fossum pendendum utibile erit quando id maturum est post %n plus frustum</numerusform><numerusform>Fossum pendendum utibile erit quando id maturum est post %n pluria frusta</numerusform></translation>
+        <translation>
+            <numerusform>Fossum pendendum utibile erit quando id maturum est post %n plus frustum</numerusform>
+            <numerusform>Fossum pendendum utibile erit quando id maturum est post %n pluria frusta</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2134,7 +2738,7 @@ Inscriptio: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>Mitte Nummos</translation>
     </message>
@@ -2195,12 +2799,11 @@ Inscriptio: %4
         <translation>Usus:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>Mitte mandatum ad -server vel animed</translation>
+        <translation type="vanished">Mitte mandatum ad -server vel animed</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>Enumera mandata</translation>
     </message>
@@ -2235,12 +2838,11 @@ Inscriptio: %4
         <translation>Constitue magnitudinem databasis cache in megabytes (praedefinitum: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Ausculta pro conexionibus in &lt;porta&gt; (praedefinitum: 8333 vel testnet: 18333)</translation>
+        <translation type="vanished">Ausculta pro conexionibus in &lt;porta&gt; (praedefinitum: 8333 vel testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Manutene non plures quam &lt;n&gt; conexiones ad paria (praedefinitum: 125)</translation>
     </message>
@@ -2270,12 +2872,11 @@ Inscriptio: %4
         <translation>Error erat dum initians portam RPC %u pro auscultando in IPv4: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Ausculta pro conexionibus JSON-RPC in &lt;porta&gt; (praedefinitum: 8332 vel testnet: 18332)</translation>
+        <translation type="vanished">Ausculta pro conexionibus JSON-RPC in &lt;porta&gt; (praedefinitum: 8332 vel testnet: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Accipe terminalis et JSON-RPC mandata.</translation>
     </message>
@@ -2355,7 +2956,12 @@ exempli gratia: alertnotify=echo %%s | mail -s &quot;Anime Notificatio&quot; adm
         <translation>Facere mandatum quotiescumque cassidilis transactio mutet (%s in mandato sbstituitur ab TxID)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">Ausculta pro conexionibus JSON-RPC in &lt;porta&gt; (praedefinitum: 8332 vel testnet: 18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Constitue magnitudinem maximam transactionum magnae-prioritatis/parvae-mercedis in octetis/bytes (praedefinitum: 27000)</translation>
     </message>
@@ -2530,7 +3136,12 @@ exempli gratia: alertnotify=echo %%s | mail -s &quot;Anime Notificatio&quot; adm
         <translation>Quam perfecta frustorum verificatio est (0-4, praedefinitum: 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">Ausculta pro conexionibus in &lt;porta&gt; (praedefinitum: 8333 vel testnet: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>Inopia descriptorum plicarum.</translation>
     </message>
@@ -2540,7 +3151,12 @@ exempli gratia: alertnotify=echo %%s | mail -s &quot;Anime Notificatio&quot; adm
         <translation>Restituere indicem catenae frustorum ex activis plicis blk000??.dat</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>Constitue numerum filorum ad tractandum RPC postulationes (praedefinitum: 4)</translation>
     </message>

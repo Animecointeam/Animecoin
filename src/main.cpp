@@ -8,6 +8,7 @@
 #include <math.h>
 #include "alert.h"
 #include "checkpoints.h"
+#include "core.h"
 #include "db.h"
 #include "txdb.h"
 #include "net.h"
@@ -365,19 +366,6 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
 // CTransaction / CTxOut
 //
 
-bool CTxOut::IsDust() const
-{
-    // "Dust" is defined in terms of CTransaction::nMinRelayTxFee,
-    // which has units satoshis-per-kilobyte.
-    // If you'd pay more than 1/3 in fees
-    // to spend something, then we consider it dust.
-    // A typical txout is 33 bytes big, and will
-    // need a CTxIn of at least 148 bytes to spend,
-    // so dust is a txout less than 54 uBTC
-    // (5430 satoshis) with default nMinRelayTxFee
-    return ((nValue*1000)/(3*((int)GetSerializeSize(SER_DISK,0)+148)) < CTransaction::nMinRelayTxFee);
-}
-
 bool CTransaction::IsStandard() const
 {
     if (nVersion > CTransaction::TXCOMMENT_VERSION)
@@ -411,7 +399,7 @@ bool CTransaction::IsStandard() const
     BOOST_FOREACH(const CTxOut& txout, vout) {
         if (!::IsStandard(txout.scriptPubKey))
             return false;
-        if (txout.IsDust())
+        if (txout.IsDust(MIN_RELAY_TX_FEE))
             return false;
     }
     return true;
@@ -598,7 +586,7 @@ bool CTransaction::CheckTransaction(CValidationState &state) const
     return true;
 }
 
-int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
+int64_t CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
                               enum GetMinFee_mode mode) const
 {
     // Base fee is either nMinTxFee or nMinRelayTxFee

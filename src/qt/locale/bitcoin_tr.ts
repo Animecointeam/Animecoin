@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="tr">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,18 +10,31 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Anime&lt;/b&gt; sürüm</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">&lt;b&gt;Anime&lt;/b&gt; sürüm</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
  Bu yazılım deneme safhasındadır.
 
  MIT/X11 yazılım lisansı kapsamında yayınlanmıştır, COPYING dosyasına ya da http://www.opensource.org/licenses/mit-license.php sayfasına bakınız.
@@ -28,12 +42,18 @@ This product includes software developed by the OpenSSL Project for use in the O
  Bu ürün OpenSSL projesi tarafından OpenSSL araç takımı (http://www.openssl.org/) için geliştirilen yazılımlar, Eric Young (eay@cryptsoft.com) tarafından hazırlanmış şifreleme yazılımları ve Thomas Bernard tarafından programlanmış UPnP yazılımı içerir.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>Telif hakkı</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Anime geliştiricileri</translation>
     </message>
@@ -61,7 +81,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Şu anda seçili olan adresi panoya kopyala</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>&amp;Yeni adres</translation>
     </message>
@@ -81,17 +106,21 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;QR kodunu göster</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>Bir Anime adresinin sizin olduğunu ispatlamak için mesaj imzalayın</translation>
+        <translation type="vanished">Bir Anime adresinin sizin olduğunu ispatlamak için mesaj imzalayın</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>&amp;Mesaj imzala</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Seçili adresi listeden sil</translation>
     </message>
@@ -106,12 +135,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Dışa aktar</translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>Belirtilen Anime adresi ile imzalandığını doğrulamak için bir mesajı kontrol et</translation>
+        <translation type="vanished">Belirtilen Anime adresi ile imzalandığını doğrulamak için bir mesajı kontrol et</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>Mesaj &amp;kontrol et</translation>
     </message>
@@ -257,7 +285,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Cüzdanınızı şifrelemek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>ÖNEMLİ: Önceden yapmış olduğunuz cüzdan dosyası yedeklemelerinin yeni oluşturulan şifrelenmiş cüzdan dosyası ile değiştirilmeleri gerekir. Güvenlik nedenleriyle yeni, şifrelenmiş cüzdanı kullanmaya başladığınızda eski şifrelenmemiş cüzdan dosyaları işe yaramaz hale gelecektir.</translation>
     </message>
@@ -274,12 +307,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Cüzdan şifrelendi</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>Şifreleme işlemini tamamlamak için Anime şimdi kapanacaktır. Cüzdanınızı şifrelemenin, Animelerinizin bilgisayara bulaşan kötücül bir yazılım tarafından çalınmaya karşı tamamen koruyamayacağını unutmayınız.</translation>
+        <translation type="vanished">Şifreleme işlemini tamamlamak için Anime şimdi kapanacaktır. Cüzdanınızı şifrelemenin, Animelerinizin bilgisayara bulaşan kötücül bir yazılım tarafından çalınmaya karşı tamamen koruyamayacağını unutmayınız.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -323,17 +355,17 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>&amp;Mesaj imzala...</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>Şebeke ile senkronizasyon...</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>&amp;Genel bakış</translation>
     </message>
@@ -407,8 +439,15 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>&amp;Change Passphrase...</source>
         <translation>Parolayı &amp;değiştir...</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>Bloklar diskten içe aktarılıyor...</translation>
     </message>
@@ -418,7 +457,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Diskteki bloklar yeniden endeksleniyor...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>Bir Anime adresine Anime yolla</translation>
     </message>
@@ -438,7 +477,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Cüzdan şifrelemesi için kullanılan parolayı değiştir</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>&amp;Hata ayıklama penceresi</translation>
     </message>
@@ -453,18 +492,22 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Mesaj &amp;kontrol et...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>Anime</translation>
+        <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>Cüzdan</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>&amp;Gönder</translation>
     </message>
@@ -500,6 +543,26 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>Mesajları adreslerin size ait olduğunu ispatlamak için Anime adresleri ile imzala</translation>
     </message>
@@ -509,7 +572,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Belirtilen Anime adresleri ile imzalandıklarından emin olmak için mesajları kontrol et</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>&amp;Dosya</translation>
     </message>
@@ -520,6 +583,11 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>&amp;Yardım</translation>
     </message>
@@ -535,17 +603,18 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>[testnet]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>Anime istemcisi</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>Anime şebekesine %n faal bağlantı</numerusform><numerusform>Anime şebekesine %n faal bağlantı</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>Anime şebekesine %n faal bağlantı</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
         <translation>Hiçbir blok kaynağı mevcut değil...</translation>
     </message>
@@ -562,17 +631,23 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n saat</numerusform><numerusform>%n saat</numerusform></translation>
+        <translation>
+            <numerusform>%n saat</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n gün</numerusform><numerusform>%n gün</numerusform></translation>
+        <translation>
+            <numerusform>%n gün</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n hafta</numerusform><numerusform>%n hafta</numerusform></translation>
+        <translation>
+            <numerusform>%n hafta</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -590,7 +665,22 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Bundan sonraki muameleler henüz görüntülenemez.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -610,7 +700,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Bu muamele boyut sınırlarını aşmıştır. Gene de %1 ücret ödeyerek gönderebilirsiniz, ki bu ücret muamelenizi işleyen ve şebekeye yardım eden düğümlere ödenecektir. Ücreti ödemek istiyor musunuz?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>Güncel</translation>
     </message>
@@ -620,7 +710,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Aralık kapatılıyor...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>Muamele ücretini teyit et</translation>
     </message>
@@ -678,9 +768,289 @@ Adres: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>Şebeke hakkında uyarı</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Miktar:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">Miktar</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">Adres</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">Tarih</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">Doğrulandı</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">Adresi kopyala</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">Etiketi kopyala</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Miktarı kopyala</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">Muamele kimliğini kopyala</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(boş etiket)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -843,9 +1213,13 @@ Adres: %4
         <translation>&amp;Şebeke</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Yönlendiricide Anime istemci portlarını otomatik olarak açar. Bu, sadece yönlendiricinizin UPnP desteği bulunuyorsa ve etkinse çalışabilir.</translation>
+        <translation type="vanished">Yönlendiricide Anime istemci portlarını otomatik olarak açar. Bu, sadece yönlendiricinizin UPnP desteği bulunuyorsa ve etkinse çalışabilir.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -929,11 +1303,20 @@ Adres: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>Kullanıcı arayüzünün dili burada belirtilebilir. Bu ayar Anime tekrar başlatıldığında etkinleşecektir.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">Kullanıcı arayüzünün dili burada belirtilebilir. Bu ayar Anime tekrar başlatıldığında etkinleşecektir.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>Miktarı göstermek için &amp;birim:</translation>
     </message>
@@ -943,14 +1326,23 @@ Adres: %4
         <translation>Anime gönderildiğinde arayüzde gösterilecek varsayılan alt birimi seçiniz.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>Muamele listesinde Anime adreslerinin gösterilip gösterilmeyeceklerini belirler.</translation>
+        <translation type="vanished">Muamele listesinde Anime adreslerinin gösterilip gösterilmeyeceklerini belirler.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>Muamele listesinde adresleri &amp;göster</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>Muamele listesinde adresleri &amp;göster</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -973,7 +1365,7 @@ Adres: %4
         <translation>varsayılan</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Seçeneklerin sıfırlanmasını teyit et</translation>
     </message>
@@ -1013,13 +1405,11 @@ Adres: %4
         <translation>Form</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>Görüntülenen veriler zaman aşımına uğramış olabilir. Bağlantı kurulduğunda cüzdanınız otomatik olarak şebeke ile eşleşir ancak bu işlem henüz tamamlanmamıştır.</translation>
+        <translation type="vanished">Görüntülenen veriler zaman aşımına uğramış olabilir. Bağlantı kurulduğunda cüzdanınız otomatik olarak şebeke ile eşleşir ancak bu işlem henüz tamamlanmamıştır.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>Bakiye:</translation>
     </message>
@@ -1034,7 +1424,13 @@ Adres: %4
         <translation>Cüzdan</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>Olgunlaşmamış:</translation>
     </message>
@@ -1044,12 +1440,12 @@ Adres: %4
         <translation>Oluşturulan bakiye henüz olgunlaşmamıştır</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;Son muameleler&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>Güncel bakiyeniz</translation>
     </message>
@@ -1208,7 +1604,12 @@ Adres: %4
         <translation>Son blok zamanı</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>&amp;Aç</translation>
     </message>
@@ -1219,8 +1620,12 @@ Adres: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>Mevcut Anime komut satırı seçeneklerinin listesini içeren Anime-Qt yardımını göster.</translation>
+        <translation type="vanished">Mevcut Anime komut satırı seçeneklerinin listesini içeren Anime-Qt yardımını göster.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1253,12 +1658,11 @@ Adres: %4
         <translation>Hata ayıklama kütük dosyası</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Güncel veri klasöründen Anime hata ayıklama kütük dosyasını açar. Büyük kütük dosyaları için bu birkaç saniye alabilir.</translation>
+        <translation type="vanished">Güncel veri klasöründen Anime hata ayıklama kütük dosyasını açar. Büyük kütük dosyaları için bu birkaç saniye alabilir.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>Konsolu temizle</translation>
     </message>
@@ -1282,7 +1686,7 @@ Adres: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1293,7 +1697,82 @@ Adres: %4
         <translation>Anime yolla</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Miktar:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>Birçok alıcıya aynı anda gönder</translation>
     </message>
@@ -1319,8 +1798,12 @@ Adres: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 BTC</translation>
+        <translation type="vanished">123.456 BTC</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1333,7 +1816,52 @@ Adres: %4
         <translation>G&amp;önder</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Miktarı kopyala</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; şu adrese: %2 (%3)</translation>
     </message>
@@ -1353,7 +1881,7 @@ Adres: %4
         <translation> ve </translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>Alıcı adresi geçerli değildir, lütfen denetleyiniz.</translation>
     </message>
@@ -1387,6 +1915,21 @@ Adres: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>Hata: Muamele reddedildi. Cüzdanınızdaki madenî paraların bazıları zaten harcanmış olduğunda bu meydana gelebilir. Örneğin wallet.dat dosyasının bir kopyasını kullandıysanız ve kopyada para harcandığında ancak burada harcandığı işaretlenmediğinde.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(boş etiket)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1406,12 +1949,11 @@ Adres: %4
         <translation>&amp;Şu kişiye öde:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Ödemenin gönderileceği adres (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Ödemenin gönderileceği adres (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>Adres defterinize eklemek için bu adrese ilişik bir etiket giriniz</translation>
@@ -1422,7 +1964,12 @@ Adres: %4
         <translation>&amp;Etiket:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>Adres defterinden adres seç</translation>
     </message>
@@ -1447,9 +1994,13 @@ Adres: %4
         <translation>Bu alıcıyı kaldır</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Anime adresi giriniz (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Anime adresi giriniz (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1470,9 +2021,13 @@ Adres: %4
         <translation>Bir adresin sizin olduğunu ispatlamak için adresinizle mesaj imzalayabilirsiniz. Oltalama saldırılarının kimliğinizi imzanızla elde etmeyi deneyebilecekleri için belirsiz hiçbir şey imzalamamaya dikkat ediniz. Sadece ayrıntılı açıklaması olan ve tümüne katıldığınız ifadeleri imzalayınız.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Mesajın imzalanmasında kullanılacak adres (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Mesajın imzalanmasında kullanılacak adres (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1513,11 +2068,25 @@ Adres: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>Bu Anime adresinin sizin olduğunu ispatlamak için mesajı imzalayın</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">Bu Anime adresinin sizin olduğunu ispatlamak için mesajı imzalayın</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>&amp;Mesajı imzala</translation>
     </message>
@@ -1543,17 +2112,15 @@ Adres: %4
         <translation>İmza için kullanılan adresi, mesajı (satır sonları, boşluklar, sekmeler vs. karakterleri tam olarak kopyaladığınızdan emin olunuz) ve imzayı aşağıda giriniz. Bir ortadaki adam saldırısı tarafından kandırılmaya mâni olmak için imzadan, imzalı mesajın içeriğini aşan bir anlam çıkarmamaya dikkat ediniz.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Mesajı imzalamak için kullanılmış olan adres (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Mesajı imzalamak için kullanılmış olan adres (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>Belirtilen Anime adresi ile imzalandığını doğrulamak için mesajı kontrol et</translation>
+        <translation type="vanished">Belirtilen Anime adresi ile imzalandığını doğrulamak için mesajı kontrol et</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>&amp;Mesaj kontrol et</translation>
     </message>
@@ -1563,10 +2130,14 @@ Adres: %4
         <translation>Tüm mesaj kontrolü alanlarını sıfırla</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">Anime adresi giriniz (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Anime adresi giriniz (mesela Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1649,6 +2220,11 @@ Adres: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>Anime geliştiricileri</translation>
     </message>
@@ -1688,7 +2264,9 @@ Adres: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, %n düğüm vasıtasıyla yayınlandı</numerusform><numerusform>, %n düğüm vasıtasıyla yayınlandı</numerusform></translation>
+        <translation>
+            <numerusform>, %n düğüm vasıtasıyla yayınlandı</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1741,7 +2319,9 @@ Adres: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>%n ek blok sonrasında olgunlaşacak</numerusform><numerusform>%n ek blok sonrasında olgunlaşacak</numerusform></translation>
+        <translation>
+            <numerusform>%n ek blok sonrasında olgunlaşacak</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1783,8 +2363,16 @@ Adres: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">Oluşturulan Anime&apos;lerin harcanabilmelerinden önce 80 blok beklemeleri gerekmektedir. Bu blok, oluşturduğunuzda blok zincirine eklenmesi için ağda yayınlandı. Zincire eklenmesi başarısız olursa, durumu &quot;kabul edilmedi&quot; olarak değiştirilecek ve harcanamayacaktır. Bu, bazen başka bir düğüm sizden birkaç saniye önce ya da sonra blok oluşturursa meydana gelebilir. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">Oluşturulan Anime&apos;lerin harcanabilmelerinden önce 80 blok beklemeleri gerekmektedir. Bu blok, oluşturduğunuzda blok zincirine eklenmesi için ağda yayınlandı. Zincire eklenmesi başarısız olursa, durumu &quot;kabul edilmedi&quot; olarak değiştirilecek ve harcanamayacaktır. Bu, bazen başka bir düğüm sizden birkaç saniye önce ya da sonra blok oluşturursa meydana gelebilir. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Oluşturulan Anime&apos;lerin harcanabilmelerinden önce 80 blok beklemeleri gerekmektedir. Bu blok, oluşturduğunuzda blok zincirine eklenmesi için ağda yayınlandı. Zincire eklenmesi başarısız olursa, durumu &quot;kabul edilmedi&quot; olarak değiştirilecek ve harcanamayacaktır. Bu, bazen başka bir düğüm sizden birkaç saniye önce ya da sonra blok oluşturursa meydana gelebilir.</translation>
+        <translation type="vanished">Oluşturulan Anime&apos;lerin harcanabilmelerinden önce 80 blok beklemeleri gerekmektedir. Bu blok, oluşturduğunuzda blok zincirine eklenmesi için ağda yayınlandı. Zincire eklenmesi başarısız olursa, durumu &quot;kabul edilmedi&quot; olarak değiştirilecek ve harcanamayacaktır. Bu, bazen başka bir düğüm sizden birkaç saniye önce ya da sonra blok oluşturursa meydana gelebilir.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1824,7 +2412,9 @@ Adres: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>%n ilâve blok için açık</numerusform><numerusform>%n ilâve blok için açık</numerusform></translation>
+        <translation>
+            <numerusform>%n ilâve blok için açık</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1870,7 +2460,9 @@ Adres: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>%n ilâve blok için açık</numerusform><numerusform>%n ilâve blok için açık</numerusform></translation>
+        <translation>
+            <numerusform>%n ilâve blok için açık</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1895,7 +2487,9 @@ Adres: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>Madenden çıkarılan bakiye %n ek blok sonrasında olgunlaştığında kullanılabilecektir</numerusform><numerusform>Madenden çıkarılan bakiye %n ek blok sonrasında olgunlaştığında kullanılabilecektir</numerusform></translation>
+        <translation>
+            <numerusform>Madenden çıkarılan bakiye %n ek blok sonrasında olgunlaştığında kullanılabilecektir</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2135,7 +2729,7 @@ Adres: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>Anime yolla</translation>
     </message>
@@ -2196,12 +2790,11 @@ Adres: %4
         <translation>Kullanım:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>-server ya da animed&apos;ye komut gönder</translation>
+        <translation type="vanished">-server ya da animed&apos;ye komut gönder</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>Komutları listele</translation>
     </message>
@@ -2236,12 +2829,11 @@ Adres: %4
         <translation>Veritabanı önbellek boyutunu megabayt olarak belirt (varsayılan: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Bağlantılar için dinlenecek &lt;port&gt; (varsayılan: 8333 ya da testnet: 18333)</translation>
+        <translation type="vanished">Bağlantılar için dinlenecek &lt;port&gt; (varsayılan: 8333 ya da testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Eşler ile en çok &lt;n&gt; adet bağlantı kur (varsayılan: 125)</translation>
     </message>
@@ -2271,12 +2863,11 @@ Adres: %4
         <translation>IPv4 üzerinde dinlemek için %u numaralı RPC portunun kurulumu sırasında hata meydana geldi: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>JSON-RPC bağlantılarını &lt;port&gt; üzerinde dinle (varsayılan: 8332 veya tesnet: 18332)</translation>
+        <translation type="vanished">JSON-RPC bağlantılarını &lt;port&gt; üzerinde dinle (varsayılan: 8332 veya tesnet: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Konut satırı ve JSON-RPC komutlarını kabul et</translation>
     </message>
@@ -2356,7 +2947,12 @@ mesela: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.com
         <translation>Bir cüzdan muamelesi değiştiğinde komutu çalıştır (komuttaki %s TxID ile değiştirilecektir)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">JSON-RPC bağlantılarını &lt;port&gt; üzerinde dinle (varsayılan: 8332 veya tesnet: 18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Yüksek öncelikli/düşük ücretli muamelelerin boyutunu bayt olarak tanımla (varsayılan: 27000)</translation>
     </message>
@@ -2531,7 +3127,12 @@ mesela: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.com
         <translation>Blok kontrolünün ne kadar derin olacağı (0 ilâ 4, varsayılan: 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">Bağlantılar için dinlenecek &lt;port&gt; (varsayılan: 8333 ya da testnet: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>Kafi derecede dosya tanımlayıcıları mevcut değil.</translation>
     </message>
@@ -2541,7 +3142,12 @@ mesela: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.com
         <translation>Blok zinciri indeksini güncel blk000??.dat dosyalarından tekrar inşa et</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>RPC aramaları için iş parçacığı sayısını belirle (varsayılan: 4)</translation>
     </message>

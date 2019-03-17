@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="he" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="he">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,18 +10,31 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>גרסת &lt;b&gt;ביטקוין&lt;/b&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">גרסת &lt;b&gt;ביטקוין&lt;/b&gt;</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
 זוהי תוכנה ניסיונית.
 
 מופצת תחת רישיון התוכנה MIT/X11, ראה את הקובץ המצורף COPYING או http://www.opensource.org/licenses/mit-license.php.
@@ -28,14 +42,20 @@ This product includes software developed by the OpenSSL Project for use in the O
 המוצר הזה כולל תוכנה שפותחה ע&quot;י פרויקט OpenSSL לשימוש בתיבת הכלים OpenSSL (http://www.openssl.org/) ותוכנה קריפטוגרפית שנכתבה ע&quot;י אריק יאנג (eay@cryptsoft.com) ותוכנת UPnP שנכתבה ע&quot;י תומס ברנרד.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>זכויות יוצרים</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -61,7 +81,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>העתק את הכתובת המסומנת ללוח העריכה</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>כתובת חדשה</translation>
     </message>
@@ -81,17 +106,21 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>הצג &amp;קוד QR</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>חתום על הודעה בכדי להוכיח כי אתה הבעלים של כתובת ביטקוין.</translation>
+        <translation type="vanished">חתום על הודעה בכדי להוכיח כי אתה הבעלים של כתובת ביטקוין.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>חתום על הודעה</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>מחק את הכתובת שנבחרה מהרשימה</translation>
     </message>
@@ -103,15 +132,14 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+3"/>
         <source>&amp;Export</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>אמת הודעה בכדי להבטיח שהיא נחתמה עם כתובת ביטקוין מסוימת.</translation>
+        <translation type="vanished">אמת הודעה בכדי להבטיח שהיא נחתמה עם כתובת ביטקוין מסוימת.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>אמת הודעה</translation>
     </message>
@@ -257,7 +285,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>האם אתה בטוח שברצונך להצפין את הארנק?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>חשוב! כל גיבוי קודם שעשית לארנק שלך יש להחליף עם קובץ הארנק המוצפן שזה עתה נוצר. מסיבות אבטחה, גיבויים קודמים של קובץ הארנק הלא-מוצפן יהפכו לחסרי שימוש ברגע שתתחיל להשתמש בארנק החדש המוצפן.</translation>
     </message>
@@ -274,12 +307,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>הארנק הוצפן</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>ביטקוין ייסגר עכשיו כדי להשלים את תהליך ההצפנה. זכור שהצפנת הארנק שלך אינו יכול להגן באופן מלא על הביטקוינים שלך מתוכנות זדוניות המושתלות על המחשב.</translation>
+        <translation type="vanished">ביטקוין ייסגר עכשיו כדי להשלים את תהליך ההצפנה. זכור שהצפנת הארנק שלך אינו יכול להגן באופן מלא על הביטקוינים שלך מתוכנות זדוניות המושתלות על המחשב.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -323,17 +355,17 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>חתום על הודעה</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>מסתנכרן עם הרשת...</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>&amp;סקירה</translation>
     </message>
@@ -407,8 +439,16 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>&amp;Change Passphrase...</source>
         <translation>שנה סיסמא</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>מייבא בלוקים מהדיסק...</translation>
     </message>
@@ -418,7 +458,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>מחדש את אינדקס הבלוקים בדיסק...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>שלח מטבעות לכתובת ביטקוין</translation>
     </message>
@@ -438,7 +478,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>שנה את הסיסמה להצפנת הארנק</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>חלון ניפוי</translation>
     </message>
@@ -453,18 +493,22 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>אמת הודעה...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>ביטקוין</translation>
+        <translation type="vanished">ביטקוין</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>ארנק</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>ושלח</translation>
     </message>
@@ -500,6 +544,26 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>חתום על הודעות עם כתובות הביטקוין שלך כדי להוכיח שהן בבעלותך</translation>
     </message>
@@ -509,7 +573,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>אמת הודעות כדי להבטיח שהן נחתמו עם כתובת ביטקוין מסוימות</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>&amp;קובץ</translation>
     </message>
@@ -520,6 +584,11 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>&amp;עזרה</translation>
     </message>
@@ -535,19 +604,21 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>[רשת-בדיקה]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>תוכנת ביטקוין</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>חיבור פעיל אחד לרשת הביטקוין</numerusform><numerusform>%n חיבורים פעילים לרשת הביטקוין</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>חיבור פעיל אחד לרשת הביטקוין</numerusform>
+            <numerusform>%n חיבורים פעילים לרשת הביטקוין</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -562,17 +633,26 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n שעה</numerusform><numerusform>%n שעות</numerusform></translation>
+        <translation>
+            <numerusform>%n שעה</numerusform>
+            <numerusform>%n שעות</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n יום</numerusform><numerusform>%n ימים</numerusform></translation>
+        <translation>
+            <numerusform>%n יום</numerusform>
+            <numerusform>%n ימים</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n שבוע</numerusform><numerusform>%n שבועות</numerusform></translation>
+        <translation>
+            <numerusform>%n שבוע</numerusform>
+            <numerusform>%n שבועות</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -590,7 +670,22 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>לאחר זאת פעולות נספות טרם יהיו גלויות</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>שגיאה</translation>
     </message>
@@ -610,7 +705,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>פעולה זו חורגת מגבולות הגודל. עדיין באפשרותך לשלוח אותה תמורת עמלה של %1, המיועדת לצמתים שמעבדים את הפעולה שלך ועוזרת לתמוך ברשת. האם ברצונך לשלם את העמלה?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>עדכני</translation>
     </message>
@@ -620,7 +715,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>מתעדכן...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>אשר עמלת פעולה</translation>
     </message>
@@ -677,9 +772,289 @@ Address: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>אזעקת רשת</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">כמות:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">כמות</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">כתובת</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">תאריך</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">מאושר</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">העתק כתובת</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">העתק תוית</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">העתק כמות</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">העתק מזהה פעולה</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(ללא תוית)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -809,7 +1184,7 @@ Address: %4
     <message>
         <location line="+6"/>
         <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+15"/>
@@ -842,9 +1217,13 @@ Address: %4
         <translation>רשת</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>פתח את פורט ביטקוין בנתב באופן אוטומטי. עובד רק אם UPnP מאופשר ונתמך ע&quot;י הנתב.</translation>
+        <translation type="vanished">פתח את פורט ביטקוין בנתב באופן אוטומטי. עובד רק אם UPnP מאופשר ונתמך ע&quot;י הנתב.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -928,11 +1307,20 @@ Address: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>ניתן לקבוע כאן את שפת ממשק המשתמש. הגדרה זו תחול לאחר הפעלה מחדש של ביטקוין.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">ניתן לקבוע כאן את שפת ממשק המשתמש. הגדרה זו תחול לאחר הפעלה מחדש של ביטקוין.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>יחידת מדידה להצגת כמויות:</translation>
     </message>
@@ -942,14 +1330,23 @@ Address: %4
         <translation>בחר את ברירת המחדל ליחידת החלוקה אשר תוצג בממשק ובעת שליחת מטבעות.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>האם להציג כתובות ביטקוין ברשימת הפעולות או לא.</translation>
+        <translation type="vanished">האם להציג כתובות ביטקוין ברשימת הפעולות או לא.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>הצג כתובות ברשימת הפעולות</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>הצג כתובות ברשימת הפעולות</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -972,7 +1369,7 @@ Address: %4
         <translation>ברירת מחדל</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>אשר את איפוס האפשרויות</translation>
     </message>
@@ -1012,13 +1409,11 @@ Address: %4
         <translation>טופס</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>המידע המוצג עשוי להיות מיושן. הארנק שלך מסתנכרן באופן אוטומטי עם רשת הביטקוין לאחר כינון חיבור, אך התהליך טרם הסתיים.</translation>
+        <translation type="vanished">המידע המוצג עשוי להיות מיושן. הארנק שלך מסתנכרן באופן אוטומטי עם רשת הביטקוין לאחר כינון חיבור, אך התהליך טרם הסתיים.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>יתרה:</translation>
     </message>
@@ -1033,7 +1428,13 @@ Address: %4
         <translation>ארנק</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>לא בשל:</translation>
     </message>
@@ -1043,12 +1444,12 @@ Address: %4
         <translation>מאזן שנכרה וטרם הבשיל</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;פעולות אחרונות&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>היתרה הנוכחית שלך</translation>
     </message>
@@ -1207,7 +1608,12 @@ Address: %4
         <translation>זמן הבלוק האחרון</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>פתח</translation>
     </message>
@@ -1218,8 +1624,12 @@ Address: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>הצג את הודעה העזרה של anime-qt כדי לקבל רשימה של אפשרויות שורת פקודה של ביטקוין.</translation>
+        <translation type="vanished">הצג את הודעה העזרה של anime-qt כדי לקבל רשימה של אפשרויות שורת פקודה של ביטקוין.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1252,12 +1662,11 @@ Address: %4
         <translation>קובץ יומן ניפוי</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>פתח את קובץ יומן הניפוי מתיקיית הנתונים הנוכחית. זה עשוי לקחת מספר שניות עבור קובצי יומן גדולים.</translation>
+        <translation type="vanished">פתח את קובץ יומן הניפוי מתיקיית הנתונים הנוכחית. זה עשוי לקחת מספר שניות עבור קובצי יומן גדולים.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>נקה לוח בקרה</translation>
     </message>
@@ -1281,7 +1690,7 @@ Address: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1292,7 +1701,82 @@ Address: %4
         <translation>שלח מטבעות</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">כמות:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>שלח למספר מקבלים בו-זמנית</translation>
     </message>
@@ -1318,8 +1802,12 @@ Address: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 ביטקוין</translation>
+        <translation type="vanished">123.456 ביטקוין</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1332,7 +1820,52 @@ Address: %4
         <translation>שלח</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">העתק כמות</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; ל- %2 (%3)</translation>
     </message>
@@ -1352,7 +1885,7 @@ Address: %4
         <translation> ו- </translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>כתובת המקבל אינה תקינה, אנא בדוק שנית.</translation>
     </message>
@@ -1386,6 +1919,21 @@ Address: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>שגיאה: הפעולה נדחתה. זה עשוי לקרות עם חלק מהמטבעות בארנק שלך כבר נוצלו, למשל אם השתמשת בעותק של wallet.dat ומטבעות נוצלו בעותק אך לא סומנו כמנוצלות כאן.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(ללא תוית)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1405,12 +1953,11 @@ Address: %4
         <translation>שלם &amp;ל:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>הכתובת שאליה ישלח התשלום (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">הכתובת שאליה ישלח התשלום (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>הכנס תוית לכתובת הזאת כדי להכניס לפנקס הכתובות</translation>
@@ -1421,7 +1968,12 @@ Address: %4
         <translation>ת&amp;וית:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>בחר כתובת מפנקס הכתובות</translation>
     </message>
@@ -1446,9 +1998,13 @@ Address: %4
         <translation>הסר את המקבל הזה</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>הכנס כתובת ביטקוין (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">הכנס כתובת ביטקוין (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1469,9 +2025,13 @@ Address: %4
         <translation>אתה יכול לחתום על הודעות עם הכתובות שלך כדי להוכיח שהן בבעלותך. היזהר לא לחתום על משהו מעורפל, שכן התקפות פישינג עשויות לגרום לך בעורמה למסור את זהותך. חתום רק על אמרות מפורטות לחלוטין שאתה מסכים עימן.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>הכתובת איתה לחתום על ההודעה (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">הכתובת איתה לחתום על ההודעה (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1512,11 +2072,25 @@ Address: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>חתום על ההודעה כדי להוכיח שכתובת הביטקוין הזו בבעלותך.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">חתום על ההודעה כדי להוכיח שכתובת הביטקוין הזו בבעלותך.</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>חתום על הודעה</translation>
     </message>
@@ -1542,17 +2116,15 @@ Address: %4
         <translation>הכנס למטה את הכתובת החותמת, ההודעה (ודא שאתה מעתיק מעברי שורה, רווחים, טאבים וכו&apos; באופן מדויק) והחתימה כדי לאמת את ההודעה. היזהר לא לפרש את החתימה כיותר ממה שמופיע בהודעה החתומה בעצמה, כדי להימנע מליפול קורבן למתקפת איש-באמצע.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>הכתובת איתה ההודעה נחתמה (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">הכתובת איתה ההודעה נחתמה (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>אמת את ההודעה כדי להבטיח שהיא נחתמה עם כתובת הביטקוין הנתונה</translation>
+        <translation type="vanished">אמת את ההודעה כדי להבטיח שהיא נחתמה עם כתובת הביטקוין הנתונה</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>אימות הודעה</translation>
     </message>
@@ -1562,10 +2134,14 @@ Address: %4
         <translation>אפס את כל שדות אימות הודעה</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">הכנס כתובת ביטקוין (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>הכנס כתובת ביטקוין (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1648,8 +2224,13 @@ Address: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1687,7 +2268,10 @@ Address: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, הופץ דרך צומת אחד</numerusform><numerusform>, הופץ דרך %n צמתים</numerusform></translation>
+        <translation>
+            <numerusform>, הופץ דרך צומת אחד</numerusform>
+            <numerusform>, הופץ דרך %n צמתים</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1740,7 +2324,10 @@ Address: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>מבשיל בעוד בלוק אחד</numerusform><numerusform>מבשיל בעוד %n בלוקים</numerusform></translation>
+        <translation>
+            <numerusform>מבשיל בעוד בלוק אחד</numerusform>
+            <numerusform>מבשיל בעוד %n בלוקים</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1782,8 +2369,16 @@ Address: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">מטבעות שנוצרים חייבים להבשיל למשך 80 בלוקים לפני שניתן לנצל אותם. כשיצרת את הבלוק הזה, הוא הופץ לרשת כדי להתווסף לשרשרת הבלוקים. אם הוא אינו מצליח לביע לשרשרת, המצב שלו ישתנה ל&quot;לא התקבל&quot; ולא ניתן יהיה לנצל אותו. זה עשוי לקרות מעת לעת אם צומת אחר יוצר בלוק בטווח של מספר שניות מהבלוק שלך. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">מטבעות שנוצרים חייבים להבשיל למשך 80 בלוקים לפני שניתן לנצל אותם. כשיצרת את הבלוק הזה, הוא הופץ לרשת כדי להתווסף לשרשרת הבלוקים. אם הוא אינו מצליח לביע לשרשרת, המצב שלו ישתנה ל&quot;לא התקבל&quot; ולא ניתן יהיה לנצל אותו. זה עשוי לקרות מעת לעת אם צומת אחר יוצר בלוק בטווח של מספר שניות מהבלוק שלך. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>מטבעות שנוצרים חייבים להבשיל למשך 80 בלוקים לפני שניתן לנצל אותם. כשיצרת את הבלוק הזה, הוא הופץ לרשת כדי להתווסף לשרשרת הבלוקים. אם הוא אינו מצליח לביע לשרשרת, המצב שלו ישתנה ל&quot;לא התקבל&quot; ולא ניתן יהיה לנצל אותו. זה עשוי לקרות מעת לעת אם צומת אחר יוצר בלוק בטווח של מספר שניות מהבלוק שלך.</translation>
+        <translation type="vanished">מטבעות שנוצרים חייבים להבשיל למשך 80 בלוקים לפני שניתן לנצל אותם. כשיצרת את הבלוק הזה, הוא הופץ לרשת כדי להתווסף לשרשרת הבלוקים. אם הוא אינו מצליח לביע לשרשרת, המצב שלו ישתנה ל&quot;לא התקבל&quot; ולא ניתן יהיה לנצל אותו. זה עשוי לקרות מעת לעת אם צומת אחר יוצר בלוק בטווח של מספר שניות מהבלוק שלך.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1823,7 +2418,10 @@ Address: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>פתח למשך בלוק %n יותר</numerusform><numerusform>פתח למשך %n בלוקים נוספים</numerusform></translation>
+        <translation>
+            <numerusform>פתח למשך בלוק %n יותר</numerusform>
+            <numerusform>פתח למשך %n בלוקים נוספים</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1869,7 +2467,10 @@ Address: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>פתח למשך בלוק %n יותר</numerusform><numerusform>פתח למשך %n בלוקים נוספים</numerusform></translation>
+        <translation>
+            <numerusform>פתח למשך בלוק %n יותר</numerusform>
+            <numerusform>פתח למשך %n בלוקים נוספים</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1894,7 +2495,10 @@ Address: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>המאזן שנכרה יהיה זמין כשהוא מבשיל בעוד בלוק אחד</numerusform><numerusform>המאזן שנכרה יהיה זמין כשהוא מבשיל בעוד %n בלוקים</numerusform></translation>
+        <translation>
+            <numerusform>המאזן שנכרה יהיה זמין כשהוא מבשיל בעוד בלוק אחד</numerusform>
+            <numerusform>המאזן שנכרה יהיה זמין כשהוא מבשיל בעוד %n בלוקים</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2134,7 +2738,7 @@ Address: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>שלח מטבעות</translation>
     </message>
@@ -2144,7 +2748,7 @@ Address: %4
     <message>
         <location filename="../walletview.cpp" line="+42"/>
         <source>&amp;Export</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2195,12 +2799,11 @@ Address: %4
         <translation>שימוש:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>שלח פקודה ל -server או animed</translation>
+        <translation type="vanished">שלח פקודה ל -server או animed</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>רשימת פקודות</translation>
     </message>
@@ -2235,12 +2838,11 @@ Address: %4
         <translation>קבע את גודל המטמון של מסד הנתונים במגהבייט (ברירת מחדל: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333)</translation>
+        <translation type="vanished">האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>החזק לכל היותר &lt;n&gt; חיבורים לעמיתים (ברירת מחדל: 125)</translation>
     </message>
@@ -2270,12 +2872,11 @@ Address: %4
         <translation>אירעה שגיאה בעת הגדרת פורט RPC %u להאזנה ב-IPv4: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>האזן לחיבורי JSON-RPC ב- &lt;port&gt; (ברירת מחדל: 8332 או רשת בדיקה: 18332)</translation>
+        <translation type="vanished">האזן לחיבורי JSON-RPC ב- &lt;port&gt; (ברירת מחדל: 8332 או רשת בדיקה: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>קבל פקודות משורת הפקודה ו- JSON-RPC</translation>
     </message>
@@ -2355,7 +2956,12 @@ rpcpassword=%s
         <translation>בצע פקודה כאשר פעולת ארנק משתנה (%s ב cmd יוחלף ב TxID)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">האזן לחיבורי JSON-RPC ב- &lt;port&gt; (ברירת מחדל: 8332 או רשת בדיקה: 18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>קבע גודל מקסימלי עבור פעולות עדיפות גבוהה/עמלה נמוכה בבתים (ברירת מחדל: 27000)</translation>
     </message>
@@ -2517,7 +3123,7 @@ rpcpassword=%s
     <message>
         <location line="+1"/>
         <source>Generate coins (default: 0)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2530,9 +3136,14 @@ rpcpassword=%s
         <translation>מידת היסודיות של אימות הבלוקים (0-4, ברירת מחדל: 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2540,7 +3151,12 @@ rpcpassword=%s
         <translation>בנה מחדש את אינדק שרשרת הבלוקים מקבצי ה-blk000??.dat הנוכחיים.</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>קבע את מספר תהליכוני לשירות קריאות RPC (ברירת מחדל: 4)</translation>
     </message>
@@ -2562,7 +3178,7 @@ rpcpassword=%s
     <message>
         <location line="-76"/>
         <source>Set the number of script verification threads (up to 16, 0 = auto, &lt;0 = leave that many cores free, default: 0)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+77"/>
@@ -2577,12 +3193,12 @@ rpcpassword=%s
     <message>
         <location line="+1"/>
         <source>Invalid amount for -minrelaytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid amount for -mintxfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2662,7 +3278,7 @@ rpcpassword=%s
     <message>
         <location line="+1"/>
         <source>Signing transaction failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2677,17 +3293,17 @@ rpcpassword=%s
     <message>
         <location line="+4"/>
         <source>Transaction amount too small</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transaction amounts must be positive</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transaction too large</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>

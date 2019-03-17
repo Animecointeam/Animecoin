@@ -1,5 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.0">
-<defaultcodec>UTF-8</defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nl">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -9,18 +10,31 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Anime&lt;/b&gt; versie</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+57"/>
+        <source>
+This is experimental software. For more information visit: http://animeco.in 
+
+Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Anime&lt;/b&gt; version</source>
+        <translation type="vanished">&lt;b&gt;Anime&lt;/b&gt; versie</translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
 Dit is experimentele software.
 
 Gedistribueerd onder de MIT/X11 software licentie, zie het bijgevoegde bestand COPYING of http://www.opensource.org/licenses/mit-license.php.
@@ -28,12 +42,18 @@ Gedistribueerd onder de MIT/X11 software licentie, zie het bijgevoegde bestand C
 Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in de OpenSSL Toolkit (http://www.openssl.org/) en cryptografische software gemaakt door Eric Young (eay@cryptsoft.com) en UPnP software geschreven door Thomas Bernard.</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+14"/>
+        <location filename="../aboutdialog.cpp" line="+15"/>
+        <location line="+1"/>
         <source>Copyright</source>
         <translation>Auteursrecht</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>De Anime-ontwikkelaars</translation>
     </message>
@@ -61,7 +81,12 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Kopieer het huidig geselecteerde adres naar het klembord</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+25"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign a message to prove you own a Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
         <source>&amp;New Address</source>
         <translation>&amp;Nieuw Adres</translation>
     </message>
@@ -81,17 +106,21 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Toon &amp;QR-Code</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Sign a message to prove you own a Anime address</source>
-        <translation>Onderteken een bericht om te bewijzen dat u een bepaald Animeadres bezit</translation>
+        <translation type="vanished">Onderteken een bericht om te bewijzen dat u een bepaald Animeadres bezit</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+14"/>
         <source>Sign &amp;Message</source>
         <translation>&amp;Onderteken Bericht</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+11"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify a message to ensure it was signed with a specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Verwijder het geselecteerde adres van de lijst</translation>
     </message>
@@ -106,12 +135,11 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>&amp;Exporteer</translation>
     </message>
     <message>
-        <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Anime address</source>
-        <translation>Controleer een bericht om te verifiëren dat het gespecificeerde Animeadres het bericht heeft ondertekend.</translation>
+        <translation type="vanished">Controleer een bericht om te verifiëren dat het gespecificeerde Animeadres het bericht heeft ondertekend.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-41"/>
         <source>&amp;Verify Message</source>
         <translation>&amp;Verifiëer Bericht</translation>
     </message>
@@ -257,7 +285,12 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Weet u zeker dat u uw portemonnee wilt versleutelen?</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+11"/>
+        <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your coins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
         <translation>BELANGRIJK: Elke eerder gemaakte backup van uw portemonneebestand dient u te vervangen door het nieuw gegenereerde, versleutelde portemonneebestand. Om veiligheidsredenen zullen eerdere backups van het niet-versleutelde portemonneebestand onbruikbaar worden zodra u uw nieuwe, versleutelde, portemonnee begint te gebruiken.</translation>
     </message>
@@ -274,12 +307,11 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Portemonnee versleuteld</translation>
     </message>
     <message>
-        <location line="-56"/>
         <source>Anime will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your animes from being stolen by malware infecting your computer.</source>
-        <translation>Anime zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen: Malware kan uw computer infecteren en uw animes stelen.</translation>
+        <translation type="vanished">Anime zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen: Malware kan uw computer infecteren en uw animes stelen.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-43"/>
         <location line="+7"/>
         <location line="+42"/>
         <location line="+6"/>
@@ -323,17 +355,17 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+233"/>
+        <location filename="../bitcoingui.cpp" line="+244"/>
         <source>Sign &amp;message...</source>
         <translation>&amp;Onderteken bericht...</translation>
     </message>
     <message>
-        <location line="+280"/>
+        <location line="+290"/>
         <source>Synchronizing with network...</source>
         <translation>Synchroniseren met netwerk...</translation>
     </message>
     <message>
-        <location line="-349"/>
+        <location line="-365"/>
         <source>&amp;Overview</source>
         <translation>&amp;Overzicht</translation>
     </message>
@@ -407,8 +439,16 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <source>&amp;Change Passphrase...</source>
         <translation>&amp;Wijzig Wachtwoord</translation>
     </message>
+    <message numerus="yes">
+        <location line="+286"/>
+        <source>%n active connection(s) to Animecoin network</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+285"/>
+        <location line="+15"/>
         <source>Importing blocks from disk...</source>
         <translation>Blokken aan het importeren vanaf harde schijf...</translation>
     </message>
@@ -418,7 +458,7 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Bezig met herindexeren van blokken op harde schijf...</translation>
     </message>
     <message>
-        <location line="-347"/>
+        <location line="-363"/>
         <source>Send coins to a Anime address</source>
         <translation>Verstuur munten naar een Animeadres</translation>
     </message>
@@ -438,7 +478,7 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Wijzig het wachtwoord voor uw portemonneversleuteling</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>&amp;Debug window</source>
         <translation>&amp;Debugscherm</translation>
     </message>
@@ -453,18 +493,22 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>&amp;Verifiëer bericht...</translation>
     </message>
     <message>
-        <location line="-165"/>
-        <location line="+530"/>
         <source>Anime</source>
-        <translation>Anime</translation>
+        <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-174"/>
         <source>Wallet</source>
         <translation>Portemonnee</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+0"/>
+        <location line="+567"/>
+        <source>Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-463"/>
         <source>&amp;Send</source>
         <translation>&amp;Versturen</translation>
     </message>
@@ -500,6 +544,26 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
     </message>
     <message>
         <location line="+7"/>
+        <source>Solo Mining Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop Mining. May take some time to wind down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solo Mining On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mine Animecoin solo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Sign messages with your Anime addresses to prove you own them</source>
         <translation>Onderteken berichten met uw Animeadressen om te bewijzen dat u deze adressen bezit</translation>
     </message>
@@ -509,7 +573,7 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Verifiëer handtekeningen om zeker te zijn dat de berichten zijn ondertekend met de gespecificeerde Animeadressen</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+30"/>
         <source>&amp;File</source>
         <translation>&amp;Bestand</translation>
     </message>
@@ -520,6 +584,11 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
     </message>
     <message>
         <location line="+6"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>&amp;Help</source>
         <translation>&amp;Hulp</translation>
     </message>
@@ -535,17 +604,19 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>[testnetwerk]</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+50"/>
         <source>Anime client</source>
         <translation>Anime client</translation>
     </message>
     <message numerus="yes">
-        <location line="+141"/>
         <source>%n active connection(s) to Anime network</source>
-        <translation><numerusform>%n actieve connectie naar Animenetwerk</numerusform><numerusform>%n actieve connecties naar Animenetwerk</numerusform></translation>
+        <translation type="vanished">
+            <numerusform>%n actieve connectie naar Animenetwerk</numerusform>
+            <numerusform>%n actieve connecties naar Animenetwerk</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+163"/>
         <source>No block source available...</source>
         <translation>Geen bron van blokken beschikbaar...</translation>
     </message>
@@ -562,17 +633,26 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
     <message numerus="yes">
         <location line="+20"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n uur</numerusform><numerusform>%n uur</numerusform></translation>
+        <translation>
+            <numerusform>%n uur</numerusform>
+            <numerusform>%n uur</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n dag</numerusform><numerusform>%n dagen</numerusform></translation>
+        <translation>
+            <numerusform>%n dag</numerusform>
+            <numerusform>%n dagen</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n week</numerusform><numerusform>%n weken</numerusform></translation>
+        <translation>
+            <numerusform>%n week</numerusform>
+            <numerusform>%n weken</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -590,7 +670,22 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Transacties na dit moment zullen nu nog niet zichtbaar zijn.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Mining. %2 thread(s) at %1 hashes per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Mining. %1 thread(s). Still calculating hash rate - may take 4 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Not mining Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
@@ -610,7 +705,7 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Deze transactie overschrijdt de groottelimiet. Om de transactie alsnog te versturen kunt u transactiekosten betalen van %1. Deze transactiekosten gaan naar de nodes die uw transactie verwerken en het helpt op deze manier bij het ondersteunen van het Animenetwerk. Wilt u de transactiekosten betalen?</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-159"/>
         <source>Up to date</source>
         <translation>Bijgewerkt</translation>
     </message>
@@ -620,7 +715,7 @@ Dit product bevat software ontwikkeld door het OpenSSL Project voor gebruik in d
         <translation>Aan het bijwerken...</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+132"/>
         <source>Confirm transaction fee</source>
         <translation>Bevestig transactiekosten</translation>
     </message>
@@ -678,9 +773,289 @@ Adres: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+104"/>
+        <location filename="../clientmodel.cpp" line="+105"/>
         <source>Network Alert</source>
         <translation>Netwerkwaarschuwing</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <location filename="../forms/coincontroldialog.ui" line="+14"/>
+        <source>Coin Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Bedrag:</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../coincontroldialog.cpp" line="+585"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>(un)select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Amount</source>
+        <translation type="unfinished">Bedrag</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Address</source>
+        <translation type="unfinished">Adres</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirmed</source>
+        <translation type="unfinished">Bevestigd</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../coincontroldialog.cpp" line="-546"/>
+        <source>Copy address</source>
+        <translation type="unfinished">Kopieer adres</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy label</source>
+        <translation type="unfinished">Kopieer label</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+26"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Kopieer bedrag</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished">Kopieer transactie-ID</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+319"/>
+        <source>highest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>higher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium-high</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>low-medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lower</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>lowest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>(%1 locked)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+171"/>
+        <source>DUST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This label turns red, if the transaction size is bigger than 1000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red, if the priority is smaller than &quot;medium&quot;.
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.
+
+ This means a fee of at least %2 is required. 
+
+ Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This label turns red, if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <location line="+66"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(geen label)</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>change from %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>(change)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -843,9 +1218,13 @@ Adres: %4
         <translation>&amp;Netwerk</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Open de Anime-poort automatisch op de router. Dit werkt alleen als de router UPnP ondersteunt en het aanstaat.</translation>
+        <translation type="vanished">Open de Anime-poort automatisch op de router. Dit werkt alleen als de router UPnP ondersteunt en het aanstaat.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically open the Anime client port on the router. This only works when your router supports UPnP and it is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -929,11 +1308,20 @@ Adres: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
-        <translation>De taal van de gebruikersinterface kan hier ingesteld worden. Deze instelling zal pas van kracht worden nadat Anime herstart wordt.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The user interface language can be set here. This setting will take effect after restarting Anime.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+33"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to show Anime addresses in the transaction list or not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
+        <translation type="vanished">De taal van de gebruikersinterface kan hier ingesteld worden. Deze instelling zal pas van kracht worden nadat Anime herstart wordt.</translation>
+    </message>
+    <message>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>&amp;Eenheid om bedrag in te tonen:</translation>
     </message>
@@ -943,14 +1331,23 @@ Adres: %4
         <translation>Kies de standaard onderverdelingseenheid om weer te geven in uw programma, en voor het versturen van munten</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>Whether to show Anime addresses in the transaction list or not.</source>
-        <translation>Of Animeadressen getoond worden in de transactielijst</translation>
+        <translation type="vanished">Of Animeadressen getoond worden in de transactielijst</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>&amp;Display addresses in transaction list</source>
+        <translation>Toon a&amp;dressen in de transactielijst</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>Toon a&amp;dressen in de transactielijst</translation>
+        <source>Display coin &amp;control features (experts only!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+71"/>
@@ -973,7 +1370,7 @@ Adres: %4
         <translation>standaard</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Bevestig reset opties</translation>
     </message>
@@ -1013,13 +1410,11 @@ Adres: %4
         <translation>Vorm</translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.</source>
-        <translation>De weergegeven informatie kan verouderd zijn. Uw portemonnee synchroniseert automaticsh met het Animenetwerk nadat een verbinding is gelegd, maar dit proces is nog niet voltooid.</translation>
+        <translation type="vanished">De weergegeven informatie kan verouderd zijn. Uw portemonnee synchroniseert automaticsh met het Animenetwerk nadat een verbinding is gelegd, maar dit proces is nog niet voltooid.</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="+92"/>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -1034,7 +1429,13 @@ Adres: %4
         <translation>Portemonnee</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+7"/>
+        <location line="+185"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The displayed information may be out of date. Your wallet automatically synchronizes with the Anime network after a connection is established, but this process has not completed yet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-85"/>
         <source>Immature:</source>
         <translation>Immatuur:</translation>
     </message>
@@ -1044,12 +1445,12 @@ Adres: %4
         <translation>Gedolven saldo dat nog niet tot wasdom is gekomen</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation>&lt;b&gt;Recente transacties&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="-101"/>
+        <location line="-120"/>
         <source>Your current balance</source>
         <translation>Uw huidige saldo</translation>
     </message>
@@ -1208,7 +1609,12 @@ Adres: %4
         <translation>Tijd laatste blok</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+49"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>&amp;Open</source>
         <translation>&amp;Open</translation>
     </message>
@@ -1219,8 +1625,12 @@ Adres: %4
     </message>
     <message>
         <location line="+7"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the Anime-Qt help message to get a list with possible Anime command-line options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show the Anime-Qt help message to get a list with possible Anime command-line options.</source>
-        <translation>Toon het AnimeQt-hulpbericht voor een lijst met mogelijke Anime commandoregel-opties.</translation>
+        <translation type="vanished">Toon het AnimeQt-hulpbericht voor een lijst met mogelijke Anime commandoregel-opties.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1253,12 +1663,11 @@ Adres: %4
         <translation>Debug-logbestand</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Open the Anime debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Open het Animedebug-logbestand van de huidige datamap. Dit kan een aantal seconden duren voor grote logbestanden.</translation>
+        <translation type="vanished">Open het Animedebug-logbestand van de huidige datamap. Dit kan een aantal seconden duren voor grote logbestanden.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+109"/>
         <source>Clear console</source>
         <translation>Maak console leeg</translation>
     </message>
@@ -1282,7 +1691,7 @@ Adres: %4
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+124"/>
+        <location filename="../sendcoinsdialog.cpp" line="+176"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+5"/>
@@ -1293,7 +1702,82 @@ Adres: %4
         <translation>Verstuur munten</translation>
     </message>
     <message>
+        <location line="+76"/>
+        <source>Coin Control Features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>automatically selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Insufficient funds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Amount:</source>
+        <translation type="unfinished">Bedrag:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Low Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>After Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Change:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+50"/>
+        <source>custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>Send to multiple recipients at once</source>
         <translation>Verstuur aan verschillende ontvangers ineens</translation>
     </message>
@@ -1319,8 +1803,12 @@ Adres: %4
     </message>
     <message>
         <location line="+10"/>
+        <source>123.456 ANI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>123.456 BTC</source>
-        <translation>123.456 BTC</translation>
+        <translation type="vanished">123.456 BTC</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1333,7 +1821,52 @@ Adres: %4
         <translation>&amp;Verstuur</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-59"/>
+        <location filename="../sendcoinsdialog.cpp" line="-172"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Copy quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy amount</source>
+        <translation type="unfinished">Kopieer bedrag</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy after fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy low output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; to %2 (%3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; aan %2 (%3)</translation>
     </message>
@@ -1353,7 +1886,7 @@ Adres: %4
         <translation> en </translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+28"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>Het ontvangstadres is niet geldig, controleer uw invoer.</translation>
     </message>
@@ -1387,6 +1920,21 @@ Adres: %4
         <source>Error: The transaction was rejected. This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
         <translation>Fout: De transactie was afgewezen. Dit kan gebeuren als u eerder uitgegeven munten opnieuw wilt versturen, zoals wanneer u een kopie van uw portemonneebestand (wallet.dat) heeft gebruikt en in de kopie deze munten zijn uitgegeven, maar in de huidige portemonnee deze nog niet als zodanig zijn gemarkeerd.</translation>
     </message>
+    <message>
+        <location line="+272"/>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>(no label)</source>
+        <translation type="unfinished">(geen label)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1406,12 +1954,11 @@ Adres: %4
         <translation>Betaal &amp;Aan:</translation>
     </message>
     <message>
-        <location line="+34"/>
         <source>The address to send the payment to (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Het adres waaraan u wilt betalen  (bijv. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Het adres waaraan u wilt betalen  (bijv. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+94"/>
         <location filename="../sendcoinsentry.cpp" line="+26"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>Vul een label in voor dit adres om het toe te voegen aan uw adresboek</translation>
@@ -1422,7 +1969,12 @@ Adres: %4
         <translation>&amp;Label:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Choose address from address book</source>
         <translation>Kies adres uit adresboek</translation>
     </message>
@@ -1447,9 +1999,13 @@ Adres: %4
         <translation>Verwijder deze ontvanger</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Vul een Animeadres in (bijv. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <translation type="vanished">Vul een Animeadres in (bijv. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+1"/>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1470,9 +2026,13 @@ Adres: %4
         <translation>U kunt berichten ondertekenen met een van uw adressen om te bewijzen dat u dit adres bezit. Pas op dat u geen onduidelijke dingen ondertekent, want phishingaanvallen zouden u kunnen misleiden om zo uw identiteit te stelen. Onderteken alleen berichten waarmee u het volledig eens bent.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>The address to sign the message with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Het adres om het bericht mee te ondertekenen (Vb.: Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix).</translation>
+        <translation type="vanished">Het adres om het bericht mee te ondertekenen (Vb.: Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix).</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1513,11 +2073,25 @@ Adres: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Anime address</source>
-        <translation>Onderteken een bericht om te bewijzen dat u een bepaald Animeadres bezit</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign the message to prove you own this Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+106"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verify the message to ensure it was signed with the specified Anime address&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Anime address</source>
+        <translation type="vanished">Onderteken een bericht om te bewijzen dat u een bepaald Animeadres bezit</translation>
+    </message>
+    <message>
+        <location line="-143"/>
         <source>Sign &amp;Message</source>
         <translation>Onderteken &amp;Bericht</translation>
     </message>
@@ -1543,17 +2117,15 @@ Adres: %4
         <translation>Voer het ondertekenende adres, bericht en handtekening hieronder in (let erop dat u nieuwe regels, spaties en tabs juist overneemt) om de handtekening te verifiëren. Let erop dat u niet meer uit het bericht interpreteert dan er daadwerkelijk staat,  om te voorkomen dat u wordt misleid in een man-in-the-middle-aanval.</translation>
     </message>
     <message>
-        <location line="+21"/>
         <source>The address the message was signed with (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Het adres waarmee bet bericht was ondertekend (Vb.: Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix).</translation>
+        <translation type="vanished">Het adres waarmee bet bericht was ondertekend (Vb.: Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix).</translation>
     </message>
     <message>
-        <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Anime address</source>
-        <translation>Controleer een bericht om te verifiëren dat het gespecificeerde Animeadres het bericht heeft ondertekend.</translation>
+        <translation type="vanished">Controleer een bericht om te verifiëren dat het gespecificeerde Animeadres het bericht heeft ondertekend.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+64"/>
         <source>Verify &amp;Message</source>
         <translation>Verifiëer &amp;Bericht</translation>
     </message>
@@ -1563,10 +2135,14 @@ Adres: %4
         <translation>Verwijder alles in de invulvelden</translation>
     </message>
     <message>
+        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
+        <translation type="vanished">Vul een Animeadres in (bijv. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+    </message>
+    <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Anime address (e.g. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</source>
-        <translation>Vul een Animeadres in (bijv. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
+        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1649,6 +2225,11 @@ Adres: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
+        <source>The Bitcoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The Anime Developers</source>
         <translation>De Anime-ontwikkelaars</translation>
     </message>
@@ -1688,7 +2269,10 @@ Adres: %4
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, uitgezonden naar %n node</numerusform><numerusform>, uitgezonden naar %n nodes</numerusform></translation>
+        <translation>
+            <numerusform>, uitgezonden naar %n node</numerusform>
+            <numerusform>, uitgezonden naar %n nodes</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1741,7 +2325,10 @@ Adres: %4
     <message numerus="yes">
         <location line="-102"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>komt tot wasdom na %n nieuw blok</numerusform><numerusform>komt tot wasdom na %n nieuwe blokken</numerusform></translation>
+        <translation>
+            <numerusform>komt tot wasdom na %n nieuw blok</numerusform>
+            <numerusform>komt tot wasdom na %n nieuwe blokken</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1783,8 +2370,16 @@ Adres: %4
     </message>
     <message>
         <location line="+3"/>
+        <source>Generated coins must mature 160 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">Gegeneerde munten moeten 80 blokken wachten voordat ze tot wasdom komen en kunnen worden uitgegeven. Uw net gegenereerde blok is uitgezonden aan het netwerk om te worden toegevoegd aan de blokketen. Als het niet wordt geaccepteerd in de keten, zal het blok als &quot;niet geaccepteerd&quot; worden aangemerkt en kan het niet worden uitgegeven. Dit kan soms gebeuren als een andere node net iets sneller een blok heeft gegenereerd; een paar seconden voor het uwe. {160 ?}</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 240 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="obsolete">Gegeneerde munten moeten 80 blokken wachten voordat ze tot wasdom komen en kunnen worden uitgegeven. Uw net gegenereerde blok is uitgezonden aan het netwerk om te worden toegevoegd aan de blokketen. Als het niet wordt geaccepteerd in de keten, zal het blok als &quot;niet geaccepteerd&quot; worden aangemerkt en kan het niet worden uitgegeven. Dit kan soms gebeuren als een andere node net iets sneller een blok heeft gegenereerd; een paar seconden voor het uwe. {240 ?}</translation>
+    </message>
+    <message>
         <source>Generated coins must mature 80 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Gegeneerde munten moeten 80 blokken wachten voordat ze tot wasdom komen en kunnen worden uitgegeven. Uw net gegenereerde blok is uitgezonden aan het netwerk om te worden toegevoegd aan de blokketen. Als het niet wordt geaccepteerd in de keten, zal het blok als &quot;niet geaccepteerd&quot; worden aangemerkt en kan het niet worden uitgegeven. Dit kan soms gebeuren als een andere node net iets sneller een blok heeft gegenereerd; een paar seconden voor het uwe.</translation>
+        <translation type="vanished">Gegeneerde munten moeten 80 blokken wachten voordat ze tot wasdom komen en kunnen worden uitgegeven. Uw net gegenereerde blok is uitgezonden aan het netwerk om te worden toegevoegd aan de blokketen. Als het niet wordt geaccepteerd in de keten, zal het blok als &quot;niet geaccepteerd&quot; worden aangemerkt en kan het niet worden uitgegeven. Dit kan soms gebeuren als een andere node net iets sneller een blok heeft gegenereerd; een paar seconden voor het uwe.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1824,7 +2419,10 @@ Adres: %4
     <message numerus="yes">
         <location line="-35"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Open voor nog %n blok</numerusform><numerusform>Open voor nog %n blokken</numerusform></translation>
+        <translation>
+            <numerusform>Open voor nog %n blok</numerusform>
+            <numerusform>Open voor nog %n blokken</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+70"/>
@@ -1870,7 +2468,10 @@ Adres: %4
     <message numerus="yes">
         <location line="+57"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Open voor nog %n blok</numerusform><numerusform>Open voor nog %n blokken</numerusform></translation>
+        <translation>
+            <numerusform>Open voor nog %n blok</numerusform>
+            <numerusform>Open voor nog %n blokken</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1895,7 +2496,10 @@ Adres: %4
     <message numerus="yes">
         <location line="+8"/>
         <source>Mined balance will be available when it matures in %n more block(s)</source>
-        <translation><numerusform>Gedolven saldo zal beschikbaar komen als het tot wasdom komt na %n blok</numerusform><numerusform>Gedolven saldo zal beschikbaar komen als het tot wasdom komt na %n blokken</numerusform></translation>
+        <translation>
+            <numerusform>Gedolven saldo zal beschikbaar komen als het tot wasdom komt na %n blok</numerusform>
+            <numerusform>Gedolven saldo zal beschikbaar komen als het tot wasdom komt na %n blokken</numerusform>
+        </translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2135,7 +2739,7 @@ Adres: %4
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+193"/>
+        <location filename="../walletmodel.cpp" line="+206"/>
         <source>Send Coins</source>
         <translation>Verstuur munten</translation>
     </message>
@@ -2196,12 +2800,11 @@ Adres: %4
         <translation>Gebruik:</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Send command to -server or animed</source>
-        <translation>Stuur commando naar -server of animed</translation>
+        <translation type="vanished">Stuur commando naar -server of animed</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="-52"/>
         <source>List commands</source>
         <translation>Lijst van commando&apos;s</translation>
     </message>
@@ -2238,12 +2841,11 @@ Adres: %4
         <translation>Stel databankcachegrootte in in megabytes (standaard: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Luister voor verbindingen op &lt;poort&gt; (standaard: 8333 of testnet: 18333)</translation>
+        <translation type="vanished">Luister voor verbindingen op &lt;poort&gt; (standaard: 8333 of testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Onderhoud maximaal &lt;n&gt; verbindingen naar peers (standaard: 125)</translation>
     </message>
@@ -2273,12 +2875,11 @@ Adres: %4
         <translation>Er is een fout opgetreden tijdens het instellen van de inkomende RPC-poort %u op IPv4: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Wacht op JSON-RPC-connecties op poort &lt;port&gt; (standaard: 8332 of testnet: 18332)</translation>
+        <translation type="vanished">Wacht op JSON-RPC-connecties op poort &lt;port&gt; (standaard: 8332 of testnet: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Aanvaard commandoregel- en JSON-RPC-commando&apos;s</translation>
     </message>
@@ -2356,7 +2957,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Voer opdracht uit zodra een portemonneetransactie verandert (%s in cmd wordt vervangen door TxID)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
+        <translation type="unfinished">Wacht op JSON-RPC-connecties op poort &lt;port&gt; (standaard: 8332 of testnet: 18332) {8372 ?} {18372)?}</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Stel maximumgrootte in in bytes voor hoge-prioriteits-/lage-transactiekosten-transacties (standaard: 27000)</translation>
     </message>
@@ -2531,7 +3137,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Hoe grondig de blokverificatie is (0-4, standaard: 3)</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+11"/>
+        <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
+        <translation type="unfinished">Luister voor verbindingen op &lt;poort&gt; (standaard: 8333 of testnet: 18333) {8373 ?} {18373)?}</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>Niet genoeg file descriptors beschikbaar.</translation>
     </message>
@@ -2541,7 +3152,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Blokketen opnieuw opbouwen van huidige blk000??.dat-bestanden</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+6"/>
+        <source>Send command to -server or animecoind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation>Stel het aantal threads in om RPC-aanvragen mee te bedienen (standaard: 4)</translation>
     </message>

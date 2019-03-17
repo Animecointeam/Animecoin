@@ -49,7 +49,7 @@ QT_TRANSLATE_NOOP("anime-core", ""
 "Execute command when the best block changes (%s in cmd is replaced by block "
 "hash)"),
 QT_TRANSLATE_NOOP("anime-core", ""
-"Listen for JSON-RPC connections on <port> (default: 8372 or testnet: 18372)"),
+"Listen for JSON-RPC connections on <port> (default: 8332 or testnet: 18332)"),
 QT_TRANSLATE_NOOP("anime-core", ""
 "Number of seconds to keep misbehaving peers from reconnecting (default: "
 "86400)"),
@@ -142,7 +142,7 @@ QT_TRANSLATE_NOOP("anime-core", "Invalid amount for -mintxfee=<amount>: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Invalid amount for -paytxfee=<amount>: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Invalid amount"),
 QT_TRANSLATE_NOOP("anime-core", "List commands"),
-QT_TRANSLATE_NOOP("anime-core", "Listen for connections on <port> (default: 8373 or testnet: 18373)"),
+QT_TRANSLATE_NOOP("anime-core", "Listen for connections on <port> (default: 8333 or testnet: 18333)"),
 QT_TRANSLATE_NOOP("anime-core", "Loading addresses..."),
 QT_TRANSLATE_NOOP("anime-core", "Loading block index..."),
 QT_TRANSLATE_NOOP("anime-core", "Loading wallet..."),
