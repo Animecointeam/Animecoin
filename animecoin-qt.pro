@@ -182,7 +182,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/json/json_spirit_error_position.h \
     src/json/json_spirit.h \
     src/qt/clientmodel.h \
-	src/qt/coincontroltreewidget.h \
     src/qt/guiutil.h \
     src/qt/transactionrecord.h \
     src/qt/guiconstants.h \
