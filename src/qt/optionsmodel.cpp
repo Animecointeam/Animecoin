@@ -37,6 +37,19 @@ bool static ApplyProxySettings()
     return true;
 }
 
+void static ApplyMiningSettings()
+{
+    QSettings settings;
+    if (settings.contains("bMiningEnabled"))
+        SetBoolArg("-gen", settings.value("bMiningEnabled").toBool());
+    if (settings.contains("nMiningIntensity"))
+        SetArg("-genproclimit", settings.value("nMiningIntensity").toString().toStdString());
+    // stop
+    GenerateBitcoins(false, NULL);
+    // start
+    GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
+}
+
 void OptionsModel::Init()
 {
     QSettings settings;
@@ -60,6 +73,17 @@ void OptionsModel::Init()
     if (!language.isEmpty())
         SoftSetArg("-lang", language.toStdString());
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
+
+    // Mining enabled by default in QT with 1 thread if not overriden
+    // by command-line options
+    if (settings.contains("bMiningEnabled"))
+        SoftSetBoolArg("-gen", settings.value("bMiningEnabled").toBool());
+    else
+        SoftSetBoolArg("-gen", true);
+    if (settings.contains("nMiningIntensity"))
+        SoftSetArg("-genproclimit", settings.value("nMiningIntensity").toString().toStdString());
+    else
+        SoftSetArg("-genproclimit", "1");
 }
 
 void OptionsModel::Reset()
@@ -199,6 +223,10 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("language", "");
         case CoinControlFeatures:
             return QVariant(fCoinControlFeatures);
+        case MiningEnabled:
+            return settings.value("bMiningEnabled", GetBoolArg("-gen", true));
+        case MiningIntensity:
+            return settings.value("nMiningIntensity", GetArg("-genproclimit", 1));
         default:
             return QVariant();
         }
@@ -280,6 +308,16 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             break;
         case Language:
             settings.setValue("language", value);
+            break;
+        case MiningEnabled:
+            bMiningEnabled = value.toBool();
+            settings.setValue("bMiningEnabled", bMiningEnabled);
+            ApplyMiningSettings();
+            break;
+        case MiningIntensity:
+            nMiningIntensity = value.toInt();
+            settings.setValue("nMiningIntensity", nMiningIntensity);
+            ApplyMiningSettings();
             break;
         case CoinControlFeatures: {
             fCoinControlFeatures = value.toBool();
