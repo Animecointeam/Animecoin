@@ -1313,11 +1313,16 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+40"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Animecoin mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
         <translation type="vanished">在这里设置用户界面的语言。设置将在客户端重启后生效。</translation>
     </message>
     <message>
-        <location line="-22"/>
+        <location line="-62"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>&amp;比特币金额单位:</translation>
     </message>
@@ -1346,7 +1351,27 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+21"/>
+        <source>&amp;Mining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>&amp;Mining enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>&amp;Mining limit:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Choose the default mining intensity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+73"/>
         <source>&amp;OK</source>
         <translation>&amp;确定</translation>
     </message>
@@ -1366,7 +1391,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>缺省</translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+146"/>
         <source>Confirm options reset</source>
         <translation>确认恢复缺省设置</translation>
     </message>
@@ -2837,11 +2862,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>设置数据库缓冲区大小 (缺省: 25MB)</translation>
     </message>
     <message>
+        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation type="vanished">监听端口连接 &lt;port&gt; (缺省: 8333 or testnet: 18333)</translation>
+        <translation>监听端口连接 &lt;port&gt; (缺省: 8333 or testnet: 18333)</translation>
     </message>
     <message>
-        <location line="-23"/>
+        <location line="+5"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>最大连接数 &lt;n&gt;  (缺省: 125)</translation>
     </message>
@@ -2871,11 +2897,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>设置RPC监听端口%u时发生错误, IPv4:%s</translation>
     </message>
     <message>
+        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation type="vanished">JSON-RPC连接监听端口&lt;port&gt; (缺省：8332&#x3000;testnet：18332)</translation>
+        <translation>JSON-RPC连接监听端口&lt;port&gt; (缺省：8332&#x3000;testnet：18332)</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+37"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>接受命令行和 JSON-RPC 命令
 </translation>
@@ -2959,12 +2986,11 @@ rpcpassword=%s
         <translation>当最佳区块变化时执行命令 (命令行中的 %s 会被替换成区块哈希值)</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
-        <translation type="unfinished">JSON-RPC连接监听端口&lt;port&gt; (缺省：8332&#x3000;testnet：18332) {8372 ?} {18372)?}</translation>
+        <translation type="obsolete">JSON-RPC连接监听端口&lt;port&gt; (缺省：8332&#x3000;testnet：18332) {8372 ?} {18372)?}</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+11"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</translation>
     </message>
@@ -3139,12 +3165,11 @@ rpcpassword=%s
         <translation>How thorough the block verification is (0-4, default: 3)</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
-        <translation type="unfinished">监听端口连接 &lt;port&gt; (缺省: 8333 or testnet: 18333) {8373 ?} {18373)?}</translation>
+        <translation type="obsolete">监听端口连接 &lt;port&gt; (缺省: 8333 or testnet: 18333) {8373 ?} {18373)?}</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+19"/>
         <source>Not enough file descriptors available.</source>
         <translation type="unfinished"></translation>
     </message>

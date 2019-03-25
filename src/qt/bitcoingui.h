@@ -102,7 +102,7 @@ private:
     QAction *backupWalletAction;
     QAction *changePassphraseAction;
     QAction *miningOffAction;
-    QAction *miningOnAction;	
+    QAction *miningOnAction;
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
 
