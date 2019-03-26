@@ -8,6 +8,9 @@ DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
+CONFIG += openssl
+CONFIG += c++11
+
 greaterThan(QT_MAJOR_VERSION, 4) {
      QT += widgets
      DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
@@ -22,9 +25,6 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 # Dependency library locations can be customized with:
 #    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
 #    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
-
-BDB_INCLUDE_PATH = /usr/include/db4.8
-BDB_LIB_SUFFIX=-4.8
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -41,10 +41,10 @@ contains(RELEASE, 1) {
         # Linux: static link and extra security (see: https://wiki.debian.org/Hardening)
         LIBS += -Wl,-Bstatic -Wl,-z,relro -Wl,-z,now
     }
-	win32: {
-		# Windows: static link
-		LIBS += -Wl,-Bstatic
-	}
+        win32: {
+                # Windows: static link
+                LIBS += -Wl,-Bstatic
+        }
 }
 
 # for extra security against potential buffer overflows: enable GCCs Stack Smashing Protection
@@ -57,9 +57,10 @@ QMAKE_CXXFLAGS *= -D_FORTIFY_SOURCE=2
 # for extra security on Windows: enable ASLR and DEP via GCC linker flags
 win32:QMAKE_LFLAGS *= -Wl,--dynamicbase -Wl,--nxcompat
 # on Windows: enable GCC large address aware linker flag
-win32:QMAKE_LFLAGS *= -Wl,--large-address-aware
+#win32:QMAKE_LFLAGS *= -Wl,--large-address-aware -static
+win32:QMAKE_LFLAGS *= -static
 # i686-w64-mingw32
-win32:QMAKE_LFLAGS *= -static-libgcc -static-libstdc++
+win32:QMAKE_CXXFLAGS *= -static-libgcc -static-libstdc++
 
 # use: qmake "USE_QRCODE=1"
 # libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
@@ -67,6 +68,57 @@ contains(USE_QRCODE, 1) {
     message(Building with QRCode support)
     DEFINES += USE_QRCODE
     LIBS += -lqrencode
+}
+
+# platform specific defaults, if not overridden on command line
+isEmpty(BOOST_LIB_SUFFIX) {
+    macx:BOOST_LIB_SUFFIX = -mt
+    win32: BOOST_LIB_SUFFIX=-mgw73-mt-1_65
+}
+
+isEmpty(BOOST_THREAD_LIB_SUFFIX) {
+    BOOST_THREAD_LIB_SUFFIX = $$BOOST_LIB_SUFFIX
+}
+
+isEmpty(BDB_LIB_PATH) {
+    macx:BDB_LIB_PATH = /opt/local/lib/db48
+    win32:BDB_LIB_PATH = F:\db-4.8.30\build_unix\.libs
+}
+
+isEmpty(BDB_LIB_SUFFIX) {
+    macx:BDB_LIB_SUFFIX = -4.8
+    win32:BDB_LIB_SUFFIX = -4.8
+}
+
+isEmpty(BDB_INCLUDE_PATH) {
+    macx:BDB_INCLUDE_PATH = /opt/local/include/db48
+    win32:BDB_INCLUDE_PATH = F:\db-4.8.30\build_unix
+}
+
+isEmpty(BOOST_LIB_PATH) {
+    macx:BOOST_LIB_PATH = /opt/local/lib
+    win32:BOOST_LIB_PATH = F:\libs\boost_1_65_0\stage\lib
+}
+
+isEmpty(BOOST_INCLUDE_PATH) {
+    macx:BOOST_INCLUDE_PATH = /opt/local/include
+    win32:BOOST_INCLUDE_PATH = F:\libs\boost_1_65_0
+}
+
+isEmpty(OPENSSL_INCLUDE_PATH) {
+    win32: OPENSSL_INCLUDE_PATH = F:\openssl-1.1.1-win64-mingw\include
+}
+
+isEmpty(OPENSSL_LIB_PATH) {
+    win32: OPENSSL_LIB_PATH = F:\openssl-1.1.1-win64-mingw\lib
+}
+
+isEmpty(MINIUPNPC_INCLUDE_PATH) {
+    win32:MINIUPNPC_INCLUDE_PATH = F:\libs
+}
+
+isEmpty(MINIUPNPC_LIB_PATH) {
+    win32: MINIUPNPC_LIB_PATH = F:\libs\miniupnpc
 }
 
 # use: qmake "USE_UPNP=1" ( enabled by default; default)
@@ -121,7 +173,7 @@ LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
         QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
     }
     LIBS += -lshlwapi
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+    #genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
 genleveldb.target = src/leveldb/libleveldb.a
 genleveldb.depends = FORCE
@@ -378,36 +430,6 @@ OTHER_FILES += README.md \
     src/test/*.h \
     src/qt/test/*.cpp \
     src/qt/test/*.h
-
-# platform specific defaults, if not overridden on command line
-isEmpty(BOOST_LIB_SUFFIX) {
-    macx:BOOST_LIB_SUFFIX = -mt
-    win32:BOOST_LIB_SUFFIX = -mgw44-mt-s-1_50
-}
-
-isEmpty(BOOST_THREAD_LIB_SUFFIX) {
-    BOOST_THREAD_LIB_SUFFIX = $$BOOST_LIB_SUFFIX
-}
-
-isEmpty(BDB_LIB_PATH) {
-    macx:BDB_LIB_PATH = /opt/local/lib/db48
-}
-
-isEmpty(BDB_LIB_SUFFIX) {
-    macx:BDB_LIB_SUFFIX = -4.8
-}
-
-isEmpty(BDB_INCLUDE_PATH) {
-    macx:BDB_INCLUDE_PATH = /opt/local/include/db48
-}
-
-isEmpty(BOOST_LIB_PATH) {
-    macx:BOOST_LIB_PATH = /opt/local/lib
-}
-
-isEmpty(BOOST_INCLUDE_PATH) {
-    macx:BOOST_INCLUDE_PATH = /opt/local/include
-}
 
 win32:DEFINES += WIN32
 win32:RC_FILE = src/qt/res/bitcoin-qt.rc
