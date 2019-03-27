@@ -874,7 +874,12 @@ Address: %4
         <translation>Количество</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation>Метка</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>

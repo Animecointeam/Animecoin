@@ -816,7 +816,12 @@ Address: %4
         <translation type="unfinished">Sumo</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Etikedo</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Adreso</translation>
     </message>

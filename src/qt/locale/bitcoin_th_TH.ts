@@ -812,7 +812,12 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">ชื่อ</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">ที่อยู่</translation>
     </message>

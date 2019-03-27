@@ -851,7 +851,12 @@ Address: %4
         <translation type="unfinished">金額</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">標記</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">位址</translation>
     </message>

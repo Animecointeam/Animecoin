@@ -856,7 +856,12 @@ Inscriptio: %4
         <translation type="unfinished">Quantitas</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Titulus</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Inscriptio</translation>
     </message>

@@ -848,7 +848,12 @@ Address: %4
         <translation type="unfinished">Quantitat</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Etiqueta</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>

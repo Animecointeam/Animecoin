@@ -836,7 +836,12 @@ Adrese: %4
         <translation type="unfinished">Daudzums</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Nosaukums</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Adrese</translation>
     </message>

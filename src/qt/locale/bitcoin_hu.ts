@@ -847,7 +847,12 @@ Cím: %4
         <translation type="unfinished">Összeg</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Címke</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Cím</translation>
     </message>

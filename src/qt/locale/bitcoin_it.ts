@@ -858,7 +858,12 @@ Indirizzo: %4
         <translation type="unfinished">Importo</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Etichetta</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Indirizzo</translation>
     </message>

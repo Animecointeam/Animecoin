@@ -858,7 +858,12 @@ Adress: %4
         <translation type="unfinished">Mängd</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Etikett</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Adress</translation>
     </message>

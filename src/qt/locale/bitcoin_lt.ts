@@ -860,7 +860,12 @@ Adresas: %4</translation>
         <translation type="unfinished">Suma</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Žymė</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Adresas</translation>
     </message>

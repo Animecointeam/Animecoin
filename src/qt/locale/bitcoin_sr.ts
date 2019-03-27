@@ -832,7 +832,12 @@ Address: %4
         <translation type="unfinished">iznos</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Label</source>
+        <translation type="unfinished">Етикета</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Address</source>
         <translation type="unfinished">Адреса</translation>
     </message>
