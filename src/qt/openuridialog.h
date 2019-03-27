@@ -1,0 +1,4 @@
+#ifndef OPENURIDIALOG_H
+#define OPENURIDIALOG_H
+
+#endif // OPENURIDIALOG_H

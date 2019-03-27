@@ -1,0 +1,4 @@
+#ifndef RPCPROTOCOL_H
+#define RPCPROTOCOL_H
+
+#endif // RPCPROTOCOL_H

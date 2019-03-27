@@ -1,0 +1,4 @@
+#ifndef UTILITYDIALOG_H
+#define UTILITYDIALOG_H
+
+#endif // UTILITYDIALOG_H
