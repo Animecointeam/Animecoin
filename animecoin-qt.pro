@@ -1,10 +1,11 @@
 TEMPLATE = app
 TARGET = animecoin-qt
 macx:TARGET = "Animecoin-Qt"
-VERSION = 0.8.3
+VERSION = 0.9.1
 INCLUDEPATH += src src/json src/qt
 QT += network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
+DEFINES += ENABLE_WALLET
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
@@ -12,6 +13,12 @@ greaterThan(QT_MAJOR_VERSION, 4) {
      QT += widgets
      DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
  }
+
+include(share/qt/protobuf.pri)
+PROTOS = src/qt/paymentrequest.proto
+
+#QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+#QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -150,7 +157,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/sendcoinsdialog.h \
     src/qt/addressbookpage.h \
     src/qt/signverifymessagedialog.h \
-    src/qt/aboutdialog.h \
     src/qt/editaddressdialog.h \
     src/qt/bitcoinaddressvalidator.h \
     src/alert.h \
@@ -198,9 +204,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/transactionview.h \
     src/qt/walletmodel.h \
     src/qt/walletview.h \
-    src/qt/walletstack.h \
     src/qt/walletframe.h \
-    src/bitcoinrpc.h \
     src/qt/overviewpage.h \
     src/qt/csvmodelwriter.h \
     src/crypter.h \
@@ -220,7 +224,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/clientversion.h \
 	src/coincontrol.h \
     src/txdb.h \
-    src/leveldb.h \
     src/threadsafety.h \
     src/limitedmap.h \
     src/qt/splashscreen.h \
@@ -235,7 +238,27 @@ HEADERS += src/qt/bitcoingui.h \
     src/coincontrol.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
-    src/core.h
+    src/core.h \
+    src/chainparams.h \
+    src/miner.h \
+    src/noui.h \
+    src/coins.h \
+    src/txmempool.h \
+    src/tinyformat.h \
+    src/qt/intro.h \
+    src/qt/utilitydialog.h \
+    src/qt/winshutdownmonitor.h \
+    src/rpcserver.h \
+    src/qt/openuridialog.h \
+    src/leveldbwrapper.h \
+    src/rpcprotocol.h \
+    src/qt/receivecoinsdialog.h \
+    src/qt/paymentrequestplus.h \
+    src/qt/walletmodeltransaction.h \
+    src/qt/recentrequeststablemodel.h \
+    src/qt/trafficgraphwidget.h \
+    src/rpcclient.h \
+    src/qt/receiverequestdialog.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -245,7 +268,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/sendcoinsdialog.cpp \
     src/qt/addressbookpage.cpp \
     src/qt/signverifymessagedialog.cpp \
-    src/qt/aboutdialog.cpp \
     src/qt/editaddressdialog.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
     src/alert.cpp \
@@ -281,9 +303,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/transactionview.cpp \
     src/qt/walletmodel.cpp \
     src/qt/walletview.cpp \
-    src/qt/walletstack.cpp \
     src/qt/walletframe.cpp \
-    src/bitcoinrpc.cpp \
     src/rpcdump.cpp \
     src/rpcnet.cpp \
     src/rpcmining.cpp \
@@ -303,7 +323,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/paymentserver.cpp \
     src/qt/rpcconsole.cpp \
     src/noui.cpp \
-    src/leveldb.cpp \
     src/txdb.cpp \
     src/qt/splashscreen.cpp \
     src/blake.c \
@@ -312,7 +331,28 @@ SOURCES += src/qt/bitcoin.cpp \
     src/jh.c \
     src/keccak.c \
     src/skein.c \
-    src/core.cpp
+    src/core.cpp \
+    src/allocators.cpp \
+    src/base58.cpp \
+    src/chainparams.cpp \
+    src/miner.cpp \
+    src/coins.cpp \
+    src/txmempool.cpp \
+    src/qt/intro.cpp \
+    src/qt/utilitydialog.cpp \
+    src/qt/winshutdownmonitor.cpp \
+    src/rpcserver.cpp \
+    src/qt/openuridialog.cpp \
+    src/leveldbwrapper.cpp \
+    src/rpcprotocol.cpp \
+    src/qt/receivecoinsdialog.cpp \
+    src/qt/paymentrequestplus.cpp \
+    src/qt/walletmodeltransaction.cpp \
+    src/qt/recentrequeststablemodel.cpp \
+    src/qt/trafficgraphwidget.cpp \
+    src/rpcclient.cpp \
+    src/qt/receiverequestdialog.cpp \
+    src/rpcmisc.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
 
@@ -328,11 +368,16 @@ FORMS += src/qt/forms/sendcoinsdialog.ui \
 	src/qt/forms/coincontroldialog.ui \
     src/qt/forms/rpcconsole.ui \
     src/qt/forms/optionsdialog.ui \
+    src/qt/forms/receivecoinsdialog.ui \
+    src/qt/forms/openuridialog.ui \
+    src/qt/forms/intro.ui \
+    src/qt/forms/helpmessagedialog.ui \
+    src/qt/forms/receiverequestdialog.ui
 
 contains(USE_QRCODE, 1) {
-HEADERS += src/qt/qrcodedialog.h
-SOURCES += src/qt/qrcodedialog.cpp
-FORMS += src/qt/forms/qrcodedialog.ui
+HEADERS +=
+SOURCES +=
+FORMS +=
 }
 
 contains(BITCOIN_QT_TEST, 1) {
@@ -441,7 +486,7 @@ macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX
+LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
@@ -462,4 +507,5 @@ contains(RELEASE, 1) {
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
 
 DISTFILES += \
-    src/makefile.unix
+    src/makefile.unix \
+	share/qt/protobuf.pri

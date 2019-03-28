@@ -42,8 +42,8 @@ public:
         pchMessageStart[1] = 0x4e;
         pchMessageStart[2] = 0x49;
         pchMessageStart[3] = 0x4d;
-        vAlertPubKey = ParseHex("0493e6dc310a0e444cfb20f3234a238f77699806d47909a42481010c5ce68ff04d3babc959cd037bd3aa6ded929f2b9b4aa2f626786cd7f8495e5bb61e9cfebbc4"); // CHANGE ME
-        nDefaultPort = 8333; // Contradictory docs. Requires online check.
+        //vAlertPubKey = ParseHex("0493e6dc310a0e444cfb20f3234a238f77699806d47909a42481010c5ce68ff04d3babc959cd037bd3aa6ded929f2b9b4aa2f626786cd7f8495e5bb61e9cfebbc4"); // CHANGE ME
+        nDefaultPort = 1212; // Contradictory docs. Requires online check.
         nRPCPort = 8332; // Updated for Animecoin
         bnProofOfWorkLimit = bnMainProofOfWorkLimit;
         nSubsidyHalvingInterval = 120960; // Updated for Animecoin
@@ -63,7 +63,7 @@ public:
         genesis.nVersion = 112; // Inherited by Animecoin
         genesis.nTime    = timeMainGenesisBlock;
         genesis.nBits    = bnMainProofOfWorkLimit.GetCompact();
-        genesis.nNonce   = 12969832; // Updated for Animecoin
+        genesis.nNonce   = 13562315; // Updated for Animecoin
 
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == hashMainGenesisBlock);
@@ -84,12 +84,11 @@ public:
         vSeeds.push_back(CDNSSeedData("151.236.13.37", "151.236.13.37"));
         vSeeds.push_back(CDNSSeedData("115.29.49.156", "115.29.49.156"));
 
-        // CHECK NEEDED
-        base58Prefixes[PUBKEY_ADDRESS] = list_of(58);
-        base58Prefixes[SCRIPT_ADDRESS] = list_of(9);
-        base58Prefixes[SECRET_KEY] =     list_of(186);
-        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x88)(0xB2)(0x1E);
-        base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,23); // Updated for Animecoin
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,9); // Updated for Animecoin
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,151); // Updated for Animecoin
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >(); // xpub
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >(); // xprv
 
         // Convert the pnSeeds array into usable address objects.
         for (unsigned int i = 0; i < ARRAYLEN(pnSeed); i++)
@@ -134,24 +133,24 @@ public:
         pchMessageStart[2] = 0x4e;
         pchMessageStart[3] = 0x41;
         //vAlertPubKey = ParseHex("04218bc3f08237baa077cb1b0e5a81695fcf3f5b4e220b4ad274d05a31d762dd4e191efa7b736a24a32d6fd9ac1b5ebb2787c70e9dfad0016a8b32f7bd2520dbd5"); // CHANGE ME
-        nDefaultPort = 18333; // Contradictory.
+        nDefaultPort = 11212; // Contradictory.
         nRPCPort = 18332; // Updated for Animecoin
         strDataDir = "testnet3";
 
         // Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 978307200; // Updated for Animecoin
-        genesis.nNonce = 906848976; // Updated for Animecoin
+        genesis.nNonce = 907185573; // Updated for Animecoin
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")); // Updated for Animecoin
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        // CHECK NEEDED
-        base58Prefixes[PUBKEY_ADDRESS] = list_of(119);
-        base58Prefixes[SCRIPT_ADDRESS] = list_of(199);
-        base58Prefixes[SECRET_KEY]     = list_of(247);
-        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x35)(0x87)(0xCF);
-        base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x35)(0x83)(0x94);
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,119); //Updated for Animecoin
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,199); //Updated for Animecoin
+        base58Prefixes[SECRET_KEY]     = std::vector<unsigned char>(1,247); //Updated for Animecoin
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >(); // tpub
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >(); // tprv
     }
     virtual Network NetworkID() const { return CChainParams::TESTNET; }
 };
@@ -170,13 +169,13 @@ public:
         pchMessageStart[3] = 0xda;
         nSubsidyHalvingInterval = 150;
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 1);
-        genesis.nTime = 1296688602;
-        genesis.nBits = 0x207fffff;
-        genesis.nNonce = 2;
+        genesis.nTime = 978307200;
+        genesis.nBits = 0x1e0fffff;
+        genesis.nNonce = 907185573;
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
         strDataDir = "regtest";
-        assert(hashGenesisBlock == uint256("0x9cc7038a62931521a044f22acd7d9cf3e6f1f35d4e877ffe106b39e946f8000e"));
+        assert(hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
 
         vSeeds.clear();  // Regtest mode doesn't have any DNS seeds.
     }

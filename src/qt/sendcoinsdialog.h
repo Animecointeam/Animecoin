@@ -1,19 +1,26 @@
+// Copyright (c) 2011-2013 The Bitcoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #ifndef SENDCOINSDIALOG_H
 #define SENDCOINSDIALOG_H
+
+#include "walletmodel.h"
 
 #include <QDialog>
 #include <QString>
 
-namespace Ui {
-    class SendCoinsDialog;
-}
-class WalletModel;
+class OptionsModel;
 class SendCoinsEntry;
 class SendCoinsRecipient;
 
 QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
+
+namespace Ui {
+    class SendCoinsDialog;
+}
 
 /** Dialog for sending bitcoins */
 class SendCoinsDialog : public QDialog
@@ -32,14 +39,14 @@ public:
 
     void setAddress(const QString &address);
     void pasteEntry(const SendCoinsRecipient &rv);
-    bool handleURI(const QString &uri);
+    bool handlePaymentRequest(const SendCoinsRecipient &recipient);
 
 public slots:
     void clear();
     void reject();
     void accept();
     SendCoinsEntry *addEntry();
-    void updateRemoveEnabled();
+    void updateTabsAndLabels();
     void setBalance(qint64 balance, qint64 unconfirmedBalance, qint64 immatureBalance);
 
 private:
@@ -47,11 +54,15 @@ private:
     WalletModel *model;
     bool fNewRecipientAllowed;
 
+    // Process WalletModel::SendCoinsReturn and generate a pair consisting
+    // of a message and message flags for use in emit message().
+    // Additional parameter msgArg can be used via .arg(msgArg).
+    void processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg = QString());
+
 private slots:
     void on_sendButton_clicked();
     void removeEntry(SendCoinsEntry* entry);
     void updateDisplayUnit();
-
     void coinControlFeatureChanged(bool);
     void coinControlButtonClicked();
     void coinControlChangeChecked(int);
@@ -65,6 +76,11 @@ private slots:
     void coinControlClipboardPriority();
     void coinControlClipboardLowOutput();
     void coinControlClipboardChange();
+
+signals:
+    // Fired when a message should be reported to the user
+    void message(const QString &title, const QString &message, unsigned int style);
 };
 
 #endif // SENDCOINSDIALOG_H
+// 0.9.1 Q.C. passed

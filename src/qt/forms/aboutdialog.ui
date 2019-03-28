@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
+    <width>593</width>
     <height>319</height>
    </rect>
   </property>
@@ -50,7 +50,7 @@
           <cursorShape>IBeamCursor</cursorShape>
          </property>
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Anime&lt;/span&gt; version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;b&gt;Animecoin Core&lt;/b&gt; version</string>
          </property>
          <property name="textInteractionFlags">
           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -91,7 +91,7 @@
         <cursorShape>IBeamCursor</cursorShape>
        </property>
        <property name="text">
-        <string notr="true">Copyright &amp;copy; 2009-YYYY The Bitcoin Developers, 2014 The Anime Developers</string>
+        <string notr="true">Copyright &amp;copy; 2009-YYYY The Bitcoin and Anime Core developers</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
@@ -108,11 +108,11 @@
        </property>
        <property name="text">
         <string>
-This is experimental software. For more information visit: http://animeco.in 
+This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard, and sphlib 3.0 by Thomas Pornin.</string>
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -160,12 +160,12 @@ This product includes software developed by the OpenSSL Project for use in the O
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>308</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
@@ -176,12 +176,12 @@ This product includes software developed by the OpenSSL Project for use in the O
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>428</x>
-     <y>308</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
