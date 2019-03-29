@@ -158,8 +158,8 @@ Value setgenerate(const Array& params, bool fHelp)
                 + HelpExampleRpc("setgenerate", "true, 1")
             );
 
-        if (pwalletMain == NULL)
-            throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Method not found (disabled)");
+    if (pwalletMain == NULL)
+        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Method not found (disabled)");
 
     bool fGenerate = true;
     if (params.size() > 0)

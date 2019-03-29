@@ -99,3 +99,4 @@ public slots:
 };
 
 #endif // CLIENTMODEL_H
+// 0.9.1 Q.C. passed

@@ -176,3 +176,4 @@ QString boostPathToQString(const boost::filesystem::path &path);
 } // namespace GUIUtil
 
 #endif // GUIUTIL_H
+// 0.9.1 Q.C. passed

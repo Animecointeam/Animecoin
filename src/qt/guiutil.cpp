@@ -90,7 +90,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
 
     widget->setFont(bitcoinAddressFont());
 #if QT_VERSION >= 0x040700
-    widget->setPlaceholderText(QObject::tr("Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)"));
+    widget->setPlaceholderText(QObject::tr("Enter an Animecoin address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)"));
 #endif
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
@@ -510,12 +510,12 @@ TableViewLastColumnResizingFixer::TableViewLastColumnResizingFixer(QTableView* t
 #ifdef WIN32
 boost::filesystem::path static StartupShortcutPath()
 {
-    return GetSpecialFolderPath(CSIDL_STARTUP) / "Anime.lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / "Animecoin.lnk";
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for Anime.lnk
+    // check for Animecoin.lnk
     return boost::filesystem::exists(StartupShortcutPath());
 }
 
@@ -592,7 +592,7 @@ boost::filesystem::path static GetAutostartDir()
 
 boost::filesystem::path static GetAutostartFilePath()
 {
-    return GetAutostartDir() / "anime.desktop";
+    return GetAutostartDir() / "animecoin.desktop";
 }
 
 bool GetStartOnSystemStartup()
@@ -630,10 +630,10 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         boost::filesystem::ofstream optionFile(GetAutostartFilePath(), std::ios_base::out|std::ios_base::trunc);
         if (!optionFile.good())
             return false;
-        // Write a anime.desktop file to the autostart directory:
+        // Write a animecoin.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
-        optionFile << "Name=Anime\n";
+        optionFile << "Name=Animecoin\n";
         optionFile << "Exec=" << pszExePath << " -min\n";
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -720,6 +720,7 @@ void restoreWindowGeometry(const QString& strSetting, const QSize& defaultSize, 
         pos.setX((screen.width() - size.width()) / 2);
         pos.setY((screen.height() - size.height()) / 2);
     }
+
     parent->resize(size);
     parent->move(pos);
 }
@@ -754,3 +755,4 @@ QString boostPathToQString(const boost::filesystem::path &path)
 #endif
 
 } // namespace GUIUtil
+//0.9.1 Q.C. passed, but check the naming guidelines.

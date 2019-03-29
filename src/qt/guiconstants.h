@@ -41,9 +41,10 @@ static const int MAX_PAYMENT_REQUEST_SIZE = 50000; // bytes
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 35
 
-#define QAPP_ORG_NAME "Anime"
+#define QAPP_ORG_NAME "Animecoin"
 #define QAPP_ORG_DOMAIN "animecoin.tech"
-#define QAPP_APP_NAME_DEFAULT "Anime-Qt"
-#define QAPP_APP_NAME_TESTNET "Anime-Qt-testnet"
+#define QAPP_APP_NAME_DEFAULT "Animecoin-Qt"
+#define QAPP_APP_NAME_TESTNET "Animecoin-Qt-testnet"
 
 #endif // GUICONSTANTS_H
+// 0.9.1 Q.C. passed

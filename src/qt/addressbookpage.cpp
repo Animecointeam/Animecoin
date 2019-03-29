@@ -306,3 +306,4 @@ void AddressBookPage::selectNewAddress(const QModelIndex &parent, int begin, int
         newAddressToSelect.clear();
     }
 }
+// 0.9.1 Q.C. passed

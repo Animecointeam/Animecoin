@@ -194,3 +194,4 @@ QVariant BitcoinUnits::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 }
+// 0.9.1 Q.C. passed

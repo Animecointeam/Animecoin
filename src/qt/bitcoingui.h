@@ -140,6 +140,7 @@ public slots:
        @param[in] ret       pointer to a bool that will be modified to whether Ok was clicked (modal only)
     */
     void message(const QString &title, const QString &message, unsigned int style, bool *ret = NULL);
+
 #ifdef ENABLE_WALLET
     /** Set the encryption status as shown in the UI.
        @param[in] status            current encryption status
@@ -151,7 +152,6 @@ public slots:
 
     /** Show incoming transaction notification for new transactions. */
     void incomingTransaction(const QString& date, int unit, qint64 amount, const QString& type, const QString& address);
-
 #endif
 
 private slots:
@@ -194,3 +194,4 @@ private slots:
 };
 
 #endif // BITCOINGUI_H
+// 0.9.1 Q.C. passed

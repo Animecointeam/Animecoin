@@ -95,3 +95,4 @@ QValidator::State BitcoinAddressCheckValidator::validate(QString &input, int &po
 
     return QValidator::Invalid;
 }
+//0.9.1 Q.C. passed

@@ -93,3 +93,4 @@ public slots:
 };
 
 #endif // ADDRESSTABLEMODEL_H
+// 0.9.1 Q.C. passed.
