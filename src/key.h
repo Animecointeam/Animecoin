@@ -80,6 +80,7 @@ public:
     CPubKey(const T pbegin, const T pend) {
         Set(pbegin, pend);
     }
+
     // Construct a public key from a byte vector.
     CPubKey(const std::vector<unsigned char> &vch) {
         Set(vch.begin(), vch.end());
@@ -167,13 +168,13 @@ public:
 
     // Derive BIP32 child pubkey.
     bool Derive(CPubKey& pubkeyChild, unsigned char ccChild[32], unsigned int nChild, const unsigned char cc[32]) const;
-
 };
 
 
 // secure_allocator is defined in allocators.h
 // CPrivKey is a serialized private key, with all parameters included (279 bytes)
 typedef std::vector<unsigned char, secure_allocator<unsigned char> > CPrivKey;
+
 /** An encapsulated private key. */
 class CKey {
 private:
@@ -189,8 +190,8 @@ private:
 
     // Check whether the 32-byte array pointed to be vch is valid keydata.
     bool static Check(const unsigned char *vch);
-
 public:
+
     // Construct an invalid private key.
     CKey() : fValid(false) {
         LockObject(vch);
@@ -211,6 +212,7 @@ public:
         return a.fCompressed == b.fCompressed && a.size() == b.size() &&
                memcmp(&a.vch[0], &b.vch[0], a.size()) == 0;
     }
+
     // Initialize using begin and end iterators to byte data.
     template<typename T>
     void Set(const T pbegin, const T pend, bool fCompressedIn) {
@@ -242,7 +244,6 @@ public:
     bool SetPrivKey(const CPrivKey &vchPrivKey, bool fCompressed);
 
     // Generate a new private key using a cryptographic PRNG.
-
     void MakeNewKey(bool fCompressed);
 
     // Convert the private key to a CPrivKey (serialized OpenSSL private key data).
@@ -307,3 +308,4 @@ struct CExtKey {
 };
 
 #endif
+// 0.9.1. Q.C. passed

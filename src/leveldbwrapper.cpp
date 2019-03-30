@@ -75,3 +75,4 @@ bool CLevelDBWrapper::WriteBatch(CLevelDBBatch &batch, bool fSync){
     HandleError(status);
     return true;
 }
+// 0.9.1 Q.C. passed, dyn exceptions banned.

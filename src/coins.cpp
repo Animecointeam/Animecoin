@@ -194,3 +194,4 @@ double CCoinsViewCache::GetPriority(const CTransaction &tx, int nHeight)
     }
     return tx.ComputePriority(dResult);
 }
+// 0.9.1 Q.C. passed

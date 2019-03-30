@@ -59,7 +59,6 @@ unsigned int MurmurHash3(unsigned int nHashSeed, const std::vector<unsigned char
     return h1;
 }
 
-
 int HMAC_SHA512_Init(HMAC_SHA512_CTX *pctx, const void *pkey, size_t len)
 {
     unsigned char key[128];
@@ -100,3 +99,4 @@ int HMAC_SHA512_Final(unsigned char *pmd, HMAC_SHA512_CTX *pctx)
     SHA512_Update(&pctx->ctxOuter, buf, 64);
     return SHA512_Final(pmd, &pctx->ctxOuter);
 }
+// 0.9.1 Q.C. consent. Do something about fallthrough design.

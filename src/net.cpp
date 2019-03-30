@@ -2000,3 +2000,4 @@ bool CAddrDB::Read(CAddrMan& addr)
 
     return true;
 }
+// 0.9.1 Q.C. passed, churn mode preserved.

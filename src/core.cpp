@@ -287,3 +287,4 @@ void CBlock::print() const
         LogPrintf("%s ", vMerkleTree[i].ToString());
     LogPrintf("\n");
 }
+//0.9.1 Q.C. passed

@@ -195,7 +195,7 @@ std::string HelpMessage(HelpMessageMode hmm)
        strUsage += "  -blocknotify=<cmd>     " + _("Execute command when the best block changes (%s in cmd is replaced by block hash)") + "\n";
        strUsage += "  -checkblocks=<n>       " + _("How many blocks to check at startup (default: 288, 0 = all)") + "\n";
        strUsage += "  -checklevel=<n>        " + _("How thorough the block verification of -checkblocks is (0-4, default: 3)") + "\n";
-       strUsage += "  -conf=<file>           " + _("Specify configuration file (default: quarkcoin.conf)") + "\n";
+       strUsage += "  -conf=<file>           " + _("Specify configuration file (default: animecoin.conf)") + "\n";
        if (hmm == HMM_BITCOIND)
        {
    #if !defined(WIN32)
@@ -207,7 +207,7 @@ std::string HelpMessage(HelpMessageMode hmm)
        strUsage += "  -keypool=<n>           " + _("Set key pool size to <n> (default: 100)") + "\n";
        strUsage += "  -loadblock=<file>      " + _("Imports blocks from external blk000??.dat file") + " " + _("on startup") + "\n";
        strUsage += "  -par=<n>               " + strprintf(_("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)"), -(int)boost::thread::hardware_concurrency(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS) + "\n";
-       strUsage += "  -pid=<file>            " + _("Specify pid file (default: quarkd.pid)") + "\n";
+       strUsage += "  -pid=<file>            " + _("Specify pid file (default: animecoind.pid)") + "\n";
        strUsage += "  -reindex               " + _("Rebuild block chain index from current blk000??.dat files") + " " + _("on startup") + "\n";
        strUsage += "  -txindex               " + _("Maintain a full transaction index (default: 0)") + "\n";
 
@@ -497,7 +497,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     int nBind = std::max((int)mapArgs.count("-bind"), 1);
     nMaxConnections = GetArg("-maxconnections", 125);
     nMaxConnections = std::max(std::min(nMaxConnections, (int)(FD_SETSIZE - nBind - MIN_CORE_FILEDESCRIPTORS)), 0);
-    int nFD = RaiseFileDescriptorLimit(nMaxConnections + MIN_CORE_FILEDESCRIPTORS + 128);
+    int nFD = RaiseFileDescriptorLimit(nMaxConnections + MIN_CORE_FILEDESCRIPTORS + 128); // Animecoin addition of 128.
     if (nFD < MIN_CORE_FILEDESCRIPTORS)
         return InitError(_("Not enough file descriptors available."));
     if (nFD - MIN_CORE_FILEDESCRIPTORS < nMaxConnections)
@@ -594,7 +594,6 @@ bool AppInit2(boost::thread_group& threadGroup)
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
 
     std::string strDataDir = GetDataDir().string();
-
 #ifdef ENABLE_WALLET
     // Wallet file must be a plain filename without a directory
     if (strWalletFile != boost::filesystem::basename(strWalletFile) + boost::filesystem::extension(strWalletFile))
@@ -611,7 +610,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     if (GetBoolArg("-shrinkdebugfile", !fDebug))
         ShrinkDebugFile();
     LogPrintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    LogPrintf("Quark version %s (%s)\n", FormatFullVersion(), CLIENT_DATE);
+    LogPrintf("Animecoin version %s (%s)\n", FormatFullVersion(), CLIENT_DATE);
     LogPrintf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
 #ifdef ENABLE_WALLET
     LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(0, 0, 0));
@@ -636,6 +635,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     if (!fDisableWallet) {
         LogPrintf("Using wallet %s\n", strWalletFile);
         uiInterface.InitMessage(_("Verifying wallet..."));
+
         if (!bitdb.Open(GetDataDir()))
         {
             // try moving the database env out of the way
@@ -662,6 +662,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             if (!CWalletDB::Recover(bitdb, strWalletFile, true))
                 return false;
         }
+
         if (filesystem::exists(GetDataDir() / strWalletFile))
         {
             CDBEnv::VerifyResult r = bitdb.Verify(strWalletFile, CWalletDB::Recover);
@@ -673,12 +674,11 @@ bool AppInit2(boost::thread_group& threadGroup)
                                          " restore from a backup."), strDataDir);
                 InitWarning(msg);
             }
-                        if (r == CDBEnv::RECOVER_FAIL)
-                            return InitError(_("wallet.dat corrupt, salvage failed"));
+            if (r == CDBEnv::RECOVER_FAIL)
+                return InitError(_("wallet.dat corrupt, salvage failed"));
         }
     } // (!fDisableWallet)
 #endif // ENABLE_WALLET
-
     // ********************************************************* Step 6: network initialization
 
     RegisterNodeSignals(GetNodeSignals());
@@ -883,7 +883,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             if (!fReset) {
                 bool fRet = uiInterface.ThreadSafeMessageBox(
                             strLoadError + ".\n\n" + _("Do you want to rebuild the block database now?"),
-                    "", CClientUIInterface::MSG_ERROR | CClientUIInterface::BTN_ABORT);
+                            "", CClientUIInterface::MSG_ERROR | CClientUIInterface::BTN_ABORT);
                 if (fRet) {
                     fReindex = true;
                     fRequestShutdown = false;
@@ -973,10 +973,10 @@ bool AppInit2(boost::thread_group& threadGroup)
                 InitWarning(msg);
             }
             else if (nLoadWalletRet == DB_TOO_NEW)
-                strErrors << _("Error loading wallet.dat: Wallet requires newer version of Quark") << "\n";
+                strErrors << _("Error loading wallet.dat: Wallet requires newer version of Animecoin") << "\n";
             else if (nLoadWalletRet == DB_NEED_REWRITE)
             {
-                strErrors << _("Wallet needed to be rewritten: restart Quark to complete") << "\n";
+                strErrors << _("Wallet needed to be rewritten: restart Animecoin to complete") << "\n";
                 LogPrintf("%s", strErrors.str());
                 return InitError(strErrors.str());
             }
@@ -1022,7 +1022,7 @@ bool AppInit2(boost::thread_group& threadGroup)
 
         CBlockIndex *pindexRescan = chainActive.Tip();
         if (GetBoolArg("-rescan", false))
-        pindexRescan = chainActive.Genesis();
+            pindexRescan = chainActive.Genesis();
         else
         {
             CWalletDB walletdb(strWalletFile);
@@ -1043,9 +1043,9 @@ bool AppInit2(boost::thread_group& threadGroup)
             nWalletDBUpdated++;
         }
     } // (!fDisableWallet)
-    #else // ENABLE_WALLET
-        LogPrintf("No wallet compiled in!\n");
-    #endif // !ENABLE_WALLET
+#else // ENABLE_WALLET
+    LogPrintf("No wallet compiled in!\n");
+#endif // !ENABLE_WALLET
     // ********************************************************* Step 9: import blocks
 
     // scan for better chains in the block chain database, that are not yet connected in the active best chain
@@ -1053,7 +1053,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     if (!ActivateBestChain(state))
         strErrors << "Failed to connect best block";
 
-     std::vector<boost::filesystem::path> vImportFiles;
+    std::vector<boost::filesystem::path> vImportFiles;
     if (mapArgs.count("-loadblock"))
     {
         BOOST_FOREACH(string strFile, mapMultiArgs["-loadblock"])
@@ -1123,3 +1123,4 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     return !fRequestShutdown;
 }
+// 0.9.1 Q.C. passed, strings updated.

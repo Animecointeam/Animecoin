@@ -625,3 +625,4 @@ inline bool operator<(const CBigNum& a, const CBigNum& b)  { return (BN_cmp(a.cg
 inline bool operator>(const CBigNum& a, const CBigNum& b)  { return (BN_cmp(a.cget(), b.cget()) > 0); }
 
 #endif
+// 0.9.1 changes applied. Testing required.

@@ -90,3 +90,4 @@ public:
 };
 
 #endif /* BITCOIN_BLOOM_H */
+// 0.9.1 Q.C. passed.

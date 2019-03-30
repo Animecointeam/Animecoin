@@ -80,7 +80,6 @@ public:
             if (mi != mapKeys.end())
             {
                 keyOut = mi->second;
-
                 return true;
             }
         }
@@ -95,3 +94,4 @@ typedef std::vector<unsigned char, secure_allocator<unsigned char> > CKeyingMate
 typedef std::map<CKeyID, std::pair<CPubKey, std::vector<unsigned char> > > CryptedKeyMap;
 
 #endif
+// 0.9.1 Q.C. passed

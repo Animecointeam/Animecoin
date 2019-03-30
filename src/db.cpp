@@ -454,7 +454,7 @@ void CDBEnv::Flush(bool fShutdown)
                 CloseDb(strFile);
                 LogPrint("db", "CDBEnv::Flush : %s checkpoint\n", strFile);
                 dbenv.txn_checkpoint(0, 0, 0);
-                printf("%s detach\n", strFile.c_str());
+                LogPrint("db", "CDBEnv::Flush : %s detach\n", strFile);
                 if (!fMockDb)
                     dbenv.lsn_reset(strFile.c_str(), 0);
                 LogPrint("db", "CDBEnv::Flush : %s closed\n", strFile);
@@ -477,3 +477,4 @@ void CDBEnv::Flush(bool fShutdown)
         }
     }
 }
+//0.9.1 Q.C. passed, 1 bug fixed.

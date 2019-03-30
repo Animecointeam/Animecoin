@@ -12,7 +12,7 @@ class CWallet;
 
 namespace boost {
     class thread_group;
-};
+}
 
 extern std::string strWalletFile;
 extern CWallet* pwalletMain;
@@ -32,3 +32,4 @@ enum HelpMessageMode
 std::string HelpMessage(HelpMessageMode mode);
 
 #endif
+// 0.9.1. Q.C. passed

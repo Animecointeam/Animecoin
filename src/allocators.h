@@ -253,3 +253,4 @@ struct zero_after_free_allocator : public std::allocator<T>
 typedef std::basic_string<char, std::char_traits<char>, secure_allocator<char> > SecureString;
 
 #endif
+// 0.9.1 Q.C. passed

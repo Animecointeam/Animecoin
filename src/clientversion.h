@@ -1,6 +1,10 @@
 #ifndef CLIENTVERSION_H
 #define CLIENTVERSION_H
 
+#if defined(HAVE_CONFIG_H)
+#include "bitcoin-config.h"
+#else
+
 //
 // client versioning and copyright year
 //
@@ -18,9 +22,12 @@
 // Todo: update this when changing our copyright comments in the source
 #define COPYRIGHT_YEAR 2019
 
+#endif //HAVE_CONFIG_H
+
 // Converts the parameter X to a string after macro replacement on X has been performed.
 // Don't merge these into one macro!
 #define STRINGIZE(X) DO_STRINGIZE(X)
 #define DO_STRINGIZE(X) #X
 
 #endif // CLIENTVERSION_H
+// 0.9.1 Q.C. passed

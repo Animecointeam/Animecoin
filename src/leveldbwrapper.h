@@ -153,3 +153,4 @@ public:
 };
 
 #endif // BITCOIN_LEVELDBWRAPPER_H
+// 0.9.1 Q.C. passed, dyn exceptions banned.

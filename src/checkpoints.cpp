@@ -66,7 +66,7 @@ namespace Checkpoints
 
     static MapCheckpoints mapCheckpointsRegtest =
         boost::assign::map_list_of
-        ( 0, uint256("0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"))
+        ( 0, uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
         ;
     static const CCheckpointData dataRegtest = {
         &mapCheckpointsRegtest,
@@ -140,7 +140,7 @@ namespace Checkpoints
 
     CBlockIndex* GetLastCheckpoint(const std::map<uint256, CBlockIndex*>& mapBlockIndex)
     {
-        if (!GetBoolArg("-checkpoints", true))
+        if (!fEnabled)
             return NULL;
 
         const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
@@ -295,7 +295,7 @@ namespace Checkpoints
         // while (pindex->pprev && pindex->nHeight + (int)GetArg("-checkpointdepth", -1) > pindexBest->nHeight)
         const CBlockIndex *pindex = chainActive.Tip();
         while (pindex->pprev && pindex->nHeight + (int)GetArg("-checkpointdepth", -1) > chainActive.Tip()->nHeight)
-              pindex = pindex->pprev;
+            pindex = pindex->pprev;
         return pindex->GetBlockHash();
     }
 
@@ -573,3 +573,4 @@ bool CSyncCheckpoint::ProcessSyncCheckpoint(CNode* pfrom)
     LogPrintf("ProcessSyncCheckpoint: sync-checkpoint at %s\n", hashCheckpoint.ToString().c_str());
     return true;
 }
+// 0.9.1 code Q.C. passed, more checkpoints?

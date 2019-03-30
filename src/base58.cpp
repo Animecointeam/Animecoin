@@ -272,3 +272,4 @@ bool CBitcoinSecret::SetString(const char* pszSecret) {
 bool CBitcoinSecret::SetString(const std::string& strSecret) {
     return SetString(strSecret.c_str());
 }
+// 0.9.1 Q.C. passed

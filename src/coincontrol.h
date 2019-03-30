@@ -1,3 +1,7 @@
+// Copyright (c) 2011-2013 The Bitcoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #ifndef COINCONTROL_H
 #define COINCONTROL_H
 
@@ -57,3 +61,4 @@ private:
 };
 
 #endif // COINCONTROL_H
+// 0.9.1 Q.C. passed

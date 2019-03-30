@@ -6,6 +6,10 @@
 #ifndef BITCOIN_MAIN_H
 #define BITCOIN_MAIN_H
 
+#if defined(HAVE_CONFIG_H)
+#include "bitcoin-config.h"
+#endif
+
 #include "bignum.h"
 #include "chainparams.h"
 #include "coins.h"
@@ -59,7 +63,7 @@ static const unsigned int BLOCKFILE_CHUNK_SIZE = 0x1000000; // 16 MiB
 /** The pre-allocation chunk size for rev?????.dat files (since 0.8) */
 static const unsigned int UNDOFILE_CHUNK_SIZE = 0x100000; // 1 MiB
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
-static const int COINBASE_MATURITY = 80;
+static const int COINBASE_MATURITY = 80; // Actually made 80+80 later, should we review it?
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Maximum number of script-checking threads allowed */
@@ -564,16 +568,16 @@ public:
                 vBytes[p / 8] |= vBits[p] << (p % 8);
             READWRITE(vBytes);
         }
-)
+    )
 
-// Construct a partial merkle tree from a list of transaction id's, and a mask that selects a subset of them
-CPartialMerkleTree(const std::vector<uint256> &vTxid, const std::vector<bool> &vMatch);
+    // Construct a partial merkle tree from a list of transaction id's, and a mask that selects a subset of them
+    CPartialMerkleTree(const std::vector<uint256> &vTxid, const std::vector<bool> &vMatch);
 
-CPartialMerkleTree();
+    CPartialMerkleTree();
 
-// extract the matching txid's represented by this partial merkle tree.
-// returns the merkle root, or 0 in case of failure
-uint256 ExtractMatches(std::vector<uint256> &vMatch);
+    // extract the matching txid's represented by this partial merkle tree.
+    // returns the merkle root, or 0 in case of failure
+    uint256 ExtractMatches(std::vector<uint256> &vMatch);
 };
 
 
@@ -605,9 +609,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW = t
 bool AcceptBlock(CBlock& block, CValidationState& state, CDiskBlockPos* dbp = NULL);
 
 bool ConnectTip(CValidationState &state, CBlockIndex *pindexNew);
-
-
-
 
 
 
@@ -961,7 +962,7 @@ public:
         chRejectCode = chRejectCodeIn;
         strRejectReason = strRejectReasonIn;
         corruptionPossible = corruptionIn;
-    if (mode == MODE_ERROR)
+        if (mode == MODE_ERROR)
             return ret;
         nDoS += level;
         mode = MODE_INVALID;
@@ -1010,53 +1011,55 @@ private:
     std::vector<CBlockIndex*> vChain;
 
 public:
-
     /** Returns the index entry for the genesis block of this chain, or NULL if none. */
     CBlockIndex *Genesis() const {
         return vChain.size() > 0 ? vChain[0] : NULL;
-}
-            /** Returns the index entry for the tip of this chain, or NULL if none. */
-            CBlockIndex *Tip() const {
-                return vChain.size() > 0 ? vChain[vChain.size() - 1] : NULL;
     }
 
-                /** Returns the index entry at a particular height in this chain, or NULL if no such height exists. */
-                CBlockIndex *operator[](int nHeight) const {
-                    if (nHeight < 0 || nHeight >= (int)vChain.size())
-                        return NULL;
-                    return vChain[nHeight];
+    /** Returns the index entry for the tip of this chain, or NULL if none. */
+    CBlockIndex *Tip() const {
+        return vChain.size() > 0 ? vChain[vChain.size() - 1] : NULL;
     }
 
-                /** Compare two chains efficiently. */
-                friend bool operator==(const CChain &a, const CChain &b) {
-                    return a.vChain.size() == b.vChain.size() &&
-                           a.vChain[a.vChain.size() - 1] == b.vChain[b.vChain.size() - 1];
-    }
-                /** Efficiently check whether a block is present in this chain. */
-                bool Contains(const CBlockIndex *pindex) const {
-                    return (*this)[pindex->nHeight] == pindex;
-                }
-
-                /** Find the successor of a block in this chain, or NULL if the given index is not found or is the tip. */
-                CBlockIndex *Next(const CBlockIndex *pindex) const {
-                    if (Contains(pindex))
-                        return (*this)[pindex->nHeight + 1];
-                    else
-                        return NULL;
+    /** Returns the index entry at a particular height in this chain, or NULL if no such height exists. */
+    CBlockIndex *operator[](int nHeight) const {
+        if (nHeight < 0 || nHeight >= (int)vChain.size())
+            return NULL;
+        return vChain[nHeight];
     }
 
-                /** Return the maximal height in the chain. Is equal to chain.Tip() ? chain.Tip()->nHeight : -1. */
-                int Height() const {
-                    return vChain.size() - 1;
+    /** Compare two chains efficiently. */
+    friend bool operator==(const CChain &a, const CChain &b) {
+        return a.vChain.size() == b.vChain.size() &&
+                a.vChain[a.vChain.size() - 1] == b.vChain[b.vChain.size() - 1];
     }
-                /** Set/initialize a chain with a given tip. Returns the forking point. */
-                CBlockIndex *SetTip(CBlockIndex *pindex);
 
-                /** Return a CBlockLocator that refers to a block in this chain (by default the tip). */
-                CBlockLocator GetLocator(const CBlockIndex *pindex = NULL) const;
+    /** Efficiently check whether a block is present in this chain. */
+    bool Contains(const CBlockIndex *pindex) const {
+        return (*this)[pindex->nHeight] == pindex;
+    }
 
-                /** Find the last common block between this chain and a locator. */
-                CBlockIndex *FindFork(const CBlockLocator &locator) const;
+    /** Find the successor of a block in this chain, or NULL if the given index is not found or is the tip. */
+    CBlockIndex *Next(const CBlockIndex *pindex) const {
+        if (Contains(pindex))
+            return (*this)[pindex->nHeight + 1];
+        else
+            return NULL;
+    }
+
+    /** Return the maximal height in the chain. Is equal to chain.Tip() ? chain.Tip()->nHeight : -1. */
+    int Height() const {
+        return vChain.size() - 1;
+    }
+
+    /** Set/initialize a chain with a given tip. Returns the forking point. */
+    CBlockIndex *SetTip(CBlockIndex *pindex);
+
+    /** Return a CBlockLocator that refers to a block in this chain (by default the tip). */
+    CBlockLocator GetLocator(const CBlockIndex *pindex = NULL) const;
+
+    /** Find the last common block between this chain and a locator. */
+    CBlockIndex *FindFork(const CBlockLocator &locator) const;
 };
 
 /** The currently-connected chain of blocks. */
@@ -1124,5 +1127,5 @@ protected:
     friend void ::UnregisterAllWallets();
 };
 
-
 #endif
+// 0.9.1 Q.C. passed
