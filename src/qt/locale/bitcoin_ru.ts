@@ -128,7 +128,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Это Ваши адреса для получения платежей. Вы можете дать разные адреса отправителям, чтобы отслеживать, кто именно вам платит.</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="+74"/>
+        <location filename="../addressbookpage.cpp" line="+75"/>
         <source>&amp;Copy Address</source>
         <translation>&amp;Копировать адрес</translation>
     </message>
@@ -179,14 +179,14 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../addressbookpage.cpp" line="-10"/>
         <source>These are your Anime addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ваши адреса для получения средств. Совет: проверьте сумму и адрес назначения перед переводом.</translation>
+        <translation>Ваши адреса для отправки средств. Совет: проверьте сумму и адрес назначения перед переводом.</translation>
     </message>
     <message>
         <source>These are your Anime addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</source>
         <translation type="vanished">Это Ваши адреса для получения платежей. Вы можете дать разные адреса отправителям, чтобы отслеживать, кто именно вам платит.</translation>
     </message>
     <message>
-        <location line="-20"/>
+        <location line="-21"/>
         <source>Choose the address to send coins to</source>
         <translation>Отправить монеты на указанный адрес</translation>
     </message>
@@ -201,7 +201,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>В&amp;ыбрать</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Sending addresses</source>
         <translation>Адреса для отправки</translation>
     </message>
@@ -226,7 +226,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Правка</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+197"/>
         <source>Export Address List</source>
         <translation>Экспортировать список адресов</translation>
     </message>
@@ -428,17 +428,17 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+294"/>
+        <location filename="../bitcoingui.cpp" line="+302"/>
         <source>Sign &amp;message...</source>
         <translation>&amp;Подписать сообщение...</translation>
     </message>
     <message>
-        <location line="+335"/>
+        <location line="+344"/>
         <source>Synchronizing with network...</source>
         <translation>Синхронизация с сетью...</translation>
     </message>
     <message>
-        <location line="-407"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>О&amp;бзор</translation>
     </message>
@@ -459,6 +459,16 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
+        <source>Your address list</source>
+        <translation>Ваши адреса</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Request payment</source>
+        <translation>&amp;Запросить платёж</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Request payments (generates QR codes and anime: URIs)</source>
         <translation>Запросить платеж (создать QR-код или anime: ссылку)</translation>
     </message>
@@ -481,7 +491,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Показать список адресов для получения платежей</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>E&amp;xit</source>
         <translation>В&amp;ыход</translation>
     </message>
@@ -587,13 +597,13 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Показать помощь по Animecoin, чтобы получить список доступных параметров командной строки</translation>
     </message>
     <message>
-        <location line="+159"/>
+        <location line="+161"/>
         <location line="+5"/>
         <source>Animecoin client</source>
         <translation>Клиент Animecoin</translation>
     </message>
     <message numerus="yes">
-        <location line="+142"/>
+        <location line="+149"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation>
             <numerusform>%n активное соединение с сетью</numerusform>
@@ -620,7 +630,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Изменить параметры конфигурации Sitcoin</translation>
     </message>
     <message>
-        <location line="-344"/>
+        <location line="-353"/>
         <source>Backup wallet to another location</source>
         <translation>Сделать резервную копию бумажника в другом месте</translation>
     </message>
@@ -649,18 +659,18 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-212"/>
+        <location line="-220"/>
         <source>Wallet</source>
         <translation>Бумажник</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+654"/>
+        <location line="+671"/>
         <source>Animecoin</source>
         <translation>Animecoin</translation>
     </message>
     <message>
-        <location line="-500"/>
+        <location line="-517"/>
         <source>&amp;Send</source>
         <translation>&amp;Отправить</translation>
     </message>
@@ -682,7 +692,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">&amp;О Anime</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+51"/>
         <source>Modify configuration options for Anime</source>
         <translation>Изменить параметры конфигурации</translation>
     </message>
@@ -751,8 +761,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Панель вкладок</translation>
     </message>
     <message>
-        <location line="-283"/>
-        <location line="+375"/>
+        <location line="-291"/>
+        <location line="+385"/>
         <source>[testnet]</source>
         <translation>[тестовая сеть]</translation>
     </message>
@@ -769,7 +779,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         </translation>
     </message>
     <message>
-        <location line="+164"/>
+        <location line="+171"/>
         <source>No block source available...</source>
         <translation>Источник блоков недоступен...</translation>
     </message>
@@ -3954,7 +3964,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Экспортировать данные из вкладки в файл</translation>
     </message>
     <message>
-        <location line="+184"/>
+        <location line="+192"/>
         <source>Backup Wallet</source>
         <translation>Сделать резервную копию бумажника</translation>
     </message>

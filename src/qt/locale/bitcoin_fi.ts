@@ -99,7 +99,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="vanished">Nämä ovat Anime-osoitteesi joihin voit vastaanottaa maksuja. Voit haluta antaa jokaiselle maksajalle omansa, että pystyt seuraamaan keneltä maksut tulevat.</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="+74"/>
+        <location filename="../addressbookpage.cpp" line="+75"/>
         <source>&amp;Copy Address</source>
         <translation>&amp;Kopioi Osoite</translation>
     </message>
@@ -144,7 +144,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation>&amp;Poista</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="-30"/>
+        <location filename="../addressbookpage.cpp" line="-31"/>
         <source>Choose the address to send coins to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -159,7 +159,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Sending addresses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,7 +189,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation>&amp;Muokkaa</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+197"/>
         <source>Export Address List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -395,17 +395,17 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+294"/>
+        <location filename="../bitcoingui.cpp" line="+302"/>
         <source>Sign &amp;message...</source>
         <translation>&amp;Allekirjoita viesti...</translation>
     </message>
     <message>
-        <location line="+335"/>
+        <location line="+344"/>
         <source>Synchronizing with network...</source>
         <translation>Synkronoidaan verkon kanssa...</translation>
     </message>
     <message>
-        <location line="-407"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>&amp;Yleisnäkymä</translation>
     </message>
@@ -426,6 +426,16 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
     </message>
     <message>
         <location line="+7"/>
+        <source>Your address list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Request payments (generates QR codes and anime: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -448,7 +458,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="vanished">Näytä Animeien vastaanottamiseen käytetyt osoitteet</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>E&amp;xit</source>
         <translation>L&amp;opeta</translation>
     </message>
@@ -554,13 +564,13 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+159"/>
+        <location line="+161"/>
         <location line="+5"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+142"/>
+        <location line="+149"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -582,7 +592,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="vanished">Lähetä kolikoita Anime-osoitteeseen</translation>
     </message>
     <message>
-        <location line="-356"/>
+        <location line="-365"/>
         <source>Modify configuration options for Anime</source>
         <translation>Muuta Animein konfiguraatioasetuksia</translation>
     </message>
@@ -616,18 +626,18 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-212"/>
+        <location line="-220"/>
         <source>Wallet</source>
         <translation>Lompakko</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+654"/>
+        <location line="+671"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-500"/>
+        <location line="-517"/>
         <source>&amp;Send</source>
         <translation>&amp;Lähetä</translation>
     </message>
@@ -645,7 +655,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation type="vanished">&amp;Tietoa Animeista</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+54"/>
         <location line="+2"/>
         <source>&amp;Show / Hide</source>
         <translation>&amp;Näytä / Piilota</translation>
@@ -689,8 +699,8 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         <translation>Välilehtipalkki</translation>
     </message>
     <message>
-        <location line="-283"/>
-        <location line="+375"/>
+        <location line="-291"/>
+        <location line="+385"/>
         <source>[testnet]</source>
         <translation>[testnet]</translation>
     </message>
@@ -706,7 +716,7 @@ Tämä ohjelma sisältää OpenSSL projektin OpenSSL työkalupakin (http://www.o
         </translation>
     </message>
     <message>
-        <location line="+164"/>
+        <location line="+171"/>
         <source>No block source available...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3724,7 +3734,7 @@ Osoite: %4</translation>
         <translation>Vie auki olevan välilehden tiedot tiedostoon</translation>
     </message>
     <message>
-        <location line="+184"/>
+        <location line="+192"/>
         <source>Backup Wallet</source>
         <translation type="unfinished"></translation>
     </message>

@@ -51,11 +51,13 @@ WalletView::WalletView(QWidget *parent):
     vbox->addLayout(hbox_buttons);
     transactionsPage->setLayout(vbox);
 
+    addressPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::ReceivingTab, nullptr);
     receiveCoinsPage = new ReceiveCoinsDialog();
     sendCoinsPage = new SendCoinsDialog();
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
+    addWidget(addressPage);
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
 
@@ -110,6 +112,7 @@ void WalletView::setWalletModel(WalletModel *walletModel)
     // Put transaction list in tabs
     transactionView->setModel(walletModel);
     overviewPage->setWalletModel(walletModel);
+    addressPage->setModel(walletModel->getAddressTableModel());
     receiveCoinsPage->setModel(walletModel);
     sendCoinsPage->setModel(walletModel);
 
@@ -158,6 +161,11 @@ void WalletView::gotoOverviewPage()
 void WalletView::gotoHistoryPage()
 {
     setCurrentWidget(transactionsPage);
+}
+
+void WalletView::gotoAddressPage()
+{
+    setCurrentWidget(addressPage);
 }
 
 void WalletView::gotoReceiveCoinsPage()

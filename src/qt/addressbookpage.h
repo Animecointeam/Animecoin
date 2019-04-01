@@ -36,7 +36,8 @@ public:
 
     enum Mode {
         ForSelection, /**< Open address book to pick address */
-        ForEditing  /**< Open address book for editing */
+        ForEditing,  /**< Open address book for editing */
+        ForInlineEditing /**< Same as above but without closing option */
     };
 
     explicit AddressBookPage(Mode mode, Tabs tab, QWidget *parent);

@@ -102,7 +102,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Αυτές είναι οι Anime διευθύνσεις σας για να λαμβάνετε πληρωμές. Δίνοντας μία ξεχωριστή διεύθυνση σε κάθε αποστολέα, θα μπορείτε να ελέγχετε ποιος σας πληρώνει.</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="+74"/>
+        <location filename="../addressbookpage.cpp" line="+75"/>
         <source>&amp;Copy Address</source>
         <translation>&amp;Αντιγραφή διεύθυνσης</translation>
     </message>
@@ -147,7 +147,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Διαγραφή</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="-30"/>
+        <location filename="../addressbookpage.cpp" line="-31"/>
         <source>Choose the address to send coins to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -162,7 +162,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Sending addresses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -192,7 +192,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Επεξεργασία</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+197"/>
         <source>Export Address List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -399,17 +399,17 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+294"/>
+        <location filename="../bitcoingui.cpp" line="+302"/>
         <source>Sign &amp;message...</source>
         <translation>Υπογραφή &amp;Μηνύματος...</translation>
     </message>
     <message>
-        <location line="+335"/>
+        <location line="+344"/>
         <source>Synchronizing with network...</source>
         <translation>Συγχρονισμός με το δίκτυο...</translation>
     </message>
     <message>
-        <location line="-407"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>&amp;Επισκόπηση</translation>
     </message>
@@ -430,6 +430,16 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
+        <source>Your address list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Request payments (generates QR codes and anime: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -452,7 +462,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Εμφάνισε την λίστα των διευθύνσεων για την παραλαβή πληρωμων</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>E&amp;xit</source>
         <translation>Έ&amp;ξοδος</translation>
     </message>
@@ -558,13 +568,13 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+159"/>
+        <location line="+161"/>
         <location line="+5"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+142"/>
+        <location line="+149"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -586,7 +596,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Στείλε νομισματα σε μια διεύθυνση anime</translation>
     </message>
     <message>
-        <location line="-356"/>
+        <location line="-365"/>
         <source>Modify configuration options for Anime</source>
         <translation>Επεργασία  ρυθμισεων επιλογών για το Anime</translation>
     </message>
@@ -620,18 +630,18 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-212"/>
+        <location line="-220"/>
         <source>Wallet</source>
         <translation>Πορτοφόλι</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+654"/>
+        <location line="+671"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-500"/>
+        <location line="-517"/>
         <source>&amp;Send</source>
         <translation>&amp;Αποστολή</translation>
     </message>
@@ -649,7 +659,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">&amp;Σχετικα:Anime</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+54"/>
         <location line="+2"/>
         <source>&amp;Show / Hide</source>
         <translation>&amp;Εμφάνισε/Κρύψε</translation>
@@ -693,8 +703,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Εργαλειοθήκη καρτελών</translation>
     </message>
     <message>
-        <location line="-283"/>
-        <location line="+375"/>
+        <location line="-291"/>
+        <location line="+385"/>
         <source>[testnet]</source>
         <translation>[testnet]</translation>
     </message>
@@ -710,7 +720,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         </translation>
     </message>
     <message>
-        <location line="+164"/>
+        <location line="+171"/>
         <source>No block source available...</source>
         <translation>Η πηγή του μπλοκ δεν ειναι διαθέσιμη... </translation>
     </message>
@@ -3759,7 +3769,7 @@ Address: %4
         <translation>Εξαγωγή δεδομένων καρτέλας σε αρχείο</translation>
     </message>
     <message>
-        <location line="+184"/>
+        <location line="+192"/>
         <source>Backup Wallet</source>
         <translation>Αντίγραφο ασφαλείας του πορτοφολιού</translation>
     </message>

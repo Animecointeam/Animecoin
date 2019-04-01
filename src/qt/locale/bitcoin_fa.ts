@@ -93,7 +93,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">این آدرسها، آدرسهای anime شما برای دریافت وجوه هستند. شما ممکن است آدرسهای متفاوت را به هر گیرنده اختصاص دهید که بتوانید مواردی که پرداخت می کنید را پیگیری نمایید</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="+74"/>
+        <location filename="../addressbookpage.cpp" line="+75"/>
         <source>&amp;Copy Address</source>
         <translation>کپی آدرس</translation>
     </message>
@@ -138,7 +138,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="-30"/>
+        <location filename="../addressbookpage.cpp" line="-31"/>
         <source>Choose the address to send coins to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,7 +153,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Sending addresses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,7 +183,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>ویرایش</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+197"/>
         <source>Export Address List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -386,17 +386,17 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+294"/>
+        <location filename="../bitcoingui.cpp" line="+302"/>
         <source>Sign &amp;message...</source>
         <translation>امضا و پیام</translation>
     </message>
     <message>
-        <location line="+335"/>
+        <location line="+344"/>
         <source>Synchronizing with network...</source>
         <translation>همگام سازی با شبکه ...</translation>
     </message>
     <message>
-        <location line="-407"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>بررسی اجمالی</translation>
     </message>
@@ -417,6 +417,16 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
+        <source>Your address list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Request payments (generates QR codes and anime: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -439,7 +449,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">نمایش لیست آدرس ها برای در یافت پر داخت ها</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>E&amp;xit</source>
         <translation>خروج</translation>
     </message>
@@ -545,13 +555,13 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+159"/>
+        <location line="+161"/>
         <location line="+5"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+142"/>
+        <location line="+149"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -572,7 +582,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">سکه ها را به آدرس bitocin ارسال کن</translation>
     </message>
     <message>
-        <location line="-356"/>
+        <location line="-365"/>
         <source>Modify configuration options for Anime</source>
         <translation>انتخابهای پیکربندی را برای anime اصلاح کن</translation>
     </message>
@@ -606,18 +616,18 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">یت کویین </translation>
     </message>
     <message>
-        <location line="-212"/>
+        <location line="-220"/>
         <source>Wallet</source>
         <translation>wallet</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+654"/>
+        <location line="+671"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-500"/>
+        <location line="-517"/>
         <source>&amp;Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -631,7 +641,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">در مورد anime</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+54"/>
         <location line="+2"/>
         <source>&amp;Show / Hide</source>
         <translation>&amp;نمایش/ عدم نمایش</translation>
@@ -667,8 +677,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>نوار ابزار زبانه ها</translation>
     </message>
     <message>
-        <location line="-283"/>
-        <location line="+375"/>
+        <location line="-291"/>
+        <location line="+385"/>
         <source>[testnet]</source>
         <translation>آزمایش شبکه</translation>
     </message>
@@ -683,7 +693,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         </translation>
     </message>
     <message>
-        <location line="+164"/>
+        <location line="+171"/>
         <source>No block source available...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3695,7 +3705,7 @@ Address: %4
         <translation>داده ها  نوارِ جاری را به فایل انتقال دهید</translation>
     </message>
     <message>
-        <location line="+184"/>
+        <location line="+192"/>
         <source>Backup Wallet</source>
         <translation type="unfinished"></translation>
     </message>

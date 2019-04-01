@@ -7,6 +7,7 @@
 
 #include <QStackedWidget>
 
+class AddressBookPage;
 class BitcoinGUI;
 class ClientModel;
 class OverviewPage;
@@ -56,6 +57,7 @@ private:
 
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
+    AddressBookPage *addressPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
 
@@ -68,6 +70,8 @@ public slots:
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+    /** Switch to olschoold receive coins page */
+    void gotoAddressPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */

@@ -101,7 +101,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="vanished">Estas son tus direcciones Anime para recibir pagos. Puedes utilizar una diferente por cada persona emisora para saber quien te está pagando.</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="+74"/>
+        <location filename="../addressbookpage.cpp" line="+75"/>
         <source>&amp;Copy Address</source>
         <translation>&amp;Copia dirección</translation>
     </message>
@@ -138,7 +138,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation>&amp;Borrar</translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="-30"/>
+        <location filename="../addressbookpage.cpp" line="-31"/>
         <source>Choose the address to send coins to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,7 +153,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Sending addresses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,7 +183,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation>&amp;Editar</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+197"/>
         <source>Export Address List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -385,17 +385,17 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+294"/>
+        <location filename="../bitcoingui.cpp" line="+302"/>
         <source>Sign &amp;message...</source>
         <translation>Firmar &amp;Mensaje...</translation>
     </message>
     <message>
-        <location line="+335"/>
+        <location line="+344"/>
         <source>Synchronizing with network...</source>
         <translation>Sincronizando con la red...</translation>
     </message>
     <message>
-        <location line="-407"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>&amp;Vista general</translation>
     </message>
@@ -416,6 +416,16 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
     </message>
     <message>
         <location line="+7"/>
+        <source>Your address list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Request payments (generates QR codes and anime: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -438,7 +448,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="vanished">Muestra la lista de direcciónes utilizadas para recibir pagos</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>E&amp;xit</source>
         <translation>&amp;Salir</translation>
     </message>
@@ -544,13 +554,13 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+159"/>
+        <location line="+161"/>
         <location line="+5"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+142"/>
+        <location line="+149"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -572,7 +582,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="vanished">Enviar monedas a una dirección anime</translation>
     </message>
     <message>
-        <location line="-356"/>
+        <location line="-365"/>
         <source>Modify configuration options for Anime</source>
         <translation>Modifica las opciones de configuración de anime</translation>
     </message>
@@ -606,18 +616,18 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-212"/>
+        <location line="-220"/>
         <source>Wallet</source>
         <translation>Cartera</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+654"/>
+        <location line="+671"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-500"/>
+        <location line="-517"/>
         <source>&amp;Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -631,7 +641,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation type="vanished">&amp;Sobre Anime</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+54"/>
         <location line="+2"/>
         <source>&amp;Show / Hide</source>
         <translation>&amp;Mostrar/Ocultar</translation>
@@ -667,8 +677,8 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         <translation>Barra de pestañas</translation>
     </message>
     <message>
-        <location line="-283"/>
-        <location line="+375"/>
+        <location line="-291"/>
+        <location line="+385"/>
         <source>[testnet]</source>
         <translation>[red-de-pruebas]</translation>
     </message>
@@ -684,7 +694,7 @@ Eric Young (eay@cryptsoft.com) y UPnP software escrito por Thomas Bernard.</tran
         </translation>
     </message>
     <message>
-        <location line="+164"/>
+        <location line="+171"/>
         <source>No block source available...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3581,7 +3591,7 @@ Dirección: %4</translation>
         <translation>Exportar los datos de la pestaña actual a un archivo</translation>
     </message>
     <message>
-        <location line="+184"/>
+        <location line="+192"/>
         <source>Backup Wallet</source>
         <translation type="unfinished"></translation>
     </message>

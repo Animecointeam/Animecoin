@@ -1,11 +1,11 @@
 *.tar.gz
 
 *.exe
-src/quark
-src/quarkd
-src/quark-cli
-src/test/test_quark
-src/qt/test/test_quark-qt
+src/animecoin
+src/animecoind
+src/animecoin-cli
+src/test/test_animecoin
+src/qt/test/test_animecoin-qt
 
 Makefile.in
 aclocal.m4
@@ -36,7 +36,7 @@ src/qt/test/moc*.cpp
 *.o
 *.o-*
 *.patch
-.quark
+.animecoin
 *.a
 *.pb.cc
 *.pb.h
@@ -51,12 +51,12 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-quark-qt
-Quark-Qt.app
+animecoin-qt
+animecoin-Qt.app
 
 # Unit-tests
 Makefile.test
-quark-qt_test
+animecoin-qt_test
 
 # Resources cpp
 qrc_*.cpp

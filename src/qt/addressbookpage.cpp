@@ -51,6 +51,7 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
         ui->exportButton->hide();
         break;
     case ForEditing:
+    case ForInlineEditing:
         switch(tab)
         {
         case SendingTab: setWindowTitle(tr("Sending addresses")); break;
@@ -93,7 +94,10 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
 
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextualMenu(QPoint)));
 
-    connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(accept()));
+    if (mode!=ForInlineEditing)
+        connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(accept()));
+    else
+        ui->closeButton->hide();
 }
 
 AddressBookPage::~AddressBookPage()
