@@ -30,4 +30,3 @@
 #define DO_STRINGIZE(X) #X
 
 #endif // CLIENTVERSION_H
-// 0.9.1 Q.C. passed

@@ -22,4 +22,3 @@ TransactionDescDialog::~TransactionDescDialog()
 {
     delete ui;
 }
-// 0.9.1 Q.C. passed

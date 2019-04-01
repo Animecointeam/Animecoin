@@ -492,4 +492,3 @@ void RPCConsole::updateTrafficStats(quint64 totalBytesIn, quint64 totalBytesOut)
     ui->lblBytesIn->setText(FormatBytes(totalBytesIn));
     ui->lblBytesOut->setText(FormatBytes(totalBytesOut));
 }
-// 0.9.1 Q.C. passed

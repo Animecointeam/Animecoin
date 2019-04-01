@@ -193,4 +193,3 @@ WalletView *WalletFrame::currentWalletView()
 {
     return qobject_cast<WalletView*>(walletStack->currentWidget());
 }
-// 0.9.1 Q.C. passed

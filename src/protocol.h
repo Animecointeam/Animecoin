@@ -138,4 +138,3 @@ enum
 };
 
 #endif // __INCLUDED_PROTOCOL_H__
-// 0.9.1 Q.C. passed

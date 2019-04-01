@@ -794,5 +794,3 @@ Value sendrawtransaction(const Array& params, bool fHelp)
 
     return hashTx.GetHex();
 }
-
-// 0.9.1 Q.C. passed, some strings fixed.

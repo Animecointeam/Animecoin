@@ -477,4 +477,3 @@ void CDBEnv::Flush(bool fShutdown)
         }
     }
 }
-//0.9.1 Q.C. passed, 1 bug fixed.

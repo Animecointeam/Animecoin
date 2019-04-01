@@ -89,4 +89,3 @@ bool CSVModelWriter::write()
 
     return file.error() == QFile::NoError;
 }
-// 0.9.1 Q.C. passed

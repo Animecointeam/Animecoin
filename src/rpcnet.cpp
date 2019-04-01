@@ -347,7 +347,7 @@ Value getnetworkinfo(const Array& params, bool fHelp)
             "  \"timeoffset\": xxxxx,        (numeric) the time offset\n"
             "  \"connections\": xxxxx,       (numeric) the number of connections\n"
             "  \"proxy\": \"host:port\",     (string, optional) the proxy used by the server\n"
-            "  \"relayfee\": x.xxxx,         (numeric) minimum relay fee for non-free transactions in btc/kb\n"
+            "  \"relayfee\": x.xxxx,         (numeric) minimum relay fee for non-free transactions in ANI/kb\n"
             "  \"localaddresses\": [,        (array) list of local addresses\n"
             "    \"address\": \"xxxx\",      (string) network address\n"
             "    \"port\": xxx,              (numeric) network port\n"
@@ -384,4 +384,3 @@ Value getnetworkinfo(const Array& params, bool fHelp)
     obj.push_back(Pair("localaddresses", localAddresses));
     return obj;
 }
-// 0.9.1 code Q.C. passed

@@ -32,4 +32,3 @@ enum HelpMessageMode
 std::string HelpMessage(HelpMessageMode mode);
 
 #endif
-// 0.9.1. Q.C. passed

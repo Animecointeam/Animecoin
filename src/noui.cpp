@@ -45,4 +45,3 @@ void noui_connect()
     uiInterface.ThreadSafeMessageBox.connect(noui_ThreadSafeMessageBox);
     uiInterface.InitMessage.connect(noui_InitMessage);
 }
-// 0.9.1 Q.C. passed

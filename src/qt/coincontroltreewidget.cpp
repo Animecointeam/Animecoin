@@ -30,4 +30,3 @@ void CoinControlTreeWidget::keyPressEvent(QKeyEvent *event)
         this->QTreeWidget::keyPressEvent(event);
     }
 }
-// 0.9.1 Q.C. passed

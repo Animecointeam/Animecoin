@@ -49,4 +49,3 @@ static const int BIP0031_VERSION = 60000;
 static const int MEMPOOL_GD_VERSION = 60002;
 
 #endif
-// 0.9.1 Q.C. passed

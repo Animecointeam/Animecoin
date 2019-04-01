@@ -137,4 +137,3 @@ int HMAC_SHA512_Update(HMAC_SHA512_CTX *pctx, const void *pdata, size_t len);
 int HMAC_SHA512_Final(unsigned char *pmd, HMAC_SHA512_CTX *pctx);
 
 #endif
-// 0.9.1 Q.C. passed

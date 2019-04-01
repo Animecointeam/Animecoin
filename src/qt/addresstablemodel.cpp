@@ -450,4 +450,3 @@ void AddressTableModel::emitDataChanged(int idx)
 {
     emit dataChanged(index(idx, 0, QModelIndex()), index(idx, columns.length()-1, QModelIndex()));
 }
-// 0.9.1 Q.C. passed

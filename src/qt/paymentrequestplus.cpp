@@ -159,6 +159,7 @@ bool PaymentRequestPlus::getMerchant(X509_STORE* certStore, QString& merchant) c
 		rcopy.SerializeToString(&data_to_verify);
 
         EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+        if (!ctx) throw SSLVerifyError("Error allocating OpenSSL context.");
 
 		EVP_PKEY *pubkey = X509_get_pubkey(signing_cert);
         EVP_MD_CTX_init(ctx);
@@ -168,6 +169,8 @@ bool PaymentRequestPlus::getMerchant(X509_STORE* certStore, QString& merchant) c
 
 			throw SSLVerifyError("Bad signature, invalid PaymentRequest.");
 		}
+
+        EVP_MD_CTX_free(ctx);
 
 		// OpenSSL API for getting human printable strings from certs is baroque.
 		int textlen = X509_NAME_get_text_by_NID(certname, NID_commonName, NULL, 0);

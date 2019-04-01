@@ -245,4 +245,3 @@ bool SendCoinsEntry::updateLabel(const QString &address)
 
     return false;
 }
-// 0.9.1 Q.C. passed

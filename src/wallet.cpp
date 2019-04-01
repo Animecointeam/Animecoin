@@ -2081,5 +2081,3 @@ bool CWallet::GetDestData(const CTxDestination &dest, const std::string &key, st
     }
     return false;
 }
-
-// 0.9.1 Q.C. pased. Notes: CENT->MIN_CHANGE

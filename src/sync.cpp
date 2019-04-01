@@ -146,4 +146,3 @@ void AssertLockHeldInternal(const char *pszName, const char* pszFile, int nLine,
 }
 
 #endif /* DEBUG_LOCKORDER */
-// 0.9.1 Q.C. passed

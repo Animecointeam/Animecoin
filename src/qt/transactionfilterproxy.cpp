@@ -100,4 +100,3 @@ int TransactionFilterProxy::rowCount(const QModelIndex &parent) const
         return QSortFilterProxyModel::rowCount(parent);
     }
 }
-// 0.9.1 Q.C. passed

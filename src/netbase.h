@@ -153,4 +153,3 @@ bool ConnectSocketByName(CService &addr, SOCKET& hSocketRet, const char *pszDest
 std::string NetworkErrorString(int err);
 
 #endif
-//0.9.1. Q.C. passed

@@ -1449,4 +1449,3 @@ std::string DateTimeStrFormat(const char* pszFormat, int64_t nTime)
     ss << boost::posix_time::from_time_t(nTime);
     return ss.str();
 }
-// 0.9.1 Q.C. passed

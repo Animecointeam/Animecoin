@@ -323,4 +323,3 @@ Value dumpwallet(const Array& params, bool fHelp)
     file.close();
     return Value::null;
 }
-// 0.9.1 code Q.C. passed, kindly report any wrong strings.

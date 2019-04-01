@@ -612,4 +612,3 @@ int main(int argc, char *argv[])
     return app.getReturnValue();
 }
 #endif // BITCOIN_QT_TEST
-// 0.9.1 Q.C. passed, strings in review.

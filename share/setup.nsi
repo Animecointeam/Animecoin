@@ -1,33 +1,36 @@
-Name Anime
+Name "Animecoin (-bit)"
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.8.3.2
-!define COMPANY "Anime project"
-!define URL http://animeco.in
+!define VERSION 0.9.2
+!define COMPANY "Animecoin project"
+!define URL http://animecoin.tech/
 
 # MUI Symbol Definitions
-!define MUI_ICON "..\share\pixmaps\bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "..\share\pixmaps\nsis-wizard.bmp"
+!define MUI_ICON "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "..\share\pixmaps\nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER Anime
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Animecoin"
 !define MUI_FINISHPAGE_RUN $INSTDIR\animecoin-qt.exe
 !define MUI_UNICON "..\share\pixmaps\bitcoin.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "..\share\pixmaps\nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
 !include Sections.nsh
 !include MUI2.nsh
+!if "" == "64"
+!include x64.nsh
+!endif
 
 # Variables
 Var StartMenuGroup
@@ -45,14 +48,18 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile anime-0.8.3.2-win32-setup.exe
-InstallDir $PROGRAMFILES\Anime
+OutFile /home/daiyousei/caraphinneth/Animecoin/bitcoin-${VERSION}-win-setup.exe
+!if "" == "64"
+InstallDir $PROGRAMFILES64\Animecoin
+!else
+InstallDir $PROGRAMFILES\Animecoin
+!endif
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
-VIProductVersion 0.8.3.2
-VIAddVersionKey ProductName Anime
+VIProductVersion ${VERSION}.1
+VIAddVersionKey ProductName Animecoin
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
@@ -66,8 +73,12 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ..\release\animecoin-qt.exe
-    WriteRegStr HKCU "${REGKEY}\Components" Main 1
+    File /home/daiyousei/caraphinneth/Animecoin/release/animecoin-qt.exe
+    SetOutPath $INSTDIR\daemon
+    File /home/daiyousei/caraphinneth/Animecoin/release/animecoind.exe
+    File /home/daiyousei/caraphinneth/Animecoin/release/animecoin-cli.exe
+    SetOutPath $INSTDIR
+    WriteRegStr HKCU "${REGKEY}\Components" Main 1    
 SectionEnd
 
 Section -post SEC0001
@@ -76,8 +87,8 @@ Section -post SEC0001
     WriteUninstaller $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Anime.lnk" $INSTDIR\animecoin-qt.exe
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall Anime.lnk" $INSTDIR\uninstall.exe
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\animecoin-qt.exe
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
@@ -114,9 +125,9 @@ SectionEnd
 
 Section -un.post UNSEC0001
     DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall Anime.lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Anime.lnk"
-    Delete /REBOOTOK "$SMSTARTUP\Anime.lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"
+    Delete /REBOOTOK "$SMSTARTUP\Animecoin.lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     Delete /REBOOTOK $INSTDIR\debug.log
     Delete /REBOOTOK $INSTDIR\db.log
@@ -124,7 +135,7 @@ Section -un.post UNSEC0001
     DeleteRegValue HKCU "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKCU "${REGKEY}"
-    DeleteRegKey HKCR "anime"
+    DeleteRegKey HKCR "animecoin"
     RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
     RmDir /REBOOTOK $INSTDIR
     Push $R0
@@ -137,6 +148,15 @@ SectionEnd
 # Installer functions
 Function .onInit
     InitPluginsDir
+    !if "" == "64"
+    ${If} ${RunningX64}
+      ; disable registry redirection (enable access to 64-bit portion of registry)
+      SetRegView 64
+    ${Else}
+      MessageBox MB_OK|MB_ICONSTOP "Cannot install 64-bit version on a 32-bit system."
+      Abort
+    ${EndIf}
+!endif
 FunctionEnd
 
 # Uninstaller functions

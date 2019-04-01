@@ -693,4 +693,3 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
 CScript CombineSignatures(CScript scriptPubKey, const CTransaction& txTo, unsigned int nIn, const CScript& scriptSig1, const CScript& scriptSig2);
 
 #endif
-// 0.9.1 Q.C. passed

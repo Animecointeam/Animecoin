@@ -55,4 +55,3 @@ private:
 };
 
 #endif // TRANSACTIONFILTERPROXY_H
-// 0.9.1 Q.C. passed

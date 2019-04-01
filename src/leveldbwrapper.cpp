@@ -10,7 +10,7 @@
 #include <leveldb/cache.h>
 #include <leveldb/env.h>
 #include <leveldb/filter_policy.h>
-#include <memenv/memenv.h>
+#include <memenv.h>
 
 void HandleError(const leveldb::Status &status){
     if (status.ok())
@@ -75,4 +75,3 @@ bool CLevelDBWrapper::WriteBatch(CLevelDBBatch &batch, bool fSync){
     HandleError(status);
     return true;
 }
-// 0.9.1 Q.C. passed, dyn exceptions banned.

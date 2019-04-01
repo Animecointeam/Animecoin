@@ -143,4 +143,3 @@ void SplashScreen::unsubscribeFromCoreSignals()
         pwalletMain->ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
 #endif
 }
-// 0.9.1 Q.C. passed, design TBAdj

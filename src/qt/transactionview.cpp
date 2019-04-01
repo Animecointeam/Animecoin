@@ -480,4 +480,3 @@ void TransactionView::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
     columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddress);
 }
-// 0.9.1 Q.C. passed

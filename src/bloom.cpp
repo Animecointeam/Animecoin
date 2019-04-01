@@ -180,4 +180,3 @@ void CBloomFilter::UpdateEmptyFull()
     isFull = full;
     isEmpty = empty;
 }
-// 0.9.1 Q.C. passed

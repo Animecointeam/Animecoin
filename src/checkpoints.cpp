@@ -573,4 +573,3 @@ bool CSyncCheckpoint::ProcessSyncCheckpoint(CNode* pfrom)
     LogPrintf("ProcessSyncCheckpoint: sync-checkpoint at %s\n", hashCheckpoint.ToString().c_str());
     return true;
 }
-// 0.9.1 code Q.C. passed, more checkpoints?

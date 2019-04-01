@@ -173,7 +173,7 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
     QTPLUGIN += qcncodecs qjpcodecs qtwcodecs qkrcodecs qtaccessiblewidgets
 }
 
-INCLUDEPATH += src/leveldb/include src/leveldb/helpers
+INCLUDEPATH += src/leveldb/include src/leveldb/helpers src/leveldb/helpers/memenv
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
@@ -536,9 +536,3 @@ contains(RELEASE, 1) {
     LIBS += -lrt -ldl
 }
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
-
-DISTFILES += \
-    src/makefile.unix \
-	share/qt/protobuf.pri \
-    src/bitcoind-res.rc \
-    src/bitcoin-cli-res.rc

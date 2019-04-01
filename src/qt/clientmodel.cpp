@@ -235,4 +235,3 @@ void ClientModel::unsubscribeFromCoreSignals()
     uiInterface.NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this, _1, _2));
 }
-// 0.9.1 Q.C. passed

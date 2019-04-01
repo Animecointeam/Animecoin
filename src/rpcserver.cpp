@@ -979,5 +979,3 @@ std::string HelpExampleRpc(string methodname, string args){
 }
 
 const CRPCTable tableRPC;
-
-// 0.9.1 Q.C. passed

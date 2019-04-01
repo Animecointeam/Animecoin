@@ -424,4 +424,3 @@ bool OptionsModel::isRestartRequired()
     QSettings settings;
     return settings.value("fRestartRequired", false).toBool();
 }
-// 0.9.1 Q.C. passed, mining setting TBAdj

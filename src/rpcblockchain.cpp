@@ -465,5 +465,3 @@ Value getblockchaininfo(const Array& params, bool fHelp)
     obj.push_back(Pair("chainwork",     chainActive.Tip()->nChainWork.GetHex()));
     return obj;
 }
-
-// 0.9.1 Q.C. passed, fixed 1 bug.

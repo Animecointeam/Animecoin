@@ -63,4 +63,3 @@ const std::string CLIENT_NAME("Animecoin");
 
 const std::string CLIENT_BUILD(BUILD_DESC CLIENT_VERSION_SUFFIX);
 const std::string CLIENT_DATE(BUILD_DATE);
-// 0.9.1 Q.C. passed.

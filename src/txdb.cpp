@@ -253,4 +253,3 @@ bool CBlockTreeDB::LoadBlockIndexGuts()
 
     return true;
 }
-// 0.9.1 Q.C. passed

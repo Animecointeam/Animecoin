@@ -792,4 +792,3 @@ void CoinControlDialog::updateView()
     sortView(sortColumn, sortOrder);
     ui->treeWidget->setEnabled(true);
 }
-// 0.9.1 Q.C. passed

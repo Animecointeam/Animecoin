@@ -322,4 +322,3 @@ void Notificator::notify(Class cls, const QString &title, const QString &text, c
         break;
     }
 }
-// 0.9.1 Q.C. passed

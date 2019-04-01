@@ -974,4 +974,3 @@ void BitcoinGUI::unsubscribeFromCoreSignals()
     // Disconnect signals from client
     uiInterface.ThreadSafeMessageBox.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
 }
-// 0.9.1 Q.C. passed, strings updated, report anything unusual.

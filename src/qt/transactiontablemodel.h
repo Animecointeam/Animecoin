@@ -92,5 +92,3 @@ public slots:
 };
 
 #endif // TRANSACTIONTABLEMODEL_H
-
-//0.9.1 Q.C. passed

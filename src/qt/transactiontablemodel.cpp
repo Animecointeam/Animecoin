@@ -626,4 +626,3 @@ void TransactionTableModel::updateDisplayUnit()
     // emit dataChanged to update Amount column with the current unit
     emit dataChanged(index(0, Amount), index(priv->size()-1, Amount));
 }
-// 0.9.1 Q.C. passed

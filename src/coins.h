@@ -356,4 +356,3 @@ private:
 };
 
 #endif
-// 0.9.1 Q.C. passed

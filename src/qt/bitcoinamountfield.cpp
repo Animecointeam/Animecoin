@@ -184,4 +184,3 @@ void BitcoinAmountField::setSingleStep(qint64 step)
     nSingleStep = step;
     unitChanged(unit->currentIndex());
 }
-// 0.9.1 Q.C. passed

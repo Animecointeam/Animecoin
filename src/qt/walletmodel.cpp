@@ -633,4 +633,3 @@ bool WalletModel::saveReceiveRequest(const std::string &sAddress, const int64_t 
     else
         return wallet->AddDestData(dest, key, sRequest);
 }
-//0.9.1 Q.C. passed

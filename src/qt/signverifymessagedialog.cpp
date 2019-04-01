@@ -271,4 +271,3 @@ bool SignVerifyMessageDialog::eventFilter(QObject *object, QEvent *event)
     }
     return QDialog::eventFilter(object, event);
 }
-// 0.9.1 Q.C. passed

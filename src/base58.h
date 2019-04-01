@@ -157,4 +157,3 @@ typedef CBitcoinExtKeyBase<CExtKey, 74, CChainParams::EXT_SECRET_KEY> CBitcoinEx
 typedef CBitcoinExtKeyBase<CExtPubKey, 74, CChainParams::EXT_PUBLIC_KEY> CBitcoinExtPubKey;
 
 #endif // BITCOIN_BASE58_H
-// 0.9.1 Q.C. passed

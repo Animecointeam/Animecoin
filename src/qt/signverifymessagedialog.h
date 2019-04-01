@@ -49,4 +49,3 @@ private slots:
 };
 
 #endif // SIGNVERIFYMESSAGEDIALOG_H
-//0.9.1 Q.C. passed

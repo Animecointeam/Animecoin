@@ -576,4 +576,3 @@ template <typename Callable> void TraceThread(const char* name,  Callable func)
 }
 
 #endif
-// 0.9.1 Q.C. passed. Note: HAVE_WORKING_BOOST_SLEEP_FOR removed according to upstream.

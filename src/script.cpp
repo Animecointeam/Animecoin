@@ -2071,4 +2071,3 @@ bool CScriptCompressor::Decompress(unsigned int nSize, const std::vector<unsigne
     }
     return false;
 }
-// 0.9.1 Q.C. passed

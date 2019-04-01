@@ -37,4 +37,3 @@ void MonitoredDataMapper::addChangeMonitor(QWidget *widget)
         QMetaObject::connect(widget, signal, this, method);
     }
 }
-// 0.9.1 Q.C. passed

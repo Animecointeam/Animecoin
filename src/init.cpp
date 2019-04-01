@@ -1123,4 +1123,3 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     return !fRequestShutdown;
 }
-// 0.9.1 Q.C. passed, strings updated.

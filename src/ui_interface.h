@@ -108,5 +108,3 @@ inline std::string _(const char* psz)
 }
 
 #endif
-
-// 0.9.1 Q.C. passed

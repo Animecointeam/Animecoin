@@ -73,4 +73,3 @@ private:
 typedef BitcoinUnits::Unit BitcoinUnit;
 
 #endif // BITCOINUNITS_H
-// 0.9.1 Q.C. passed

@@ -959,4 +959,3 @@ bool CWalletDB::EraseDestData(const std::string &address, const std::string &key
     nWalletDBUpdated++;
     return Erase(boost::make_tuple(string("destdata"), address, key));
 }
-// 0.9.1 Q.C. passed

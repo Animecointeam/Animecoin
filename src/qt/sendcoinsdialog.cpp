@@ -621,4 +621,3 @@ void SendCoinsDialog::coinControlUpdateLabels()
         ui->labelCoinControlInsuffFunds->hide();
     }
 }
-// 0.9.1 Q.C. passed, some strings fixed.

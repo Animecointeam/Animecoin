@@ -47,4 +47,3 @@ static const int MAX_PAYMENT_REQUEST_SIZE = 50000; // bytes
 #define QAPP_APP_NAME_TESTNET "Animecoin-Qt-testnet"
 
 #endif // GUICONSTANTS_H
-// 0.9.1 Q.C. passed

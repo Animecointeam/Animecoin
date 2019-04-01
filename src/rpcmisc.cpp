@@ -325,4 +325,3 @@ Value verifymessage(const Array& params, bool fHelp)
 
     return (pubkey.GetID() == keyID);
 }
-// 0.9.1 code Q.C. passed, some strings fixed.

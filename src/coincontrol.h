@@ -61,4 +61,3 @@ private:
 };
 
 #endif // COINCONTROL_H
-// 0.9.1 Q.C. passed

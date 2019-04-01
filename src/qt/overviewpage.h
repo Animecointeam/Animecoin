@@ -57,4 +57,3 @@ private slots:
 };
 
 #endif // OVERVIEWPAGE_H
-// 0.9.1 Q.C. passed

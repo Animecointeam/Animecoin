@@ -29,4 +29,3 @@ private:
 };
 
 #endif // TRANSACTIONDESCDIALOG_H
-//0.9.1 Q.C. passed

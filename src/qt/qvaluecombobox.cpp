@@ -29,4 +29,3 @@ void QValueComboBox::handleSelectionChanged(int idx)
 {
     emit valueChanged();
 }
-// 0.9.1 Q.C. passed

@@ -194,4 +194,3 @@ extern json_spirit::Value enforcecheckpoint(const json_spirit::Array& params, bo
 
 
 #endif
-// 0.9.1 Q.C. passed

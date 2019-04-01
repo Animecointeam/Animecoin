@@ -83,4 +83,3 @@ signals:
 };
 
 #endif // SENDCOINSDIALOG_H
-// 0.9.1 Q.C. passed

@@ -74,4 +74,3 @@ public:
 };
 
 #endif // BITCOIN_TXDB_LEVELDB_H
-// 0.9.1 Q.C. passed

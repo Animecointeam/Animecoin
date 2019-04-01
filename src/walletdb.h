@@ -131,4 +131,3 @@ public:
 bool BackupWallet(const CWallet& wallet, const std::string& strDest);
 
 #endif // BITCOIN_WALLETDB_H
-// 0.9.1 Q.C. passed

@@ -756,4 +756,3 @@ inline const uint512 operator-(const uint512& a, const uint512& b)      { return
 
 
 #endif
-// 0.9.1 Q.C. passed.

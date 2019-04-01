@@ -656,4 +656,3 @@ void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads)
 }
 
 #endif
-//0.9.1 solo test passed.

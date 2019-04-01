@@ -4493,4 +4493,3 @@ public:
         mapOrphanTransactions.clear();
     }
 } instance_of_cmaincleanup;
-// 0.9.1 Q.C. passed, updated parameters. This is the important part.

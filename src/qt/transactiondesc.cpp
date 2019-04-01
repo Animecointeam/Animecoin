@@ -301,4 +301,3 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, int vout, int u
     strHTML += "</font></html>";
     return strHTML;
 }
-// 0.9.1 Q.C. passed

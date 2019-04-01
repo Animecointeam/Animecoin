@@ -55,4 +55,3 @@ bool CBasicKeyStore::GetCScript(const CScriptID &hash, CScript& redeemScriptOut)
     }
     return false;
 }
-//0.9.1 Q.C. passed

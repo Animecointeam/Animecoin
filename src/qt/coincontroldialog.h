@@ -120,4 +120,3 @@ private slots:
 };
 
 #endif // COINCONTROLDIALOG_H
-// 0.9.1 Q.C. passed

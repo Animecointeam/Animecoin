@@ -755,4 +755,3 @@ QString boostPathToQString(const boost::filesystem::path &path)
 #endif
 
 } // namespace GUIUtil
-//0.9.1 Q.C. passed, but check the naming guidelines.

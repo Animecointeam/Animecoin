@@ -280,4 +280,3 @@ QT_TRANSLATE_NOOP("anime-core", "on startup"),
 QT_TRANSLATE_NOOP("anime-core", "version"),
 QT_TRANSLATE_NOOP("anime-core", "wallet.dat corrupt, salvage failed"),
 };
-// 0.9.1 Q.C. passed
