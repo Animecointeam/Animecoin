@@ -17,13 +17,13 @@
   <string>APPL</string>
 
   <key>CFBundleGetInfoString</key>
-  <string>0.9.2, Copyright © 2009-2014 The Bitcoin and Anime developers</string>
+  <string>0.9.1, Copyright © 2009-2019 The Bitcoin and Anime developers</string>
 
   <key>CFBundleShortVersionString</key>
-  <string>0.9.2</string>
+  <string>0.9.1</string>
 
   <key>CFBundleVersion</key>
-  <string>0.9.2</string>
+  <string>0.9.1</string>
 
   <key>CFBundleSignature</key>
   <string>????</string>
