@@ -167,6 +167,8 @@ private slots:
     void gotoAddressPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+    /**Switch to About page */
+    void gotoAboutPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
@@ -179,7 +181,7 @@ private slots:
     /** Show configuration dialog */
     void optionsClicked();
     /** Show about dialog */
-    void aboutClicked();
+    //void aboutClicked();
     /** Show help message dialog */
     void showHelpMessageClicked();
 #ifndef Q_OS_MAC

@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>593</width>
-    <height>319</height>
+    <width>589</width>
+    <height>564</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>564</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>About Animecoin</string>
@@ -22,8 +28,20 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="pixmap">
       <pixmap resource="../bitcoin.qrc">:/images/about</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -107,12 +125,10 @@
         <cursorShape>IBeamCursor</cursorShape>
        </property>
        <property name="text">
-        <string>
-This is experimental software.
-
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;http://animecoin.tech&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://animecoin.tech&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;VK&lt;/span&gt;: &lt;a href=&quot;https://vk.com/animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://vk.com/animecoin&lt;br/&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;OpenSSL libraries (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) and cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;/p&gt;&lt;p&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -137,6 +153,9 @@ This product includes software developed by the OpenSSL Project for use in the O
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

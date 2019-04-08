@@ -23,13 +23,17 @@
     </message>
     <message>
         <location line="+57"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;http://animecoin.tech&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://animecoin.tech&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;VK&lt;/span&gt;: &lt;a href=&quot;https://vk.com/animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://vk.com/animecoin&lt;br/&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;OpenSSL libraries (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) and cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;/p&gt;&lt;p&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>
 This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
+        <translation type="vanished">
 Dette er eksperimentell programvare.
 
 Distribuert under MIT/X11 programvarelisensen, se medfølgende fil COPYING eller http://www.opensource.org/licenses/mit-license.php.
@@ -47,7 +51,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <location line="+2"/>
         <source>(%1-bit)</source>
         <translation type="unfinished"></translation>
@@ -394,17 +398,17 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+302"/>
+        <location filename="../bitcoingui.cpp" line="+306"/>
         <source>Sign &amp;message...</source>
         <translation>Signer &amp;melding...</translation>
     </message>
     <message>
-        <location line="+344"/>
+        <location line="+352"/>
         <source>Synchronizing with network...</source>
         <translation>Synkroniserer med nettverk...</translation>
     </message>
     <message>
-        <location line="-424"/>
+        <location line="-436"/>
         <source>&amp;Overview</source>
         <translation>&amp;Oversikt</translation>
     </message>
@@ -482,7 +486,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+7"/>
         <location line="+2"/>
         <source>About &amp;Qt</source>
         <translation>Om &amp;Qt</translation>
@@ -563,13 +567,13 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+161"/>
+        <location line="+163"/>
         <location line="+5"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+149"/>
+        <location line="+155"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -591,7 +595,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation type="vanished">Send til en Anime-adresse</translation>
     </message>
     <message>
-        <location line="-365"/>
+        <location line="-373"/>
         <source>Modify configuration options for Anime</source>
         <translation>Endre oppsett for Anime</translation>
     </message>
@@ -625,18 +629,18 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-220"/>
+        <location line="-224"/>
         <source>Wallet</source>
         <translation>Lommebok</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+671"/>
+        <location line="+683"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-517"/>
+        <location line="-529"/>
         <source>&amp;Send</source>
         <translation>&amp;Send</translation>
     </message>
@@ -654,7 +658,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation type="vanished">&amp;Om Anime</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <location line="+2"/>
         <source>&amp;Show / Hide</source>
         <translation>&amp;Gjem / vis</translation>
@@ -698,8 +702,8 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         <translation>Verktøylinje for faner</translation>
     </message>
     <message>
-        <location line="-291"/>
-        <location line="+385"/>
+        <location line="-295"/>
+        <location line="+391"/>
         <source>[testnet]</source>
         <translation>[testnett]</translation>
     </message>
@@ -715,7 +719,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL prosjektet for bruk i
         </translation>
     </message>
     <message>
-        <location line="+171"/>
+        <location line="+177"/>
         <source>No block source available...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -856,7 +860,7 @@ Adresse: %4
         <translation type="vanished">En fatal feil har inntruffet. Det er ikke trygt å fortsette og Anime må derfor avslutte.</translation>
     </message>
     <message>
-        <location filename="../bitcoin.cpp" line="+447"/>
+        <location filename="../bitcoin.cpp" line="+449"/>
         <source>A fatal error occurred. Animecoin can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1313,7 +1317,7 @@ Adresse: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+24"/>
+        <location filename="../utilitydialog.cpp" line="+29"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3748,7 +3752,7 @@ Adresse: %4
         <translation>Eksporter data fra nåværende fane til fil</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+200"/>
         <source>Backup Wallet</source>
         <translation>Sikkerhetskopier lommebok</translation>
     </message>

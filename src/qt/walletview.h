@@ -7,6 +7,8 @@
 
 #include <QStackedWidget>
 
+#include "utilitydialog.h"
+
 class AddressBookPage;
 class BitcoinGUI;
 class ClientModel;
@@ -60,8 +62,8 @@ private:
     AddressBookPage *addressPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
-
     TransactionView *transactionView;
+    AboutDialog *aboutPage;
 
     QProgressDialog *progressDialog;
 
@@ -76,6 +78,8 @@ public slots:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+    /** Switch to About page */
+    void gotoAboutPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");

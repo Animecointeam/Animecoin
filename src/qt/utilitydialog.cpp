@@ -27,6 +27,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
 	// Set current copyright year
     ui->copyrightLabel->setText(tr("Copyright") + QString(" &copy; 2009-%1 ").arg(COPYRIGHT_YEAR) + tr("The Bitcoin and Anime developers"));
+    ui->buttonBox->hide ();
 }
 
 void AboutDialog::setModel(ClientModel *model)
@@ -53,7 +54,12 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::on_buttonBox_accepted()
 {
-	close();
+    close();
+}
+
+void AboutDialog::reject ()
+{
+    // do not reject
 }
 
 /** "Help message" dialog box */

@@ -48,6 +48,7 @@ public:
 
 public slots:
     void done(int retval);
+    void reject ();
 
 private:
     Ui::AddressBookPage *ui;

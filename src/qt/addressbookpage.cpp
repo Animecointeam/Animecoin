@@ -310,3 +310,9 @@ void AddressBookPage::selectNewAddress(const QModelIndex &parent, int begin, int
         newAddressToSelect.clear();
     }
 }
+
+void AddressBookPage::reject ()
+{
+    if (mode!=ForInlineEditing)
+        QDialog::reject();
+}

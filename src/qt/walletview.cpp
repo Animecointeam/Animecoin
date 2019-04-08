@@ -54,12 +54,14 @@ WalletView::WalletView(QWidget *parent):
     addressPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::ReceivingTab, nullptr);
     receiveCoinsPage = new ReceiveCoinsDialog();
     sendCoinsPage = new SendCoinsDialog();
+    aboutPage = new AboutDialog(nullptr);
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
     addWidget(addressPage);
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
+    addWidget(aboutPage);
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -103,6 +105,7 @@ void WalletView::setClientModel(ClientModel *clientModel)
     this->clientModel = clientModel;
 
     overviewPage->setClientModel(clientModel);
+    aboutPage->setModel(clientModel);
 }
 
 void WalletView::setWalletModel(WalletModel *walletModel)
@@ -179,6 +182,11 @@ void WalletView::gotoSendCoinsPage(QString addr)
 
     if (!addr.isEmpty())
         sendCoinsPage->setAddress(addr);
+}
+
+void WalletView::gotoAboutPage()
+{
+    setCurrentWidget(aboutPage);
 }
 
 void WalletView::gotoSignMessageTab(QString addr)

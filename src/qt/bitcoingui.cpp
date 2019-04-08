@@ -275,7 +275,11 @@ void BitcoinGUI::createActions(bool fIsTestnet)
     else
         aboutAction = new QAction(QIcon(":/icons/bitcoin_testnet"), tr("&About Animecoin"), this);
     aboutAction->setStatusTip(tr("Show information about Animecoin"));
+    aboutAction->setToolTip(aboutAction->statusTip());
     aboutAction->setMenuRole(QAction::AboutRole);
+    aboutAction->setCheckable(true);
+    aboutAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(aboutAction);
 #if QT_VERSION < 0x050000
     aboutQtAction = new QAction(QIcon(":/trolltech/qmessagebox/images/qtlogo-64.png"), tr("About &Qt"), this);
 #else
@@ -319,7 +323,7 @@ void BitcoinGUI::createActions(bool fIsTestnet)
     showHelpMessageAction->setStatusTip(tr("Show the Animecoin help message to get a list with possible Anime Command-line options"));
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-    connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(gotoAboutPage()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
     connect(toggleHideAction, SIGNAL(triggered()), this, SLOT(toggleHidden()));
@@ -380,7 +384,7 @@ void BitcoinGUI::createMenuBar()
     }
     help->addAction(showHelpMessageAction);
     help->addSeparator();
-    help->addAction(aboutAction);
+    //help->addAction(aboutAction);
     help->addAction(aboutQtAction);
 }
 
@@ -395,6 +399,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(addressAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
+        toolbar->addAction(aboutAction);
         overviewAction->setChecked(true);
     }
 }
@@ -460,6 +465,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     addressAction->setEnabled(enabled);
     receiveCoinsAction->setEnabled(enabled);
     historyAction->setEnabled(enabled);
+    aboutAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
@@ -551,7 +557,7 @@ void BitcoinGUI::optionsClicked()
     dlg.exec();
 }
 
-void BitcoinGUI::aboutClicked()
+/*void BitcoinGUI::aboutClicked()
 {
     if(!clientModel)
         return;
@@ -559,7 +565,7 @@ void BitcoinGUI::aboutClicked()
     AboutDialog dlg(this);
     dlg.setModel(clientModel);
     dlg.exec();
-}
+}*/
 
 void BitcoinGUI::showHelpMessageClicked()
 {
@@ -606,6 +612,12 @@ void BitcoinGUI::gotoSendCoinsPage(QString addr)
 {
     sendCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoSendCoinsPage(addr);
+}
+
+void BitcoinGUI::gotoAboutPage()
+{
+    aboutAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoAboutPage();
 }
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)

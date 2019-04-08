@@ -27,6 +27,9 @@ public:
 
     void setModel(ClientModel *model);
 
+public slots:
+    void reject ();
+
 private:
     Ui::AboutDialog *ui;
 
