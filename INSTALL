@@ -1,9 +1,5 @@
 Building Animecoin
 
-See doc/readme-qt.rst for instructions on building Animecoin-Qt,
-the intended-for-end-users, nice-graphical-interface, reference
-implementation of Animecoin.
-
-See doc/build-*.txt for instructions on building animecoind,
+See doc/build-*.md for instructions on building animecoind,
 the intended-for-services, no-graphical-interface, reference
 implementation of Animecoin.
