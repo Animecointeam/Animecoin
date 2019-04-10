@@ -8,7 +8,7 @@ Animecoin is a free open source peer-to-peer electronic cash system that is comp
 Coin features
 ---------------------
 - Unique algo (derived from quark).
-- Fast, cheap transactions, blocks generated every 30 sec on average.
+- Fast, cheap transactions, blocks generated every 30s on average.
 - No premine.
 
 Upgrading
@@ -33,6 +33,7 @@ What's new in 0.9.1
 - Added BIP 0070 payment requests support, while keeping the old receiving addresses tab in place for convenience.
 - You may now choose the data directory on the first run or with -choosedatadir option.
 - Network traffic graph.
+- Fusion widget style enabled by default for Windows.
 - New options, make sure to review them!
 
 Building from source
@@ -51,7 +52,7 @@ Required libraries
 - Boost
 - OpenSSL
 - Berkeley DB
-- protobuf (since Animecoin 0.9)
+- protobuf (since Animecoin 0.9.1)
 - Qt (optional if you don't need the GUI client)
 - miniupnpc (optional)
 - qrencode (optional)
@@ -63,13 +64,13 @@ You may, however, use a more recent version (specifying the path and suffix in t
 
 IF YOU BUILD YOUR CLIENT WITH DB OTHER THAN 4.8 YOUR WALLET.DAT FILE WILL NOT BE PORTABLE.
 
-If you wish to convert your wallet.dat between versions, you'll need the BerkDB tools of both versions available.
+If you wish to convert your wallet.dat between versions, you'll need the BerkDB tools for both versions available.
 
 For example: db6.3_dump wallet.dat | db4.8_load wallet.dat.new
 
 Other release notes
 ---------------------
-- Working node seeds were added.
+- Working node seeds were added, DNS seeds in progress.
 - Translations need people to work upon.
 - Regression test network code (like testnet, but special) was added following the mainstream Bitcoin client, this remains untested so far.
 
@@ -80,6 +81,3 @@ Copyright (c) 2014-2019 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://opensource.org/licenses/MIT.
 This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](http://www.openssl.org/). This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), UPnP software written by Thomas Bernard and sphlib 3.0 by Thomas Pornin.
-
-
-
