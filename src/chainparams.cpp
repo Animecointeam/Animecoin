@@ -21,7 +21,8 @@ using namespace boost::assign;
 
 unsigned int pnSeed[] =
 {
-    0x01020304, // Inherited by animecoin
+    0xd5263d05, 0x6faad876, 0x233ebbbc,
+    // Updated as of Apr 2019
 };
 
 static const unsigned int timeMainGenesisBlock = 1390262400;  // Updated for Animecoin
@@ -69,20 +70,20 @@ public:
         assert(hashGenesisBlock == hashMainGenesisBlock);
         assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9")); // Updated for Animecoin
         // Updated for Animecoin (though likely obsolete)
-        vSeeds.push_back(CDNSSeedData("96.43.130.251", "96.43.130.251"));
-        vSeeds.push_back(CDNSSeedData("91.121.8.23", "91.121.8.23"));
-        vSeeds.push_back(CDNSSeedData("62.210.151.205", "62.210.151.205"));
-        vSeeds.push_back(CDNSSeedData("222.78.67.174", "222.78.67.174"));
-        vSeeds.push_back(CDNSSeedData("5.9.158.79", "5.9.158.79"));
-        vSeeds.push_back(CDNSSeedData("186.237.174.48", "186.237.174.48"));
-        vSeeds.push_back(CDNSSeedData("82.117.232.30", "82.117.232.30"));
-        vSeeds.push_back(CDNSSeedData("151.236.22.84", "151.236.22.84"));
-        vSeeds.push_back(CDNSSeedData("158.255.208.40", "158.255.208.40"));
-        vSeeds.push_back(CDNSSeedData("151.236.15.106", "151.236.15.106"));
-        vSeeds.push_back(CDNSSeedData("91.121.8.23", "91.121.8.23"));
-        vSeeds.push_back(CDNSSeedData("213.183.56.176", "213.183.56.176"));
-        vSeeds.push_back(CDNSSeedData("151.236.13.37", "151.236.13.37"));
-        vSeeds.push_back(CDNSSeedData("115.29.49.156", "115.29.49.156"));
+        //vSeeds.push_back(CDNSSeedData("96.43.130.251", "96.43.130.251"));
+        //vSeeds.push_back(CDNSSeedData("91.121.8.23", "91.121.8.23"));
+        //vSeeds.push_back(CDNSSeedData("62.210.151.205", "62.210.151.205"));
+        //vSeeds.push_back(CDNSSeedData("222.78.67.174", "222.78.67.174"));
+        //vSeeds.push_back(CDNSSeedData("5.9.158.79", "5.9.158.79"));
+        //vSeeds.push_back(CDNSSeedData("186.237.174.48", "186.237.174.48"));
+        //vSeeds.push_back(CDNSSeedData("82.117.232.30", "82.117.232.30"));
+        //vSeeds.push_back(CDNSSeedData("151.236.22.84", "151.236.22.84"));
+        //vSeeds.push_back(CDNSSeedData("158.255.208.40", "158.255.208.40"));
+        //vSeeds.push_back(CDNSSeedData("151.236.15.106", "151.236.15.106"));
+        //vSeeds.push_back(CDNSSeedData("91.121.8.23", "91.121.8.23"));
+        //vSeeds.push_back(CDNSSeedData("213.183.56.176", "213.183.56.176"));
+        //vSeeds.push_back(CDNSSeedData("151.236.13.37", "151.236.13.37"));
+        //vSeeds.push_back(CDNSSeedData("115.29.49.156", "115.29.49.156"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,23); // Updated for Animecoin
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,9); // Updated for Animecoin

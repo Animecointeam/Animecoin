@@ -69,9 +69,9 @@ For example: db6.3_dump wallet.dat | db4.8_load wallet.dat.new
 
 Other release notes
 ---------------------
+- Working node seeds were added.
 - Translations need people to work upon.
 - Regression test network code (like testnet, but special) was added following the mainstream Bitcoin client, this remains untested so far.
-
 
 License
 ---------------------

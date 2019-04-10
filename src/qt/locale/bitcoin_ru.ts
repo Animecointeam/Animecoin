@@ -4048,7 +4048,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location line="+3"/>
         <source>Specify pid file (default: animecoind.pid)</source>
-        <translation>Задать pid-файл (по умолчанию: anime.pid)</translation>
+        <translation type="unfinished">Задать pid-файл (по умолчанию: animecoind.pid)</translation>
     </message>
     <message>
         <location line="-1"/>
