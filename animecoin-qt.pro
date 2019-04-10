@@ -73,14 +73,6 @@ win32:QMAKE_LFLAGS *= -static
 win32:QMAKE_CXXFLAGS *= -static-libgcc -static-libstdc++
 win32:QMAKE_LFLAGS *= -static-libgcc -static-libstdc++
 
-# use: qmake "USE_QRCODE=1"
-# libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
-contains(USE_QRCODE, 1) {
-    message(Building with QRCode support)
-    DEFINES += USE_QRCODE
-    LIBS += -lqrencode
-}
-
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
 	macx:BOOST_LIB_SUFFIX = -mt
@@ -130,6 +122,14 @@ isEmpty(MINIUPNPC_INCLUDE_PATH) {
 
 isEmpty(MINIUPNPC_LIB_PATH) {
 	win32: MINIUPNPC_LIB_PATH = F:\libs\miniupnpc
+}
+
+# use: qmake "USE_QRCODE=1"
+# libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
+contains(USE_QRCODE, 1) {
+	message(Building with QRCode support)
+	DEFINES += USE_QRCODE
+	LIBS += -lqrencode
 }
 
 # use: qmake "USE_UPNP=1" ( enabled by default; default)
@@ -535,4 +535,5 @@ contains(RELEASE, 1) {
     DEFINES += LINUX
     LIBS += -lrt -ldl
 }
+
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)

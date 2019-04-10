@@ -5,10 +5,15 @@ Intro
 ---------------------
 Animecoin is a free open source peer-to-peer electronic cash system that is completely decentralized, without the need for a central server or trusted parties. Users hold the crypto keys to their own money and transact directly with each other, with the help of a P2P network to check for double-spending.
 
+Coin features
+---------------------
+- Unique algo (derived from quark).
+- Fast, cheap transactions, blocks generated every 30 sec on average.
+- No premine.
+
 Upgrading
 ---------------------
 Upgrading to 0.9 is meant to be fully transparent for both database and network. You may just run the new release with the old data directory.
-Some new settings were added and some defaults changed, it is highly recommended to check those out.
 
 Downgrading
 ---------------------
@@ -33,7 +38,7 @@ What's new in 0.9.1
 Building from source
 ---------------------
 You may use either way to build the Qt client:
-1. animecoin-qt.pro for qmake / Qt Creator. Simply adjust the libraty paths and prefixes if needed and build.
+1. animecoin-qt.pro for qmake / Qt Creator. Simply adjust the library paths and prefixes if needed and build.
 2. Autotools for commandline (MSYS shell in Windows case):
  - ./autogen.sh
  - ./configure (with any options necessary)
@@ -55,8 +60,11 @@ Berkeley DB notes
 ---------------------
 By default, cryptocurrency wallets use Berkeley DB 4.8 for portability.
 You may, however, use a more recent version (specifying the path and suffix in the .pro file, or passing --with-incompatible-bdb to ./configure).
+
 IF YOU BUILD YOUR CLIENT WITH DB OTHER THAN 4.8 YOUR WALLET.DAT FILE WILL NOT BE PORTABLE.
+
 If you wish to convert your wallet.dat between versions, you'll need the BerkDB tools of both versions available.
+
 For example: db6.3_dump wallet.dat | db4.8_load wallet.dat.new
 
 Other release notes
