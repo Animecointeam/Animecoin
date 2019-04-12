@@ -158,19 +158,29 @@ bool PaymentRequestPlus::getMerchant(X509_STORE* certStore, QString& merchant) c
 		std::string data_to_verify;                     // Everything but the signature
 		rcopy.SerializeToString(&data_to_verify);
 
-        EVP_MD_CTX *ctx = EVP_MD_CTX_new();
-        if (!ctx) throw SSLVerifyError("Error allocating OpenSSL context.");
-
-		EVP_PKEY *pubkey = X509_get_pubkey(signing_cert);
+        #if OPENSSL_VERSION_NUMBER > 0x1000ffffL
+	EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+	if (!ctx) throw SSLVerifyError("Error allocating OpenSSL context.");
+	#else
+	EVP_MD_CTX ctx;
+	#endif 
+	EVP_PKEY *pubkey = X509_get_pubkey(signing_cert);
+	#if OPENSSL_VERSION_NUMBER > 0x1000ffffL
         EVP_MD_CTX_init(ctx);
         if (!EVP_VerifyInit_ex(ctx, digestAlgorithm, NULL) ||
             !EVP_VerifyUpdate(ctx, data_to_verify.data(), data_to_verify.size()) ||
             !EVP_VerifyFinal(ctx, (const unsigned char*)paymentRequest.signature().data(), paymentRequest.signature().size(), pubkey)) {
-
+	#else
+	EVP_MD_CTX_init(&ctx);
+	if (!EVP_VerifyInit_ex(&ctx, digestAlgorithm, NULL) ||
+		               !EVP_VerifyUpdate(&ctx, data_to_verify.data(), data_to_verify.size()) ||
+		                           !EVP_VerifyFinal(&ctx, (const unsigned char*)paymentRequest.signature().data(), paymentRequest.signature().size(), pubkey)) {
+	#endif
 			throw SSLVerifyError("Bad signature, invalid PaymentRequest.");
 		}
-
+        #if OPENSSL_VERSION_NUMBER > 0x1000ffffL
         EVP_MD_CTX_free(ctx);
+	#endif
 
 		// OpenSSL API for getting human printable strings from certs is baroque.
 		int textlen = X509_NAME_get_text_by_NID(certname, NID_commonName, NULL, 0);
