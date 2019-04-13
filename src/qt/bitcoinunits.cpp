@@ -1,3 +1,7 @@
+// Copyright (c) 2011-2013 The Bitcoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "bitcoinunits.h"
 
 #include <QStringList>
@@ -36,7 +40,7 @@ QString BitcoinUnits::name(int unit)
     {
     case ANI: return QString("ANI");
     case cANI: return QString("cANI");
-    case mANI: return QString("mANI");
+    case mANI: return QString::fromUtf8("mANI");
     default: return QString("???");
     }
 }
@@ -60,6 +64,17 @@ qint64 BitcoinUnits::factor(int unit)
     case cANI: return 1000;
     case mANI: return 100;
     default:   return 100000;
+    }
+}
+
+qint64 BitcoinUnits::maxAmount(int unit)
+{
+    switch(unit)
+    {
+    case ANI:  return Q_INT64_C(210000000);
+    case cANI: return Q_INT64_C(21000000000);
+    case mANI: return Q_INT64_C(210000000000);
+    default:   return 0;
     }
 }
 
