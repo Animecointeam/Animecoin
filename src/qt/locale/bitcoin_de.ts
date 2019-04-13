@@ -1316,16 +1316,11 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Animecoin mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
         <translation type="vanished">Legt die Sprache der Benutzeroberfläche fest. Diese Einstellung wird erst nach einem Neustart von Anime aktiv.</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>&amp;Einheit der Beträge:</translation>
     </message>
@@ -1354,27 +1349,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>&amp;Mining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>&amp;Mining enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>&amp;Mining limit:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Choose the default mining intensity.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+73"/>
+        <location line="+71"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
@@ -1394,7 +1369,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Standard</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Zurücksetzen der Konfiguration bestätigen</translation>
     </message>
@@ -2863,12 +2838,11 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Größe des Datenbankcaches in MB festlegen (Standard: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>&lt;port&gt; nach Verbindungen abhören (Standard: 8333 oder Testnetz: 18333)</translation>
+        <translation type="vanished">&lt;port&gt; nach Verbindungen abhören (Standard: 8333 oder Testnetz: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Maximal &lt;n&gt; Verbindungen zu Gegenstellen aufrechterhalten (Standard: 125)</translation>
     </message>
@@ -2898,12 +2872,11 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Beim Einrichten des abzuhörenden RPC-Ports %u für IPv4 ist ein Fehler aufgetreten: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>&lt;port&gt; nach JSON-RPC-Verbindungen abhören (Standard: 8332 oder Testnetz: 18332)</translation>
+        <translation type="vanished">&lt;port&gt; nach JSON-RPC-Verbindungen abhören (Standard: 8332 oder Testnetz: 18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Kommandozeilenbefehle und JSON-RPC-Befehle annehmen</translation>
     </message>
@@ -2983,11 +2956,12 @@ zum Beispiel: alertnotify=echo %%s | mail -s \&quot;Anime Alert\&quot; admin@foo
         <translation>Kommando ausführen wenn sich eine Transaktion der Briefrasche verändert (%s im Kommando wird durch die TxID ersetzt)</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
-        <translation type="obsolete">&lt;port&gt; nach JSON-RPC-Verbindungen abhören (Standard: 8332 oder Testnetz: 18332) {8372 ?} {18372)?}</translation>
+        <translation type="unfinished">&lt;port&gt; nach JSON-RPC-Verbindungen abhören (Standard: 8332 oder Testnetz: 18332) {8372 ?} {18372)?}</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Maximale Größe von &quot;high-priority/low-fee&quot;-Transaktionen in Byte festlegen (Standard: 27000)</translation>
     </message>
@@ -3162,11 +3136,12 @@ zum Beispiel: alertnotify=echo %%s | mail -s \&quot;Anime Alert\&quot; admin@foo
         <translation>Wie gründlich soll die Blockprüfung sein (0-4, Standard: 3)</translation>
     </message>
     <message>
+        <location line="+11"/>
         <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
-        <translation type="obsolete">&lt;port&gt; nach Verbindungen abhören (Standard: 8333 oder Testnetz: 18333) {8373 ?} {18373)?}</translation>
+        <translation type="unfinished">&lt;port&gt; nach Verbindungen abhören (Standard: 8333 oder Testnetz: 18333) {8373 ?} {18373)?}</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation>Nicht genügend File-Deskriptoren verfügbar.</translation>
     </message>

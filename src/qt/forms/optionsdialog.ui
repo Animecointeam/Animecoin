@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>378</height>
+    <width>540</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabMain">
       <attribute name="title">
@@ -393,18 +393,20 @@
        <string>&amp;Mining</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_Mining">
+
        <item>
         <widget class="QCheckBox" name="checkboxMiningEnabled">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Animecoin mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Quark mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>&amp;Mining enabled</string>
          </property>
         </widget>
        </item>
+
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2_Mining">
+        <layout class="QHBoxLayout" name="horizontalLayout_2_Mining">        
          <item>
           <widget class="QLabel" name="labelMiningProcLimit">
            <property name="text">
@@ -440,6 +442,7 @@
          </property>
         </spacer>
        </item>
+
       </layout>
      </widget>
     </widget>
@@ -524,11 +527,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QValidatedLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>qvalidatedlineedit.h</header>
-  </customwidget>
-  <customwidget>
    <class>BitcoinAmountField</class>
    <extends>QSpinBox</extends>
    <header>bitcoinamountfield.h</header>
@@ -537,6 +535,11 @@
    <class>QValueComboBox</class>
    <extends>QComboBox</extends>
    <header>qvaluecombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QValidatedLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qvalidatedlineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

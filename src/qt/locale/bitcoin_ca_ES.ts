@@ -1308,16 +1308,11 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Animecoin mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The user interface language can be set here. This setting will take effect after restarting Anime.</source>
         <translation type="vanished">Aquí pots definir el llenguatge de l&apos;aplicatiu. Aquesta configuració tindrà efecte un cop es reiniciï Anime.</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-22"/>
         <source>&amp;Unit to show amounts in:</source>
         <translation>&amp;Unitats per mostrar les quantitats en:</translation>
     </message>
@@ -1346,27 +1341,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>&amp;Mining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>&amp;Mining enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>&amp;Mining limit:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Choose the default mining intensity.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+73"/>
+        <location line="+71"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
@@ -1386,7 +1361,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Per defecte</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+131"/>
         <source>Confirm options reset</source>
         <translation>Confirmi el reestabliment de les opcions</translation>
     </message>
@@ -2855,12 +2830,11 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Establir tamany de la memoria cau en megabytes (per defecte: 25)</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Escoltar connexions a &lt;port&gt; (per defecte: 8333 o testnet: 18333)</translation>
+        <translation type="vanished">Escoltar connexions a &lt;port&gt; (per defecte: 8333 o testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-23"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Mantenir com a molt &lt;n&gt; connexions a peers (per defecte: 125)</translation>
     </message>
@@ -2890,12 +2864,11 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation>Ha sorgit un error al configurar el port RPC %u escoltant a IPv4: %s</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Escoltar connexions JSON-RPC al port &lt;port&gt; (per defecte: 8332 o testnet:18332)</translation>
+        <translation type="vanished">Escoltar connexions JSON-RPC al port &lt;port&gt; (per defecte: 8332 o testnet:18332)</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+64"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Acceptar línia d&apos;ordres i ordres JSON-RPC </translation>
     </message>
@@ -2965,11 +2938,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Executar una ordre quan una transacció del moneder canviï (%s in cmd es canvia per TxID)</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
-        <translation type="obsolete">Escoltar connexions JSON-RPC al port &lt;port&gt; (per defecte: 8332 o testnet:18332) {8372 ?} {18372)?}</translation>
+        <translation type="unfinished">Escoltar connexions JSON-RPC al port &lt;port&gt; (per defecte: 8332 o testnet:18332) {8372 ?} {18372)?}</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+5"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)</source>
         <translation>Establir una mida màxima de transaccions d&apos;alta prioritat/baixa comisió en bytes (per defecte: 27000)</translation>
     </message>
@@ -3144,11 +3118,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Com verificar el bloc (0-4, per defecte 3)</translation>
     </message>
     <message>
+        <location line="+11"/>
         <source>Listen for connections on &lt;port&gt; (default: 8373 or testnet: 18373)</source>
-        <translation type="obsolete">Escoltar connexions a &lt;port&gt; (per defecte: 8333 o testnet: 18333) {8373 ?} {18373)?}</translation>
+        <translation type="unfinished">Escoltar connexions a &lt;port&gt; (per defecte: 8333 o testnet: 18333) {8373 ?} {18373)?}</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+8"/>
         <source>Not enough file descriptors available.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -859,14 +859,12 @@ void BitcoinGUI::detectShutdown()
 
 void BitcoinGUI::miningOff()
 {
-    QSettings settings;
-    settings.setValue("bMiningEnabled", false);
-    GenerateBitcoins(false, pwalletMain);
+mapArgs["-genproclimit"] = "0";
+GenerateBitcoins(false, pwalletMain);
 }
 
 void BitcoinGUI::miningOn()
 {
-    QSettings settings;
-    settings.setValue("bMiningEnabled", true);
-    GenerateBitcoins(true, pwalletMain);
+mapArgs["-genproclimit"] = "-1";
+GenerateBitcoins(true, pwalletMain);
 }

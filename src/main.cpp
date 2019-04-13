@@ -4790,11 +4790,10 @@ void static BitcoinMiner(CWallet *pwallet)
     }
 }
 
-void GenerateBitcoins(bool fGenerate, int n_Threads, CWallet* pwallet)
+void GenerateBitcoins(bool fGenerate, int nThreads, CWallet* pwallet)
 {
     static boost::thread_group* minerThreads = NULL;
 
-    nThreads = n_Threads; // backwards compatibility
     if (nThreads < 0)
         nThreads = boost::thread::hardware_concurrency();
 
@@ -4818,7 +4817,7 @@ void GenerateBitcoins(bool fGenerate, int n_Threads, CWallet* pwallet)
 
 void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
 {
-    nThreads = GetArg("-genproclimit", -1);
+    int nThreads = GetArg("-genproclimit", -1);
     GenerateBitcoins(fGenerate, nThreads, pwallet);
 }
 
