@@ -68,6 +68,15 @@ If you wish to convert your wallet.dat between versions, you'll need the BerkDB 
 
 For example: db6.3_dump wallet.dat | db4.8_load wallet.dat.new
 
+Other possible build issues
+---------------------
+- Invalid BIGNUM conversion (from non-const to const or vice versa). Happens to old OpenSSL releases.
+Solution: adding -fpermissive to CXXFLAGS gets the job done and is widely used by other coins out there. It is strongly recommended to upgrade to a more up-to-date OpenSSL release however.
+- Undefined reference to boost::filesystem::detail::copy_file. Happens to old Boost releases.
+Solution: -DBOOST_NO_CXX11_SCOPED_ENUMS.
+- Undeclared nullptr. Happens to antique gcc releases.
+Solution: -std=gnu++11 or -std=c++11. Default since gcc 5.1.
+
 Other release notes
 ---------------------
 - Working node seeds were added, DNS seeds in progress.

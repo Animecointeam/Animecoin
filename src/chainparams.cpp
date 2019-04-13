@@ -43,7 +43,7 @@ public:
         pchMessageStart[1] = 0x4e;
         pchMessageStart[2] = 0x49;
         pchMessageStart[3] = 0x4d;
-        //vAlertPubKey = ParseHex("0493e6dc310a0e444cfb20f3234a238f77699806d47909a42481010c5ce68ff04d3babc959cd037bd3aa6ded929f2b9b4aa2f626786cd7f8495e5bb61e9cfebbc4"); // CHANGE ME
+        vAlertPubKey = ParseHex("04e8ee751a975ba7e5488267b6754e9e4249214db28d74af916d34aefdd8817c1a5d57aba2cc3ce23052ff8c8bf7028819bc966ce19e1a603b73b3e0edea902ab0"); // Updated.
         nDefaultPort = 1212; // Contradictory docs. Requires online check.
         nRPCPort = 8332; // Updated for Animecoin
         bnProofOfWorkLimit = bnMainProofOfWorkLimit;
@@ -133,7 +133,7 @@ public:
         pchMessageStart[1] = 0x49;
         pchMessageStart[2] = 0x4e;
         pchMessageStart[3] = 0x41;
-        //vAlertPubKey = ParseHex("04218bc3f08237baa077cb1b0e5a81695fcf3f5b4e220b4ad274d05a31d762dd4e191efa7b736a24a32d6fd9ac1b5ebb2787c70e9dfad0016a8b32f7bd2520dbd5"); // CHANGE ME
+        vAlertPubKey = ParseHex("04229162767c4193324ab7f78b87c8b2d539d30ecefcb2749e3afdcb54cea8c32f0b59f2b67bf97045ed0c03b1f28e01787b4ee918c5f0b50819a058cd4c6ce40e"); // Updated.
         nDefaultPort = 11212; // Contradictory.
         nRPCPort = 18332; // Updated for Animecoin
         strDataDir = "testnet3";

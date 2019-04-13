@@ -2151,7 +2151,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../bitcoin.cpp" line="+73"/>
+        <location filename="../bitcoin.cpp" line="+76"/>
         <location line="+7"/>
         <location line="+13"/>
         <source>Animecoin</source>
@@ -4048,7 +4048,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location line="+3"/>
         <source>Specify pid file (default: animecoind.pid)</source>
-        <translation type="unfinished">Задать pid-файл (по умолчанию: animecoind.pid)</translation>
+        <translation>Задать pid-файл (по умолчанию: animecoind.pid)</translation>
     </message>
     <message>
         <location line="-1"/>
