@@ -857,12 +857,7 @@ Endereço: %4
         <translation type="unfinished">Quantia</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Label</source>
-        <translation type="unfinished">Rótulo</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Address</source>
         <translation type="unfinished">Endereço</translation>
     </message>

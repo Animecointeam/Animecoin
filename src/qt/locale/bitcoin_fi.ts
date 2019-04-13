@@ -857,12 +857,7 @@ Osoite: %4</translation>
         <translation type="unfinished">Määrä</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Label</source>
-        <translation type="unfinished">Nimi</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Address</source>
         <translation type="unfinished">Osoite</translation>
     </message>

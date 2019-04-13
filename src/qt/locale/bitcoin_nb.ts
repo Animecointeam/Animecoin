@@ -857,12 +857,7 @@ Adresse: %4
         <translation type="unfinished">Beløp</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Label</source>
-        <translation type="unfinished">Merkelapp</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Address</source>
         <translation type="unfinished">Adresse</translation>
     </message>

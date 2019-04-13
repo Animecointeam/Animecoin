@@ -856,12 +856,7 @@ Aadress: %4⏎</translation>
         <translation type="unfinished">Kogus</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Label</source>
-        <translation type="unfinished">Silt</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Address</source>
         <translation type="unfinished">Aadress</translation>
     </message>

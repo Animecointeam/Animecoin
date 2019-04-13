@@ -839,12 +839,7 @@ Adresa: %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Label</source>
-        <translation type="unfinished">Popis</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Address</source>
         <translation type="unfinished">Adresa</translation>
     </message>
