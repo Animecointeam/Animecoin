@@ -1,9 +1,9 @@
 TEMPLATE = app
 TARGET = animecoin-qt
 macx:TARGET = "Animecoin-Qt"
-VERSION = 0.9.1
+VERSION = 0.9.2
 INCLUDEPATH += src src/json src/qt
-QT += network
+QT += network printsupport
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 DEFINES += ENABLE_WALLET
 CONFIG += no_include_pwd
@@ -17,6 +17,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
      DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
  }
 
+PROTO_DIR = src/qt
 include(share/qt/protobuf.pri)
 PROTOS = src/qt/paymentrequest.proto
 
@@ -316,7 +317,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/recentrequeststablemodel.h \
     src/qt/trafficgraphwidget.h \
     src/rpcclient.h \
-	src/qt/receiverequestdialog.h
+	src/qt/receiverequestdialog.h \
+    src/qt/verticallabel.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -410,7 +412,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/trafficgraphwidget.cpp \
     src/rpcclient.cpp \
     src/qt/receiverequestdialog.cpp \
-	src/rpcmisc.cpp
+	src/rpcmisc.cpp \
+    src/qt/verticallabel.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
 
@@ -430,7 +433,8 @@ FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/openuridialog.ui \
     src/qt/forms/intro.ui \
     src/qt/forms/helpmessagedialog.ui \
-    src/qt/forms/receiverequestdialog.ui
+    src/qt/forms/receiverequestdialog.ui \
+    src/qt/forms/paperwalletdialog.ui
 
 contains(USE_QRCODE, 1) {
 HEADERS +=

@@ -54,7 +54,9 @@ Q_IMPORT_PLUGIN(qtaccessiblewidgets)
 #if QT_VERSION < 0x050400
 Q_IMPORT_PLUGIN(AccessibleFactory)
 #endif
+Q_IMPORT_PLUGIN(QMinimalIntegrationPlugin);
 Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin);
+Q_IMPORT_PLUGIN(QWindowsPrinterSupportPlugin);
 #endif
 #endif
 
