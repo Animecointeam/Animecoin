@@ -1,7 +1,9 @@
-/* $Id: sph_groestl.h 216 2010-06-08 09:46:57Z tp $ */
+/* $Id: sph_blake.h 252 2011-06-07 17:55:14Z tp $ */
 /**
- * Groestl interface. This code implements Groestl with the recommended
- * parameters for SHA-3, with outputs of 224, 256, 384 and 512 bits.
+ * BLAKE interface. BLAKE is a family of functions which differ by their
+ * output size; this implementation defines BLAKE for output sizes 224,
+ * 256, 384 and 512 bits. This implementation conforms to the "third
+ * round" specification.
  *
  * ==========================(LICENSE BEGIN)============================
  *
@@ -28,47 +30,51 @@
  *
  * ===========================(LICENSE END)=============================
  *
- * @file     sph_groestl.h
+ * @file     sph_blake.h
  * @author   Thomas Pornin <thomas.pornin@cryptolog.com>
  */
 
-#ifndef SPH_GROESTL_H__
-#define SPH_GROESTL_H__
+#ifndef SPH_BLAKE_H__
+#define SPH_BLAKE_H__
 
 #ifdef __cplusplus
 extern "C"{
 #endif
 
 #include <stddef.h>
-#include "sph_types.h"
+#include "crypto/sph_types.h"
 
 /**
- * Output size (in bits) for Groestl-224.
+ * Output size (in bits) for BLAKE-224.
  */
-#define SPH_SIZE_groestl224   224
+#define SPH_SIZE_blake224   224
 
 /**
- * Output size (in bits) for Groestl-256.
+ * Output size (in bits) for BLAKE-256.
  */
-#define SPH_SIZE_groestl256   256
+#define SPH_SIZE_blake256   256
+
+#if SPH_64
 
 /**
- * Output size (in bits) for Groestl-384.
+ * Output size (in bits) for BLAKE-384.
  */
-#define SPH_SIZE_groestl384   384
+#define SPH_SIZE_blake384   384
 
 /**
- * Output size (in bits) for Groestl-512.
+ * Output size (in bits) for BLAKE-512.
  */
-#define SPH_SIZE_groestl512   512
+#define SPH_SIZE_blake512   512
+
+#endif
 
 /**
- * This structure is a context for Groestl-224 and Groestl-256 computations:
+ * This structure is a context for BLAKE-224 and BLAKE-256 computations:
  * it contains the intermediate values and some data from the last
- * entered block. Once a Groestl computation has been performed, the
+ * entered block. Once a BLAKE computation has been performed, the
  * context can be reused for another computation.
  *
- * The contents of this structure are private. A running Groestl
+ * The contents of this structure are private. A running BLAKE
  * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
@@ -76,39 +82,33 @@ typedef struct {
 #ifndef DOXYGEN_IGNORE
 	unsigned char buf[64];    /* first field, for alignment */
 	size_t ptr;
-	union {
-#if SPH_64
-		sph_u64 wide[8];
+	sph_u32 H[8];
+	sph_u32 S[4];
+	sph_u32 T0, T1;
 #endif
-		sph_u32 narrow[16];
-	} state;
-#if SPH_64
-	sph_u64 count;
-#else
-	sph_u32 count_high, count_low;
-#endif
-#endif
-} sph_groestl_small_context;
+} sph_blake_small_context;
 
 /**
- * This structure is a context for Groestl-224 computations. It is
- * identical to the common <code>sph_groestl_small_context</code>.
+ * This structure is a context for BLAKE-224 computations. It is
+ * identical to the common <code>sph_blake_small_context</code>.
  */
-typedef sph_groestl_small_context sph_groestl224_context;
+typedef sph_blake_small_context sph_blake224_context;
 
 /**
- * This structure is a context for Groestl-256 computations. It is
- * identical to the common <code>sph_groestl_small_context</code>.
+ * This structure is a context for BLAKE-256 computations. It is
+ * identical to the common <code>sph_blake_small_context</code>.
  */
-typedef sph_groestl_small_context sph_groestl256_context;
+typedef sph_blake_small_context sph_blake256_context;
+
+#if SPH_64
 
 /**
- * This structure is a context for Groestl-384 and Groestl-512 computations:
+ * This structure is a context for BLAKE-384 and BLAKE-512 computations:
  * it contains the intermediate values and some data from the last
- * entered block. Once a Groestl computation has been performed, the
+ * entered block. Once a BLAKE computation has been performed, the
  * context can be reused for another computation.
  *
- * The contents of this structure are private. A running Groestl
+ * The contents of this structure are private. A running BLAKE
  * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
@@ -116,60 +116,54 @@ typedef struct {
 #ifndef DOXYGEN_IGNORE
 	unsigned char buf[128];    /* first field, for alignment */
 	size_t ptr;
-	union {
-#if SPH_64
-		sph_u64 wide[16];
+	sph_u64 H[8];
+	sph_u64 S[4];
+	sph_u64 T0, T1;
 #endif
-		sph_u32 narrow[32];
-	} state;
-#if SPH_64
-	sph_u64 count;
-#else
-	sph_u32 count_high, count_low;
-#endif
-#endif
-} sph_groestl_big_context;
+} sph_blake_big_context;
 
 /**
- * This structure is a context for Groestl-384 computations. It is
- * identical to the common <code>sph_groestl_small_context</code>.
+ * This structure is a context for BLAKE-384 computations. It is
+ * identical to the common <code>sph_blake_small_context</code>.
  */
-typedef sph_groestl_big_context sph_groestl384_context;
+typedef sph_blake_big_context sph_blake384_context;
 
 /**
- * This structure is a context for Groestl-512 computations. It is
- * identical to the common <code>sph_groestl_small_context</code>.
+ * This structure is a context for BLAKE-512 computations. It is
+ * identical to the common <code>sph_blake_small_context</code>.
  */
-typedef sph_groestl_big_context sph_groestl512_context;
+typedef sph_blake_big_context sph_blake512_context;
+
+#endif
 
 /**
- * Initialize a Groestl-224 context. This process performs no memory allocation.
+ * Initialize a BLAKE-224 context. This process performs no memory allocation.
  *
- * @param cc   the Groestl-224 context (pointer to a
- *             <code>sph_groestl224_context</code>)
+ * @param cc   the BLAKE-224 context (pointer to a
+ *             <code>sph_blake224_context</code>)
  */
-void sph_groestl224_init(void *cc);
+void sph_blake224_init(void *cc);
 
 /**
  * Process some data bytes. It is acceptable that <code>len</code> is zero
  * (in which case this function does nothing).
  *
- * @param cc     the Groestl-224 context
+ * @param cc     the BLAKE-224 context
  * @param data   the input data
  * @param len    the input data length (in bytes)
  */
-void sph_groestl224(void *cc, const void *data, size_t len);
+void sph_blake224(void *cc, const void *data, size_t len);
 
 /**
- * Terminate the current Groestl-224 computation and output the result into
+ * Terminate the current BLAKE-224 computation and output the result into
  * the provided buffer. The destination buffer must be wide enough to
  * accomodate the result (28 bytes). The context is automatically
  * reinitialized.
  *
- * @param cc    the Groestl-224 context
+ * @param cc    the BLAKE-224 context
  * @param dst   the destination buffer
  */
-void sph_groestl224_close(void *cc, void *dst);
+void sph_blake224_close(void *cc, void *dst);
 
 /**
  * Add a few additional bits (0 to 7) to the current computation, then
@@ -179,42 +173,42 @@ void sph_groestl224_close(void *cc, void *dst);
  * numbered 7 downto 8-n (this is the big-endian convention at the byte
  * level). The context is automatically reinitialized.
  *
- * @param cc    the Groestl-224 context
+ * @param cc    the BLAKE-224 context
  * @param ub    the extra bits
  * @param n     the number of extra bits (0 to 7)
  * @param dst   the destination buffer
  */
-void sph_groestl224_addbits_and_close(
+void sph_blake224_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
 
 /**
- * Initialize a Groestl-256 context. This process performs no memory allocation.
+ * Initialize a BLAKE-256 context. This process performs no memory allocation.
  *
- * @param cc   the Groestl-256 context (pointer to a
- *             <code>sph_groestl256_context</code>)
+ * @param cc   the BLAKE-256 context (pointer to a
+ *             <code>sph_blake256_context</code>)
  */
-void sph_groestl256_init(void *cc);
+void sph_blake256_init(void *cc);
 
 /**
  * Process some data bytes. It is acceptable that <code>len</code> is zero
  * (in which case this function does nothing).
  *
- * @param cc     the Groestl-256 context
+ * @param cc     the BLAKE-256 context
  * @param data   the input data
  * @param len    the input data length (in bytes)
  */
-void sph_groestl256(void *cc, const void *data, size_t len);
+void sph_blake256(void *cc, const void *data, size_t len);
 
 /**
- * Terminate the current Groestl-256 computation and output the result into
+ * Terminate the current BLAKE-256 computation and output the result into
  * the provided buffer. The destination buffer must be wide enough to
  * accomodate the result (32 bytes). The context is automatically
  * reinitialized.
  *
- * @param cc    the Groestl-256 context
+ * @param cc    the BLAKE-256 context
  * @param dst   the destination buffer
  */
-void sph_groestl256_close(void *cc, void *dst);
+void sph_blake256_close(void *cc, void *dst);
 
 /**
  * Add a few additional bits (0 to 7) to the current computation, then
@@ -224,42 +218,44 @@ void sph_groestl256_close(void *cc, void *dst);
  * numbered 7 downto 8-n (this is the big-endian convention at the byte
  * level). The context is automatically reinitialized.
  *
- * @param cc    the Groestl-256 context
+ * @param cc    the BLAKE-256 context
  * @param ub    the extra bits
  * @param n     the number of extra bits (0 to 7)
  * @param dst   the destination buffer
  */
-void sph_groestl256_addbits_and_close(
+void sph_blake256_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
 
+#if SPH_64
+
 /**
- * Initialize a Groestl-384 context. This process performs no memory allocation.
+ * Initialize a BLAKE-384 context. This process performs no memory allocation.
  *
- * @param cc   the Groestl-384 context (pointer to a
- *             <code>sph_groestl384_context</code>)
+ * @param cc   the BLAKE-384 context (pointer to a
+ *             <code>sph_blake384_context</code>)
  */
-void sph_groestl384_init(void *cc);
+void sph_blake384_init(void *cc);
 
 /**
  * Process some data bytes. It is acceptable that <code>len</code> is zero
  * (in which case this function does nothing).
  *
- * @param cc     the Groestl-384 context
+ * @param cc     the BLAKE-384 context
  * @param data   the input data
  * @param len    the input data length (in bytes)
  */
-void sph_groestl384(void *cc, const void *data, size_t len);
+void sph_blake384(void *cc, const void *data, size_t len);
 
 /**
- * Terminate the current Groestl-384 computation and output the result into
+ * Terminate the current BLAKE-384 computation and output the result into
  * the provided buffer. The destination buffer must be wide enough to
  * accomodate the result (48 bytes). The context is automatically
  * reinitialized.
  *
- * @param cc    the Groestl-384 context
+ * @param cc    the BLAKE-384 context
  * @param dst   the destination buffer
  */
-void sph_groestl384_close(void *cc, void *dst);
+void sph_blake384_close(void *cc, void *dst);
 
 /**
  * Add a few additional bits (0 to 7) to the current computation, then
@@ -269,42 +265,42 @@ void sph_groestl384_close(void *cc, void *dst);
  * numbered 7 downto 8-n (this is the big-endian convention at the byte
  * level). The context is automatically reinitialized.
  *
- * @param cc    the Groestl-384 context
+ * @param cc    the BLAKE-384 context
  * @param ub    the extra bits
  * @param n     the number of extra bits (0 to 7)
  * @param dst   the destination buffer
  */
-void sph_groestl384_addbits_and_close(
+void sph_blake384_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
 
 /**
- * Initialize a Groestl-512 context. This process performs no memory allocation.
+ * Initialize a BLAKE-512 context. This process performs no memory allocation.
  *
- * @param cc   the Groestl-512 context (pointer to a
- *             <code>sph_groestl512_context</code>)
+ * @param cc   the BLAKE-512 context (pointer to a
+ *             <code>sph_blake512_context</code>)
  */
-void sph_groestl512_init(void *cc);
+void sph_blake512_init(void *cc);
 
 /**
  * Process some data bytes. It is acceptable that <code>len</code> is zero
  * (in which case this function does nothing).
  *
- * @param cc     the Groestl-512 context
+ * @param cc     the BLAKE-512 context
  * @param data   the input data
  * @param len    the input data length (in bytes)
  */
-void sph_groestl512(void *cc, const void *data, size_t len);
+void sph_blake512(void *cc, const void *data, size_t len);
 
 /**
- * Terminate the current Groestl-512 computation and output the result into
+ * Terminate the current BLAKE-512 computation and output the result into
  * the provided buffer. The destination buffer must be wide enough to
  * accomodate the result (64 bytes). The context is automatically
  * reinitialized.
  *
- * @param cc    the Groestl-512 context
+ * @param cc    the BLAKE-512 context
  * @param dst   the destination buffer
  */
-void sph_groestl512_close(void *cc, void *dst);
+void sph_blake512_close(void *cc, void *dst);
 
 /**
  * Add a few additional bits (0 to 7) to the current computation, then
@@ -314,13 +310,15 @@ void sph_groestl512_close(void *cc, void *dst);
  * numbered 7 downto 8-n (this is the big-endian convention at the byte
  * level). The context is automatically reinitialized.
  *
- * @param cc    the Groestl-512 context
+ * @param cc    the BLAKE-512 context
  * @param ub    the extra bits
  * @param n     the number of extra bits (0 to 7)
  * @param dst   the destination buffer
  */
-void sph_groestl512_addbits_and_close(
+void sph_blake512_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
+
+#endif
 
 #ifdef __cplusplus
 }

@@ -11,7 +11,7 @@
 const std::string CLIENT_NAME("Animecoin");
 
 // Client version number
-#define CLIENT_VERSION_SUFFIX   "-release"
+#define CLIENT_VERSION_SUFFIX   "-alpha"
 
 
 // The following part of the code determines the CLIENT_BUILD variable.

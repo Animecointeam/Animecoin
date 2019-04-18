@@ -7,7 +7,7 @@ handle those translations.
 Files and Folders
 -----------------
 
-### bitcoin-qt.pro
+### animecoin-qt.pro
 
 This file takes care of generating `.qm` files from `.ts` files. It is mostly
 automated.
@@ -17,10 +17,12 @@ automated.
 This file must be updated whenever a new translation is added. Please note that
 files must end with `.qm`, not `.ts`.
 
-    <qresource prefix="/translations">
-        <file alias="en">locale/bitcoin_en.qm</file>
-        ...
-    </qresource>
+```xml
+<qresource prefix="/translations">
+    <file alias="en">locale/bitcoin_en.qm</file>
+    ...
+</qresource>
+```
 
 ### src/qt/locale/
 

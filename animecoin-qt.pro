@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = animecoin-qt
 macx:TARGET = "Animecoin-Qt"
-VERSION = 0.9.2
+VERSION = 0.10.0
 INCLUDEPATH += src src/json src/qt
 QT += network printsupport
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
@@ -10,7 +10,7 @@ CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
 CONFIG += openssl
-CONFIG += c++11
+CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4) {
      QT += widgets
@@ -21,8 +21,8 @@ PROTO_DIR = src/qt
 include(share/qt/protobuf.pri)
 PROTOS = src/qt/paymentrequest.proto
 
-#QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
-#QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -194,6 +194,27 @@ QMAKE_EXTRA_TARGETS += genleveldb
 # Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
 QMAKE_CLEAN += src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 
+#Build Secp256k1
+!win32 {
+INCLUDEPATH += src/secp256k1/include
+LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
+	# we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
+	gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --enable-module-recovery && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+	gensecp256k1.target = $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
+	gensecp256k1.depends = FORCE
+	PRE_TARGETDEPS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
+	QMAKE_EXTRA_TARGETS += gensecp256k1
+	# Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
+	QMAKE_CLEAN += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o; cd $$PWD/src/secp256k1; $(MAKE) clean
+} else {
+	isEmpty(SECP256K1_LIB_PATH) {
+		windows:SECP256K1_LIB_PATH=src/secp256k1win2/
+	}
+	isEmpty(SECP256K1_INCLUDE_PATH) {
+		windows:SECP256K1_INCLUDE_PATH=src/secp256k1win2/include
+	}
+}
+
 # regenerate src/build.h
 !win32:contains(USE_BUILD_INFO, 1) {
     message(Building with build info)
@@ -287,13 +308,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/limitedmap.h \
     src/qt/splashscreen.h \
     src/hashblock.h \
-    src/sph_blake.h \
-    src/sph_skein.h \
-    src/sph_keccak.h \
-    src/sph_jh.h \
-    src/sph_groestl.h \
-    src/sph_bmw.h \
-    src/sph_types.h \
     src/coincontrol.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
@@ -318,7 +332,22 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/trafficgraphwidget.h \
     src/rpcclient.h \
 	src/qt/receiverequestdialog.h \
-    src/qt/verticallabel.h
+    src/qt/verticallabel.h \
+    src/crypto/sha512.h \
+    src/crypto/sph_blake.h \
+    src/crypto/sph_bmw.h \
+    src/crypto/sph_groestl.h \
+    src/crypto/sph_jh.h \
+    src/crypto/sph_types.h \
+    src/crypto/sph_keccak.h \
+    src/crypto/sph_skein.h \
+    src/crypto/common.h \
+    src/crypto/hmac_sha256.h \
+    src/crypto/hmac_sha512.h \
+    src/crypto/rfc6979_hmac_sha256.h \
+    src/crypto/ripemd160.h \
+    src/crypto/sha1.h \
+    src/crypto/sha256.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -385,12 +414,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/noui.cpp \
     src/txdb.cpp \
     src/qt/splashscreen.cpp \
-    src/blake.c \
-    src/bmw.c \
-    src/groestl.c \
-    src/jh.c \
-    src/keccak.c \
-    src/skein.c \
     src/core.cpp \
     src/allocators.cpp \
     src/base58.cpp \
@@ -413,7 +436,20 @@ SOURCES += src/qt/bitcoin.cpp \
     src/rpcclient.cpp \
     src/qt/receiverequestdialog.cpp \
 	src/rpcmisc.cpp \
-    src/qt/verticallabel.cpp
+    src/qt/verticallabel.cpp \
+    src/crypto/sha512.cpp \
+    src/crypto/skein.c \
+    src/crypto/blake.c \
+    src/crypto/bmw.c \
+    src/crypto/groestl.c \
+    src/crypto/hmac_sha256.cpp \
+    src/crypto/hmac_sha512.cpp \
+    src/crypto/jh.c \
+    src/crypto/keccak.c \
+    src/crypto/rfc6979_hmac_sha256.cpp \
+    src/crypto/ripemd160.cpp \
+    src/crypto/sha1.cpp \
+    src/crypto/sha256.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
 
@@ -524,6 +560,12 @@ LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB
 LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
+!windows: {
+	LIBS += -lgmp
+} else {
+	INCLUDEPATH += $$SECP256K1_INCLUDE_PATH
+	LIBS += -L/usr/local/lib -L/usr/lib -lsecp256k1
+}
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
 win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
 macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX

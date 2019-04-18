@@ -1,4 +1,4 @@
-Animecoin 0.9.1
+Animecoin 0.10.0
 ====================
 
 Copyright (c) 2009-2013 Bitcoin Developers

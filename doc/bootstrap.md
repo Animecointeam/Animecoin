@@ -24,16 +24,6 @@ The torrent client installed will recognize the download of the torrent file. Sa
 
 ![Fig2](img/bootstrap2.png)
 
-### Download the block chain directly from official repositories
-The Bittorent version, see above, of the block chain download is refreshed more often than the direct download available. If Bittorent is blocked on your network then you can use the direct download method. Be sure to only use official repositories as the link displayed below. This download will only update the client to March 2013.
-
-Click [here](http://sourceforge.net/projects/bitcoin/files/Bitcoin/blockchain/bitcoin_blockchain_170000.zip/download) to download or copy and paste the link below.
-
-	http://sourceforge.net/projects/bitcoin/files/Bitcoin/blockchain/bitcoin_blockchain_170000.zip/download
-
-The download page should look like this, with a countdown to the download. If it does not work directly click the download. Save the file to a folder you use for downloads.
-![Fig3](img/bootstrap3.png)
-
 ### Importing the blockchain
 Exit the Bitcoin Client software if you have it running. Be sure not to have an actively used wallet in use. We are going to copy the download of the blockchain to the Bitcoin client data directory. You should run the client software at least once so it can generate the data directory. Copy the downloaded bootstrap.dat file into the Bitcoin data folder.
 
