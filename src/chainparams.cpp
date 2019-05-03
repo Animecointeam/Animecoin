@@ -69,8 +69,8 @@ public:
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == hashMainGenesisBlock);
         assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9")); // Updated for Animecoin
-        // Updated for Animecoin (though likely obsolete)
-        //vSeeds.push_back(CDNSSeedData("96.43.130.251", "96.43.130.251"));
+        // Updated for Animecoin
+        vSeeds.push_back(CDNSSeedData("seed.animeco.in", "seed.animeco.in"));
         //vSeeds.push_back(CDNSSeedData("91.121.8.23", "91.121.8.23"));
         //vSeeds.push_back(CDNSSeedData("62.210.151.205", "62.210.151.205"));
         //vSeeds.push_back(CDNSSeedData("222.78.67.174", "222.78.67.174"));
