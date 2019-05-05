@@ -42,7 +42,7 @@ static const int MAX_PAYMENT_REQUEST_SIZE = 50000; // bytes
 #define SPINNER_FRAMES 35
 
 #define QAPP_ORG_NAME "Animecoin"
-#define QAPP_ORG_DOMAIN "animecoin.tech"
+#define QAPP_ORG_DOMAIN "animeco.in"
 #define QAPP_APP_NAME_DEFAULT "Animecoin-Qt"
 #define QAPP_APP_NAME_TESTNET "Animecoin-Qt-testnet"
 
