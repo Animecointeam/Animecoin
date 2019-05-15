@@ -1,4 +1,4 @@
-Animecoin 0.9.1
+Animecoin 0.10.0
 
 Copyright (c) 2009-2014 Bitcoin Core Developers
 Copyright (c) 2009-2019 Animecoin Developers

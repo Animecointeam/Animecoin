@@ -1,16 +1,16 @@
 TEMPLATE = app
 TARGET = animecoin-qt
 macx:TARGET = "Animecoin-Qt"
-VERSION = 0.9.2
+VERSION = 0.10.0
 INCLUDEPATH += src src/json src/qt
 QT += network printsupport
-DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
+DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE HAVE_WORKING_BOOST_SLEEP_FOR
 DEFINES += ENABLE_WALLET
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
 CONFIG += openssl
-CONFIG += c++11
+CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4) {
      QT += widgets
@@ -21,8 +21,8 @@ PROTO_DIR = src/qt
 include(share/qt/protobuf.pri)
 PROTOS = src/qt/paymentrequest.proto
 
-#QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
-#QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -194,6 +194,27 @@ QMAKE_EXTRA_TARGETS += genleveldb
 # Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
 QMAKE_CLEAN += src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 
+#Build Secp256k1
+!win32 {
+INCLUDEPATH += src/secp256k1/include
+LIBS += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
+	# we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
+    gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --with-field=gmp --enable-endomorphism && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+    gensecp256k1.target = $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
+	gensecp256k1.depends = FORCE
+    PRE_TARGETDEPS += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
+	QMAKE_EXTRA_TARGETS += gensecp256k1
+	# Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
+    QMAKE_CLEAN += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o; cd $$PWD/src/secp256k1; $(MAKE) clean
+} else {
+	isEmpty(SECP256K1_LIB_PATH) {
+		windows:SECP256K1_LIB_PATH=src/secp256k1win2/
+	}
+	isEmpty(SECP256K1_INCLUDE_PATH) {
+		windows:SECP256K1_INCLUDE_PATH=src/secp256k1win2/include
+	}
+}
+
 # regenerate src/build.h
 !win32:contains(USE_BUILD_INFO, 1) {
     message(Building with build info)
@@ -221,7 +242,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/alert.h \
     src/addrman.h \
     src/base58.h \
-    src/bignum.h \
     src/checkpoints.h \
     src/compat.h \
     src/sync.h \
@@ -234,7 +254,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/key.h \
     src/db.h \
     src/walletdb.h \
-    src/script.h \
     src/init.h \
     src/bloom.h \
     src/mruset.h \
@@ -253,7 +272,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/transactionrecord.h \
     src/qt/guiconstants.h \
     src/qt/optionsmodel.h \
-    src/qt/monitoreddatamapper.h \
     src/qt/transactiondesc.h \
     src/qt/transactiondescdialog.h \
     src/qt/bitcoinamountfield.h \
@@ -287,17 +305,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/limitedmap.h \
     src/qt/splashscreen.h \
     src/hashblock.h \
-    src/sph_blake.h \
-    src/sph_skein.h \
-    src/sph_keccak.h \
-    src/sph_jh.h \
-    src/sph_groestl.h \
-    src/sph_bmw.h \
-    src/sph_types.h \
     src/coincontrol.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
-    src/core.h \
     src/chainparams.h \
     src/miner.h \
     src/noui.h \
@@ -318,7 +328,55 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/trafficgraphwidget.h \
     src/rpcclient.h \
 	src/qt/receiverequestdialog.h \
-    src/qt/verticallabel.h
+    src/qt/verticallabel.h \
+    src/crypto/sha512.h \
+    src/crypto/sph_blake.h \
+    src/crypto/sph_bmw.h \
+    src/crypto/sph_groestl.h \
+    src/crypto/sph_jh.h \
+    src/crypto/sph_types.h \
+    src/crypto/sph_keccak.h \
+    src/crypto/sph_skein.h \
+    src/crypto/common.h \
+    src/crypto/hmac_sha256.h \
+    src/crypto/hmac_sha512.h \
+    src/crypto/rfc6979_hmac_sha256.h \
+    src/crypto/ripemd160.h \
+    src/crypto/sha1.h \
+    src/crypto/sha256.h \
+    src/streams.h \
+    src/random.h \
+    src/timedata.h \
+    src/utilstrencodings.h \
+    src/core_io.h \
+    src/amount.h \
+    src/pubkey.h \
+    src/script/bitcoinconsensus.h \
+    src/script/interpreter.h \
+    src/script/script.h \
+    src/script/script_error.h \
+    src/script/sigcache.h \
+    src/script/sign.h \
+    src/script/standard.h \
+    src/primitives/block.h \
+    src/primitives/transaction.h \
+    src/chain.h \
+    src/pow.h \
+    src/chainparamsbase.h \
+    src/chainparamsseeds.h \
+    src/compressor.h \
+    src/config/bitcoin-config.h \
+    src/eccryptoverify.h \
+    src/ecwrapper.h \
+    src/merkleblock.h \
+    src/undo.h \
+    src/qt/networkstyle.h \
+    src/qt/peertablemodel.h \
+    src/univalue/univalue.h \
+    src/univalue/univalue_escapes.h \
+    src/utilmoneystr.h \
+    src/utiltime.h \
+    src/wallet_ismine.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -331,13 +389,11 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/editaddressdialog.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
     src/alert.cpp \
-    src/version.cpp \
     src/sync.cpp \
     src/util.cpp \
     src/hash.cpp \
     src/netbase.cpp \
     src/key.cpp \
-    src/script.cpp \
     src/main.cpp \
     src/init.cpp \
     src/net.cpp \
@@ -352,7 +408,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/guiutil.cpp \
     src/qt/transactionrecord.cpp \
     src/qt/optionsmodel.cpp \
-    src/qt/monitoreddatamapper.cpp \
     src/qt/transactiondesc.cpp \
     src/qt/transactiondescdialog.cpp \
     src/qt/bitcoinstrings.cpp \
@@ -385,13 +440,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/noui.cpp \
     src/txdb.cpp \
     src/qt/splashscreen.cpp \
-    src/blake.c \
-    src/bmw.c \
-    src/groestl.c \
-    src/jh.c \
-    src/keccak.c \
-    src/skein.c \
-    src/core.cpp \
     src/allocators.cpp \
     src/base58.cpp \
     src/chainparams.cpp \
@@ -413,7 +461,57 @@ SOURCES += src/qt/bitcoin.cpp \
     src/rpcclient.cpp \
     src/qt/receiverequestdialog.cpp \
 	src/rpcmisc.cpp \
-    src/qt/verticallabel.cpp
+    src/qt/verticallabel.cpp \
+    src/crypto/sha512.cpp \
+    src/crypto/skein.c \
+    src/crypto/blake.c \
+    src/crypto/bmw.c \
+    src/crypto/groestl.c \
+    src/crypto/hmac_sha256.cpp \
+    src/crypto/hmac_sha512.cpp \
+    src/crypto/jh.c \
+    src/crypto/keccak.c \
+    src/crypto/rfc6979_hmac_sha256.cpp \
+    src/crypto/ripemd160.cpp \
+    src/crypto/sha1.cpp \
+    src/crypto/sha256.cpp \
+    src/random.cpp \
+    src/timedata.cpp \
+    src/utilstrencodings.cpp \
+    src/core_read.cpp \
+    src/core_write.cpp \
+    src/amount.cpp \
+    src/pubkey.cpp \
+    src/script/bitcoinconsensus.cpp \
+    src/script/interpreter.cpp \
+    src/script/script.cpp \
+    src/script/script_error.cpp \
+    src/script/sigcache.cpp \
+    src/script/sign.cpp \
+    src/script/standard.cpp \
+    src/primitives/block.cpp \
+    src/primitives/transaction.cpp \
+    src/chain.cpp \
+    src/pow.cpp \
+    src/chainparamsbase.cpp \
+    src/clientversion.cpp \
+    src/compressor.cpp \
+    src/eccryptoverify.cpp \
+    src/ecwrapper.cpp \
+    src/merkleblock.cpp \
+    src/qt/networkstyle.cpp \
+    src/qt/peertablemodel.cpp \
+    src/rest.cpp \
+    src/uint256.cpp \
+    src/univalue/univalue.cpp \
+    src/univalue/univalue_read.cpp \
+    src/univalue/univalue_write.cpp \
+    src/utilmoneystr.cpp \
+    src/utiltime.cpp \
+    src/wallet_ismine.cpp \
+    src/compat/glibc_sanity.cpp \
+    src/compat/glibcxx_sanity.cpp \
+    src/compat/strnlen.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
 
@@ -524,6 +622,13 @@ LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB
 LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
+!windows: {
+	LIBS += -lgmp
+} else {
+	INCLUDEPATH += $$SECP256K1_INCLUDE_PATH
+    LIBS += -L/usr/local/lib -L/usr/lib
+# -lsecp256k1
+}
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
 win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
 macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX

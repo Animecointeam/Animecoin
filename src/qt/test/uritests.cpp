@@ -1,3 +1,7 @@
+// Copyright (c) 2009-2014 The Bitcoin developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "uritests.h"
 
 #include "guiutil.h"
@@ -24,7 +28,6 @@ void URITests::uriTests()
     QVERIFY(rv.label == QString("Wikipedia Example Address"));
     QVERIFY(rv.amount == 0);
 
-    /*
     uri.setUrl(QString("anime:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.001"));
     QVERIFY(GUIUtil::parseBitcoinURI(uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
@@ -60,5 +63,4 @@ void URITests::uriTests()
 
     uri.setUrl(QString("anime:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1,000.0&label=Wikipedia Example"));
     QVERIFY(!GUIUtil::parseBitcoinURI(uri, &rv));
-    */
 }
