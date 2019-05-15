@@ -20,9 +20,11 @@ static const uint64_t GB_BYTES = 1000000000LL;
 static const uint64_t BLOCK_CHAIN_SIZE = 4LL * GB_BYTES;
 
 /* Check free space asynchronously to prevent hanging the UI thread.
+
    Up to one request to check a path is in flight to this thread; when the check()
    function runs, the current path is requested from the associated Intro object.
    The reply is sent back through a signal.
+
    This ensures that no queue of checking requests is built up while the user is
    still entering the path, and that always the most recently entered path is checked as
    soon as the thread becomes available.
@@ -180,7 +182,7 @@ void Intro::pickDataDirectory()
 				break;
 			} catch(fs::filesystem_error &e) {
                 QMessageBox::critical(0, tr("Animecoin"),
-					tr("Error: Specified data directory \"%1\" can not be created.").arg(dataDir));
+                    tr("Error: Specified data directory \"%1\" cannot be created.").arg(dataDir));
 				/* fall through, back to choosing screen */
 			}
 		}
@@ -188,8 +190,8 @@ void Intro::pickDataDirectory()
 		settings.setValue("strDataDir", dataDir);
 	}
 	/* Only override -datadir if different from the default, to make it possible to
-	 * override -datadir in the bitcoin.conf file in the default data directory
-	 * (to be consistent with bitcoind behavior)
+     * override -datadir in the animecoin.conf file in the default data directory
+     * (to be consistent with animecoind behavior)
 	 */
 	if(dataDir != getDefaultDataDirectory())
 		SoftSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting
@@ -213,11 +215,11 @@ void Intro::setStatus(int status, const QString &message, quint64 bytesAvailable
 	{
 		ui->freeSpace->setText("");
 	} else {
-		QString freeString = QString::number(bytesAvailable/GB_BYTES) + tr("GB of free space available");
-		if(bytesAvailable < BLOCK_CHAIN_SIZE)
+        QString freeString = tr("%n GB of free space available", "", bytesAvailable/GB_BYTES);
+        if(bytesAvailable < BLOCK_CHAIN_SIZE)
 		{
-			freeString += " " + tr("(of %1GB needed)").arg(BLOCK_CHAIN_SIZE/GB_BYTES);
-			ui->freeSpace->setStyleSheet("QLabel { color: #800000 }");
+            freeString += " " + tr("(of %n GB needed)", "", BLOCK_CHAIN_SIZE/GB_BYTES);
+            ui->freeSpace->setStyleSheet("QLabel { color: #800000 }");
 		} else {
 			ui->freeSpace->setStyleSheet("");
 		}

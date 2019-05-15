@@ -3,7 +3,7 @@
 # Generate seeds.txt from Pieter's DNS seeder
 #
 
-NSEEDS=512
+NSEEDS=4
 
 MAX_SEEDS_PER_ASN=2
 
@@ -23,8 +23,8 @@ import re
 import sys
 import dns.resolver
 
-PATTERN_IPV4 = re.compile(r"^((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})):8333$")
-PATTERN_AGENT = re.compile(r"^(\/Satoshi:0.8.6\/|\/Satoshi:0.9.(2|3)\/|\/Satoshi:0.10.\d{1,2}\/)$")
+PATTERN_IPV4 = re.compile(r"^((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})):1212$")
+PATTERN_AGENT = re.compile(r"^(\/Animecoin:0.8.3.1\/|\/Animecoin:0.9.(0|1|2)\/|\/Animecoin:0.10.\d{1,2}\/)$")
 
 def parseline(line):
     sline = line.split()
