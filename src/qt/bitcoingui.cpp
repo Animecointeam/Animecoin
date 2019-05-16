@@ -280,7 +280,7 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     quitAction->setStatusTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
-    aboutAction = new QAction(networkStyle->getAppIcon(), tr("&About Animecoin"), this);
+    aboutAction = new QAction(QIcon(":/icons/info"), tr("&About Animecoin"), this);
     aboutAction->setStatusTip(tr("Show information about Animecoin"));
     aboutAction->setToolTip(aboutAction->statusTip());
     aboutAction->setMenuRole(QAction::AboutRole);

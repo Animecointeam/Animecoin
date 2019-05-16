@@ -132,9 +132,6 @@
 /* Define to 1 if you have the `crypt32' library (-lcrypt32). */
 /* #undef HAVE_LIBCRYPT32 */
 
-/* Define to 1 if you have the `crypto' library (-lcrypto). */
-#define HAVE_LIBCRYPTO 1
-
 /* Define to 1 if you have the `gdi32' library (-lgdi32). */
 /* #undef HAVE_LIBGDI32 */
 
@@ -264,8 +261,7 @@
 /* Define this symbol if boost sleep_for works */
 #define HAVE_WORKING_BOOST_SLEEP_FOR 1
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
 /* Define to the address where bug reports for this package should be sent. */

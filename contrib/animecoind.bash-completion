@@ -39,6 +39,10 @@ _animecoind() {
 
     if ((cword > 4)); then
         case ${words[cword-4]} in
+            listtransactions)
+                COMPREPLY=( $( compgen -W "true false" -- "$cur" ) )
+                return 0
+                ;;
             signrawtransaction)
                 COMPREPLY=( $( compgen -W "ALL NONE SINGLE ALL|ANYONECANPAY NONE|ANYONECANPAY SINGLE|ANYONECANPAY" -- "$cur" ) )
                 return 0
@@ -52,7 +56,7 @@ _animecoind() {
                 _animecoin_accounts
                 return 0
                 ;;
-            gettxout|importprivkey)
+            getbalance|gettxout|importaddress|importprivkey|listreceivedbyaccount|listreceivedbyaddress|listsinceblock)
                 COMPREPLY=( $( compgen -W "true false" -- "$cur" ) )
                 return 0
                 ;;
@@ -65,8 +69,8 @@ _animecoind() {
                 COMPREPLY=( $( compgen -W "add remove onetry" -- "$cur" ) )
                 return 0
                 ;;
-            getblock|getrawtransaction|listreceivedbyaccount|listreceivedbyaddress|sendrawtransaction)
-				COMPREPLY=( $( compgen -W "true false" -- "$cur" ) )
+            getblock|getrawtransaction|gettransaction|listaccounts|listreceivedbyaccount|listreceivedbyaddress|sendrawtransaction)
+                COMPREPLY=( $( compgen -W "true false" -- "$cur" ) )
                 return 0
                 ;;
             move|setaccount)
@@ -115,7 +119,7 @@ _animecoind() {
 
             # only parse help if senseful
             if [[ -z "$cur" || "$cur" =~ ^[a-z] ]]; then
-                commands=$(_animecoin_rpc help 2>/dev/null | awk '{ print $1; }')
+                commands=$(_animecoin_rpc help 2>/dev/null | awk '$1 ~ /^[a-z]/ { print $1; }')
             fi
 
             COMPREPLY=( $( compgen -W "$helpopts $commands" -- "$cur" ) )
