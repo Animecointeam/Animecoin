@@ -5,16 +5,16 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.9.2
+!define VERSION 0.10.0
 !define COMPANY "Animecoin project"
 !define URL http://animecoin.tech/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/media/db/Animecoin/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/media/db/Animecoin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/media/db/Animecoin/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -22,7 +22,7 @@ SetCompressor /SOLID lzma
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "Animecoin"
 !define MUI_FINISHPAGE_RUN $INSTDIR\animecoin-qt.exe
 !define MUI_UNICON "..\share\pixmaps\bitcoin.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/daiyousei/caraphinneth/Animecoin/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/media/db/Animecoin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -48,7 +48,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/daiyousei/caraphinneth/Animecoin/bitcoin-${VERSION}-win-setup.exe
+OutFile /media/db/Animecoin/bitcoin-${VERSION}-win-setup.exe
 !if "" == "64"
 InstallDir $PROGRAMFILES64\Animecoin
 !else
@@ -73,10 +73,10 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/daiyousei/caraphinneth/Animecoin/release/animecoin-qt.exe
+    File /media/db/Animecoin/release/animecoin-qt.exe
     SetOutPath $INSTDIR\daemon
-    File /home/daiyousei/caraphinneth/Animecoin/release/animecoind.exe
-    File /home/daiyousei/caraphinneth/Animecoin/release/animecoin-cli.exe
+    File /media/db/Animecoin/release/animecoind.exe
+    File /media/db/Animecoin/release/animecoin-cli.exe
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1    
 SectionEnd

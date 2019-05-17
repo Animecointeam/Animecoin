@@ -22,7 +22,7 @@ include(share/qt/protobuf.pri)
 PROTOS = src/qt/paymentrequest.proto
 
 QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
-QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -Wno-deprecated-copy"
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -513,7 +513,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/compat/glibcxx_sanity.cpp \
     src/compat/strnlen.cpp
 
-RESOURCES += src/qt/bitcoin.qrc
+RESOURCES += src/qt/bitcoin.qrc \
+    src/qt/bitcoin_locale.qrc
 
 FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/addressbookpage.ui \
