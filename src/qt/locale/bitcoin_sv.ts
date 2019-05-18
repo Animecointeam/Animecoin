@@ -42,7 +42,7 @@ Distribuerad under mjukvarulicensen MIT/X11, se den medföljande filen COPYING e
 Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användning i OpenSSL Toolkit (http://www.openssl.org/) och kryptografisk mjukvara utvecklad av Eric Young (eay@cryptsoft.com) samt UPnP-mjukvara skriven av Thomas Bernard.</translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+59"/>
+        <location filename="../utilitydialog.cpp" line="+62"/>
         <source>Copyright</source>
         <translation>Copyright</translation>
     </message>
@@ -69,9 +69,13 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Adressbok</translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="+30"/>
         <source>Double-click to edit address or label</source>
-        <translation>Dubbel-klicka för att ändra adressen eller etiketten</translation>
+        <translation type="vanished">Dubbel-klicka för att ändra adressen eller etiketten</translation>
+    </message>
+    <message>
+        <location filename="../forms/addressbookpage.ui" line="+30"/>
+        <source>Right-click to edit address or label</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
@@ -84,7 +88,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>Copy the currently selected address to the system clipboard</source>
         <translation>Kopiera den markerade adressen till systemets Urklipp</translation>
     </message>
@@ -94,7 +98,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+67"/>
         <source>C&amp;lose</source>
         <translation type="unfinished"></translation>
     </message>
@@ -124,12 +128,12 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Signera &amp;Meddelande</translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="-47"/>
+        <location filename="../forms/addressbookpage.ui" line="-53"/>
         <source>Delete the currently selected address from the list</source>
         <translation>Ta bort den valda adressen från listan</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+30"/>
         <source>Export the data in the current tab to a file</source>
         <translation>Exportera informationen i den nuvarande fliken till en fil</translation>
     </message>
@@ -147,7 +151,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">&amp;Verifiera Meddelande</translation>
     </message>
     <message>
-        <location line="-27"/>
+        <location line="-30"/>
         <source>&amp;Delete</source>
         <translation>&amp;Radera</translation>
     </message>
@@ -208,7 +212,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
     </message>
     <message>
         <location line="+1"/>
-        <source>There was an error trying to save the address list to %1.</source>
+        <source>There was an error trying to save the address list to %1. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -259,7 +263,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Lösenords Dialog</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+30"/>
         <source>Enter passphrase</source>
         <translation>Ange lösenord</translation>
     </message>
@@ -274,12 +278,16 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Upprepa nytt lösenord</translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="+40"/>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Ange plånbokens nya lösenord. &lt;br/&gt; Använd ett lösenord på &lt;b&gt;10 eller fler slumpmässiga tecken,&lt;/b&gt; eller &lt;b&gt;åtta eller fler ord.&lt;/b&gt;</translation>
+        <translation type="vanished">Ange plånbokens nya lösenord. &lt;br/&gt; Använd ett lösenord på &lt;b&gt;10 eller fler slumpmässiga tecken,&lt;/b&gt; eller &lt;b&gt;åtta eller fler ord.&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../askpassphrasedialog.cpp" line="+42"/>
+        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Encrypt wallet</source>
         <translation>Kryptera plånbok</translation>
     </message>
@@ -314,7 +322,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Ange plånbokens gamla och nya lösenord.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+45"/>
         <source>Confirm wallet encryption</source>
         <translation>Bekräfta kryptering av plånbok</translation>
     </message>
@@ -329,7 +337,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
     </message>
     <message>
         <location line="+0"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL YOUR MONEY&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR COINS&lt;/b&gt;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -403,42 +411,47 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+306"/>
+        <location filename="../bitcoingui.cpp" line="+309"/>
         <source>Sign &amp;message...</source>
         <translation>Signera &amp;meddelande...</translation>
     </message>
     <message>
-        <location line="+357"/>
+        <location line="+16"/>
+        <source>Show the Animecoin help message to get a list with possible command-line options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+335"/>
         <source>Synchronizing with network...</source>
         <translation>Synkroniserar med nätverk...</translation>
     </message>
     <message>
-        <location line="-441"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>&amp;Översikt</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-122"/>
         <source>Node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+123"/>
         <source>Show general overview of wallet</source>
         <translation>Visa översiktsvy av plånbok</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Send coins to an Animecoin address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Your address list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>&amp;Request payment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -448,7 +461,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>&amp;Transactions</source>
         <translation>&amp;Transaktioner</translation>
     </message>
@@ -480,8 +493,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Visa information om Anime</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>&amp;About Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -507,7 +519,12 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>&amp;Alternativ...</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+1"/>
+        <source>Modify configuration options for Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>&amp;Encrypt Wallet...</source>
         <translation>&amp;Kryptera plånbok...</translation>
     </message>
@@ -542,7 +559,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
         <source>&amp;Sending addresses...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -562,7 +579,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Open &amp;URI...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -572,23 +589,25 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>&amp;Command-line options</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+1"/>
-        <source>Show the Animecoin help message to get a list with possible Anime Command-line options</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location line="+355"/>
+        <source>Processed %n blocks of transaction history.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+166"/>
-        <location line="+5"/>
+        <location line="-182"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+155"/>
+        <location line="+150"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -596,7 +615,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         </translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <source>Importing blocks from disk...</source>
         <translation>Importerar block från disk...</translation>
     </message>
@@ -610,12 +629,11 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Skicka mynt till en Anime-adress</translation>
     </message>
     <message>
-        <location line="-378"/>
         <source>Modify configuration options for Anime</source>
-        <translation>Ändra konfigurationsalternativ för Anime</translation>
+        <translation type="vanished">Ändra konfigurationsalternativ för Anime</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="-360"/>
         <source>Backup wallet to another location</source>
         <translation>Säkerhetskopiera plånboken till en annan plats</translation>
     </message>
@@ -625,7 +643,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Byt lösenord för kryptering av plånbok</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <source>&amp;Debug window</source>
         <translation>&amp;Debug fönster</translation>
     </message>
@@ -635,7 +653,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Öppna debug- och diagnostikkonsolen</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-5"/>
         <source>&amp;Verify message...</source>
         <translation>&amp;Verifiera meddelande...</translation>
     </message>
@@ -644,23 +662,23 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Anime</translation>
     </message>
     <message>
-        <location line="-224"/>
+        <location line="-199"/>
         <source>Wallet</source>
         <translation>Plånbok</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+688"/>
+        <location line="+655"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-534"/>
+        <location line="-516"/>
         <source>&amp;Send</source>
         <translation>&amp;Skicka</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>&amp;Receive</source>
         <translation>&amp;Ta emot</translation>
     </message>
@@ -673,8 +691,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">&amp;Om Anime</translation>
     </message>
     <message>
-        <location line="+58"/>
-        <location line="+2"/>
+        <location line="+52"/>
         <source>&amp;Show / Hide</source>
         <translation>&amp;Visa / Göm</translation>
     </message>
@@ -684,7 +701,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Visa eller göm huvudfönstret</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Encrypt the private keys that belong to your wallet</source>
         <translation>Kryptera de privata nycklar som tillhör din plånbok</translation>
     </message>
@@ -697,7 +714,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Verifiera meddelanden för att vara säker på att de var signerade med den specificerade Anime-adressen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+59"/>
         <source>&amp;File</source>
         <translation>&amp;Arkiv</translation>
     </message>
@@ -717,10 +734,8 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation>Verktygsfält för Tabbar</translation>
     </message>
     <message>
-        <location line="-299"/>
-        <location line="+396"/>
         <source>[testnet]</source>
-        <translation>[testnet]</translation>
+        <translation type="vanished">[testnet]</translation>
     </message>
     <message>
         <source>Anime client</source>
@@ -734,7 +749,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         </translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+269"/>
         <source>No block source available...</source>
         <translation>Ingen block-källa tillgänglig...</translation>
     </message>
@@ -743,12 +758,11 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Bearbetat %1 av %2 (uppskattade) block av transaktionshistorik.</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Processed %1 blocks of transaction history.</source>
-        <translation>Bearbetat %1 block i transaktionshistoriken.</translation>
+        <translation type="vanished">Bearbetat %1 block i transaktionshistoriken.</translation>
     </message>
     <message numerus="yes">
-        <location line="+26"/>
+        <location line="+34"/>
         <source>%n hour(s)</source>
         <translation>
             <numerusform>%n timme</numerusform>
@@ -834,7 +848,7 @@ Denna produkten innehåller mjukvara utvecklad av OpenSSL Project för användni
         <translation type="vanished">Bekräfta överföringsavgift</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+126"/>
         <source>Sent transaction</source>
         <translation>Transaktion skickad</translation>
     </message>
@@ -865,7 +879,7 @@ Adress: %4
         <translation type="vanished">URI går inte att tolkas! Detta kan orsakas av en ogiltig Anime-adress eller felaktiga URI parametrar.</translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+68"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
         <translation>Denna plånbok är &lt;b&gt;krypterad&lt;/b&gt; och för närvarande &lt;b&gt;olåst&lt;/b&gt;</translation>
     </message>
@@ -879,7 +893,7 @@ Adress: %4
         <translation type="vanished">Ett allvarligt fel har uppstått. Anime kan inte längre köras säkert och kommer att avslutas.</translation>
     </message>
     <message>
-        <location filename="../bitcoin.cpp" line="+451"/>
+        <location filename="../bitcoin.cpp" line="+476"/>
         <source>A fatal error occurred. Animecoin can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -887,7 +901,7 @@ Adress: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+134"/>
+        <location filename="../clientmodel.cpp" line="+140"/>
         <source>Network Alert</source>
         <translation>Nätverkslarm</translation>
     </message>
@@ -895,12 +909,7 @@ Adress: %4
 <context>
     <name>CoinControlDialog</name>
     <message>
-        <location filename="../forms/coincontroldialog.ui" line="+14"/>
-        <source>Coin Control Address Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location filename="../forms/coincontroldialog.ui" line="+48"/>
         <source>Quantity:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -925,17 +934,22 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Low Output:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../coincontroldialog.cpp" line="+602"/>
+        <location filename="../coincontroldialog.cpp" line="+608"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/coincontroldialog.ui" line="+48"/>
+        <location filename="../forms/coincontroldialog.ui" line="-182"/>
+        <source>Coin Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+214"/>
+        <source>Dust:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
         <source>After Fee:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -950,24 +964,33 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Tree mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+13"/>
         <source>List mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+56"/>
         <source>Amount</source>
         <translation type="unfinished">Mängd</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Received with label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Received with address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Address</source>
-        <translation type="unfinished">Adress</translation>
+        <translation type="obsolete">Adress</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -990,7 +1013,7 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../coincontroldialog.cpp" line="-561"/>
+        <location filename="../coincontroldialog.cpp" line="-564"/>
         <source>Copy address</source>
         <translation type="unfinished">Kopiera adress</translation>
     </message>
@@ -1047,7 +1070,7 @@ Adress: %4
     </message>
     <message>
         <location line="+1"/>
-        <source>Copy low output</source>
+        <source>Copy dust</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1056,7 +1079,7 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+332"/>
+        <location line="+351"/>
         <source>highest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1081,7 +1104,7 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+1"/>
         <source>low-medium</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1101,22 +1124,17 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>(%1 locked)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+28"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+141"/>
-        <source>Dust</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+149"/>
         <source>This label turns red, if the transaction size is greater than 1000 bytes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1147,28 +1165,17 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+4"/>
-        <source>This means a fee of at least %1 is required.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-3"/>
-        <source>Amounts below 0.546 times the minimum relay fee are shown as dust.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>This label turns red, if the change is smaller than %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-22"/>
+        <location line="-24"/>
         <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+32"/>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
         <location line="+61"/>
         <source>(no label)</source>
         <translation type="unfinished">(Ingen etikett)</translation>
@@ -1267,7 +1274,7 @@ Adress: %4
 <context>
     <name>FreespaceChecker</name>
     <message>
-        <location filename="../intro.cpp" line="+66"/>
+        <location filename="../intro.cpp" line="+68"/>
         <source>A new data directory will be created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1345,7 +1352,23 @@ Adress: %4
         <translation type="unfinished">version</translation>
     </message>
     <message>
+        <location line="+5"/>
         <location line="+2"/>
+        <source>(%1-bit)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>About Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Command-line options</source>
+        <translation type="unfinished">Kommandoradsalternativ</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Usage:</source>
         <translation type="unfinished">Användning:</translation>
     </message>
@@ -1424,23 +1447,29 @@ Adress: %4
     </message>
     <message>
         <location line="+1"/>
-        <source>Error: Specified data directory &quot;%1&quot; can not be created.</source>
+        <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location line="+33"/>
+        <source>%n GB of free space available</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+3"/>
+        <source>(of %n GB needed)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+24"/>
+        <location line="-12"/>
         <source>Error</source>
         <translation type="unfinished">Fel</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>GB of free space available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>(of %1GB needed)</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1461,7 +1490,7 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>Select payment request file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1519,17 +1548,15 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB.</source>
-        <translation>Valfri transaktionsavgift per kB som ser till att dina transaktioner behandlas snabbt. De flesta transaktioner är 1 kB.</translation>
+        <translation type="vanished">Valfri transaktionsavgift per kB som ser till att dina transaktioner behandlas snabbt. De flesta transaktioner är 1 kB.</translation>
     </message>
     <message>
-        <location line="+15"/>
         <source>Pay transaction &amp;fee</source>
-        <translation>Betala överförings&amp;avgift</translation>
+        <translation type="vanished">Betala överförings&amp;avgift</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+6"/>
         <source>Expert</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1549,37 +1576,22 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+30"/>
         <source>Automatically open the Animecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Connect to the Animecoin network through a SOCKS proxy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>&amp;Connect through SOCKS proxy (default proxy):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+57"/>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+209"/>
+        <location line="+129"/>
         <source>The user interface language can be set here. This setting will take effect after restarting Animecoin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Whether to show Animecoin addresses in the transaction list or not.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
+        <location line="+35"/>
         <location line="+13"/>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation type="unfinished"></translation>
@@ -1613,7 +1625,7 @@ Adress: %4
         <translation>&amp;Återställ Alternativ</translation>
     </message>
     <message>
-        <location line="-397"/>
+        <location line="-317"/>
         <source>&amp;Network</source>
         <translation>&amp;Nätverk</translation>
     </message>
@@ -1635,7 +1647,7 @@ Adress: %4
         <translation type="vanished">&amp;Anslut genom SOCKS-proxy:</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+29"/>
         <source>Proxy &amp;IP:</source>
         <translation>Proxy-&amp;IP: </translation>
     </message>
@@ -1654,14 +1666,12 @@ Adress: %4
         <translation>Proxyns port (t.ex. 9050)</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>SOCKS &amp;Version:</source>
-        <translation>SOCKS &amp;Version:</translation>
+        <translation type="vanished">SOCKS &amp;Version:</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>SOCKS version of the proxy (e.g. 5)</source>
-        <translation>SOCKS version av proxyn (t.ex. 5)</translation>
+        <translation type="vanished">SOCKS version av proxyn (t.ex. 5)</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -1689,32 +1699,7 @@ Adress: %4
         <translation>M&amp;inimera vid stängning</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>&amp;Mining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Animecoin mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>&amp;Mining enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>&amp;Mining limit:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Choose the default mining intensity.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+26"/>
+        <location line="+21"/>
         <source>&amp;Display</source>
         <translation>&amp;Visa</translation>
     </message>
@@ -1742,22 +1727,41 @@ Adress: %4
         <translation type="vanished">Anger om Anime-adresser skall visas i transaktionslistan.</translation>
     </message>
     <message>
-        <location line="+12"/>
         <source>&amp;Display addresses in transaction list</source>
-        <translation>&amp;Visa adresser i transaktionslistan</translation>
+        <translation type="vanished">&amp;Visa adresser i transaktionslistan</translation>
     </message>
     <message>
-        <location line="-322"/>
+        <location line="-253"/>
         <source>Whether to show coin control features or not.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+482"/>
+        <location line="+53"/>
+        <source>Accept connections from outside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Allow incoming connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Connect to the Animecoin network through a SOCKS5 proxy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+349"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+13"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
     </message>
@@ -1766,17 +1770,17 @@ Adress: %4
         <translation type="vanished">&amp;Verkställ</translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="+72"/>
+        <location filename="../optionsdialog.cpp" line="+76"/>
         <source>default</source>
         <translation>standard</translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+60"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+76"/>
         <source>Confirm options reset</source>
         <translation>Bekräfta att alternativen ska återställs</translation>
     </message>
@@ -1813,7 +1817,7 @@ Adress: %4
         <translation type="vanished">Denna inställning träder i kraft efter en omstart av Anime.</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+25"/>
         <source>The supplied proxy address is invalid.</source>
         <translation>Den medföljande proxy adressen är ogiltig.</translation>
     </message>
@@ -1838,18 +1842,37 @@ Adress: %4
         <translation type="vanished">Obekräftade:</translation>
     </message>
     <message>
-        <location line="+43"/>
         <source>Wallet</source>
-        <translation>Plånbok</translation>
+        <translation type="vanished">Plånbok</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+247"/>
+        <location line="+53"/>
+        <location line="+388"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Animecoin network after a connection is established, but this process has not completed yet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-343"/>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+128"/>
+        <source>Current total balance in watch-only addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Watch-only:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Available:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1859,39 +1882,58 @@ Adress: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+25"/>
+        <source>Your current balance in watch-only addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>Pending:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+7"/>
+        <source>Spendable:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>Recent transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-308"/>
         <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+112"/>
         <source>Immature:</source>
         <translation>Omogen:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-29"/>
         <source>Mined balance that has not yet matured</source>
         <translation>Den genererade balansen som ännu inte har mognat</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="-163"/>
+        <source>Balances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+147"/>
         <source>Total:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+61"/>
         <source>Your current total balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+87"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Nyligen genomförda transaktioner&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt;Nyligen genomförda transaktioner&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Your current balance</source>
@@ -1902,7 +1944,7 @@ Adress: %4
         <translation type="vanished">Totalt antal transaktioner som ännu inte bekräftats, och som ännu inte räknas med i aktuellt saldo</translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="+120"/>
+        <location filename="../overviewpage.cpp" line="+131"/>
         <location line="+1"/>
         <source>out of sync</source>
         <translation>osynkroniserad</translation>
@@ -2005,7 +2047,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+44"/>
+        <location filename="../utilitydialog.cpp" line="+43"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2124,58 +2166,76 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PaymentServer</name>
     <message>
-        <location filename="../paymentserver.cpp" line="+292"/>
-        <location line="+212"/>
-        <location line="+13"/>
-        <location line="+95"/>
+        <location filename="../paymentserver.cpp" line="+317"/>
+        <location line="+226"/>
+        <location line="+34"/>
+        <location line="+109"/>
+        <location line="+14"/>
         <location line="+18"/>
-        <location line="+16"/>
         <source>Payment request error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-353"/>
+        <location line="-400"/>
         <source>Cannot start anime: click-to-pay handler</source>
         <translation>Kan inte starta bitcin: klicka-och-betala handhavare</translation>
     </message>
     <message>
-        <location line="+58"/>
-        <source>Net manager warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Your active proxy doesn&apos;t support SOCKS5, which is required for payment requests via proxy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+51"/>
-        <location line="+13"/>
+        <location line="+104"/>
+        <location line="+14"/>
+        <location line="+7"/>
         <source>URI handling</source>
         <translation type="unfinished">URI hantering</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-20"/>
         <source>Payment request fetch URL is invalid: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>URI can not be parsed! This can be caused by an invalid Animecoin address or malformed URI parameters.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
+        <location line="+34"/>
         <source>Payment request file handling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Payment request file can not be read or processed! This can be caused by an invalid payment request file.</source>
+        <location line="-21"/>
+        <source>Invalid payment address %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+8"/>
+        <source>URI cannot be parsed! This can be caused by an invalid Animecoin address or malformed URI parameters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <location line="+9"/>
+        <location line="+32"/>
+        <source>Payment request rejected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-41"/>
+        <source>Payment request network doesn&apos;t match client network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Payment request has expired.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Payment request is not initialized.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
         <source>Unverified payment requests to custom payment scripts are unsupported.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2185,22 +2245,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Refund from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+43"/>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Payment request DoS protection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Error communicating with %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Payment request can not be parsed or processed!</source>
+        <location line="+20"/>
+        <source>Payment request cannot be parsed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>Bad response from server %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2216,9 +2286,27 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>PeerTableModel</name>
+    <message>
+        <location filename="../peertablemodel.cpp" line="+118"/>
+        <source>Address/Hostname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>User Agent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Ping Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="../bitcoin.cpp" line="+76"/>
+        <location filename="../bitcoin.cpp" line="+79"/>
         <location line="+7"/>
         <location line="+13"/>
         <source>Animecoin</source>
@@ -2240,13 +2328,63 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+58"/>
         <source>Animecoin didn&apos;t yet exit safely...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../guiutil.cpp" line="+93"/>
-        <source>Enter an Animecoin address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <location filename="../bitcoinunits.cpp" line="+194"/>
+        <source>Amount</source>
+        <translation type="unfinished">Mängd</translation>
+    </message>
+    <message>
+        <location filename="../guiutil.cpp" line="+109"/>
+        <source>Enter an Animecoin address (e.g. %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+714"/>
+        <source>%1 d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>NETWORK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>UNKNOWN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>N/A</source>
+        <translation type="unfinished">ej tillgänglig</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>%1 ms</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2331,17 +2469,31 @@ p, li { white-space: pre-wrap; }
         <location line="+10"/>
         <location line="+23"/>
         <location line="+26"/>
+        <location line="+26"/>
         <location line="+23"/>
         <location line="+23"/>
         <location line="+36"/>
         <location line="+23"/>
         <location line="+36"/>
+        <location line="+23"/>
+        <location line="+465"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
         <location line="+23"/>
         <source>N/A</source>
         <translation>ej tillgänglig</translation>
     </message>
     <message>
-        <location line="-200"/>
+        <location line="-967"/>
         <source>Client version</source>
         <translation>Klient-version</translation>
     </message>
@@ -2364,6 +2516,11 @@ p, li { white-space: pre-wrap; }
         <location line="+53"/>
         <source>Using OpenSSL version</source>
         <translation>Använder OpenSSL version</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Using BerkeleyDB version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+49"/>
@@ -2401,19 +2558,104 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Totals</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+64"/>
-        <location filename="../rpcconsole.cpp" line="+363"/>
-        <source>In:</source>
+        <source>Received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+80"/>
-        <location filename="../rpcconsole.cpp" line="+1"/>
+        <source>Sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>&amp;Peers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <location filename="../rpcconsole.cpp" line="+236"/>
+        <location line="+327"/>
+        <source>Select a peer to view detailed information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>User Agent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Starting Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Sync Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Ban Score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Connection Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Last Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Last Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Bytes Sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Bytes Received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Ping Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../rpcconsole.cpp" line="-165"/>
+        <source>In:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Out:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2422,7 +2664,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">På testnet</translation>
     </message>
     <message>
-        <location line="-387"/>
+        <location filename="../forms/rpcconsole.ui" line="-771"/>
         <source>Block chain</source>
         <translation>Blockkedja</translation>
     </message>
@@ -2529,18 +2771,35 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 m</source>
+        <location line="+95"/>
+        <source>via %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>%1 h</source>
+        <location line="+3"/>
+        <location line="+1"/>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Inbound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Outbound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1 h %2 m</source>
+        <location line="+1"/>
+        <source>Fetching...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2559,7 +2818,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+14"/>
         <location line="+23"/>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Anime network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Animecoin network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2610,12 +2869,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+78"/>
+        <location line="+75"/>
         <source>Requested payments history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+25"/>
         <source>Show the selected request (does the same as double clicking an entry)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2625,7 +2884,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+17"/>
         <source>Remove the selected entries from the list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2663,12 +2922,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>Copy &amp;Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>&amp;Save Image...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2721,7 +2980,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RecentRequestsTableModel</name>
     <message>
-        <location filename="../recentrequeststablemodel.cpp" line="+24"/>
+        <location filename="../recentrequeststablemodel.cpp" line="+28"/>
         <source>Date</source>
         <translation type="unfinished">Datum</translation>
     </message>
@@ -2736,12 +2995,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Meddelande</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+99"/>
         <source>Amount</source>
         <translation type="unfinished">Mängd</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="-59"/>
         <source>(no label)</source>
         <translation type="unfinished">(Ingen etikett)</translation>
     </message>
@@ -2760,8 +3019,7 @@ p, li { white-space: pre-wrap; }
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+380"/>
-        <location line="+80"/>
+        <location filename="../sendcoinsdialog.cpp" line="+533"/>
         <source>Send Coins</source>
         <translation>Skicka pengar</translation>
     </message>
@@ -2776,7 +3034,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>automatically selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2806,7 +3064,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+204"/>
+        <location line="+80"/>
+        <source>Dust:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+124"/>
         <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2816,22 +3079,108 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+206"/>
+        <source>Transaction Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Choose...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>collapse fee-settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+78"/>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>per kilobyte</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;total at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>total at least</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <location line="+13"/>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>(read the tooltip)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Recommended:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Custom:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Confirmation time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
+        <source>normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>fast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Send as zero-fee transaction if possible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(confirmation may take longer)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Clear all fields of the form.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-303"/>
+        <location line="-890"/>
         <source>Fee:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Low Output:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+48"/>
+        <location line="+80"/>
         <source>After Fee:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2841,7 +3190,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+795"/>
         <source>Send to multiple recipients at once</source>
         <translation>Skicka till flera mottagare samtidigt</translation>
     </message>
@@ -2855,12 +3204,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Ta bort alla transaktions-fält</translation>
     </message>
     <message>
-        <location line="-20"/>
+        <location line="-17"/>
         <source>Clear &amp;All</source>
         <translation>Rensa &amp;alla</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+55"/>
         <source>Balance:</source>
         <translation>Balans:</translation>
     </message>
@@ -2879,7 +3228,7 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Skicka</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-410"/>
+        <location filename="../sendcoinsdialog.cpp" line="-477"/>
         <source>Copy quantity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2910,16 +3259,21 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+1"/>
-        <source>Copy low output</source>
+        <source>Copy dust</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+246"/>
+        <source>Total Amount %1&lt;span style=&apos;font-size:10pt;font-weight:normal;&apos;&gt;&lt;br /&gt;(=%2)&lt;/span&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-245"/>
         <source>Copy change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+172"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+4"/>
@@ -2937,27 +3291,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Total Amount %1 (= %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+17"/>
         <source>or</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+157"/>
-        <source>Payment request expired</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Invalid payment address %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+53"/>
+        <location line="+207"/>
         <source>Transaction creation failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2967,7 +3306,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+4"/>
+        <source>A fee higher than %1 is considered an insanely high fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <source>Pay only the minimum fee of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Estimated to begin confirmation within %1 block(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+107"/>
         <source>Warning: Invalid Animecoin address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2976,7 +3330,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; till %2 (%3)</translation>
     </message>
     <message>
-        <location line="-333"/>
+        <location line="-429"/>
         <source>Confirm send coins</source>
         <translation>Bekräfta skickade mynt</translation>
     </message>
@@ -2989,7 +3343,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished"> och </translation>
     </message>
     <message>
-        <location line="+201"/>
+        <location line="+190"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>Mottagarens adress är inte giltig, vänligen kontrollera igen.</translation>
     </message>
@@ -3022,7 +3376,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Fel: Transaktionen avslogs. Detta kan hända om några av mynten i plånboken redan spenderats, t.ex om du använt en kopia av wallet.dat och mynt spenderades i kopian men inte markerats som spenderas här.</translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+247"/>
         <source>(no label)</source>
         <translation type="unfinished">(Ingen etikett)</translation>
     </message>
@@ -3075,7 +3429,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+33"/>
-        <source>The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <source>The Animecoin address to send the payment to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3154,7 +3508,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <location filename="../utilitydialog.cpp" line="+17"/>
+        <location filename="../utilitydialog.cpp" line="+13"/>
         <source>Animecoin is shutting down...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3172,7 +3526,7 @@ p, li { white-space: pre-wrap; }
         <translation>Signaturer - Signera / Verifiera ett Meddelande</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>&amp;Sign Message</source>
         <translation>&amp;Signera Meddelande</translation>
     </message>
@@ -3191,7 +3545,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+18"/>
-        <source>The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <source>The Animecoin address to sign the message with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3238,7 +3592,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+106"/>
-        <source>The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <source>The Animecoin address the message was signed with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3299,12 +3653,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Ange en Anime-adress (t.ex. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location filename="../signverifymessagedialog.cpp" line="+30"/>
-        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
+        <location filename="../signverifymessagedialog.cpp" line="+29"/>
         <source>Click &quot;Sign Message&quot; to generate signature</source>
         <translation>Klicka &quot;Signera Meddelande&quot; för att få en signatur</translation>
     </message>
@@ -3313,7 +3662,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Ange Anime-signatur</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+83"/>
         <location line="+80"/>
         <source>The entered address is invalid.</source>
         <translation>Den angivna adressen är ogiltig.</translation>
@@ -3386,7 +3735,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Anime-utvecklarna</translation>
     </message>
     <message>
-        <location filename="../splashscreen.cpp" line="+32"/>
+        <location filename="../splashscreen.cpp" line="+35"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3396,7 +3745,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../networkstyle.cpp" line="+19"/>
         <source>[testnet]</source>
         <translation>[testnet]</translation>
     </message>
@@ -3412,7 +3761,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionDesc</name>
     <message>
-        <location filename="../transactiondesc.cpp" line="+29"/>
+        <location filename="../transactiondesc.cpp" line="+34"/>
         <source>Open until %1</source>
         <translation>Öppet till %1</translation>
     </message>
@@ -3466,39 +3815,45 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+5"/>
-        <location line="+17"/>
+        <location line="+13"/>
+        <location line="+72"/>
         <source>From</source>
         <translation>Från</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+22"/>
-        <location line="+58"/>
+        <location line="-71"/>
+        <location line="+20"/>
+        <location line="+69"/>
         <source>To</source>
         <translation>Till</translation>
     </message>
     <message>
-        <location line="-77"/>
-        <location line="+2"/>
+        <location line="-87"/>
         <source>own address</source>
         <translation>egen adress</translation>
     </message>
     <message>
-        <location line="-2"/>
+        <location line="+0"/>
+        <location line="+69"/>
+        <source>watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-67"/>
         <source>label</source>
         <translation>etikett</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+34"/>
         <location line="+12"/>
-        <location line="+45"/>
-        <location line="+17"/>
+        <location line="+53"/>
+        <location line="+26"/>
         <location line="+53"/>
         <source>Credit</source>
         <translation>Kredit</translation>
     </message>
     <message numerus="yes">
-        <location line="-125"/>
+        <location line="-142"/>
         <source>matures in %n more block(s)</source>
         <translation>
             <numerusform>mognar om %n block</numerusform>
@@ -3511,25 +3866,35 @@ p, li { white-space: pre-wrap; }
         <translation>inte accepterad</translation>
     </message>
     <message>
-        <location line="+44"/>
-        <location line="+8"/>
-        <location line="+15"/>
+        <location line="+59"/>
+        <location line="+25"/>
         <location line="+53"/>
         <source>Debit</source>
         <translation>Belasta</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-68"/>
+        <source>Total debit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Total credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Transaction fee</source>
         <translation>Transaktionsavgift</translation>
     </message>
     <message>
         <location line="+16"/>
+        <location line="+5"/>
         <source>Net amount</source>
         <translation>Nettobelopp</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+1"/>
         <location line="+9"/>
         <source>Message</source>
         <translation>Meddelande</translation>
@@ -3588,16 +3953,18 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+1"/>
+        <location line="+1"/>
         <source>true</source>
         <translation>sant</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <location line="+1"/>
         <source>false</source>
         <translation>falsk</translation>
     </message>
     <message>
-        <location line="-230"/>
+        <location line="-242"/>
         <source>, has not been successfully broadcast yet</source>
         <translation>, har inte lyckats skickas ännu</translation>
     </message>
@@ -3610,7 +3977,7 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+67"/>
         <source>unknown</source>
         <translation>okänd</translation>
     </message>
@@ -3631,7 +3998,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionTableModel</name>
     <message>
-        <location filename="../transactiontablemodel.cpp" line="+238"/>
+        <location filename="../transactiontablemodel.cpp" line="+229"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
@@ -3646,12 +4013,11 @@ p, li { white-space: pre-wrap; }
         <translation>Adress</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>Amount</source>
-        <translation>Mängd</translation>
+        <translation type="vanished">Mängd</translation>
     </message>
     <message numerus="yes">
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Open for %n more block(s)</source>
         <translation>
             <numerusform>Öppet för %n mer block</numerusform>
@@ -3719,7 +4085,7 @@ p, li { white-space: pre-wrap; }
         <translation>Genererad men inte accepterad</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+39"/>
         <source>Received with</source>
         <translation>Mottagen med</translation>
     </message>
@@ -3744,12 +4110,17 @@ p, li { white-space: pre-wrap; }
         <translation>Genererade</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+28"/>
+        <source>watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>(n/a)</source>
         <translation>(n/a)</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+210"/>
         <source>Transaction status. Hover over this field to show number of confirmations.</source>
         <translation>Transaktionsstatus. Håll muspekaren över för att se antal bekräftelser.</translation>
     </message>
@@ -3765,6 +4136,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+2"/>
+        <source>Whether or not a watch-only address is involved in this transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Destination address of transaction.</source>
         <translation>Transaktionens destinationsadress.</translation>
     </message>
@@ -3777,7 +4153,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionView</name>
     <message>
-        <location filename="../transactionview.cpp" line="+60"/>
+        <location filename="../transactionview.cpp" line="+67"/>
         <location line="+16"/>
         <source>All</source>
         <translation>Alla</translation>
@@ -3848,7 +4224,7 @@ p, li { white-space: pre-wrap; }
         <translation>Minsta mängd</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+36"/>
         <source>Copy address</source>
         <translation>Kopiera adress</translation>
     </message>
@@ -3878,12 +4254,17 @@ p, li { white-space: pre-wrap; }
         <translation>Visa transaktionsdetaljer</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+179"/>
         <source>Export Transaction History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+12"/>
+        <source>Watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Exporting Failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3907,7 +4288,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Exportera Transaktionsdata</translation>
     </message>
     <message>
-        <location line="-22"/>
+        <location line="-24"/>
         <source>Comma separated file (*.csv)</source>
         <translation>Kommaseparerad fil (*. csv)</translation>
     </message>
@@ -3917,7 +4298,7 @@ p, li { white-space: pre-wrap; }
         <translation>Bekräftad</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
@@ -3937,12 +4318,11 @@ p, li { white-space: pre-wrap; }
         <translation>Adress</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Amount</source>
-        <translation>Mängd</translation>
+        <translation type="vanished">Mängd</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
@@ -3966,6 +4346,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <location filename="../bitcoingui.cpp" line="+106"/>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>WalletFrame</name>
     <message>
         <location filename="../walletframe.cpp" line="+27"/>
@@ -3976,7 +4364,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+258"/>
+        <location filename="../walletmodel.cpp" line="+276"/>
         <source>Send Coins</source>
         <translation>Skicka pengar</translation>
     </message>
@@ -3994,7 +4382,7 @@ p, li { white-space: pre-wrap; }
         <translation>Exportera informationen i den nuvarande fliken till en fil</translation>
     </message>
     <message>
-        <location line="+200"/>
+        <location line="+203"/>
         <source>Backup Wallet</source>
         <translation>Säkerhetskopiera Plånbok</translation>
     </message>
@@ -4039,41 +4427,36 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Anime version</translation>
     </message>
     <message>
-        <location filename="../bitcoinstrings.cpp" line="+262"/>
         <source>Usage:</source>
-        <translation>Användning:</translation>
+        <translation type="vanished">Användning:</translation>
     </message>
     <message>
         <source>Send command to -server or animed</source>
         <translation type="vanished">Skicka kommando till -server eller animed</translation>
     </message>
     <message>
-        <location line="-66"/>
         <source>List commands</source>
-        <translation>Lista kommandon</translation>
+        <translation type="vanished">Lista kommandon</translation>
     </message>
     <message>
-        <location line="-15"/>
         <source>Get help for a command</source>
-        <translation>Få hjälp med ett kommando</translation>
+        <translation type="vanished">Få hjälp med ett kommando</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location filename="../bitcoinstrings.cpp" line="+244"/>
         <source>Options:</source>
         <translation>Inställningar:</translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Specify configuration file (default: animecoin.conf)</source>
-        <translation>Ange konfigurationsfil (förvalt: animecoin.conf)</translation>
+        <translation type="vanished">Ange konfigurationsfil (förvalt: animecoin.conf)</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Specify pid file (default: animecoind.pid)</source>
-        <translation>Ange pid fil (förvalt: animecoind.pid)</translation>
+        <translation type="vanished">Ange pid fil (förvalt: animecoind.pid)</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+31"/>
         <source>Specify data directory</source>
         <translation>Ange katalog för data</translation>
     </message>
@@ -4082,122 +4465,61 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Sätt databas cache storleken i megabyte (förvalt: 25)</translation>
     </message>
     <message>
-        <location line="-46"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Lyssna efter anslutningar på &lt;port&gt; (förvalt: 8333 eller testnet: 18333)</translation>
+        <translation type="vanished">Lyssna efter anslutningar på &lt;port&gt; (förvalt: 8333 eller testnet: 18333)</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>Ha som mest &lt;n&gt; anslutningar till andra klienter (förvalt: 125)</translation>
+        <translation type="vanished">Ha som mest &lt;n&gt; anslutningar till andra klienter (förvalt: 125)</translation>
     </message>
     <message>
-        <location line="-58"/>
+        <location line="-90"/>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
         <translation>Anslut till en nod för att hämta klientadresser, och koppla från</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+93"/>
         <source>Specify your own public address</source>
         <translation>Ange din egen publika adress</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>Tröskelvärde för att koppla ifrån klienter som missköter sig (förvalt: 100)</translation>
+        <translation type="vanished">Tröskelvärde för att koppla ifrån klienter som missköter sig (förvalt: 100)</translation>
     </message>
     <message>
-        <location line="-173"/>
         <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>Antal sekunder att hindra klienter som missköter sig från att ansluta (förvalt: 86400)</translation>
+        <translation type="vanished">Antal sekunder att hindra klienter som missköter sig från att ansluta (förvalt: 86400)</translation>
     </message>
     <message>
-        <location line="-67"/>
-        <source>%s, you must set a rpcpassword in the configuration file:
-%s
-It is recommended you use the following random password:
-rpcuser=animecoinrpc
-rpcpassword=%s
-(you do not need to remember this password)
-The username and password MUST NOT be the same.
-If the file does not exist, create it with owner-readable-only file permissions.
-It is also recommended to set alertnotify so you are notified of problems;
-for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@foo.com
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Acceptable ciphers (default: TLSv1.2+HIGH:TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!3DES:@STRENGTH)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
         <source>An error occurred while setting up the RPC port %u for listening on IPv4: %s</source>
-        <translation>Ett fel uppstod vid upprättandet av RPC port %u för att lyssna på IPv4: %s</translation>
+        <translation type="vanished">Ett fel uppstod vid upprättandet av RPC port %u för att lyssna på IPv4: %s</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-246"/>
         <source>Cannot obtain a lock on data directory %s. Animecoin is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:15)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly. This is intended for regression testing tools and app development.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+15"/>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Error: Listening for incoming connections failed (listen returned error %d)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Fees smaller than this are considered zero fee (for transaction creation) (default:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: 100)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: 3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+23"/>
         <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Lyssna på JSON-RPC-anslutningar på &lt;port&gt; (förvalt: 8332 eller testnet: 18332)</translation>
+        <translation type="vanished">Lyssna på JSON-RPC-anslutningar på &lt;port&gt; (förvalt: 8332 eller testnet: 18332)</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Output debugging information (default: 0, supplying &lt;category&gt; is optional)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+26"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4207,22 +4529,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Set the processor limit for when generation is on (-1 = unlimited, default: -1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+26"/>
         <source>Unable to bind to %s on this computer. Animecoin is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: -proxy)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Animecoin will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4237,12 +4549,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Tillåt kommandon från kommandotolken och JSON-RPC-kommandon</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+44"/>
         <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4252,48 +4564,18 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Invalid -onion address: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Limit size of signature cache to &lt;n&gt; entries (default: 50000)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Log transaction priority and fee per kB when mining blocks (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Prepend debug output with timestamp (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Print block on startup, if found in block index</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Print block tree on startup (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+26"/>
         <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>RPC client options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4302,7 +4584,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Randomly drop 1 of every &lt;n&gt; network messages</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4312,29 +4594,9 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Run a thread to flush wallet periodically (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+8"/>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Kör i bakgrunden som tjänst och acceptera kommandon</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Select SOCKS version for -proxy (4 or 5, default: 5)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Send command to Animecoin</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4347,18 +4609,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Show all debugging options (usage: --help -help-debug)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Show benchmark information (default: 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4367,32 +4619,27 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Spend unconfirmed change when sending transactions (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Start Animecoin Daemon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>This is intended for regression testing tools and app development.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Usage (deprecated, use animecoin-cli):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+12"/>
         <source>Use the test network</source>
         <translation>Använd testnätverket</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
+        <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Warning: Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4407,12 +4654,11 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>version</source>
-        <translation type="unfinished">version</translation>
+        <translation type="obsolete">version</translation>
     </message>
     <message>
-        <location line="-151"/>
+        <location line="-138"/>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
         <translation>Acceptera anslutningar utifrån (förvalt: 1 om ingen -proxy eller -connect)</translation>
     </message>
@@ -4441,12 +4687,11 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
 </translation>
     </message>
     <message>
-        <location line="-100"/>
         <source>An error occurred while setting up the RPC port %u for listening on IPv6, falling back to IPv4: %s</source>
-        <translation>Ett fel uppstod vid upprättandet av RPC port %u för att lyssna på IPv6, faller tillbaka till IPV4: %s</translation>
+        <translation type="vanished">Ett fel uppstod vid upprättandet av RPC port %u för att lyssna på IPv6, faller tillbaka till IPV4: %s</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-148"/>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Bind till given adress och lyssna alltid på den. Använd [värd]:port notation för IPv6</translation>
     </message>
@@ -4455,21 +4700,19 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Kan inte låsa data-mappen %s. Anime körs förmodligen redan.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Fel: Transaktionen avslogs! Detta kan hända om några av mynten i plånboken redan spenderats, t.ex om du använt en kopia av wallet.dat och mynt spenderades i kopian men inte markerats som spenderas här.</translation>
+        <translation type="vanished">Fel: Transaktionen avslogs! Detta kan hända om några av mynten i plånboken redan spenderats, t.ex om du använt en kopia av wallet.dat och mynt spenderades i kopian men inte markerats som spenderas här.</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!</source>
-        <translation>Fel: Denna transaktion kräver en transaktionsavgift på minst %s på grund av dess storlek, komplexitet, eller användning av senast mottagna animes!</translation>
+        <translation type="vanished">Fel: Denna transaktion kräver en transaktionsavgift på minst %s på grund av dess storlek, komplexitet, eller användning av senast mottagna animes!</translation>
     </message>
     <message>
         <source>Execute command when a relevant alert is received (%s in cmd is replaced by message)</source>
         <translation type="vanished">Exekvera kommando när ett relevant meddelande är mottagen (%s i cmd är utbytt med ett meddelande)</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+36"/>
         <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
         <translation>Exekvera kommando när en plånbokstransaktion ändras (%s i cmd är ersatt av TxID)</translation>
     </message>
@@ -4482,12 +4725,12 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Sätt den maximala storleken av hög-prioriterade/låg-avgifts transaktioner i byte (förvalt: 27000)</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+54"/>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>Detta är ett förhands testbygge - använd på egen risk - använd inte för mining eller handels applikationer</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+29"/>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Varning: -paytxfee är satt väldigt hög! Detta är avgiften du kommer betala för varje transaktion.</translation>
     </message>
@@ -4510,13 +4753,8 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Varning: wallet.dat korrupt, datan har räddats! Den ursprungliga wallet.dat har sparas som wallet.{timestamp}.bak i %s; om ditt saldo eller transaktioner är felaktiga ska du återställa från en säkerhetskopia.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>(default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>(default: wallet.dat)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4525,19 +4763,9 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Attempt to recover private keys from a corrupt wallet.dat</source>
         <translation>Försök att rädda de privata nycklarna från en korrupt wallet.dat</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Animecoin Daemon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Animecoin RPC client version</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4545,47 +4773,27 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Block skapande inställningar:</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Clear list of wallet transactions (diagnostic tool; implies -rescan)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Connect only to the specified node(s)</source>
         <translation>Koppla enbart upp till den/de specificerade noden/noder</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Connect through SOCKS proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Connection options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Corrupted block database detected</source>
         <translation>Korrupt blockdatabas har upptäckts</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Debugging/Testing options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Disable safemode, override a real safe mode event (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Discover own IP address (default: 1 when listening and no -externalip)</source>
         <translation>Hitta egen IP-adress (förvalt: 1 under lyssning och utan -externalip)</translation>
     </message>
@@ -4625,104 +4833,74 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Fel vid öppning av blockdatabasen</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Error: Disk space is low!</source>
         <translation>Fel: Hårddiskutrymme är lågt!</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Error: Wallet locked, unable to create transaction!</source>
-        <translation>Fel: Plånboken är låst, det går ej att skapa en transaktion!</translation>
+        <translation type="vanished">Fel: Plånboken är låst, det går ej att skapa en transaktion!</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Error: system error: </source>
-        <translation>Fel: systemfel:</translation>
+        <translation type="vanished">Fel: systemfel:</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>Misslyckades att lyssna på någon port. Använd -listen=0 om du vill detta.</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to read block info</source>
-        <translation>Misslyckades att läsa blockinformation</translation>
+        <translation type="vanished">Misslyckades att läsa blockinformation</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to read block</source>
-        <translation>Misslyckades att läsa blocket</translation>
+        <translation type="vanished">Misslyckades att läsa blocket</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to sync block index</source>
-        <translation>Misslyckades att synkronisera blockindex</translation>
+        <translation type="vanished">Misslyckades att synkronisera blockindex</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write block index</source>
-        <translation>Misslyckades att skriva blockindex</translation>
+        <translation type="vanished">Misslyckades att skriva blockindex</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write block info</source>
-        <translation>Misslyckades att skriva blockinformation</translation>
+        <translation type="vanished">Misslyckades att skriva blockinformation</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write block</source>
-        <translation>Misslyckades att skriva blocket</translation>
+        <translation type="vanished">Misslyckades att skriva blocket</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write file info</source>
-        <translation>Misslyckades att skriva filinformation</translation>
+        <translation type="vanished">Misslyckades att skriva filinformation</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write to coin database</source>
-        <translation>Misslyckades att skriva till myntdatabas</translation>
+        <translation type="vanished">Misslyckades att skriva till myntdatabas</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write transaction index</source>
-        <translation>Misslyckades att skriva transaktionsindex</translation>
+        <translation type="vanished">Misslyckades att skriva transaktionsindex</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write undo data</source>
-        <translation>Misslyckades att skriva ångradata</translation>
+        <translation type="vanished">Misslyckades att skriva ångradata</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Fee per kB to add to transactions you send</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Fees smaller than this are considered zero fee (for relaying) (default:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Find peers using DNS lookup (default: 1 unless -connect)</source>
-        <translation>Sök efter klienter med DNS sökningen (förvalt: 1 om inte -connect)</translation>
+        <translation type="vanished">Sök efter klienter med DNS sökningen (förvalt: 1 om inte -connect)</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Force safe mode (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Generate coins (default: 0)</source>
-        <translation>Generera mynt (förvalt: 0)</translation>
+        <translation type="vanished">Generera mynt (förvalt: 0)</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>How many blocks to check at startup (default: 288, 0 = all)</source>
-        <translation>Hur många block att kontrollera vid uppstart (standardvärde: 288, 0 = alla)</translation>
+        <translation type="vanished">Hur många block att kontrollera vid uppstart (standardvärde: 288, 0 = alla)</translation>
     </message>
     <message>
         <source>How thorough the block verification is (0-4, default: 3)</source>
@@ -4733,22 +4911,21 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="obsolete">Lyssna efter anslutningar på &lt;port&gt; (förvalt: 8333 eller testnet: 18333) {8373 ?} {18373)?}</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+33"/>
         <source>Not enough file descriptors available.</source>
         <translation>Inte tillräckligt med filbeskrivningar tillgängliga.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+11"/>
         <source>Rebuild block chain index from current blk000??.dat files</source>
         <translation>Återskapa blockkedjans index från nuvarande blk000??.dat filer</translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
-        <translation>Ange antalet trådar för att hantera RPC anrop (standard: 4)</translation>
+        <translation type="vanished">Ange antalet trådar för att hantera RPC anrop (standard: 4)</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+45"/>
         <source>Verifying blocks...</source>
         <translation>Verifierar block...</translation>
     </message>
@@ -4758,7 +4935,7 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Verifierar plånboken...</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="-83"/>
         <source>Imports blocks from external blk000??.dat file</source>
         <translation>Importerar block från extern blk000??.dat fil</translation>
     </message>
@@ -4767,7 +4944,7 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Ange antalet skriptkontrolltrådar (upp till 16, 0 = auto, &lt;0 = lämna så många kärnor lediga, förval: 0)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -4776,7 +4953,7 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Ogiltig -tor adress: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Invalid amount for -minrelaytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
         <translation>Ogiltigt belopp för -minrelaytxfee=&lt;belopp&gt;: &apos;%s&apos;</translation>
     </message>
@@ -4786,29 +4963,24 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Ogiltigt belopp för -mintxfee=&lt;belopp&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Maintain a full transaction index (default: 0)</source>
-        <translation>Upprätthåll ett fullständigt transaktionsindex (förval: 0)</translation>
+        <translation type="vanished">Upprätthåll ett fullständigt transaktionsindex (förval: 0)</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: 5000)</source>
-        <translation>Maximal buffert för mottagning per anslutning, &lt;n&gt;*1000 byte (förvalt: 5000)</translation>
+        <translation type="vanished">Maximal buffert för mottagning per anslutning, &lt;n&gt;*1000 byte (förvalt: 5000)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: 1000)</source>
-        <translation>Maximal buffert för sändning per anslutning, &lt;n&gt;*1000 byte (förvalt: 5000)</translation>
+        <translation type="vanished">Maximal buffert för sändning per anslutning, &lt;n&gt;*1000 byte (förvalt: 5000)</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Only accept block chain matching built-in checkpoints (default: 1)</source>
-        <translation>Acceptera bara blockkedjans matchande inbyggda kontrollpunkter (förvalt: 1)</translation>
+        <translation type="vanished">Acceptera bara blockkedjans matchande inbyggda kontrollpunkter (förvalt: 1)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Only connect to nodes in network &lt;net&gt; (IPv4, IPv6 or Tor)</source>
-        <translation>Anslut enbart till noder i nätverket &lt;net&gt; (IPv4, IPv6 eller Tor)</translation>
+        <translation type="vanished">Anslut enbart till noder i nätverket &lt;net&gt; (IPv4, IPv6 eller Tor)</translation>
     </message>
     <message>
         <source>Output extra debugging information. Implies all other -debug* options</source>
@@ -4831,7 +5003,7 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Välj socks-proxy version att använda (4-5, förvalt: 5)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+35"/>
         <source>Send trace/debug info to console instead of debug.log file</source>
         <translation>Skicka trace-/debuginformation till terminalen istället för till debug.log</translation>
     </message>
@@ -4844,12 +5016,11 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Sätt maximal blockstorlek i byte (förvalt: 250000)</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Set minimum block size in bytes (default: 0)</source>
-        <translation>Sätt minsta blockstorlek i byte (förvalt: 0)</translation>
+        <translation type="vanished">Sätt minsta blockstorlek i byte (förvalt: 0)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+11"/>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
         <translation>Krymp debug.log filen vid klient start (förvalt: 1 vid ingen -debug)</translation>
     </message>
@@ -4859,17 +5030,15 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Signering av transaktion misslyckades</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Specify connection timeout in milliseconds (default: 5000)</source>
-        <translation>Ange timeout för uppkoppling i millisekunder (förvalt: 5000)</translation>
+        <translation type="vanished">Ange timeout för uppkoppling i millisekunder (förvalt: 5000)</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>System error: </source>
-        <translation>Systemfel:</translation>
+        <translation type="vanished">Systemfel:</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+13"/>
         <source>Transaction amount too small</source>
         <translation>Transaktions belopp för liten</translation>
     </message>
@@ -4879,17 +5048,16 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Transaktionens belopp måste vara positiva</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Transaction too large</source>
         <translation>Transaktionen är för stor</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Use UPnP to map the listening port (default: 0)</source>
-        <translation>Använd UPnP för att mappa den lyssnande porten (förvalt: 0)</translation>
+        <translation type="vanished">Använd UPnP för att mappa den lyssnande porten (förvalt: 0)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
         <translation>Använd UPnP för att mappa den lyssnande porten (förvalt: 1 under lyssning)</translation>
     </message>
@@ -4904,11 +5072,6 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+3"/>
-        <source>Wait for RPC server to start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Wallet %s resides outside data directory %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4929,11 +5092,6 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: Deprecated argument -debugnet ignored, use -debug=net</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Warning: This version is obsolete, upgrade required!</source>
         <translation>Varning: denna version är föråldrad, uppgradering krävs!</translation>
     </message>
@@ -4942,90 +5100,84 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Du måste återskapa databaserna med -reindex för att ändra -txindex</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>wallet.dat corrupt, salvage failed</source>
         <translation>wallet.dat korrupt, räddning misslyckades</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-64"/>
         <source>Password for JSON-RPC connections</source>
         <translation>Lösenord för JSON-RPC-anslutningar</translation>
     </message>
     <message>
-        <location line="-78"/>
         <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>Tillåt JSON-RPC-anslutningar från specifika IP-adresser</translation>
+        <translation type="vanished">Tillåt JSON-RPC-anslutningar från specifika IP-adresser</translation>
     </message>
     <message>
-        <location line="+95"/>
         <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>Skicka kommandon till klient på &lt;ip&gt; (förvalt: 127.0.0.1)</translation>
+        <translation type="vanished">Skicka kommandon till klient på &lt;ip&gt; (förvalt: 127.0.0.1)</translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location line="-184"/>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
         <translation>Exekvera kommando när det bästa blocket ändras (%s i cmd är utbytt av blockhash)</translation>
     </message>
     <message>
-        <location line="+197"/>
+        <location line="+230"/>
         <source>Upgrade wallet to latest format</source>
         <translation>Uppgradera plånboken till senaste formatet</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>Sätt storleken på nyckelpoolen till &lt;n&gt; (förvalt: 100)</translation>
+        <translation type="vanished">Sätt storleken på nyckelpoolen till &lt;n&gt; (förvalt: 100)</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-35"/>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>Sök i blockkedjan efter saknade plånboks transaktioner</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+36"/>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Använd OpenSSL (https) för JSON-RPC-anslutningar</translation>
     </message>
     <message>
-        <location line="-34"/>
         <source>Server certificate file (default: server.cert)</source>
-        <translation>Serverns certifikatfil (förvalt: server.cert)</translation>
+        <translation type="vanished">Serverns certifikatfil (förvalt: server.cert)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Server private key (default: server.pem)</source>
-        <translation>Serverns privata nyckel (förvalt: server.pem)</translation>
+        <translation type="vanished">Serverns privata nyckel (förvalt: server.pem)</translation>
     </message>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation type="vanished">Accepterade krypteringsalgoritmer (förvalt: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-11"/>
         <source>This help message</source>
         <translation>Det här hjälp medelandet</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Unable to bind to %s on this computer (bind returned error %d, %s)</source>
-        <translation>Det går inte att binda till %s på den här datorn (bind returnerade felmeddelande %d, %s)</translation>
+        <translation type="vanished">Det går inte att binda till %s på den här datorn (bind returnerade felmeddelande %d, %s)</translation>
     </message>
     <message>
         <source>Connect through socks proxy</source>
         <translation type="vanished">Anslut genom socks-proxy</translation>
     </message>
     <message>
-        <location line="-126"/>
+        <location line="-107"/>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
         <translation>Tillåt DNS-sökningar för -addnode, -seednode och -connect</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+59"/>
         <source>Loading addresses...</source>
         <translation>Laddar adresser...</translation>
     </message>
     <message>
-        <location line="-40"/>
+        <location line="-33"/>
         <source>Error loading wallet.dat: Wallet corrupted</source>
         <translation>Fel vid inläsningen av wallet.dat: Plånboken är skadad</translation>
     </message>
@@ -5043,22 +5195,106 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Fel vid inläsning av plånboksfilen wallet.dat</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+23"/>
         <source>Invalid -proxy address: &apos;%s&apos;</source>
         <translation>Ogiltig -proxy adress: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+36"/>
+        <source>Run a thread to flush wallet periodically (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Send transactions as zero-fee transactions if possible (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Server certificate file (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Server private key (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set minimum block size in bytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Specify configuration file (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Specify pid file (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop running after importing blocks from disk (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This is experimental software.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Transaction too large for fee policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
         <translation>Okänt nätverk som anges i -onlynet: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="-1"/>
         <source>Unknown -socks proxy version requested: %i</source>
-        <translation>Okänd -socks proxy version begärd: %i</translation>
+        <translation type="vanished">Okänd -socks proxy version begärd: %i</translation>
     </message>
     <message>
-        <location line="-120"/>
+        <location line="-111"/>
         <source>Cannot resolve -bind address: &apos;%s&apos;</source>
         <translation>Kan inte matcha -bind adress: &apos;%s&apos;</translation>
     </message>
@@ -5068,27 +5304,26 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation>Kan inte matcha -externalip adress: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+47"/>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
         <translation>Ogiltigt belopp för -paytxfee=&lt;belopp&gt;:&apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Invalid amount</source>
-        <translation>Ogiltig mängd</translation>
+        <translation type="vanished">Ogiltig mängd</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-7"/>
         <source>Insufficient funds</source>
         <translation>Otillräckligt med animes</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>Loading block index...</source>
         <translation>Laddar blockindex...</translation>
     </message>
     <message>
-        <location line="-69"/>
+        <location line="-61"/>
         <source>Add a node to connect to and attempt to keep the connection open</source>
         <translation>Lägg till en nod att koppla upp mot och försök att hålla anslutningen öppen</translation>
     </message>
@@ -5101,46 +5336,404 @@ till exempel: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.c
         <translation type="vanished">Avgift per KB att lägga till på transaktioner du skickar</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+62"/>
         <source>Loading wallet...</source>
         <translation>Laddar plånbok...</translation>
     </message>
     <message>
-        <location line="-63"/>
+        <location line="-57"/>
         <source>Cannot downgrade wallet</source>
         <translation>Kan inte nedgradera plånboken</translation>
     </message>
     <message>
+        <location line="-166"/>
+        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+3"/>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>An error occurred while setting up the RPC address %s port %u for listening: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:%u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: Unsupported argument -socks found. Setting SOCKS version isn&apos;t possible anymore, only SOCKS5 proxies are supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Fees (in ANI/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Fees (in ANI/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Maximum total fees to use in a single wallet transaction, setting too low may abort large transactions (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit &lt;https://www.openssl.org/&gt; and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>To use animecoind, or the -server option to animecoin-qt, you must set an rpcpassword in the configuration file:
+%s
+It is recommended you use the following random password:
+rpcuser=animerpc
+rpcpassword=%s
+(you do not need to remember this password)
+The username and password MUST NOT be the same.
+If the file does not exist, create it with owner-readable-only file permissions.
+It is also recommended to set alertnotify so you are notified of problems;
+for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@foo.com
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>(default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Acceptable ciphers (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Always query for peer addresses via DNS lookup (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Cannot resolve -whitebind address: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Cannot write default address</source>
         <translation>Kan inte skriva standardadress</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+2"/>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Copyright (C) 2009-%i The Bitcoin and Anime Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Could not parse -rpcbind value %s as network address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Disable safemode, override a real safe mode event (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Error reading from database, shutting down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: Unsupported argument -tor found, use -onion.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Fee (in ANI/kB) to add to transactions you send (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Force safe mode (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Generate coins (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Initialization sanity check failed. Animecoin is shutting down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Node relay options:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Only accept block chain matching built-in checkpoints (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Prepend debug output with timestamp (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>RPC support for HTTP persistent connections (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Receive and display P2P network alerts (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Relay non-P2SH multisig (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Rescanning...</source>
         <translation>Söker igen...</translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="+36"/>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-98"/>
         <source>Done loading</source>
         <translation>Klar med laddning</translation>
     </message>
     <message>
-        <location line="+100"/>
         <source>To use the %s option</source>
-        <translation>Att använda %s alternativet</translation>
+        <translation type="vanished">Att använda %s alternativet</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="+9"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location line="-41"/>
         <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
 %s
 If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>Du behöver välja ett rpclösensord i konfigurationsfilen:
+        <translation type="vanished">Du behöver välja ett rpclösensord i konfigurationsfilen:
 %s
 Om filen inte existerar, skapa den med filrättigheten endast läsbar för ägaren.</translation>
     </message>

@@ -10,7 +10,7 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both quarkd and quark-core, to make it harder for attackers to
+ * for both animecoind and animecoin-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
 const std::string CLIENT_NAME("Animecoin");

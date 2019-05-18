@@ -41,7 +41,7 @@ This product includes software developed by the OpenSSL Project for use in the O
 המוצר הזה כולל תוכנה שפותחה ע&quot;י פרויקט OpenSSL לשימוש בתיבת הכלים OpenSSL (http://www.openssl.org/) ותוכנה קריפטוגרפית שנכתבה ע&quot;י אריק יאנג (eay@cryptsoft.com) ותוכנת UPnP שנכתבה ע&quot;י תומס ברנרד.</translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+59"/>
+        <location filename="../utilitydialog.cpp" line="+62"/>
         <source>Copyright</source>
         <translation>זכויות יוצרים</translation>
     </message>
@@ -64,9 +64,13 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">פנקס כתובות</translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="+30"/>
         <source>Double-click to edit address or label</source>
-        <translation>לחץ לחיצה כפולה לערוך כתובת או תוית</translation>
+        <translation type="vanished">לחץ לחיצה כפולה לערוך כתובת או תוית</translation>
+    </message>
+    <message>
+        <location filename="../forms/addressbookpage.ui" line="+30"/>
+        <source>Right-click to edit address or label</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
@@ -79,7 +83,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>Copy the currently selected address to the system clipboard</source>
         <translation>העתק את הכתובת המסומנת ללוח העריכה</translation>
     </message>
@@ -89,7 +93,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+67"/>
         <source>C&amp;lose</source>
         <translation type="unfinished"></translation>
     </message>
@@ -119,12 +123,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">חתום על הודעה</translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="-47"/>
+        <location filename="../forms/addressbookpage.ui" line="-53"/>
         <source>Delete the currently selected address from the list</source>
         <translation>מחק את הכתובת שנבחרה מהרשימה</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+30"/>
         <source>Export the data in the current tab to a file</source>
         <translation>יצוא הנתונים בטאב הנוכחי לקובץ</translation>
     </message>
@@ -142,7 +146,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">אמת הודעה</translation>
     </message>
     <message>
-        <location line="-27"/>
+        <location line="-30"/>
         <source>&amp;Delete</source>
         <translation>מחק</translation>
     </message>
@@ -203,7 +207,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+1"/>
-        <source>There was an error trying to save the address list to %1.</source>
+        <source>There was an error trying to save the address list to %1. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -254,7 +258,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>שיח סיסמא</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+30"/>
         <source>Enter passphrase</source>
         <translation>הכנס סיסמא</translation>
     </message>
@@ -269,12 +273,16 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>חזור על הסיסמה החדשה</translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="+40"/>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>הכנס את הסיסמה החדשה לארנק. &lt;br/&gt;אנא השתמש בסיסמה המכילה &lt;b&gt;10 תוים אקראיים או יותר&lt;/b&gt;, או &lt;b&gt;שמונה מילים או יותר&lt;/b&gt;.</translation>
+        <translation type="vanished">הכנס את הסיסמה החדשה לארנק. &lt;br/&gt;אנא השתמש בסיסמה המכילה &lt;b&gt;10 תוים אקראיים או יותר&lt;/b&gt;, או &lt;b&gt;שמונה מילים או יותר&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../askpassphrasedialog.cpp" line="+42"/>
+        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Encrypt wallet</source>
         <translation>הצפן ארנק</translation>
     </message>
@@ -309,7 +317,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>הכנס את הסיסמות הישנה והחדשה לארנק.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+45"/>
         <source>Confirm wallet encryption</source>
         <translation>אשר הצפנת ארנק</translation>
     </message>
@@ -324,7 +332,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+0"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL YOUR MONEY&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR COINS&lt;/b&gt;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -398,42 +406,47 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+306"/>
+        <location filename="../bitcoingui.cpp" line="+309"/>
         <source>Sign &amp;message...</source>
         <translation>חתום על הודעה</translation>
     </message>
     <message>
-        <location line="+357"/>
+        <location line="+16"/>
+        <source>Show the Animecoin help message to get a list with possible command-line options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+335"/>
         <source>Synchronizing with network...</source>
         <translation>מסתנכרן עם הרשת...</translation>
     </message>
     <message>
-        <location line="-441"/>
+        <location line="-424"/>
         <source>&amp;Overview</source>
         <translation>&amp;סקירה</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-122"/>
         <source>Node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+123"/>
         <source>Show general overview of wallet</source>
         <translation>הצג סקירה כללית של הארנק</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Send coins to an Animecoin address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Your address list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>&amp;Request payment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,7 +456,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>&amp;Transactions</source>
         <translation>&amp;פעולות</translation>
     </message>
@@ -475,8 +488,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">הצג מידע על ביטקוין</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>&amp;About Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -502,7 +514,12 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;אפשרויות</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+1"/>
+        <source>Modify configuration options for Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>&amp;Encrypt Wallet...</source>
         <translation>הצפן ארנק</translation>
     </message>
@@ -537,7 +554,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
         <source>&amp;Sending addresses...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -557,7 +574,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Open &amp;URI...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -567,23 +584,25 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>&amp;Command-line options</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+1"/>
-        <source>Show the Animecoin help message to get a list with possible Anime Command-line options</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location line="+355"/>
+        <source>Processed %n blocks of transaction history.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+166"/>
-        <location line="+5"/>
+        <location line="-182"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+155"/>
+        <location line="+150"/>
         <source>%n active connection(s) to Animecoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -591,7 +610,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         </translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <source>Importing blocks from disk...</source>
         <translation>מייבא בלוקים מהדיסק...</translation>
     </message>
@@ -605,12 +624,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">שלח מטבעות לכתובת ביטקוין</translation>
     </message>
     <message>
-        <location line="-378"/>
         <source>Modify configuration options for Anime</source>
-        <translation>שנה אפשרויות תצורה עבור ביטקוין</translation>
+        <translation type="vanished">שנה אפשרויות תצורה עבור ביטקוין</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="-360"/>
         <source>Backup wallet to another location</source>
         <translation>גיבוי הארנק למקום אחר</translation>
     </message>
@@ -620,7 +638,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>שנה את הסיסמה להצפנת הארנק</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <source>&amp;Debug window</source>
         <translation>חלון ניפוי</translation>
     </message>
@@ -630,7 +648,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>פתח את לוח הבקרה לאבחון וניפוי</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-5"/>
         <source>&amp;Verify message...</source>
         <translation>אמת הודעה...</translation>
     </message>
@@ -639,23 +657,23 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">ביטקוין</translation>
     </message>
     <message>
-        <location line="-224"/>
+        <location line="-199"/>
         <source>Wallet</source>
         <translation>ארנק</translation>
     </message>
     <message>
         <location line="-9"/>
-        <location line="+688"/>
+        <location line="+655"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-534"/>
+        <location line="-516"/>
         <source>&amp;Send</source>
         <translation>ושלח</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>&amp;Receive</source>
         <translation>וקבל</translation>
     </message>
@@ -668,8 +686,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">אודות ביטקוין</translation>
     </message>
     <message>
-        <location line="+58"/>
-        <location line="+2"/>
+        <location line="+52"/>
         <source>&amp;Show / Hide</source>
         <translation>הצג / הסתר</translation>
     </message>
@@ -679,7 +696,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>הצג או הסתר את החלון הראשי</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Encrypt the private keys that belong to your wallet</source>
         <translation>הצפן את המפתחות הפרטיים ששייכים לארנק שלך</translation>
     </message>
@@ -692,7 +709,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">אמת הודעות כדי להבטיח שהן נחתמו עם כתובת ביטקוין מסוימות</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+59"/>
         <source>&amp;File</source>
         <translation>&amp;קובץ</translation>
     </message>
@@ -712,10 +729,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>סרגל כלים טאבים</translation>
     </message>
     <message>
-        <location line="-299"/>
-        <location line="+396"/>
         <source>[testnet]</source>
-        <translation>[רשת-בדיקה]</translation>
+        <translation type="vanished">[רשת-בדיקה]</translation>
     </message>
     <message>
         <source>Anime client</source>
@@ -729,7 +744,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         </translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+269"/>
         <source>No block source available...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -738,12 +753,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">1% מתוך 2% (משוער) בלוקים של הסטוריית פעולת עובדו </translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Processed %1 blocks of transaction history.</source>
-        <translation>הושלם עיבוד של %1 בלוקים של היסטוריית פעולות.</translation>
+        <translation type="vanished">הושלם עיבוד של %1 בלוקים של היסטוריית פעולות.</translation>
     </message>
     <message numerus="yes">
-        <location line="+26"/>
+        <location line="+34"/>
         <source>%n hour(s)</source>
         <translation>
             <numerusform>%n שעה</numerusform>
@@ -829,7 +843,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="vanished">אשר עמלת פעולה</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+126"/>
         <source>Sent transaction</source>
         <translation>פעולה שנשלחה</translation>
     </message>
@@ -859,7 +873,7 @@ Address: %4
         <translation type="vanished">לא ניתן לנתח URI! זה יכול להיגרם כתוצאה מכתובת ביטקוין לא תקינה או פרמטרי URI חסרי צורה תקינה.</translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+68"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
         <translation>הארנק &lt;b&gt;מוצפן&lt;/b&gt; וכרגע &lt;b&gt;פתוח&lt;/b&gt;</translation>
     </message>
@@ -873,7 +887,7 @@ Address: %4
         <translation type="vanished">שגיאה סופנית אירעה. ביטקוין אינו יכול להמשיך לפעול בבטחה ולכן ייסגר.</translation>
     </message>
     <message>
-        <location filename="../bitcoin.cpp" line="+451"/>
+        <location filename="../bitcoin.cpp" line="+476"/>
         <source>A fatal error occurred. Animecoin can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -881,7 +895,7 @@ Address: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+134"/>
+        <location filename="../clientmodel.cpp" line="+140"/>
         <source>Network Alert</source>
         <translation>אזעקת רשת</translation>
     </message>
@@ -889,12 +903,7 @@ Address: %4
 <context>
     <name>CoinControlDialog</name>
     <message>
-        <location filename="../forms/coincontroldialog.ui" line="+14"/>
-        <source>Coin Control Address Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location filename="../forms/coincontroldialog.ui" line="+48"/>
         <source>Quantity:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -919,17 +928,22 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Low Output:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../coincontroldialog.cpp" line="+602"/>
+        <location filename="../coincontroldialog.cpp" line="+608"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/coincontroldialog.ui" line="+48"/>
+        <location filename="../forms/coincontroldialog.ui" line="-182"/>
+        <source>Coin Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+214"/>
+        <source>Dust:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
         <source>After Fee:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -944,24 +958,33 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Tree mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+13"/>
         <source>List mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+56"/>
         <source>Amount</source>
         <translation type="unfinished">כמות</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
+        <source>Received with label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Received with address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Address</source>
-        <translation type="unfinished">כתובת</translation>
+        <translation type="obsolete">כתובת</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -984,7 +1007,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../coincontroldialog.cpp" line="-561"/>
+        <location filename="../coincontroldialog.cpp" line="-564"/>
         <source>Copy address</source>
         <translation type="unfinished">העתק כתובת</translation>
     </message>
@@ -1041,7 +1064,7 @@ Address: %4
     </message>
     <message>
         <location line="+1"/>
-        <source>Copy low output</source>
+        <source>Copy dust</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1050,7 +1073,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+332"/>
+        <location line="+351"/>
         <source>highest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1075,7 +1098,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+1"/>
         <source>low-medium</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1095,22 +1118,17 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>(%1 locked)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+28"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+141"/>
-        <source>Dust</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+149"/>
         <source>This label turns red, if the transaction size is greater than 1000 bytes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1141,28 +1159,17 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+4"/>
-        <source>This means a fee of at least %1 is required.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-3"/>
-        <source>Amounts below 0.546 times the minimum relay fee are shown as dust.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>This label turns red, if the change is smaller than %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-22"/>
+        <location line="-24"/>
         <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+32"/>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
         <location line="+61"/>
         <source>(no label)</source>
         <translation type="unfinished">(ללא תוית)</translation>
@@ -1261,7 +1268,7 @@ Address: %4
 <context>
     <name>FreespaceChecker</name>
     <message>
-        <location filename="../intro.cpp" line="+66"/>
+        <location filename="../intro.cpp" line="+68"/>
         <source>A new data directory will be created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1339,7 +1346,23 @@ Address: %4
         <translation type="unfinished">גרסה</translation>
     </message>
     <message>
+        <location line="+5"/>
         <location line="+2"/>
+        <source>(%1-bit)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>About Animecoin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Command-line options</source>
+        <translation type="unfinished">אפשרויות שורת פקודה</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Usage:</source>
         <translation type="unfinished">שימוש:</translation>
     </message>
@@ -1418,23 +1441,29 @@ Address: %4
     </message>
     <message>
         <location line="+1"/>
-        <source>Error: Specified data directory &quot;%1&quot; can not be created.</source>
+        <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location line="+33"/>
+        <source>%n GB of free space available</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+3"/>
+        <source>(of %n GB needed)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+24"/>
+        <location line="-12"/>
         <source>Error</source>
         <translation type="unfinished">שגיאה</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>GB of free space available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>(of %1GB needed)</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1455,7 +1484,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>Select payment request file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1513,17 +1542,11 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+15"/>
         <source>Pay transaction &amp;fee</source>
-        <translation>שלם &amp;עמלת פעולה</translation>
+        <translation type="vanished">שלם &amp;עמלת פעולה</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+6"/>
         <source>Expert</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1543,37 +1566,22 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+30"/>
         <source>Automatically open the Animecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Connect to the Animecoin network through a SOCKS proxy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>&amp;Connect through SOCKS proxy (default proxy):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+57"/>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+209"/>
+        <location line="+129"/>
         <source>The user interface language can be set here. This setting will take effect after restarting Animecoin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Whether to show Animecoin addresses in the transaction list or not.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
+        <location line="+35"/>
         <location line="+13"/>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation type="unfinished"></translation>
@@ -1607,7 +1615,7 @@ Address: %4
         <translation>איפוס אפשרויות</translation>
     </message>
     <message>
-        <location line="-397"/>
+        <location line="-317"/>
         <source>&amp;Network</source>
         <translation>רשת</translation>
     </message>
@@ -1629,7 +1637,7 @@ Address: %4
         <translation type="vanished">התחבר דרך פרוקסי SOCKS</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+29"/>
         <source>Proxy &amp;IP:</source>
         <translation>כתובת IP של פרוקסי:</translation>
     </message>
@@ -1648,14 +1656,12 @@ Address: %4
         <translation>הפורט של הפרוקסי (למשל 9050)</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>SOCKS &amp;Version:</source>
-        <translation>גרסת SOCKS:</translation>
+        <translation type="vanished">גרסת SOCKS:</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>SOCKS version of the proxy (e.g. 5)</source>
-        <translation>גרסת SOCKS של הפרוקסי (למשל 5)</translation>
+        <translation type="vanished">גרסת SOCKS של הפרוקסי (למשל 5)</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -1683,32 +1689,7 @@ Address: %4
         <translation>מזער בעת סגירה</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>&amp;Mining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether to enabled Animecoin mining by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>&amp;Mining enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>&amp;Mining limit:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Choose the default mining intensity.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+26"/>
+        <location line="+21"/>
         <source>&amp;Display</source>
         <translation>תצוגה</translation>
     </message>
@@ -1736,22 +1717,41 @@ Address: %4
         <translation type="vanished">האם להציג כתובות ביטקוין ברשימת הפעולות או לא.</translation>
     </message>
     <message>
-        <location line="+12"/>
         <source>&amp;Display addresses in transaction list</source>
-        <translation>הצג כתובות ברשימת הפעולות</translation>
+        <translation type="vanished">הצג כתובות ברשימת הפעולות</translation>
     </message>
     <message>
-        <location line="-322"/>
+        <location line="-253"/>
         <source>Whether to show coin control features or not.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+482"/>
+        <location line="+53"/>
+        <source>Accept connections from outside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Allow incoming connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Connect to the Animecoin network through a SOCKS5 proxy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+349"/>
         <source>&amp;OK</source>
         <translation>אישור</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+13"/>
         <source>&amp;Cancel</source>
         <translation>ביטול</translation>
     </message>
@@ -1760,17 +1760,17 @@ Address: %4
         <translation type="vanished">יישום</translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="+72"/>
+        <location filename="../optionsdialog.cpp" line="+76"/>
         <source>default</source>
         <translation>ברירת מחדל</translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+60"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+76"/>
         <source>Confirm options reset</source>
         <translation>אשר את איפוס האפשרויות</translation>
     </message>
@@ -1807,7 +1807,7 @@ Address: %4
         <translation type="vanished">הגדרה זו תחול לאחר הפעלה מחדש של ביטקוין.</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+25"/>
         <source>The supplied proxy address is invalid.</source>
         <translation>כתובת הפרוקסי שסופקה אינה תקינה.</translation>
     </message>
@@ -1832,18 +1832,37 @@ Address: %4
         <translation type="vanished">ממתין לאישור:</translation>
     </message>
     <message>
-        <location line="+43"/>
         <source>Wallet</source>
-        <translation>ארנק</translation>
+        <translation type="vanished">ארנק</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+247"/>
+        <location line="+53"/>
+        <location line="+388"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Animecoin network after a connection is established, but this process has not completed yet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-343"/>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+128"/>
+        <source>Current total balance in watch-only addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Watch-only:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Available:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1853,39 +1872,58 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+25"/>
+        <source>Your current balance in watch-only addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>Pending:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+7"/>
+        <source>Spendable:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>Recent transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-308"/>
         <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+112"/>
         <source>Immature:</source>
         <translation>לא בשל:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-29"/>
         <source>Mined balance that has not yet matured</source>
         <translation>מאזן שנכרה וטרם הבשיל</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="-163"/>
+        <source>Balances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+147"/>
         <source>Total:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+61"/>
         <source>Your current total balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+87"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;פעולות אחרונות&lt;/b&gt;</translation>
+        <translation type="vanished">&lt;b&gt;פעולות אחרונות&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Your current balance</source>
@@ -1896,7 +1934,7 @@ Address: %4
         <translation type="vanished">הסכום הכולל של פעולות שטרם אושרו, ועוד אינן נספרות בחישוב היתרה הנוכחית</translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="+120"/>
+        <location filename="../overviewpage.cpp" line="+131"/>
         <location line="+1"/>
         <source>out of sync</source>
         <translation>לא מסונכרן</translation>
@@ -1999,7 +2037,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+44"/>
+        <location filename="../utilitydialog.cpp" line="+43"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2118,58 +2156,76 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PaymentServer</name>
     <message>
-        <location filename="../paymentserver.cpp" line="+292"/>
-        <location line="+212"/>
-        <location line="+13"/>
-        <location line="+95"/>
+        <location filename="../paymentserver.cpp" line="+317"/>
+        <location line="+226"/>
+        <location line="+34"/>
+        <location line="+109"/>
+        <location line="+14"/>
         <location line="+18"/>
-        <location line="+16"/>
         <source>Payment request error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-353"/>
+        <location line="-400"/>
         <source>Cannot start anime: click-to-pay handler</source>
         <translation>לא ניתן להתחיל את ביטקוין: מפעיל לחץ-לתשלום </translation>
     </message>
     <message>
-        <location line="+58"/>
-        <source>Net manager warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Your active proxy doesn&apos;t support SOCKS5, which is required for payment requests via proxy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+51"/>
-        <location line="+13"/>
+        <location line="+104"/>
+        <location line="+14"/>
+        <location line="+7"/>
         <source>URI handling</source>
         <translation type="unfinished">תפעול URI</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-20"/>
         <source>Payment request fetch URL is invalid: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>URI can not be parsed! This can be caused by an invalid Animecoin address or malformed URI parameters.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
+        <location line="+34"/>
         <source>Payment request file handling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Payment request file can not be read or processed! This can be caused by an invalid payment request file.</source>
+        <location line="-21"/>
+        <source>Invalid payment address %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+8"/>
+        <source>URI cannot be parsed! This can be caused by an invalid Animecoin address or malformed URI parameters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <location line="+9"/>
+        <location line="+32"/>
+        <source>Payment request rejected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-41"/>
+        <source>Payment request network doesn&apos;t match client network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Payment request has expired.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Payment request is not initialized.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
         <source>Unverified payment requests to custom payment scripts are unsupported.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2179,22 +2235,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Refund from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+43"/>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Payment request DoS protection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Error communicating with %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Payment request can not be parsed or processed!</source>
+        <location line="+20"/>
+        <source>Payment request cannot be parsed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>Bad response from server %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2210,9 +2276,27 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>PeerTableModel</name>
+    <message>
+        <location filename="../peertablemodel.cpp" line="+118"/>
+        <source>Address/Hostname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>User Agent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Ping Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="../bitcoin.cpp" line="+76"/>
+        <location filename="../bitcoin.cpp" line="+79"/>
         <location line="+7"/>
         <location line="+13"/>
         <source>Animecoin</source>
@@ -2234,13 +2318,63 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+58"/>
         <source>Animecoin didn&apos;t yet exit safely...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../guiutil.cpp" line="+93"/>
-        <source>Enter an Animecoin address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <location filename="../bitcoinunits.cpp" line="+194"/>
+        <source>Amount</source>
+        <translation type="unfinished">כמות</translation>
+    </message>
+    <message>
+        <location filename="../guiutil.cpp" line="+109"/>
+        <source>Enter an Animecoin address (e.g. %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+714"/>
+        <source>%1 d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>NETWORK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>UNKNOWN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>N/A</source>
+        <translation type="unfinished">N/A</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>%1 ms</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2325,17 +2459,31 @@ p, li { white-space: pre-wrap; }
         <location line="+10"/>
         <location line="+23"/>
         <location line="+26"/>
+        <location line="+26"/>
         <location line="+23"/>
         <location line="+23"/>
         <location line="+36"/>
         <location line="+23"/>
         <location line="+36"/>
+        <location line="+23"/>
+        <location line="+465"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
         <location line="+23"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
     <message>
-        <location line="-200"/>
+        <location line="-967"/>
         <source>Client version</source>
         <translation>גרסת ממשק</translation>
     </message>
@@ -2358,6 +2506,11 @@ p, li { white-space: pre-wrap; }
         <location line="+53"/>
         <source>Using OpenSSL version</source>
         <translation>משתמש ב-OpenSSL גרסה</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Using BerkeleyDB version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+49"/>
@@ -2395,19 +2548,104 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Totals</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+64"/>
-        <location filename="../rpcconsole.cpp" line="+363"/>
-        <source>In:</source>
+        <source>Received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+80"/>
-        <location filename="../rpcconsole.cpp" line="+1"/>
+        <source>Sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>&amp;Peers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <location filename="../rpcconsole.cpp" line="+236"/>
+        <location line="+327"/>
+        <source>Select a peer to view detailed information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>User Agent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Starting Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Sync Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Ban Score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Connection Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Last Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Last Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Bytes Sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Bytes Received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Ping Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../rpcconsole.cpp" line="-165"/>
+        <source>In:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Out:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2416,7 +2654,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">ברשת הבדיקה</translation>
     </message>
     <message>
-        <location line="-387"/>
+        <location filename="../forms/rpcconsole.ui" line="-771"/>
         <source>Block chain</source>
         <translation>שרשרת הבלוקים</translation>
     </message>
@@ -2523,18 +2761,35 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 m</source>
+        <location line="+95"/>
+        <source>via %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>%1 h</source>
+        <location line="+3"/>
+        <location line="+1"/>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Inbound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Outbound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1 h %2 m</source>
+        <location line="+1"/>
+        <source>Fetching...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2553,7 +2808,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+14"/>
         <location line="+23"/>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Anime network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Animecoin network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2604,12 +2859,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+78"/>
+        <location line="+75"/>
         <source>Requested payments history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+25"/>
         <source>Show the selected request (does the same as double clicking an entry)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2619,7 +2874,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+17"/>
         <source>Remove the selected entries from the list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2657,12 +2912,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>Copy &amp;Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>&amp;Save Image...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2715,7 +2970,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RecentRequestsTableModel</name>
     <message>
-        <location filename="../recentrequeststablemodel.cpp" line="+24"/>
+        <location filename="../recentrequeststablemodel.cpp" line="+28"/>
         <source>Date</source>
         <translation type="unfinished">תאריך</translation>
     </message>
@@ -2730,12 +2985,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">הודעה</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+99"/>
         <source>Amount</source>
         <translation type="unfinished">כמות</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="-59"/>
         <source>(no label)</source>
         <translation type="unfinished">(ללא תוית)</translation>
     </message>
@@ -2754,8 +3009,7 @@ p, li { white-space: pre-wrap; }
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+380"/>
-        <location line="+80"/>
+        <location filename="../sendcoinsdialog.cpp" line="+533"/>
         <source>Send Coins</source>
         <translation>שלח מטבעות</translation>
     </message>
@@ -2770,7 +3024,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>automatically selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2800,7 +3054,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+204"/>
+        <location line="+80"/>
+        <source>Dust:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+124"/>
         <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2810,22 +3069,108 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+206"/>
+        <source>Transaction Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Choose...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>collapse fee-settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+78"/>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>per kilobyte</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;total at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>total at least</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <location line="+13"/>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>(read the tooltip)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Recommended:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Custom:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Confirmation time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
+        <source>normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>fast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Send as zero-fee transaction if possible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>(confirmation may take longer)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Clear all fields of the form.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-303"/>
+        <location line="-890"/>
         <source>Fee:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Low Output:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+48"/>
+        <location line="+80"/>
         <source>After Fee:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2835,7 +3180,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+795"/>
         <source>Send to multiple recipients at once</source>
         <translation>שלח למספר מקבלים בו-זמנית</translation>
     </message>
@@ -2849,12 +3194,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">הסר את כל השדות בפעולה</translation>
     </message>
     <message>
-        <location line="-20"/>
+        <location line="-17"/>
         <source>Clear &amp;All</source>
         <translation>נקה הכל</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+55"/>
         <source>Balance:</source>
         <translation>יתרה:</translation>
     </message>
@@ -2873,7 +3218,7 @@ p, li { white-space: pre-wrap; }
         <translation>שלח</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-410"/>
+        <location filename="../sendcoinsdialog.cpp" line="-477"/>
         <source>Copy quantity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2904,16 +3249,21 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+1"/>
-        <source>Copy low output</source>
+        <source>Copy dust</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+246"/>
+        <source>Total Amount %1&lt;span style=&apos;font-size:10pt;font-weight:normal;&apos;&gt;&lt;br /&gt;(=%2)&lt;/span&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-245"/>
         <source>Copy change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+172"/>
         <location line="+5"/>
         <location line="+5"/>
         <location line="+4"/>
@@ -2931,27 +3281,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Total Amount %1 (= %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+17"/>
         <source>or</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+157"/>
-        <source>Payment request expired</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Invalid payment address %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+53"/>
+        <location line="+207"/>
         <source>Transaction creation failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2961,7 +3296,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+4"/>
+        <source>A fee higher than %1 is considered an insanely high fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <source>Pay only the minimum fee of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Estimated to begin confirmation within %1 block(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+107"/>
         <source>Warning: Invalid Animecoin address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2970,7 +3320,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; ל- %2 (%3)</translation>
     </message>
     <message>
-        <location line="-333"/>
+        <location line="-429"/>
         <source>Confirm send coins</source>
         <translation>אשר שליחת מטבעות</translation>
     </message>
@@ -2983,7 +3333,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished"> ו- </translation>
     </message>
     <message>
-        <location line="+201"/>
+        <location line="+190"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>כתובת המקבל אינה תקינה, אנא בדוק שנית.</translation>
     </message>
@@ -3016,7 +3366,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">שגיאה: הפעולה נדחתה. זה עשוי לקרות עם חלק מהמטבעות בארנק שלך כבר נוצלו, למשל אם השתמשת בעותק של wallet.dat ומטבעות נוצלו בעותק אך לא סומנו כמנוצלות כאן.</translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+247"/>
         <source>(no label)</source>
         <translation type="unfinished">(ללא תוית)</translation>
     </message>
@@ -3069,7 +3419,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+33"/>
-        <source>The address to send the payment to (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <source>The Animecoin address to send the payment to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3148,7 +3498,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <location filename="../utilitydialog.cpp" line="+17"/>
+        <location filename="../utilitydialog.cpp" line="+13"/>
         <source>Animecoin is shutting down...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3166,7 +3516,7 @@ p, li { white-space: pre-wrap; }
         <translation>חתימות - חתום או אמת הודעה</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>&amp;Sign Message</source>
         <translation>חתום על הו&amp;דעה</translation>
     </message>
@@ -3185,7 +3535,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+18"/>
-        <source>The address to sign the message with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <source>The Animecoin address to sign the message with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3232,7 +3582,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+106"/>
-        <source>The address the message was signed with (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
+        <source>The Animecoin address the message was signed with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3293,12 +3643,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">הכנס כתובת ביטקוין (למשל Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location filename="../signverifymessagedialog.cpp" line="+30"/>
-        <source>Enter a Anime address (e.g. AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-1"/>
+        <location filename="../signverifymessagedialog.cpp" line="+29"/>
         <source>Click &quot;Sign Message&quot; to generate signature</source>
         <translation>לחץ &quot;חתום על ההודעה&quot; כדי לחולל חתימה</translation>
     </message>
@@ -3307,7 +3652,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">הכנס חתימת ביטקוין</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+83"/>
         <location line="+80"/>
         <source>The entered address is invalid.</source>
         <translation>הכתובת שהוכנסה אינה תקינה.</translation>
@@ -3376,7 +3721,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SplashScreen</name>
     <message>
-        <location filename="../splashscreen.cpp" line="+32"/>
+        <location filename="../splashscreen.cpp" line="+35"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3386,7 +3731,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../networkstyle.cpp" line="+19"/>
         <source>[testnet]</source>
         <translation>[רשת-בדיקה]</translation>
     </message>
@@ -3402,7 +3747,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionDesc</name>
     <message>
-        <location filename="../transactiondesc.cpp" line="+29"/>
+        <location filename="../transactiondesc.cpp" line="+34"/>
         <source>Open until %1</source>
         <translation>פתוח עד %1</translation>
     </message>
@@ -3456,39 +3801,45 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+5"/>
-        <location line="+17"/>
+        <location line="+13"/>
+        <location line="+72"/>
         <source>From</source>
         <translation>מאת</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+22"/>
-        <location line="+58"/>
+        <location line="-71"/>
+        <location line="+20"/>
+        <location line="+69"/>
         <source>To</source>
         <translation>אל</translation>
     </message>
     <message>
-        <location line="-77"/>
-        <location line="+2"/>
+        <location line="-87"/>
         <source>own address</source>
         <translation>כתובת עצמית</translation>
     </message>
     <message>
-        <location line="-2"/>
+        <location line="+0"/>
+        <location line="+69"/>
+        <source>watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-67"/>
         <source>label</source>
         <translation>תוית</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+34"/>
         <location line="+12"/>
-        <location line="+45"/>
-        <location line="+17"/>
+        <location line="+53"/>
+        <location line="+26"/>
         <location line="+53"/>
         <source>Credit</source>
         <translation>זיכוי</translation>
     </message>
     <message numerus="yes">
-        <location line="-125"/>
+        <location line="-142"/>
         <source>matures in %n more block(s)</source>
         <translation>
             <numerusform>מבשיל בעוד בלוק אחד</numerusform>
@@ -3501,25 +3852,35 @@ p, li { white-space: pre-wrap; }
         <translation>לא התקבל</translation>
     </message>
     <message>
-        <location line="+44"/>
-        <location line="+8"/>
-        <location line="+15"/>
+        <location line="+59"/>
+        <location line="+25"/>
         <location line="+53"/>
         <source>Debit</source>
         <translation>חיוב</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-68"/>
+        <source>Total debit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Total credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Transaction fee</source>
         <translation>עמלת פעולה</translation>
     </message>
     <message>
         <location line="+16"/>
+        <location line="+5"/>
         <source>Net amount</source>
         <translation>כמות נקיה</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+1"/>
         <location line="+9"/>
         <source>Message</source>
         <translation>הודעה</translation>
@@ -3578,16 +3939,18 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+1"/>
+        <location line="+1"/>
         <source>true</source>
         <translation>אמת</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-1"/>
+        <location line="+1"/>
         <source>false</source>
         <translation>שקר</translation>
     </message>
     <message>
-        <location line="-230"/>
+        <location line="-242"/>
         <source>, has not been successfully broadcast yet</source>
         <translation>, טרם שודר בהצלחה</translation>
     </message>
@@ -3600,7 +3963,7 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+67"/>
         <source>unknown</source>
         <translation>לא ידוע</translation>
     </message>
@@ -3621,7 +3984,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionTableModel</name>
     <message>
-        <location filename="../transactiontablemodel.cpp" line="+238"/>
+        <location filename="../transactiontablemodel.cpp" line="+229"/>
         <source>Date</source>
         <translation>תאריך</translation>
     </message>
@@ -3636,12 +3999,11 @@ p, li { white-space: pre-wrap; }
         <translation>כתובת</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>Amount</source>
-        <translation>כמות</translation>
+        <translation type="vanished">כמות</translation>
     </message>
     <message numerus="yes">
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Open for %n more block(s)</source>
         <translation>
             <numerusform>פתח למשך בלוק %n יותר</numerusform>
@@ -3709,7 +4071,7 @@ p, li { white-space: pre-wrap; }
         <translation>נוצר אך לא התקבל</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+39"/>
         <source>Received with</source>
         <translation>התקבל עם</translation>
     </message>
@@ -3734,12 +4096,17 @@ p, li { white-space: pre-wrap; }
         <translation>נכרה</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+28"/>
+        <source>watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>(n/a)</source>
         <translation>(n/a)</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+210"/>
         <source>Transaction status. Hover over this field to show number of confirmations.</source>
         <translation>מצב הפעולה. השהה את הסמן מעל שדה זה כדי לראות את מספר האישורים.</translation>
     </message>
@@ -3755,6 +4122,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+2"/>
+        <source>Whether or not a watch-only address is involved in this transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Destination address of transaction.</source>
         <translation>כתובת היעד של הפעולה.</translation>
     </message>
@@ -3767,7 +4139,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionView</name>
     <message>
-        <location filename="../transactionview.cpp" line="+60"/>
+        <location filename="../transactionview.cpp" line="+67"/>
         <location line="+16"/>
         <source>All</source>
         <translation>הכל</translation>
@@ -3838,7 +4210,7 @@ p, li { white-space: pre-wrap; }
         <translation>כמות מזערית</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+36"/>
         <source>Copy address</source>
         <translation>העתק כתובת</translation>
     </message>
@@ -3868,12 +4240,17 @@ p, li { white-space: pre-wrap; }
         <translation>הצג פרטי פעולה</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+179"/>
         <source>Export Transaction History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+12"/>
+        <source>Watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Exporting Failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3897,7 +4274,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">יצוא נתוני פעולות</translation>
     </message>
     <message>
-        <location line="-22"/>
+        <location line="-24"/>
         <source>Comma separated file (*.csv)</source>
         <translation>קובץ מופרד בפסיקים (*.csv)</translation>
     </message>
@@ -3907,7 +4284,7 @@ p, li { white-space: pre-wrap; }
         <translation>מאושר</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Date</source>
         <translation>תאריך</translation>
     </message>
@@ -3927,12 +4304,11 @@ p, li { white-space: pre-wrap; }
         <translation>כתובת</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Amount</source>
-        <translation>כמות</translation>
+        <translation type="vanished">כמות</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>ID</source>
         <translation>מזהה</translation>
     </message>
@@ -3956,6 +4332,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <location filename="../bitcoingui.cpp" line="+106"/>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>WalletFrame</name>
     <message>
         <location filename="../walletframe.cpp" line="+27"/>
@@ -3966,7 +4350,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+258"/>
+        <location filename="../walletmodel.cpp" line="+276"/>
         <source>Send Coins</source>
         <translation>שלח מטבעות</translation>
     </message>
@@ -3984,7 +4368,7 @@ p, li { white-space: pre-wrap; }
         <translation>יצוא הנתונים בטאב הנוכחי לקובץ</translation>
     </message>
     <message>
-        <location line="+200"/>
+        <location line="+203"/>
         <source>Backup Wallet</source>
         <translation>גבה ארנק</translation>
     </message>
@@ -4029,41 +4413,36 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">גרסת ביטקוין</translation>
     </message>
     <message>
-        <location filename="../bitcoinstrings.cpp" line="+262"/>
         <source>Usage:</source>
-        <translation>שימוש:</translation>
+        <translation type="vanished">שימוש:</translation>
     </message>
     <message>
         <source>Send command to -server or animed</source>
         <translation type="vanished">שלח פקודה ל -server או animed</translation>
     </message>
     <message>
-        <location line="-66"/>
         <source>List commands</source>
-        <translation>רשימת פקודות</translation>
+        <translation type="vanished">רשימת פקודות</translation>
     </message>
     <message>
-        <location line="-15"/>
         <source>Get help for a command</source>
-        <translation>קבל עזרה עבור פקודה</translation>
+        <translation type="vanished">קבל עזרה עבור פקודה</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location filename="../bitcoinstrings.cpp" line="+244"/>
         <source>Options:</source>
         <translation>אפשרויות:</translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Specify configuration file (default: animecoin.conf)</source>
-        <translation>ציין קובץ הגדרות (ברירת מחדל: animecoin.conf)</translation>
+        <translation type="vanished">ציין קובץ הגדרות (ברירת מחדל: animecoin.conf)</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Specify pid file (default: animecoind.pid)</source>
-        <translation>ציין קובץ pid (ברירת מחדל: animecoind.pid)</translation>
+        <translation type="vanished">ציין קובץ pid (ברירת מחדל: animecoind.pid)</translation>
     </message>
     <message>
-        <location line="-1"/>
+        <location line="+31"/>
         <source>Specify data directory</source>
         <translation>ציין תיקיית נתונים</translation>
     </message>
@@ -4072,122 +4451,61 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">קבע את גודל המטמון של מסד הנתונים במגהבייט (ברירת מחדל: 25)</translation>
     </message>
     <message>
-        <location line="-46"/>
         <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333)</translation>
+        <translation type="vanished">האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333)</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>החזק לכל היותר &lt;n&gt; חיבורים לעמיתים (ברירת מחדל: 125)</translation>
+        <translation type="vanished">החזק לכל היותר &lt;n&gt; חיבורים לעמיתים (ברירת מחדל: 125)</translation>
     </message>
     <message>
-        <location line="-58"/>
+        <location line="-90"/>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
         <translation>התחבר לצומת כדי לדלות כתובות עמיתים, ואז התנתק</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+93"/>
         <source>Specify your own public address</source>
         <translation>ציין את הכתובת הפומבית שלך</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>סף להתנתקות מעמיתים הנוהגים שלא כהלכה (ברירת מחדל: 100)</translation>
+        <translation type="vanished">סף להתנתקות מעמיתים הנוהגים שלא כהלכה (ברירת מחדל: 100)</translation>
     </message>
     <message>
-        <location line="-173"/>
         <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>מספר שניות למנוע מעמיתים הנוהגים שלא כהלכה מלהתחבר מחדש (ברירת מחדל: 86400)</translation>
+        <translation type="vanished">מספר שניות למנוע מעמיתים הנוהגים שלא כהלכה מלהתחבר מחדש (ברירת מחדל: 86400)</translation>
     </message>
     <message>
-        <location line="-67"/>
-        <source>%s, you must set a rpcpassword in the configuration file:
-%s
-It is recommended you use the following random password:
-rpcuser=animecoinrpc
-rpcpassword=%s
-(you do not need to remember this password)
-The username and password MUST NOT be the same.
-If the file does not exist, create it with owner-readable-only file permissions.
-It is also recommended to set alertnotify so you are notified of problems;
-for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@foo.com
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Acceptable ciphers (default: TLSv1.2+HIGH:TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!3DES:@STRENGTH)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
         <source>An error occurred while setting up the RPC port %u for listening on IPv4: %s</source>
-        <translation>אירעה שגיאה בעת הגדרת פורט RPC %u להאזנה ב-IPv4: %s</translation>
+        <translation type="vanished">אירעה שגיאה בעת הגדרת פורט RPC %u להאזנה ב-IPv4: %s</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-246"/>
         <source>Cannot obtain a lock on data directory %s. Animecoin is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:15)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly. This is intended for regression testing tools and app development.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+15"/>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Error: Listening for incoming connections failed (listen returned error %d)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Fees smaller than this are considered zero fee (for transaction creation) (default:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: 100)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: 3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+23"/>
         <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>האזן לחיבורי JSON-RPC ב- &lt;port&gt; (ברירת מחדל: 8332 או רשת בדיקה: 18332)</translation>
+        <translation type="vanished">האזן לחיבורי JSON-RPC ב- &lt;port&gt; (ברירת מחדל: 8332 או רשת בדיקה: 18332)</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Output debugging information (default: 0, supplying &lt;category&gt; is optional)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+26"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4197,22 +4515,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Set the processor limit for when generation is on (-1 = unlimited, default: -1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+26"/>
         <source>Unable to bind to %s on this computer. Animecoin is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: -proxy)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+12"/>
         <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Animecoin will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4227,12 +4535,12 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>קבל פקודות משורת הפקודה ו- JSON-RPC</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+44"/>
         <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4242,48 +4550,18 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Invalid -onion address: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Limit size of signature cache to &lt;n&gt; entries (default: 50000)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Log transaction priority and fee per kB when mining blocks (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Prepend debug output with timestamp (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Print block on startup, if found in block index</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Print block tree on startup (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+26"/>
         <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>RPC client options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4292,7 +4570,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Randomly drop 1 of every &lt;n&gt; network messages</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4302,29 +4580,9 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Run a thread to flush wallet periodically (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+8"/>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>רוץ ברקע כדימון וקבל פקודות</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Select SOCKS version for -proxy (4 or 5, default: 5)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Send command to Animecoin</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4337,18 +4595,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Show all debugging options (usage: --help -help-debug)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Show benchmark information (default: 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4357,32 +4605,27 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Spend unconfirmed change when sending transactions (default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Start Animecoin Daemon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>This is intended for regression testing tools and app development.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Usage (deprecated, use animecoin-cli):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+12"/>
         <source>Use the test network</source>
         <translation>השתמש ברשת הבדיקה</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
+        <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Warning: Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4397,12 +4640,11 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>version</source>
-        <translation type="unfinished">גרסה</translation>
+        <translation type="obsolete">גרסה</translation>
     </message>
     <message>
-        <location line="-151"/>
+        <location line="-138"/>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
         <translation>קבל חיבורים מבחוץ (ברירת מחדל: 1 ללא -proxy או -connect)</translation>
     </message>
@@ -4431,12 +4673,11 @@ rpcpassword=%s
 </translation>
     </message>
     <message>
-        <location line="-100"/>
         <source>An error occurred while setting up the RPC port %u for listening on IPv6, falling back to IPv4: %s</source>
-        <translation>אירעה שגיאה בעת הגדרת פורט RPC %u להאזנה ב-IPv6, נסוג ל-IPv4: %s</translation>
+        <translation type="vanished">אירעה שגיאה בעת הגדרת פורט RPC %u להאזנה ב-IPv6, נסוג ל-IPv4: %s</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-148"/>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>קשור עם כתובת נתונה והאזן לה תמיד. השתמש בסימון [host]:port עבוד IPv6.</translation>
     </message>
@@ -4445,21 +4686,19 @@ rpcpassword=%s
         <translation type="vanished">לא מסוגל להשיג נעילה על תיקיית הנתונים %s. כנראה שביטקוין כבר רץ.</translation>
     </message>
     <message>
-        <location line="+18"/>
         <source>Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>שגיאה: הפעולה נדחתה! זה עלול לקרות אם כמה מהמטבעות בארנק שלך כבר נוצלו, למשל אם השתמשת בעותק של wallet.dat ומטבעות נשלחו בעותק אך לא סומנו כמנוצלות כאן.</translation>
+        <translation type="vanished">שגיאה: הפעולה נדחתה! זה עלול לקרות אם כמה מהמטבעות בארנק שלך כבר נוצלו, למשל אם השתמשת בעותק של wallet.dat ומטבעות נשלחו בעותק אך לא סומנו כמנוצלות כאן.</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!</source>
-        <translation>שגיאה: הפעולה הזאת דורשת עמלת פעולה של לפחות %s עקב הכמות, המורכבות, או השימוש בכספים שהתקבלו לאחרונה!</translation>
+        <translation type="vanished">שגיאה: הפעולה הזאת דורשת עמלת פעולה של לפחות %s עקב הכמות, המורכבות, או השימוש בכספים שהתקבלו לאחרונה!</translation>
     </message>
     <message>
         <source>Execute command when a relevant alert is received (%s in cmd is replaced by message)</source>
         <translation type="vanished">בצע פעולה כאשר ההודעה הרלוונטית מתקבלת(%s בשורת הפקודה משתנה על-ידי ההודעה)</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+36"/>
         <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
         <translation>בצע פקודה כאשר פעולת ארנק משתנה (%s ב cmd יוחלף ב TxID)</translation>
     </message>
@@ -4472,12 +4711,12 @@ rpcpassword=%s
         <translation type="vanished">קבע גודל מקסימלי עבור פעולות עדיפות גבוהה/עמלה נמוכה בבתים (ברירת מחדל: 27000)</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+54"/>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>זוהי בניית ניסיון טרום-שחרור - השימוש בה על אחריותך - אין להשתמש לצורך כריה או יישומי מסחר</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+29"/>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
         <translation>אזהרה: -paytxfee נקבע לערך מאד גבוה! זוהי עמלת הפעולה שתשלם אם אתה שולח פעולה.</translation>
     </message>
@@ -4500,13 +4739,8 @@ rpcpassword=%s
         <translation>אזהרה: קובץ wallet.dat מושחת, המידע חולץ! קובץ wallet.dat המקורח נשמר כ - wallet.{timestamp}.bak ב - %s; אם המאזן או הפעולות שגויים עליך לשחזר גיבוי.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>(default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>(default: wallet.dat)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4515,19 +4749,9 @@ rpcpassword=%s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Attempt to recover private keys from a corrupt wallet.dat</source>
         <translation>נסה לשחזר מפתחות פרטיים מקובץ wallet.dat מושחת.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Animecoin Daemon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Animecoin RPC client version</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4535,47 +4759,27 @@ rpcpassword=%s
         <translation>אפשרויות יצירת בלוק:</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Clear list of wallet transactions (diagnostic tool; implies -rescan)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Connect only to the specified node(s)</source>
         <translation>התחבר רק לצמתים המצוינים</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Connect through SOCKS proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Connection options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Corrupted block database detected</source>
         <translation>התגלה מסד נתוני בלוקים לא תקין</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Debugging/Testing options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Disable safemode, override a real safe mode event (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Discover own IP address (default: 1 when listening and no -externalip)</source>
         <translation>גלה את כתובת ה-IP העצמית (ברירת מחדל: 1 כשמאזינים וללא -externalip)</translation>
     </message>
@@ -4615,104 +4819,70 @@ rpcpassword=%s
         <translation>שגיאה בטעינת מסד נתוני הבלוקים</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Error: Disk space is low!</source>
         <translation>שגיאה: מעט מקום פנוי בדיסק!</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Error: Wallet locked, unable to create transaction!</source>
-        <translation>שגיאה: הארנק נעול, אין אפשרות ליצור פעולה!</translation>
+        <translation type="vanished">שגיאה: הארנק נעול, אין אפשרות ליצור פעולה!</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Error: system error: </source>
-        <translation>שגיאה: שגיאת מערכת:</translation>
+        <translation type="vanished">שגיאה: שגיאת מערכת:</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>האזנה נכשלה בכל פורט. השתמש ב- -listen=0 אם ברצונך בכך.</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to read block info</source>
-        <translation>קריאת מידע הבלוקים נכשלה</translation>
+        <translation type="vanished">קריאת מידע הבלוקים נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to read block</source>
-        <translation>קריאת הבלוק נכשלה</translation>
+        <translation type="vanished">קריאת הבלוק נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to sync block index</source>
-        <translation>סנכרון אינדקס הבלוקים נכשל</translation>
+        <translation type="vanished">סנכרון אינדקס הבלוקים נכשל</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write block index</source>
-        <translation>כתיבת אינדקס הבלוקים נכשל</translation>
+        <translation type="vanished">כתיבת אינדקס הבלוקים נכשל</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write block info</source>
-        <translation>כתיבת מידע הבלוקים נכשל</translation>
+        <translation type="vanished">כתיבת מידע הבלוקים נכשל</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write block</source>
-        <translation>כתיבת הבלוק נכשלה</translation>
+        <translation type="vanished">כתיבת הבלוק נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write file info</source>
-        <translation>כתיבת מידע הקבצים נכשלה</translation>
+        <translation type="vanished">כתיבת מידע הקבצים נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write to coin database</source>
-        <translation>כתיבת מסד נתוני המטבעות נכשלה</translation>
+        <translation type="vanished">כתיבת מסד נתוני המטבעות נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write transaction index</source>
-        <translation>כתיבת אינדקס הפעולות נכשלה</translation>
+        <translation type="vanished">כתיבת אינדקס הפעולות נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Failed to write undo data</source>
-        <translation>כתיבת נתוני ביטול נכשלה</translation>
+        <translation type="vanished">כתיבת נתוני ביטול נכשלה</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Fee per kB to add to transactions you send</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Fees smaller than this are considered zero fee (for relaying) (default:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Find peers using DNS lookup (default: 1 unless -connect)</source>
-        <translation>מצא עמיתים ע&quot;י חיפוש DNS (ברירת מחדל: 1 ללא -connect)</translation>
+        <translation type="vanished">מצא עמיתים ע&quot;י חיפוש DNS (ברירת מחדל: 1 ללא -connect)</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Force safe mode (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Generate coins (default: 0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
         <source>How many blocks to check at startup (default: 288, 0 = all)</source>
-        <translation>מספר הבלוקים לבדוק בעת אתחול (ברירת מחדל: 288, 0 = כולם)</translation>
+        <translation type="vanished">מספר הבלוקים לבדוק בעת אתחול (ברירת מחדל: 288, 0 = כולם)</translation>
     </message>
     <message>
         <source>How thorough the block verification is (0-4, default: 3)</source>
@@ -4723,22 +4893,21 @@ rpcpassword=%s
         <translation type="obsolete">האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333) {8373 ?} {18373)?}</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+33"/>
         <source>Not enough file descriptors available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+11"/>
         <source>Rebuild block chain index from current blk000??.dat files</source>
         <translation>בנה מחדש את אינדק שרשרת הבלוקים מקבצי ה-blk000??.dat הנוכחיים.</translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
-        <translation>קבע את מספר תהליכוני לשירות קריאות RPC (ברירת מחדל: 4)</translation>
+        <translation type="vanished">קבע את מספר תהליכוני לשירות קריאות RPC (ברירת מחדל: 4)</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+45"/>
         <source>Verifying blocks...</source>
         <translation>מאמת את שלמות מסד הנתונים...</translation>
     </message>
@@ -4748,12 +4917,12 @@ rpcpassword=%s
         <translation>מאמת את יושרת הארנק...</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="-83"/>
         <source>Imports blocks from external blk000??.dat file</source>
         <translation>מייבא בלוקים מקובצי blk000??.dat חיצוניים</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Information</source>
         <translation>מידע</translation>
     </message>
@@ -4762,7 +4931,7 @@ rpcpassword=%s
         <translation type="vanished">כתובת לא תקינה ל -tor: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Invalid amount for -minrelaytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4772,29 +4941,24 @@ rpcpassword=%s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Maintain a full transaction index (default: 0)</source>
-        <translation>תחזק אינדקס פעולות מלא (ברירת מחדל: 0)</translation>
+        <translation type="vanished">תחזק אינדקס פעולות מלא (ברירת מחדל: 0)</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: 5000)</source>
-        <translation>חוצץ קבלה מירבי לכל חיבור, &lt;n&gt;*1000 בתים (ברירת מחדל: 5000)</translation>
+        <translation type="vanished">חוצץ קבלה מירבי לכל חיבור, &lt;n&gt;*1000 בתים (ברירת מחדל: 5000)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: 1000)</source>
-        <translation>חוצץ שליחה מירבי לכל חיבור, &lt;n&gt;*1000 בתים (ברירת מחדל: 1000)</translation>
+        <translation type="vanished">חוצץ שליחה מירבי לכל חיבור, &lt;n&gt;*1000 בתים (ברירת מחדל: 1000)</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Only accept block chain matching built-in checkpoints (default: 1)</source>
-        <translation>קבל רק שרשרת בלוקים התואמת נקודות ביקורת מובנות (ברירת מחדל: 1)</translation>
+        <translation type="vanished">קבל רק שרשרת בלוקים התואמת נקודות ביקורת מובנות (ברירת מחדל: 1)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Only connect to nodes in network &lt;net&gt; (IPv4, IPv6 or Tor)</source>
-        <translation>התחבר רק לצמתים ברשת &lt;net&gt; (IPv4, IPv6 או Tor)</translation>
+        <translation type="vanished">התחבר רק לצמתים ברשת &lt;net&gt; (IPv4, IPv6 או Tor)</translation>
     </message>
     <message>
         <source>Output extra debugging information. Implies all other -debug* options</source>
@@ -4817,7 +4981,7 @@ rpcpassword=%s
         <translation type="vanished">בחר את גרסת פרוקסי SOCKS להשתמש בה (4-5, ברירת מחדל: 5)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+35"/>
         <source>Send trace/debug info to console instead of debug.log file</source>
         <translation>שלח מידע דיבאג ועקבה לקונסולה במקום לקובץ debug.log</translation>
     </message>
@@ -4830,12 +4994,11 @@ rpcpassword=%s
         <translation type="vanished">קבע את גדול הבלוק המירבי בבתים (ברירת מחדל: 250000)</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Set minimum block size in bytes (default: 0)</source>
-        <translation>קבע את גודל הבלוק המינימלי בבתים (ברירת מחדל: 0)</translation>
+        <translation type="vanished">קבע את גודל הבלוק המינימלי בבתים (ברירת מחדל: 0)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+11"/>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
         <translation>כווץ את קובץ debug.log בהפעלת הקליינט (ברירת מחדל: 1 ללא -debug)</translation>
     </message>
@@ -4845,17 +5008,15 @@ rpcpassword=%s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Specify connection timeout in milliseconds (default: 5000)</source>
-        <translation>ציין הגבלת זמן לחיבור במילישניות (ברירת מחדל: 5000)</translation>
+        <translation type="vanished">ציין הגבלת זמן לחיבור במילישניות (ברירת מחדל: 5000)</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>System error: </source>
-        <translation>שגיאת מערכת:</translation>
+        <translation type="vanished">שגיאת מערכת:</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+13"/>
         <source>Transaction amount too small</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4865,17 +5026,16 @@ rpcpassword=%s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Transaction too large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Use UPnP to map the listening port (default: 0)</source>
-        <translation>השתמש ב-UPnP כדי למפות את הפורט להאזנה (ברירת מחדל: 0)</translation>
+        <translation type="vanished">השתמש ב-UPnP כדי למפות את הפורט להאזנה (ברירת מחדל: 0)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+6"/>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
         <translation>השתמש ב-UPnP כדי למפות את הפורט להאזנה (ברירת מחדל: 1 בעת האזנה)</translation>
     </message>
@@ -4890,11 +5050,6 @@ rpcpassword=%s
     </message>
     <message>
         <location line="+3"/>
-        <source>Wait for RPC server to start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Wallet %s resides outside data directory %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4915,11 +5070,6 @@ rpcpassword=%s
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: Deprecated argument -debugnet ignored, use -debug=net</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Warning: This version is obsolete, upgrade required!</source>
         <translation>אזהרה: הגרסה הזאת מיושנת, יש צורך בשדרוג!</translation>
     </message>
@@ -4928,90 +5078,84 @@ rpcpassword=%s
         <translation type="vanished">עליך לבנות מחדש את מסדי הנתונים תוך שימוש ב- -reindex על מנת לשנות את -txindex</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>wallet.dat corrupt, salvage failed</source>
         <translation>קובץ wallet.dat מושחת, החילוץ נכשל</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-64"/>
         <source>Password for JSON-RPC connections</source>
         <translation>סיסמה לחיבורי JSON-RPC</translation>
     </message>
     <message>
-        <location line="-78"/>
         <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>אפשר חיבורי JSON-RPC מכתובת האינטרנט המצוינת</translation>
+        <translation type="vanished">אפשר חיבורי JSON-RPC מכתובת האינטרנט המצוינת</translation>
     </message>
     <message>
-        <location line="+95"/>
         <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>שלח פקודות לצומת ב-&lt;ip&gt; (ברירת מחדל: 127.0.0.1)</translation>
+        <translation type="vanished">שלח פקודות לצומת ב-&lt;ip&gt; (ברירת מחדל: 127.0.0.1)</translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location line="-184"/>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
         <translation>בצע פקודה זו כשהבלוק הטוב ביותר משתנה (%s בפקודה יוחלף בגיבוב הבלוק)</translation>
     </message>
     <message>
-        <location line="+197"/>
+        <location line="+230"/>
         <source>Upgrade wallet to latest format</source>
         <translation>שדרג את הארנק לפורמט העדכני</translation>
     </message>
     <message>
-        <location line="-28"/>
         <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>קבע את גודל המאגר ל -&lt;n&gt; (ברירת מחדל: 100)</translation>
+        <translation type="vanished">קבע את גודל המאגר ל -&lt;n&gt; (ברירת מחדל: 100)</translation>
     </message>
     <message>
-        <location line="-12"/>
+        <location line="-35"/>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>סרוק מחדש את שרשרת הבלוקים למציאת פעולות חסרות בארנק</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+36"/>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>השתמש ב-OpenSSL (https( עבור חיבורי JSON-RPC</translation>
     </message>
     <message>
-        <location line="-34"/>
         <source>Server certificate file (default: server.cert)</source>
-        <translation>קובץ תעודת שרת (ברירת מחדל: server.cert)</translation>
+        <translation type="vanished">קובץ תעודת שרת (ברירת מחדל: server.cert)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Server private key (default: server.pem)</source>
-        <translation>מפתח פרטי של השרת (ברירת מחדל: server.pem)</translation>
+        <translation type="vanished">מפתח פרטי של השרת (ברירת מחדל: server.pem)</translation>
     </message>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation type="vanished">צפנים קבילים (ברירת מחדל: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-11"/>
         <source>This help message</source>
         <translation>הודעת העזרה הזו</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Unable to bind to %s on this computer (bind returned error %d, %s)</source>
-        <translation>לא מסוגל לקשור ל-%s במחשב זה (הקשירה החזירה שגיאה %d, %s)</translation>
+        <translation type="vanished">לא מסוגל לקשור ל-%s במחשב זה (הקשירה החזירה שגיאה %d, %s)</translation>
     </message>
     <message>
         <source>Connect through socks proxy</source>
         <translation type="vanished">התחבר דרך פרוקסי SOCKS</translation>
     </message>
     <message>
-        <location line="-126"/>
+        <location line="-107"/>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
         <translation>אפשר בדיקת DNS עבור -addnode, -seednode ו- -connect</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+59"/>
         <source>Loading addresses...</source>
         <translation>טוען כתובות...</translation>
     </message>
     <message>
-        <location line="-40"/>
+        <location line="-33"/>
         <source>Error loading wallet.dat: Wallet corrupted</source>
         <translation>שגיאה בטעינת הקובץ wallet.dat: הארנק מושחת</translation>
     </message>
@@ -5029,22 +5173,106 @@ rpcpassword=%s
         <translation>שגיאה בטעינת הקובץ wallet.dat</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+23"/>
         <source>Invalid -proxy address: &apos;%s&apos;</source>
         <translation>כתובת -proxy לא תקינה: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+36"/>
+        <source>Run a thread to flush wallet periodically (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Send transactions as zero-fee transactions if possible (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Server certificate file (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Server private key (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set minimum block size in bytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Specify configuration file (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Specify pid file (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Stop running after importing blocks from disk (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This is experimental software.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Transaction too large for fee policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
         <translation>רשת לא ידועה צוינה ב- -onlynet: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="-1"/>
         <source>Unknown -socks proxy version requested: %i</source>
-        <translation>התבקשה גרסת פרוקסי -socks לא ידועה: %i</translation>
+        <translation type="vanished">התבקשה גרסת פרוקסי -socks לא ידועה: %i</translation>
     </message>
     <message>
-        <location line="-120"/>
+        <location line="-111"/>
         <source>Cannot resolve -bind address: &apos;%s&apos;</source>
         <translation>לא מסוגל לפתור כתובת -bind: &apos;%s&apos;</translation>
     </message>
@@ -5054,27 +5282,26 @@ rpcpassword=%s
         <translation>לא מסוגל לפתור כתובת -externalip: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+47"/>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
         <translation>כמות לא תקינה עבור -paytxfee=&lt;amount&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Invalid amount</source>
-        <translation>כמות לא תקינה</translation>
+        <translation type="vanished">כמות לא תקינה</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-7"/>
         <source>Insufficient funds</source>
         <translation>אין מספיק כספים</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>Loading block index...</source>
         <translation>טוען את אינדקס הבלוקים...</translation>
     </message>
     <message>
-        <location line="-69"/>
+        <location line="-61"/>
         <source>Add a node to connect to and attempt to keep the connection open</source>
         <translation>הוסף צומת להתחברות ונסה לשמור את החיבור פתוח</translation>
     </message>
@@ -5087,46 +5314,404 @@ rpcpassword=%s
         <translation type="vanished">עמלה להוסיף לפעולות שאתה שולח עבור כל KB</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+62"/>
         <source>Loading wallet...</source>
         <translation>טוען ארנק...</translation>
     </message>
     <message>
-        <location line="-63"/>
+        <location line="-57"/>
         <source>Cannot downgrade wallet</source>
         <translation>לא יכול להוריד דרגת הארנק</translation>
     </message>
     <message>
+        <location line="-166"/>
+        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+3"/>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>An error occurred while setting up the RPC address %s port %u for listening: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:%u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: Unsupported argument -socks found. Setting SOCKS version isn&apos;t possible anymore, only SOCKS5 proxies are supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Fees (in ANI/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Fees (in ANI/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Maximum total fees to use in a single wallet transaction, setting too low may abort large transactions (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit &lt;https://www.openssl.org/&gt; and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>To use animecoind, or the -server option to animecoin-qt, you must set an rpcpassword in the configuration file:
+%s
+It is recommended you use the following random password:
+rpcuser=animerpc
+rpcpassword=%s
+(you do not need to remember this password)
+The username and password MUST NOT be the same.
+If the file does not exist, create it with owner-readable-only file permissions.
+It is also recommended to set alertnotify so you are notified of problems;
+for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@foo.com
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>(default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Acceptable ciphers (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Always query for peer addresses via DNS lookup (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Cannot resolve -whitebind address: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Cannot write default address</source>
         <translation>לא יכול לכתוב את כתובת ברירת המחדל</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+2"/>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Copyright (C) 2009-%i The Bitcoin and Anime Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Could not parse -rpcbind value %s as network address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Disable safemode, override a real safe mode event (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Error reading from database, shutting down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: Unsupported argument -tor found, use -onion.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Fee (in ANI/kB) to add to transactions you send (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Force safe mode (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Generate coins (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Initialization sanity check failed. Animecoin is shutting down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Node relay options:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Only accept block chain matching built-in checkpoints (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Prepend debug output with timestamp (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>RPC support for HTTP persistent connections (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Receive and display P2P network alerts (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Relay non-P2SH multisig (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Rescanning...</source>
         <translation>סורק מחדש...</translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="+36"/>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-98"/>
         <source>Done loading</source>
         <translation>טעינה הושלמה</translation>
     </message>
     <message>
-        <location line="+100"/>
         <source>To use the %s option</source>
-        <translation>להשתמש באפשרות %s</translation>
+        <translation type="vanished">להשתמש באפשרות %s</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="+9"/>
         <source>Error</source>
         <translation>שגיאה</translation>
     </message>
     <message>
-        <location line="-41"/>
         <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
 %s
 If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>עליך לקבוע rpcpassword=yourpassword בקובץ ההגדרות:
+        <translation type="vanished">עליך לקבוע rpcpassword=yourpassword בקובץ ההגדרות:
 %s
 אם הקובץ אינו קיים, צור אותו עם הרשאות קריאה לבעלים בלבד.</translation>
     </message>

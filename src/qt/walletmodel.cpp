@@ -278,7 +278,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
             return TransactionCreationFailed;
         }
 
-        // reject insane fee > 0.1 quark
+        // reject insane fee > 0.1 ANI
         if (nFeeRequired > 10000000)
             return InsaneFee;
     }
