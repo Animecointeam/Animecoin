@@ -376,7 +376,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/univalue/univalue_escapes.h \
     src/utilmoneystr.h \
     src/utiltime.h \
-    src/wallet_ismine.h
+    src/wallet_ismine.h \
+    src/qt/askmultisigdialog.h \
+    src/qt/newpubkeydialog.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -511,7 +513,9 @@ SOURCES += src/qt/bitcoin.cpp \
     src/wallet_ismine.cpp \
     src/compat/glibc_sanity.cpp \
     src/compat/glibcxx_sanity.cpp \
-    src/compat/strnlen.cpp
+    src/compat/strnlen.cpp \
+    src/qt/askmultisigdialog.cpp \
+    src/qt/newpubkeydialog.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
@@ -533,7 +537,9 @@ FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/intro.ui \
     src/qt/forms/helpmessagedialog.ui \
     src/qt/forms/receiverequestdialog.ui \
-    src/qt/forms/paperwalletdialog.ui
+    src/qt/forms/paperwalletdialog.ui \
+    src/qt/forms/askmultisigdialog.ui \
+    src/qt/forms/newpubkeydialog.ui
 
 contains(USE_QRCODE, 1) {
 HEADERS +=
