@@ -411,12 +411,14 @@ void static BitcoinMiner(CWallet *pwallet)
     LogPrintf("AniMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
     RenameThread("animecoin-miner");
+    MilliSleep(1000);
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
     unsigned int nExtraNonce = 0;
 
     try {
+        CBlockIndex* pindexPrev = NULL;
         while (true) {
             if (Params().MiningRequiresPeers()) {
                 // Busy-wait for the network to come online so we don't waste time mining
@@ -430,15 +432,33 @@ void static BitcoinMiner(CWallet *pwallet)
                     if (!fvNodesEmpty && !IsInitialBlockDownload())
                         break;
                     MilliSleep(1000);
+                    boost::this_thread::interruption_point();
+                } while (true);
+
+                // wait for download to complete
+                do
+                {
+                    {
+                        LOCK(cs_main);
+                        CBlockIndex* tip = chainActive.Tip();
+                        if (pindexPrev == tip)
+                            break;
+                        pindexPrev = tip;
+                    }
+                    MilliSleep(2000);
+                    boost::this_thread::interruption_point();
                 } while (true);
             }
 
             //
             // Create new block
             //
-            unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
-            CBlockIndex* pindexPrev = chainActive.Tip();
-
+            unsigned int nTransactionsUpdatedLast;
+            {
+                LOCK(cs_main);
+                nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
+                pindexPrev = chainActive.Tip();
+            }
             unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey));
             if (!pblocktemplate.get())
             {
@@ -462,7 +482,7 @@ void static BitcoinMiner(CWallet *pwallet)
                 // scan for solution
                 bool fFound = false;
                 int nHashesDone = 0;
-                for (int ite = 0; ite < 128; ite++)
+                for (int ite = 0; ite < 8192; ite++)
                 {
                     nHashesDone++;
                     pblock->nNonce++;
@@ -523,14 +543,22 @@ void static BitcoinMiner(CWallet *pwallet)
                 // Check for stop or if block needs to be rebuilt
                 boost::this_thread::interruption_point();
                 // Regtest mode doesn't require peers
-                if (vNodes.empty() && Params().MiningRequiresPeers())
+                bool nodeemp;
+                {
+                    LOCK(cs_vNodes);
+                    nodeemp = vNodes.empty();
+                }
+                if (nodeemp && Params().MiningRequiresPeers())
                     break;
                 if (pblock->nNonce >= 0xffff0000)
                     break;
-                if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
-                    break;
-                if (pindexPrev != chainActive.Tip())
-                    break;
+                {
+                    LOCK(cs_main);
+                    if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
+                        break;
+                    if (pindexPrev != chainActive.Tip())
+                        break;
+                }
 
                 // Update nTime every few seconds
                 UpdateTime(pblock, pindexPrev);

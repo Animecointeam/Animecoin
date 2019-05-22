@@ -28,7 +28,7 @@ Also, the first time you run a 0.8 release on a 0.9+ wallet it will rescan the b
 - Parallelized block syncing (testing).
 - Fee Control Features and transaction priorities according to bitcoin upstream (testing).
 - libsecp256k1 integration (testing).
-- Improved application design, including animecoin-tx and consensus library (in progress).
+- Improved application design, including animecoin-tx and consensus library (implemented).
 - Many security and RPC improvements for smoother integration of applications (implemented).
 - A soft fork akin to BIP-0065 (implemented, awaiting activation).
 - A user interface for multisig capabilities (in progress).
@@ -103,7 +103,6 @@ Solution: -std=gnu++11 or -std=c++11. Default since gcc 5.1.
 
 Other release notes
 ---------------------
-- Working node seeds were added, DNS seeds in progress.
 - Translations need people to work upon.
 - Regression test network code (like testnet, but special) was added following the mainstream Bitcoin client, this remains untested so far.
 
@@ -113,4 +112,5 @@ Copyright (c) 2009-2019 Bitcoin Developers
 Copyright (c) 2014-2019 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://opensource.org/licenses/MIT.
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](http://www.openssl.org/). This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), UPnP software written by Thomas Bernard and sphlib 3.0 by Thomas Pornin.
+This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](http://www.openssl.org/).
+This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), UPnP software written by Thomas Bernard and sphlib 3.0 by Thomas Pornin.
