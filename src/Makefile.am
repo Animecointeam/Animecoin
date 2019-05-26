@@ -86,6 +86,7 @@ BITCOIN_CORE_H = \
   coins.h \
   compat.h \
   compressor.h \
+  consensus/params.h \
   core_io.h \
   crypter.h \
   crypto/sph_types.h \
@@ -121,6 +122,7 @@ BITCOIN_CORE_H = \
   rpcclient.h \
   rpcprotocol.h \
   rpcserver.h \
+  scheduler.h \
   script/interpreter.h \
   script/script.h \
   script/sigcache.h \
@@ -270,6 +272,7 @@ libanimecoin_common_a_SOURCES = \
   primitives/transaction.cpp \
   protocol.cpp \
   pubkey.cpp \
+  scheduler.cpp \
   script/interpreter.cpp \
   script/script.cpp \
   script/sign.cpp \

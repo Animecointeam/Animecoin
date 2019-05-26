@@ -379,7 +379,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/utiltime.h \
     src/wallet_ismine.h \
     src/qt/askmultisigdialog.h \
-    src/qt/newpubkeydialog.h
+    src/qt/newpubkeydialog.h \
+    src/scheduler.h \
+    src/consensus/params.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -516,7 +518,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/compat/glibcxx_sanity.cpp \
     src/compat/strnlen.cpp \
     src/qt/askmultisigdialog.cpp \
-    src/qt/newpubkeydialog.cpp
+    src/qt/newpubkeydialog.cpp \
+    src/scheduler.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

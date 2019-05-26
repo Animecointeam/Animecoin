@@ -125,26 +125,27 @@ public:
     CMainParams() {
         networkID = CBaseChainParams::MAIN;
         strNetworkID = "main";
+        consensus.nSubsidyHalvingInterval = 120960;
+        consensus.nMajorityEnforceBlockUpgrade = 7500;
+        consensus.nMajorityRejectBlockOutdated = 9000;
+        consensus.nMajorityWindow = 10000;
+        consensus.powLimit = nMainProofOfWorkLimit;
+        consensus.nPowTargetTimespan = 10 * 240; // 40 minutes
+        consensus.nPowTargetSpacing = 30; // 30 seconds
+        consensus.fPowAllowMinDifficultyBlocks = false;
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-        pchMessageStart[0] = 0x41; // Updated for Animecoin
+        pchMessageStart[0] = 0x41;
         pchMessageStart[1] = 0x4e;
         pchMessageStart[2] = 0x49;
         pchMessageStart[3] = 0x4d;
-        vAlertPubKey = ParseHex("04e8ee751a975ba7e5488267b6754e9e4249214db28d74af916d34aefdd8817c1a5d57aba2cc3ce23052ff8c8bf7028819bc966ce19e1a603b73b3e0edea902ab0"); // Updated.
-        nDefaultPort = 1212; // Contradictory docs. Requires online check.
-        bnProofOfWorkLimit = nMainProofOfWorkLimit;
-        nSubsidyHalvingInterval = 120960; // Updated for Animecoin
-        nEnforceBlockUpgradeMajority = 7500;
-        nRejectBlockOutdatedMajority = 9000;
-        nToCheckBlockUpgradeMajority = 10000;
+        vAlertPubKey = ParseHex("04e8ee751a975ba7e5488267b6754e9e4249214db28d74af916d34aefdd8817c1a5d57aba2cc3ce23052ff8c8bf7028819bc966ce19e1a603b73b3e0edea902ab0");
+        nDefaultPort = 1212;
         nMinerThreads = 0;
         nPruneAfterHeight = 100000;
-        nTargetTimespan = 10 * 240; // 40 minutes
-        nTargetSpacing = 30; // 30 seconds
         nMaxTipAge = 24 * 60 * 60;
 
         /**
@@ -174,8 +175,8 @@ public:
 
         assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9"));
 
-        hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == hashMainGenesisBlock);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == hashMainGenesisBlock);
         assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9")); // Updated for Animecoin
 
         // Updated for Animecoin
@@ -199,7 +200,6 @@ public:
 
         fRequireRPCPassword = true;
         fMiningRequiresPeers = true;
-        fAllowMinDifficultyBlocks = false;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
@@ -222,6 +222,10 @@ public:
     CTestNetParams() {
         networkID = CBaseChainParams::TESTNET;
         strNetworkID = "test";
+        consensus.nMajorityEnforceBlockUpgrade = 51;
+        consensus.nMajorityRejectBlockOutdated = 75;
+        consensus.nMajorityWindow = 100;
+        consensus.fPowAllowMinDifficultyBlocks = true;
         pchMessageStart[0] = 0x4d; //Updated for Animecoin
         pchMessageStart[1] = 0x49;
         pchMessageStart[2] = 0x4e;
@@ -229,19 +233,14 @@ public:
         vAlertPubKey = ParseHex("04229162767c4193324ab7f78b87c8b2d539d30ecefcb2749e3afdcb54cea8c32f0b59f2b67bf97045ed0c03b1f28e01787b4ee918c5f0b50819a058cd4c6ce40e"); // Updated.
         nDefaultPort = 11212; // Contradictory.
         nPruneAfterHeight = 1000;
-        nEnforceBlockUpgradeMajority = 51;
-        nRejectBlockOutdatedMajority = 75;
-        nToCheckBlockUpgradeMajority = 100;
         nMinerThreads = 0;
-        nTargetTimespan = 10 * 240; // 40 minutes
-        nTargetSpacing = 30; // 30 seconds
         nMaxTipAge = 0x7fffffff;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 978307200; // Updated for Animecoin
         genesis.nNonce = 907185573; // Updated for Animecoin
-        hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")); // Updated for Animecoin
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")); // Updated for Animecoin
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -256,7 +255,6 @@ public:
 
         fRequireRPCPassword = true;
         fMiningRequiresPeers = true;
-        fAllowMinDifficultyBlocks = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
@@ -277,23 +275,24 @@ public:
     CRegTestParams() {
         networkID = CBaseChainParams::REGTEST;
         strNetworkID = "regtest";
+        consensus.nSubsidyHalvingInterval = 150;
+        consensus.nMajorityEnforceBlockUpgrade = 750;
+        consensus.nMajorityRejectBlockOutdated = 950;
+        consensus.nMajorityWindow = 1000;
+        consensus.nPowTargetTimespan = 10 * 240; // 40 minutes
+        consensus.nPowTargetSpacing = 30; // 30 seconds
+        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.powLimit = ~uint256(0) >> 1;
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
-        nSubsidyHalvingInterval = 150;
-        nEnforceBlockUpgradeMajority = 750;
-        nRejectBlockOutdatedMajority = 950;
-        nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 1;
-        nTargetTimespan = 10 * 240; // 40 minutes
-        nTargetSpacing = 30; // 30 seconds
-        bnProofOfWorkLimit = ~uint256(0) >> 1;
         nMaxTipAge = 24 * 60 * 60;
         genesis.nTime = 978307200;
         genesis.nBits = 0x1e0fffff;
         genesis.nNonce = 907185573;
-        hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
         //assert(hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
         nPruneAfterHeight = 1000;
@@ -303,7 +302,6 @@ public:
 
         fRequireRPCPassword = false;
         fMiningRequiresPeers = false;
-        fAllowMinDifficultyBlocks = true;
         fDefaultConsistencyChecks = true;
         fRequireStandard = false;
         fMineBlocksOnDemand = true;
@@ -331,7 +329,7 @@ public:
         fRequireRPCPassword = false;
         fMiningRequiresPeers = false;
         fDefaultConsistencyChecks = true;
-        fAllowMinDifficultyBlocks = false;
+        consensus.fPowAllowMinDifficultyBlocks = false;
         fMineBlocksOnDemand = true;
     }
 
@@ -342,12 +340,12 @@ public:
     }
 
     //! Published setters to allow changing values in unit test cases
-    virtual void setSubsidyHalvingInterval(int anSubsidyHalvingInterval)  { nSubsidyHalvingInterval=anSubsidyHalvingInterval; }
-    virtual void setEnforceBlockUpgradeMajority(int anEnforceBlockUpgradeMajority)  { nEnforceBlockUpgradeMajority=anEnforceBlockUpgradeMajority; }
-    virtual void setRejectBlockOutdatedMajority(int anRejectBlockOutdatedMajority)  { nRejectBlockOutdatedMajority=anRejectBlockOutdatedMajority; }
-    virtual void setToCheckBlockUpgradeMajority(int anToCheckBlockUpgradeMajority)  { nToCheckBlockUpgradeMajority=anToCheckBlockUpgradeMajority; }
+    virtual void setSubsidyHalvingInterval(int anSubsidyHalvingInterval)  { consensus.nSubsidyHalvingInterval=anSubsidyHalvingInterval; }
+    virtual void setEnforceBlockUpgradeMajority(int anEnforceBlockUpgradeMajority)  { consensus.nMajorityEnforceBlockUpgrade=anEnforceBlockUpgradeMajority; }
+    virtual void setRejectBlockOutdatedMajority(int anRejectBlockOutdatedMajority)  { consensus.nMajorityRejectBlockOutdated=anRejectBlockOutdatedMajority; }
+    virtual void setToCheckBlockUpgradeMajority(int anToCheckBlockUpgradeMajority)  { consensus.nMajorityWindow=anToCheckBlockUpgradeMajority; }
     virtual void setDefaultConsistencyChecks(bool afDefaultConsistencyChecks)  { fDefaultConsistencyChecks=afDefaultConsistencyChecks; }
-    virtual void setAllowMinDifficultyBlocks(bool afAllowMinDifficultyBlocks) {  fAllowMinDifficultyBlocks=afAllowMinDifficultyBlocks; }
+    virtual void setAllowMinDifficultyBlocks(bool afAllowMinDifficultyBlocks) {  consensus.fPowAllowMinDifficultyBlocks=afAllowMinDifficultyBlocks; }
     virtual void setSkipProofOfWorkCheck(bool afSkipProofOfWorkCheck) { fSkipProofOfWorkCheck = afSkipProofOfWorkCheck; }
 };
 static CUnitTestParams unitTestParams;

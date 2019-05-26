@@ -19,6 +19,7 @@
 #include "net.h"
 #include "rpcserver.h"
 #include "script/standard.h"
+#include "scheduler.h"
 #include "txdb.h"
 #include "ui_interface.h"
 #include "util.h"
@@ -38,7 +39,9 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/function.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/thread.hpp>
 #include <openssl/crypto.h>
@@ -556,7 +559,7 @@ bool InitSanityCheck(void)
 /** Initialize animecoin.
  *  @pre Parameters should be parsed and config file should be read.
  */
-bool AppInit2(boost::thread_group& threadGroup)
+bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 {
     // ********************************************************* Step 1: setup
 #ifdef _MSC_VER
@@ -872,6 +875,10 @@ bool AppInit2(boost::thread_group& threadGroup)
         for (int i=0; i<nScriptCheckThreads-1; i++)
             threadGroup.create_thread(&ThreadScriptCheck);
     }
+
+    // Start the lightweight task scheduler thread
+    CScheduler::Function serviceLoop = boost::bind(&CScheduler::serviceQueue, &scheduler);
+    threadGroup.create_thread(boost::bind(&TraceThread<CScheduler::Function>, "scheduler", serviceLoop));
 
     /* Start the RPC server already.  It will be started in "warmup" mode
      * and not really process calls already (but it will signify connections
@@ -1380,7 +1387,13 @@ bool AppInit2(boost::thread_group& threadGroup)
     LogPrintf("mapAddressBook.size() = %u\n",  pwalletMain ? pwalletMain->mapAddressBook.size() : 0);
 #endif
 
-    StartNode(threadGroup);
+    StartNode(threadGroup, scheduler);
+
+    // Monitor the chain, and alert if we get blocks much quicker or slower than expected
+    int64_t nPowTargetSpacing = Params().GetConsensus().nPowTargetSpacing;
+    CScheduler::Function f = boost::bind(&PartitionCheck, &IsInitialBlockDownload,
+                                         boost::ref(cs_main), boost::cref(pindexBestHeader), nPowTargetSpacing);
+    scheduler.scheduleEvery(f, nPowTargetSpacing);
 
 #ifdef ENABLE_WALLET
     // Generate coins in the background
