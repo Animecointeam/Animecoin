@@ -142,6 +142,7 @@ public:
         nRejectBlockOutdatedMajority = 9000;
         nToCheckBlockUpgradeMajority = 10000;
         nMinerThreads = 0;
+        nPruneAfterHeight = 100000;
         nTargetTimespan = 10 * 240; // 40 minutes
         nTargetSpacing = 30; // 30 seconds
         nMaxTipAge = 24 * 60 * 60;
@@ -227,6 +228,7 @@ public:
         pchMessageStart[3] = 0x41;
         vAlertPubKey = ParseHex("04229162767c4193324ab7f78b87c8b2d539d30ecefcb2749e3afdcb54cea8c32f0b59f2b67bf97045ed0c03b1f28e01787b4ee918c5f0b50819a058cd4c6ce40e"); // Updated.
         nDefaultPort = 11212; // Contradictory.
+        nPruneAfterHeight = 1000;
         nEnforceBlockUpgradeMajority = 51;
         nRejectBlockOutdatedMajority = 75;
         nToCheckBlockUpgradeMajority = 100;
@@ -294,6 +296,7 @@ public:
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
         //assert(hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
+        nPruneAfterHeight = 1000;
 
         vFixedSeeds.clear(); //! Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();  //! Regtest mode doesn't have any DNS seeds.

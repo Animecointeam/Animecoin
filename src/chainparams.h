@@ -66,6 +66,7 @@ public:
     bool SkipProofOfWorkCheck() const { return fSkipProofOfWorkCheck; }
     /** Make standard checks */
     bool RequireStandard() const { return fRequireStandard; }
+    int64_t PruneAfterHeight() const { return nPruneAfterHeight; }
     int64_t TargetTimespan() const { return nTargetTimespan; }
     int64_t TargetSpacing() const { return nTargetSpacing; }
     int64_t Interval() const { return nTargetTimespan / nTargetSpacing; }
@@ -96,6 +97,7 @@ protected:
     int64_t nTargetTimespan;
     int64_t nTargetSpacing;
     int nMinerThreads;
+    uint64_t nPruneAfterHeight;
     long nMaxTipAge;
     std::vector<CDNSSeedData> vSeeds;
     std::vector<unsigned char> base58Prefixes[MAX_BASE58_TYPES];
