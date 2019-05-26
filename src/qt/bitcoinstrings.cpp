@@ -42,8 +42,15 @@ QT_TRANSLATE_NOOP("anime-core", ""
 "Delete all wallet transactions and only recover those parts of the "
 "blockchain through -rescan on startup"),
 QT_TRANSLATE_NOOP("anime-core", ""
+"Discover own IP addresses (default: 1 when listening and no -externalip or -"
+"proxy)"),
+QT_TRANSLATE_NOOP("anime-core", ""
 "Distributed under the MIT software license, see the accompanying file "
 "COPYING or <http://www.opensource.org/licenses/mit-license.php>."),
+QT_TRANSLATE_NOOP("anime-core", ""
+"Enter regression test mode, which uses a special chain in which blocks can "
+"be solved instantly. This is intended for regression testing tools and app "
+"development."),
 QT_TRANSLATE_NOOP("anime-core", ""
 "Enter regression test mode, which uses a special chain in which blocks can "
 "be solved instantly."),
@@ -97,8 +104,15 @@ QT_TRANSLATE_NOOP("anime-core", ""
 QT_TRANSLATE_NOOP("anime-core", ""
 "Output debugging information (default: %u, supplying <category> is optional)"),
 QT_TRANSLATE_NOOP("anime-core", ""
+"Output only the hex-encoded transaction id of the resultant transaction."),
+QT_TRANSLATE_NOOP("anime-core", ""
+"Prune configured below the minimum of %d MB.  Please use a higher number."),
+QT_TRANSLATE_NOOP("anime-core", ""
 "Query for peer addresses via DNS lookup, if low on addresses (default: 1 "
 "unless -connect)"),
+QT_TRANSLATE_NOOP("anime-core", ""
+"Reduce storage requirements by pruning (deleting) old blocks. This mode "
+"disables wallet support and is incompatible with -txindex."),
 QT_TRANSLATE_NOOP("anime-core", ""
 "Require high priority for relaying free or low-fee transactions (default:%u)"),
 QT_TRANSLATE_NOOP("anime-core", ""
@@ -121,17 +135,17 @@ QT_TRANSLATE_NOOP("anime-core", ""
 "rpcpassword in the configuration file:\n"
 "%s\n"
 "It is recommended you use the following random password:\n"
-"rpcuser=animerpc\n"
+"rpcuser=animecoinrpc\n"
 "rpcpassword=%s\n"
 "(you do not need to remember this password)\n"
 "The username and password MUST NOT be the same.\n"
 "If the file does not exist, create it with owner-readable-only file "
 "permissions.\n"
 "It is also recommended to set alertnotify so you are notified of problems;\n"
-"for example: alertnotify=echo %%s | mail -s \"Animecoin Alert\" admin@foo.com\n"),
+"for example: alertnotify=echo %%s | mail -s \"Animecoin Alert\" admin@foo."
+"com\n"),
 QT_TRANSLATE_NOOP("anime-core", ""
-"Unable to bind to %s on this computer. Animecoin is probably already "
-"running."),
+"Unable to bind to %s on this computer. Animecoin is probably already running."),
 QT_TRANSLATE_NOOP("anime-core", ""
 "Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: "
 "%s)"),
@@ -143,7 +157,10 @@ QT_TRANSLATE_NOOP("anime-core", ""
 "pay if you send a transaction."),
 QT_TRANSLATE_NOOP("anime-core", ""
 "Warning: Please check that your computer's date and time are correct! If "
-"your clock is wrong Animecoin will not work properly."),
+"your clock is wrong Quark Core will not work properly."),
+QT_TRANSLATE_NOOP("anime-core", ""
+"Warning: Reverting this setting requires re-downloading the entire "
+"blockchain."),
 QT_TRANSLATE_NOOP("anime-core", ""
 "Warning: The network does not appear to fully agree! Some miners appear to "
 "be experiencing issues."),
@@ -163,33 +180,56 @@ QT_TRANSLATE_NOOP("anime-core", ""
 QT_TRANSLATE_NOOP("anime-core", ""
 "Whitelisted peers cannot be DoS banned and their transactions are always "
 "relayed, even if they are already in the mempool, useful e.g. for a gateway"),
+QT_TRANSLATE_NOOP("anime-core", ""
+"You must set rpcpassword=<password> in the configuration file:\n"
+"%s\n"
+"If the file does not exist, create it with owner-readable-only file "
+"permissions."),
+QT_TRANSLATE_NOOP("anime-core", ""
+"You need to rebuild the database using -reindex to go back to unpruned "
+"mode.  This will redownload the entire blockchain"),
 QT_TRANSLATE_NOOP("anime-core", "(default: %s)"),
+QT_TRANSLATE_NOOP("anime-core", "(default: 0 = disable pruning blocks,"),
 QT_TRANSLATE_NOOP("anime-core", "(default: 1)"),
 QT_TRANSLATE_NOOP("anime-core", "<category> can be:"),
+QT_TRANSLATE_NOOP("anime-core", ">%u = target size in MiB to use for block files)"),
 QT_TRANSLATE_NOOP("anime-core", "Accept command line and JSON-RPC commands"),
 QT_TRANSLATE_NOOP("anime-core", "Accept connections from outside (default: 1 if no -proxy or -connect)"),
 QT_TRANSLATE_NOOP("anime-core", "Accept public REST requests (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Acceptable ciphers (default: %s)"),
 QT_TRANSLATE_NOOP("anime-core", "Add a node to connect to and attempt to keep the connection open"),
+QT_TRANSLATE_NOOP("anime-core", "Add address-based output to TX"),
+QT_TRANSLATE_NOOP("anime-core", "Add input to TX"),
+QT_TRANSLATE_NOOP("anime-core", "Add raw script output to TX"),
+QT_TRANSLATE_NOOP("anime-core", "Add zero or more signatures to transaction"),
 QT_TRANSLATE_NOOP("anime-core", "Allow DNS lookups for -addnode, -seednode and -connect"),
 QT_TRANSLATE_NOOP("anime-core", "Always query for peer addresses via DNS lookup (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Animecoin Daemon"),
+QT_TRANSLATE_NOOP("anime-core", "Animecoin RPC client version"),
+QT_TRANSLATE_NOOP("anime-core", "Animecoin animecoin-tx utility version"),
 QT_TRANSLATE_NOOP("anime-core", "Attempt to recover private keys from a corrupt wallet.dat"),
 QT_TRANSLATE_NOOP("anime-core", "Block creation options:"),
+QT_TRANSLATE_NOOP("anime-core", "Can't run with a wallet in prune mode."),
 QT_TRANSLATE_NOOP("anime-core", "Cannot downgrade wallet"),
 QT_TRANSLATE_NOOP("anime-core", "Cannot resolve -bind address: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Cannot resolve -externalip address: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Cannot resolve -whitebind address: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Cannot write default address"),
+QT_TRANSLATE_NOOP("anime-core", "Commands:"),
 QT_TRANSLATE_NOOP("anime-core", "Connect only to the specified node(s)"),
 QT_TRANSLATE_NOOP("anime-core", "Connect through SOCKS5 proxy"),
+QT_TRANSLATE_NOOP("anime-core", "Connect to JSON-RPC on <port> (default: %u or testnet: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Connect to a node to retrieve peer addresses, and disconnect"),
 QT_TRANSLATE_NOOP("anime-core", "Connection options:"),
 QT_TRANSLATE_NOOP("anime-core", "Copyright (C) 2009-%i The Bitcoin and Anime Developers"),
 QT_TRANSLATE_NOOP("anime-core", "Corrupted block database detected"),
 QT_TRANSLATE_NOOP("anime-core", "Could not parse -rpcbind value %s as network address"),
+QT_TRANSLATE_NOOP("anime-core", "Create hex-encoded animecoin transaction"),
+QT_TRANSLATE_NOOP("anime-core", "Create new, empty TX."),
 QT_TRANSLATE_NOOP("anime-core", "Debugging/Testing options:"),
+QT_TRANSLATE_NOOP("anime-core", "Delete input N from TX"),
+QT_TRANSLATE_NOOP("anime-core", "Delete output N from TX"),
 QT_TRANSLATE_NOOP("anime-core", "Disable safemode, override a real safe mode event (default: %u)"),
-QT_TRANSLATE_NOOP("anime-core", "Discover own IP address (default: 1 when listening and no -externalip)"),
 QT_TRANSLATE_NOOP("anime-core", "Do not load the wallet and disable wallet RPC calls"),
 QT_TRANSLATE_NOOP("anime-core", "Do you want to rebuild the block database now?"),
 QT_TRANSLATE_NOOP("anime-core", "Done loading"),
@@ -209,6 +249,7 @@ QT_TRANSLATE_NOOP("anime-core", "Failed to listen on any port. Use -listen=0 if 
 QT_TRANSLATE_NOOP("anime-core", "Fee (in ANI/kB) to add to transactions you send (default: %s)"),
 QT_TRANSLATE_NOOP("anime-core", "Force safe mode (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Generate coins (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Get help for a command"),
 QT_TRANSLATE_NOOP("anime-core", "How many blocks to check at startup (default: %u, 0 = all)"),
 QT_TRANSLATE_NOOP("anime-core", "If <category> is not supplied, output all debugging information."),
 QT_TRANSLATE_NOOP("anime-core", "Importing..."),
@@ -228,8 +269,10 @@ QT_TRANSLATE_NOOP("anime-core", "Invalid amount for -paytxfee=<amount>: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Invalid netmask specified in -whitelist: '%s'"),
 QT_TRANSLATE_NOOP("anime-core", "Keep at most <n> unconnectable transactions in memory (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Limit size of signature cache to <n> entries (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "List commands"),
 QT_TRANSLATE_NOOP("anime-core", "Listen for JSON-RPC connections on <port> (default: %u or testnet: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Listen for connections on <port> (default: %u or testnet: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Load JSON file FILENAME into register NAME"),
 QT_TRANSLATE_NOOP("anime-core", "Loading addresses..."),
 QT_TRANSLATE_NOOP("anime-core", "Loading block index..."),
 QT_TRANSLATE_NOOP("anime-core", "Loading wallet..."),
@@ -244,6 +287,8 @@ QT_TRANSLATE_NOOP("anime-core", "Only connect to nodes in network <net> (ipv4, i
 QT_TRANSLATE_NOOP("anime-core", "Options:"),
 QT_TRANSLATE_NOOP("anime-core", "Password for JSON-RPC connections"),
 QT_TRANSLATE_NOOP("anime-core", "Prepend debug output with timestamp (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Prune cannot be configured with a negative value."),
+QT_TRANSLATE_NOOP("anime-core", "Prune mode is incompatible with -txindex."),
 QT_TRANSLATE_NOOP("anime-core", "RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)"),
 QT_TRANSLATE_NOOP("anime-core", "RPC server options:"),
 QT_TRANSLATE_NOOP("anime-core", "RPC support for HTTP persistent connections (default: %d)"),
@@ -251,20 +296,29 @@ QT_TRANSLATE_NOOP("anime-core", "Randomly drop 1 of every <n> network messages")
 QT_TRANSLATE_NOOP("anime-core", "Randomly fuzz 1 of every <n> network messages"),
 QT_TRANSLATE_NOOP("anime-core", "Rebuild block chain index from current blk000??.dat files"),
 QT_TRANSLATE_NOOP("anime-core", "Receive and display P2P network alerts (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Register Commands:"),
 QT_TRANSLATE_NOOP("anime-core", "Relay and mine data carrier transactions (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Relay non-P2SH multisig (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Rescan the block chain for missing wallet transactions"),
 QT_TRANSLATE_NOOP("anime-core", "Rescanning..."),
 QT_TRANSLATE_NOOP("anime-core", "Run a thread to flush wallet periodically (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Run in the background as a daemon and accept commands"),
+QT_TRANSLATE_NOOP("anime-core", "SSL options: (see the Bitcoin Wiki for SSL setup instructions)"),
+QT_TRANSLATE_NOOP("anime-core", "See signrawtransaction docs for format of sighash flags, JSON objects."),
+QT_TRANSLATE_NOOP("anime-core", "Select JSON output"),
+QT_TRANSLATE_NOOP("anime-core", "Send command to Animecoin"),
+QT_TRANSLATE_NOOP("anime-core", "Send commands to node running on <ip> (default: %s)"),
 QT_TRANSLATE_NOOP("anime-core", "Send trace/debug info to console instead of debug.log file"),
 QT_TRANSLATE_NOOP("anime-core", "Send transactions as zero-fee transactions if possible (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Server certificate file (default: %s)"),
 QT_TRANSLATE_NOOP("anime-core", "Server private key (default: %s)"),
+QT_TRANSLATE_NOOP("anime-core", "Set TX lock time to N"),
+QT_TRANSLATE_NOOP("anime-core", "Set TX version to N"),
 QT_TRANSLATE_NOOP("anime-core", "Set database cache size in megabytes (%d to %d, default: %d)"),
 QT_TRANSLATE_NOOP("anime-core", "Set key pool size to <n> (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Set maximum block size in bytes (default: %d)"),
 QT_TRANSLATE_NOOP("anime-core", "Set minimum block size in bytes (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Set register NAME to given JSON-STRING"),
 QT_TRANSLATE_NOOP("anime-core", "Set the number of threads to service RPC calls (default: %d)"),
 QT_TRANSLATE_NOOP("anime-core", "Sets the DB_PRIVATE flag in the wallet db environment (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Show all debugging options (usage: --help -help-debug)"),
@@ -277,7 +331,9 @@ QT_TRANSLATE_NOOP("anime-core", "Specify pid file (default: %s)"),
 QT_TRANSLATE_NOOP("anime-core", "Specify wallet file (within data directory)"),
 QT_TRANSLATE_NOOP("anime-core", "Specify your own public address"),
 QT_TRANSLATE_NOOP("anime-core", "Spend unconfirmed change when sending transactions (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "Start Animecoin Daemon"),
 QT_TRANSLATE_NOOP("anime-core", "Stop running after importing blocks from disk (default: %u)"),
+QT_TRANSLATE_NOOP("anime-core", "This command requires JSON registers:"),
 QT_TRANSLATE_NOOP("anime-core", "This help message"),
 QT_TRANSLATE_NOOP("anime-core", "This is experimental software."),
 QT_TRANSLATE_NOOP("anime-core", "This is intended for regression testing tools and app development."),
@@ -288,7 +344,9 @@ QT_TRANSLATE_NOOP("anime-core", "Transaction too large for fee policy"),
 QT_TRANSLATE_NOOP("anime-core", "Transaction too large"),
 QT_TRANSLATE_NOOP("anime-core", "Unable to bind to %s on this computer (bind returned error %s)"),
 QT_TRANSLATE_NOOP("anime-core", "Unknown network specified in -onlynet: '%s'"),
+QT_TRANSLATE_NOOP("anime-core", "Update hex-encoded animecoin transaction"),
 QT_TRANSLATE_NOOP("anime-core", "Upgrade wallet to latest format"),
+QT_TRANSLATE_NOOP("anime-core", "Usage:"),
 QT_TRANSLATE_NOOP("anime-core", "Use OpenSSL (https) for JSON-RPC connections"),
 QT_TRANSLATE_NOOP("anime-core", "Use UPnP to map the listening port (default: %u)"),
 QT_TRANSLATE_NOOP("anime-core", "Use UPnP to map the listening port (default: 1 when listening)"),
@@ -296,6 +354,7 @@ QT_TRANSLATE_NOOP("anime-core", "Use the test network"),
 QT_TRANSLATE_NOOP("anime-core", "Username for JSON-RPC connections"),
 QT_TRANSLATE_NOOP("anime-core", "Verifying blocks..."),
 QT_TRANSLATE_NOOP("anime-core", "Verifying wallet..."),
+QT_TRANSLATE_NOOP("anime-core", "Wait for RPC server to start"),
 QT_TRANSLATE_NOOP("anime-core", "Wallet %s resides outside data directory %s"),
 QT_TRANSLATE_NOOP("anime-core", "Wallet needed to be rewritten: restart Animecoin to complete"),
 QT_TRANSLATE_NOOP("anime-core", "Wallet options:"),
@@ -306,5 +365,8 @@ QT_TRANSLATE_NOOP("anime-core", "Warning: Unsupported argument -debugnet ignored
 QT_TRANSLATE_NOOP("anime-core", "You need to rebuild the database using -reindex to change -txindex"),
 QT_TRANSLATE_NOOP("anime-core", "Zapping all transactions from wallet..."),
 QT_TRANSLATE_NOOP("anime-core", "on startup"),
+QT_TRANSLATE_NOOP("anime-core", "prevtxs=JSON object"),
+QT_TRANSLATE_NOOP("anime-core", "privatekeys=JSON object"),
+QT_TRANSLATE_NOOP("anime-core", "version"),
 QT_TRANSLATE_NOOP("anime-core", "wallet.dat corrupt, salvage failed"),
 };
