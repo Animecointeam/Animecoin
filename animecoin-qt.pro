@@ -381,7 +381,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/askmultisigdialog.h \
     src/qt/newpubkeydialog.h \
     src/scheduler.h \
-    src/consensus/params.h
+    src/consensus/params.h \
+    src/arith_uint256.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
