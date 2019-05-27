@@ -6,10 +6,12 @@
 #include "txmempool.h"
 #include "util.h"
 
+#include "test/test_bitcoin.h"
+
 #include <boost/test/unit_test.hpp>
 #include <list>
 
-BOOST_AUTO_TEST_SUITE(mempool_tests)
+BOOST_FIXTURE_TEST_SUITE(mempool_tests, TestingSetup)
 
 BOOST_AUTO_TEST_CASE(MempoolRemoveTest)
 {

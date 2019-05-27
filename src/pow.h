@@ -6,20 +6,19 @@
 #ifndef BITCOIN_POW_H
 #define BITCOIN_POW_H
 
+#include "consensus/params.h"
+
 #include <stdint.h>
 
 class CBlockHeader;
 class CBlockIndex;
 class uint256;
 
-static const int64_t nTargetTimespan = 10 * 240; // 40 minutes
-static const int64_t nTargetSpacing = 30; // 30 seconds
-static const int64_t nInterval = nTargetTimespan / nTargetSpacing; // 80 blocks
-
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock);
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params&);
+unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params&);
 
 /** Check whether a block hash satisfies the proof-of-work requirement specified by nBits */
-bool CheckProofOfWork(uint256 hash, unsigned int nBits);
+bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&);
 uint256 GetBlockProof(const CBlockIndex& block);
 
 #endif // BITCOIN_POW_H

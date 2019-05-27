@@ -11,8 +11,9 @@
 #include "uint256.h"
 #include <string>
 #include "version.h"
+#include "test/test_bitcoin.h"
 
-BOOST_AUTO_TEST_SUITE(uint256_tests)
+BOOST_FIXTURE_TEST_SUITE(uint256_tests, BasicTestingSetup)
  
 const unsigned char R1Array[] = 
     "\x9c\x52\x4a\xdb\xcf\x56\x11\x12\x2b\x29\x12\x5e\x5d\x35\xd2\xd2"

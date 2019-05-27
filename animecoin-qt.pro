@@ -382,7 +382,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/wallet/db.h \
     src/wallet/wallet.h \
     src/wallet/wallet_ismine.h \
-    src/wallet/walletdb.h
+    src/wallet/walletdb.h \
+    src/consensus/consensus.h \
+    src/consensus/validation.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \

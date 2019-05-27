@@ -18,6 +18,8 @@
 #include "util.h"
 #include "utilstrencodings.h"
 
+#include "test/test_bitcoin.h"
+
 #include <fstream>
 
 #include <boost/filesystem/operations.hpp>
@@ -81,7 +83,7 @@
 }
 #endif
 
-struct ReadAlerts
+struct ReadAlerts : public TestingSetup
 {
     ReadAlerts()
     {

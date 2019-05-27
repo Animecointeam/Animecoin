@@ -5,11 +5,13 @@
 
 #include "amount.h"
 #include "chainparams.h"
+#include "consensus/consensus.h"
+#include "consensus/validation.h"
 #include "core_io.h"
 #include "init.h"
-#include "net.h"
 #include "main.h"
 #include "miner.h"
+#include "net.h"
 #include "pow.h"
 #include "rpcserver.h"
 #include "util.h"
@@ -178,7 +180,7 @@ Value setgenerate(const Array& params, bool fHelp)
                 LOCK(cs_main);
                 IncrementExtraNonce(pblock, chainActive.Tip(), nExtraNonce);
             }
-            while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits)) {
+            while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
                 // Yes, there is a chance every nonce could fail to satisfy the -regtest
                 // target -- 1 in 2^(2^32). That ain't gonna happen.
                 ++pblock->nNonce;

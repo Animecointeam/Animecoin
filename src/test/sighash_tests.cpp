@@ -2,12 +2,14 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "consensus/validation.h"
 #include "data/sighash.json.h"
 #include "main.h"
 #include "random.h"
-#include "serialize.h"
-#include "script/script.h"
 #include "script/interpreter.h"
+#include "script/script.h"
+#include "serialize.h"
+#include "test/test_bitcoin.h"
 #include "util.h"
 #include "version.h"
 
@@ -114,7 +116,7 @@ void static RandomTransaction(CMutableTransaction &tx, bool fSingle) {
     }
 }
 
-BOOST_AUTO_TEST_SUITE(sighash_tests)
+BOOST_FIXTURE_TEST_SUITE(sighash_tests, BasicTestingSetup)
 
 BOOST_AUTO_TEST_CASE(sighash_test)
 {

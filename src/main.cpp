@@ -10,6 +10,7 @@
 #include "chainparams.h"
 #include "checkpoints.h"
 #include "checkqueue.h"
+#include "consensus/validation.h"
 #include "init.h"
 #include "merkleblock.h"
 #include "net.h"
@@ -1217,7 +1218,7 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos)
     }
 
     // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits))
+    if (!CheckProofOfWork(block.GetHash(), block.nBits, Params().GetConsensus()))
         return error("ReadBlockFromDisk : Errors in block header");
 
     return true;
@@ -1552,7 +1553,81 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
     return true;
 }
 
+namespace {
 
+bool UndoWriteToDisk(const CBlockUndo& blockundo, CDiskBlockPos& pos, const uint256& hashBlock)
+{
+    // Open history file to append
+    CAutoFile fileout(OpenUndoFile(pos), SER_DISK, CLIENT_VERSION);
+    if (fileout.IsNull())
+        return error("%s : OpenUndoFile failed", __func__);
+
+    // Write index header
+    unsigned int nSize = fileout.GetSerializeSize(blockundo);
+    fileout << FLATDATA(Params().MessageStart()) << nSize;
+
+    // Write undo data
+    long fileOutPos = ftell(fileout.Get());
+    if (fileOutPos < 0)
+        return error("%s : ftell failed", __func__);
+    pos.nPos = (unsigned int)fileOutPos;
+    fileout << blockundo;
+
+    // calculate & write checksum
+    CHashWriter hasher(SER_GETHASH, PROTOCOL_VERSION);
+    hasher << hashBlock;
+    hasher << blockundo;
+    fileout << hasher.GetHash();
+
+    return true;
+}
+
+bool UndoReadFromDisk(CBlockUndo& blockundo, const CDiskBlockPos& pos, const uint256& hashBlock)
+{
+    // Open history file to read
+    CAutoFile filein(OpenUndoFile(pos, true), SER_DISK, CLIENT_VERSION);
+    if (filein.IsNull())
+        return error("%s : OpenBlockFile failed", __func__);
+
+    // Read block
+    uint256 hashChecksum;
+    try {
+        filein >> blockundo;
+        filein >> hashChecksum;
+    }
+    catch (const std::exception& e) {
+        return error("%s : Deserialize or I/O error - %s", __func__, e.what());
+    }
+
+    // Verify checksum
+    CHashWriter hasher(SER_GETHASH, PROTOCOL_VERSION);
+    hasher << hashBlock;
+    hasher << blockundo;
+    if (hashChecksum != hasher.GetHash())
+        return error("%s : Checksum mismatch", __func__);
+
+    return true;
+}
+
+/** Abort with a message */
+bool AbortNode(const std::string& strMessage, const std::string& userMessage="")
+{
+    strMiscWarning = strMessage;
+    LogPrintf("*** %s\n", strMessage);
+    uiInterface.ThreadSafeMessageBox(
+        userMessage.empty() ? _("Error: A fatal internal error occured, see debug.log for details") : userMessage,
+        "", CClientUIInterface::MSG_ERROR);
+    StartShutdown();
+    return false;
+}
+
+bool AbortNode(CValidationState& state, const std::string& strMessage, const std::string& userMessage="")
+{
+    AbortNode(strMessage, userMessage);
+    return state.Error(strMessage);
+}
+
+} // anon namespace
 
 bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, bool* pfClean)
 {
@@ -1567,7 +1642,7 @@ bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex
     CDiskBlockPos pos = pindex->GetUndoPos();
     if (pos.IsNull())
         return error("DisconnectBlock() : no undo data available");
-    if (!blockUndo.ReadFromDisk(pos, pindex->pprev->GetBlockHash()))
+    if (!UndoReadFromDisk(blockUndo, pos, pindex->pprev->GetBlockHash()))
         return error("DisconnectBlock() : failure reading undo data");
 
     if (blockUndo.vtxundo.size() + 1 != block.vtx.size())
@@ -1882,8 +1957,8 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
             CDiskBlockPos pos;
             if (!FindUndoPos(state, pindex->nFile, pos, ::GetSerializeSize(blockundo, SER_DISK, CLIENT_VERSION) + 40))
                 return error("ConnectBlock() : FindUndoPos failed");
-            if (!blockundo.WriteToDisk(pos, pindex->pprev->GetBlockHash()))
-                return state.Abort("Failed to write undo data");
+            if (!UndoWriteToDisk(blockundo, pos, pindex->pprev->GetBlockHash()))
+                return AbortNode(state, "Failed to write undo data");
 
             // update nUndoPos in block index
             pindex->nUndoPos = pos.nPos;
@@ -1896,7 +1971,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
     if (fTxIndex)
         if (!pblocktree->WriteTxIndex(vPos))
-            return state.Abort("Failed to write transaction index");
+            return AbortNode(state, "Failed to write transaction index");
 
     // add this block to the view's block chain
     view.SetBestBlock(pindex->GetBlockHash());
@@ -1962,24 +2037,24 @@ bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode) {
         bool fileschanged = false;
         for (set<int>::iterator it = setDirtyFileInfo.begin(); it != setDirtyFileInfo.end(); ) {
             if (!pblocktree->WriteBlockFileInfo(*it, vinfoBlockFile[*it])) {
-                return state.Abort("Failed to write to block index");
+                return AbortNode(state, "Files to write to block index database");
             }
             fileschanged = true;
             setDirtyFileInfo.erase(it++);
         }
         if (fileschanged && !pblocktree->WriteLastBlockFile(nLastBlockFile)) {
-            return state.Abort("Failed to write to block index");
+            return AbortNode(state, "Files to write to block index database");
         }
         for (set<CBlockIndex*>::iterator it = setDirtyBlockIndex.begin(); it != setDirtyBlockIndex.end(); ) {
              if (!pblocktree->WriteBlockIndex(CDiskBlockIndex(*it))) {
-                 return state.Abort("Failed to write to block index");
+                 return AbortNode(state, "Files to write to block index database");
              }
              setDirtyBlockIndex.erase(it++);
         }
         pblocktree->Sync();
         // Flush the chainstate (which may refer to block index entries).
         if (!pcoinsTip->Flush())
-            return state.Abort("Failed to write to coin database");
+            return AbortNode(state, "Failed to write to coin database");
 
         // Finally remove any pruned files
         if (fFlushForPrune)
@@ -1992,7 +2067,7 @@ bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode) {
         nLastWrite = GetTimeMicros();
     }
     } catch (const std::runtime_error& e) {
-        return state.Abort(std::string("System error while flushing: ") + e.what());
+        return AbortNode(state, std::string("System error while flushing: ") + e.what());
     }
     return true;
 }
@@ -2055,7 +2130,7 @@ bool static DisconnectTip(CValidationState &state) {
     // Read block from disk.
     CBlock block;
     if (!ReadBlockFromDisk(block, pindexDelete))
-        return state.Abort("Failed to read block");
+        return AbortNode(state, "Failed to read block");
     // Apply the block atomically to the chain state.
     int64_t nStart = GetTimeMicros();
     {
@@ -2106,7 +2181,7 @@ bool static ConnectTip(CValidationState &state, CBlockIndex *pindexNew, CBlock *
     CBlock block;
     if (!pblock) {
         if (!ReadBlockFromDisk(block, pindexNew))
-            return state.Abort("Failed to read block");
+            return AbortNode(state, "Failed to read block");
         pblock = &block;
     }
     // Apply the block atomically to the chain state.
@@ -2590,7 +2665,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, bool fCheckPOW)
 {
     // Check proof of work matches claimed amount
-    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits))
+    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, Params().GetConsensus()))
         return state.DoS(50, error("CheckBlockHeader() : proof of work failed"),
                          REJECT_INVALID, "high-hash");
 
@@ -2674,7 +2749,7 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
 
     // Check proof of work
     if ((!Params().SkipProofOfWorkCheck()) &&
-       (block.nBits != GetNextWorkRequired(pindexPrev, &block)))
+            (block.nBits != GetNextWorkRequired(pindexPrev, &block, Params().GetConsensus())))
         return state.DoS(100, error("%s : incorrect proof of work", __func__),
                          REJECT_INVALID, "bad-diffbits");
 
@@ -2819,11 +2894,11 @@ bool AcceptBlock(CBlock& block, CValidationState& state, CBlockIndex** ppindex, 
             return error("AcceptBlock() : FindBlockPos failed");
         if (dbp == NULL)
             if (!WriteBlockToDisk(block, blockPos))
-                return state.Abort("Failed to write block");
+                return AbortNode(state, "Failed to write block"); // QA: followup.
         if (!ReceivedBlockTransactions(block, state, pindex, blockPos))
             return error("AcceptBlock() : ReceivedBlockTransactions failed");
     } catch(std::runtime_error &e) {
-        return state.Abort(std::string("System error: ") + e.what());
+        return AbortNode(state, std::string("System error: ") + e.what());
     }
 
     if (fCheckForPruning)
@@ -2961,23 +3036,6 @@ bool TestBlockValidity(CValidationState &state, const CBlock& block, CBlockIndex
     assert(state.IsValid());
 
     return true;
-}
-
-
-
-
-
-
-
-
-bool AbortNode(const std::string &strMessage, const std::string &userMessage) {
-    strMiscWarning = strMessage;
-    LogPrintf("*** %s\n", strMessage);
-    uiInterface.ThreadSafeMessageBox(
-        userMessage.empty() ? _("Error: A fatal internal error occurred, see debug.log for details") : userMessage,
-        "", CClientUIInterface::MSG_ERROR);
-    StartShutdown();
-    return false;
 }
 
 /**
@@ -3307,7 +3365,7 @@ bool CVerifyDB::VerifyDB(CCoinsView *coinsview, int nCheckLevel, int nCheckDepth
             CBlockUndo undo;
             CDiskBlockPos pos = pindex->GetUndoPos();
             if (!pos.IsNull()) {
-                if (!undo.ReadFromDisk(pos, pindex->pprev->GetBlockHash()))
+                if (!UndoReadFromDisk(undo, pos, pindex->pprev->GetBlockHash()))
                     return error("VerifyDB() : *** found bad undo data at %d, hash=%s\n", pindex->nHeight, pindex->GetBlockHash().ToString());
             }
         }
@@ -3351,11 +3409,32 @@ bool CVerifyDB::VerifyDB(CCoinsView *coinsview, int nCheckLevel, int nCheckDepth
 
 void UnloadBlockIndex()
 {
-    mapBlockIndex.clear();
+    LOCK(cs_main);
     fHavePruned = false;
     setBlockIndexCandidates.clear();
     chainActive.SetTip(NULL);
     pindexBestInvalid = NULL;
+    pindexBestHeader = NULL;
+    mempool.clear();
+    mapOrphanTransactions.clear();
+    mapOrphanTransactionsByPrev.clear();
+    nSyncStarted = 0;
+    mapBlocksUnlinked.clear();
+    vinfoBlockFile.clear();
+    nLastBlockFile = 0;
+    nBlockSequenceId = 1;
+    mapBlockSource.clear();
+    mapBlocksInFlight.clear();
+    nQueuedValidatedHeaders = 0;
+    nPreferredDownload = 0;
+    setDirtyBlockIndex.clear();
+    setDirtyFileInfo.clear();
+    mapNodeState.clear();
+
+    BOOST_FOREACH(BlockMap::value_type& entry, mapBlockIndex) {
+        delete entry.second;
+    }
+    mapBlockIndex.clear();
 }
 
 bool LoadBlockIndex()
@@ -5073,61 +5152,6 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
             pto->PushMessage("getdata", vGetData);
 
     }
-    return true;
-}
-
-
-bool CBlockUndo::WriteToDisk(CDiskBlockPos &pos, const uint256 &hashBlock)
-{
-    // Open history file to append
-    CAutoFile fileout(OpenUndoFile(pos), SER_DISK, CLIENT_VERSION);
-    if (fileout.IsNull())
-        return error("CBlockUndo::WriteToDisk : OpenUndoFile failed");
-
-    // Write index header
-    unsigned int nSize = fileout.GetSerializeSize(*this);
-    fileout << FLATDATA(Params().MessageStart()) << nSize;
-
-    // Write undo data
-    long fileOutPos = ftell(fileout.Get());
-    if (fileOutPos < 0)
-        return error("CBlockUndo::WriteToDisk : ftell failed");
-    pos.nPos = (unsigned int)fileOutPos;
-    fileout << *this;
-
-    // calculate & write checksum
-    CHashWriter hasher(SER_GETHASH, PROTOCOL_VERSION);
-    hasher << hashBlock;
-    hasher << *this;
-    fileout << hasher.GetHash();
-
-    return true;
-}
-
-bool CBlockUndo::ReadFromDisk(const CDiskBlockPos &pos, const uint256 &hashBlock)
-{
-    // Open history file to read
-    CAutoFile filein(OpenUndoFile(pos, true), SER_DISK, CLIENT_VERSION);
-    if (filein.IsNull())
-        return error("CBlockUndo::ReadFromDisk : OpenBlockFile failed");
-
-    // Read block
-    uint256 hashChecksum;
-    try {
-        filein >> *this;
-        filein >> hashChecksum;
-    }
-    catch (std::exception &e) {
-        return error("%s : Deserialize or I/O error - %s", __func__, e.what());
-    }
-
-    // Verify checksum
-    CHashWriter hasher(SER_GETHASH, PROTOCOL_VERSION);
-    hasher << hashBlock;
-    hasher << *this;
-    if (hashChecksum != hasher.GetHash())
-        return error("CBlockUndo::ReadFromDisk : Checksum mismatch");
-
     return true;
 }
 
