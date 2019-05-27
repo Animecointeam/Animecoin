@@ -95,7 +95,7 @@ struct ReadAlerts
                 alerts.push_back(alert);
             }
         }
-        catch (std::exception) { }
+        catch (std::exception&) { }
     }
     ~ReadAlerts() { }
 

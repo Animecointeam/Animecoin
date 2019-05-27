@@ -1,5 +1,8 @@
 DIST_SUBDIRS = secp256k1
-AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS)
+
+AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
+AM_CXXFLAGS = $(HARDENED_CXXFLAGS)
+AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 
 if EMBEDDED_LEVELDB
 LEVELDB_CPPFLAGS += -I$(srcdir)/leveldb/include
@@ -13,7 +16,7 @@ $(LIBLEVELDB): $(LIBMEMENV)
 $(LIBLEVELDB) $(LIBMEMENV):
 	@echo "Building LevelDB ..." && $(MAKE) -C $(@D) $(@F) CXX="$(CXX)" \
 	  CC="$(CC)" PLATFORM=$(TARGET_OS) AR="$(AR)" $(LEVELDB_TARGET_FLAGS) \
-          OPT="$(CXXFLAGS) $(CPPFLAGS)"
+          OPT="$(AM_CXXFLAGS) $(PIE_FLAGS) $(CXXFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS)"
 endif
 
 BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
@@ -168,7 +171,8 @@ obj/build.h: FORCE
 libanimecoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
 # server: shared between animecoind and animecoin-qt
-libanimecoin_server_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS)
+libanimecoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS)
+libanimecoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_server_a_SOURCES = \
   addrman.cpp \
   alert.cpp \
@@ -198,7 +202,8 @@ libanimecoin_server_a_SOURCES = \
 
 # wallet: shared between animecoind and animecoin-qt, but only linked
 # when wallet enabled
-libanimecoin_wallet_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libanimecoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libanimecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_wallet_a_SOURCES = \
   db.cpp \
   crypter.cpp \
@@ -211,7 +216,8 @@ libanimecoin_wallet_a_SOURCES = \
 
 # crypto primitives library
 crypto_libanimecoin_crypto_a_CFLAGS = -fPIC
-crypto_libanimecoin_crypto_a_CPPFLAGS = $(BITCOIN_CONFIG_INCLUDES)
+crypto_libanimecoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES)
+crypto_libanimecoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 crypto_libanimecoin_crypto_a_SOURCES = \
   crypto/sha1.cpp \
   crypto/sha256.cpp \
@@ -251,7 +257,8 @@ univalue_libanimecoin_univalue_a_SOURCES = \
   univalue/univalue.h
 
 # common: shared between animecoind, and animecoin-qt and non-server tools
-libanimecoin_common_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_common_a_SOURCES = \
   allocators.cpp \
   amount.cpp \
@@ -283,7 +290,8 @@ libanimecoin_common_a_SOURCES = \
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libanimecoin_util_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libanimecoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libanimecoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_util_a_SOURCES = \
   compat/strnlen.cpp \
   compat/glibc_sanity.cpp \
@@ -306,7 +314,8 @@ libanimecoin_util_a_SOURCES += compat/glibcxx_compat.cpp
 endif
 
 # cli: shared between animecoin-cli and animecoin-qt
-libanimecoin_cli_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libanimecoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libanimecoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_cli_a_SOURCES = \
   rpcclient.cpp \
   $(BITCOIN_CORE_H)
@@ -336,7 +345,8 @@ animecoind_SOURCES += bitcoind-res.rc
 endif
 
 animecoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
-animecoind_CPPFLAGS = $(BITCOIN_INCLUDES)
+animecoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+animecoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 animecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 # animecoin-cli binary #
@@ -350,7 +360,8 @@ animecoin_cli_LDADD = \
 animecoin_cli_SOURCES = \
   bitcoin-cli.cpp
 
-animecoin_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
+animecoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+animecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 #
 
 # animecoin-tx binary #
@@ -364,7 +375,8 @@ animecoin_tx_LDADD = \
   $(CRYPTO_LIBS)
 
 animecoin_tx_SOURCES = bitcoin-tx.cpp
-animecoin_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
+animecoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+animecoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 #
 animecoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -397,9 +409,10 @@ if GLIBC_BACK_COMPAT
   libanimecoinconsensus_la_SOURCES += compat/glibcxx_compat.cpp
 endif
 
-libanimecoinconsensus_la_LDFLAGS = -no-undefined $(RELDFLAGS)
+libanimecoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libanimecoinconsensus_la_LIBADD = $(CRYPTO_LIBS)
-libanimecoinconsensus_la_CPPFLAGS = $(CRYPTO_CFLAGS) -I$(builddir)/obj -DBUILD_BITCOIN_INTERNAL
+libanimecoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) $(CRYPTO_CFLAGS) -I$(builddir)/obj -DBUILD_BITCOIN_INTERNAL
+libanimecoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 if USE_LIBSECP256K1
 libanimecoinconsensus_la_LIBADD += secp256k1/libsecp256k1.la
 endif
@@ -423,7 +436,7 @@ clean-local:
 
 .mm.o:
 	$(AM_V_CXX) $(OBJCXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	  $(CPPFLAGS) $(AM_CXXFLAGS) $(QT_INCLUDES) $(CXXFLAGS)  -c -o $@ $<
+	  $(CPPFLAGS) $(AM_CXXFLAGS) $(QT_INCLUDES) $(AM_CXXFLAGS) $(PIE_FLAGS) $(CXXFLAGS) -c -o $@ $<
 
 %.pb.cc %.pb.h: %.proto
 	@test -f $(PROTOC)
