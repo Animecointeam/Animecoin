@@ -99,7 +99,7 @@ BITCOIN_CORE_H = \
   crypto/sph_bmw.h \
   crypto/sph_jh.h \
   crypto/sph_skein.h \
-  db.h \
+  wallet/db.h \
   eccryptoverify.h \
   ecwrapper.h \
   hash.h \
@@ -148,9 +148,9 @@ BITCOIN_CORE_H = \
   utilmoneystr.h \
   utiltime.h \
   version.h \
-  wallet.h \
-  wallet_ismine.h \
-  walletdb.h \
+  wallet/walletdb.h \
+  wallet/wallet.h \
+  wallet/wallet_ismine.h \
   compat/sanity.h
 
 JSON_H = \
@@ -205,13 +205,13 @@ libanimecoin_server_a_SOURCES = \
 libanimecoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_wallet_a_SOURCES = \
-  db.cpp \
+  wallet/db.cpp \
   crypter.cpp \
-  rpcdump.cpp \
-  rpcwallet.cpp \
-  wallet.cpp \
-  wallet_ismine.cpp \
-  walletdb.cpp \
+  wallet/rpcdump.cpp \
+  wallet/rpcwallet.cpp \
+  wallet/wallet.cpp \
+  wallet/wallet_ismine.cpp \
+  wallet/walletdb.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library

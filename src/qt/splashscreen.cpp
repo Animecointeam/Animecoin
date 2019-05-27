@@ -12,7 +12,7 @@
 #include "version.h"
 
 #ifdef ENABLE_WALLET
-#include "wallet.h"
+#include "wallet/wallet.h"
 #endif
 
 #include <QApplication>
@@ -24,7 +24,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QWidget(0, f), curAlignment(0)
 {
     // set reference point, paddings
-    int titleX                  = 32;
+    int titleX                  = 280;
     int paddingTop              = 40;
     int titleVersionVSpace      = 22;
     int titleCopyrightVSpace    = 40;

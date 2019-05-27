@@ -9,7 +9,7 @@
 
 #include "base58.h"
 #include "utilstrencodings.h"
-#include "wallet.h"
+#include "wallet/wallet.h"
 
 #include <QFont>
 #include <QDebug>

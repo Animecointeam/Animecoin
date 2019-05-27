@@ -253,8 +253,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/main.h \
     src/net.h \
     src/key.h \
-    src/db.h \
-    src/walletdb.h \
     src/init.h \
     src/bloom.h \
     src/mruset.h \
@@ -276,7 +274,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/transactiondesc.h \
     src/qt/transactiondescdialog.h \
     src/qt/bitcoinamountfield.h \
-    src/wallet.h \
     src/keystore.h \
     src/qt/transactionfilterproxy.h \
     src/qt/transactionview.h \
@@ -377,12 +374,15 @@ HEADERS += src/qt/bitcoingui.h \
     src/univalue/univalue_escapes.h \
     src/utilmoneystr.h \
     src/utiltime.h \
-    src/wallet_ismine.h \
     src/qt/askmultisigdialog.h \
     src/qt/newpubkeydialog.h \
     src/scheduler.h \
     src/consensus/params.h \
-    src/arith_uint256.h
+    src/arith_uint256.h \
+    src/wallet/db.h \
+    src/wallet/wallet.h \
+    src/wallet/wallet_ismine.h \
+    src/wallet/walletdb.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -406,8 +406,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/bloom.cpp \
     src/checkpoints.cpp \
     src/addrman.cpp \
-    src/db.cpp \
-    src/walletdb.cpp \
     src/qt/clientmodel.cpp \
 	src/qt/coincontroldialog.cpp \
 	src/qt/coincontroltreewidget.cpp \
@@ -418,17 +416,14 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/transactiondescdialog.cpp \
     src/qt/bitcoinstrings.cpp \
     src/qt/bitcoinamountfield.cpp \
-    src/wallet.cpp \
     src/keystore.cpp \
     src/qt/transactionfilterproxy.cpp \
     src/qt/transactionview.cpp \
     src/qt/walletmodel.cpp \
     src/qt/walletview.cpp \
     src/qt/walletframe.cpp \
-    src/rpcdump.cpp \
     src/rpcnet.cpp \
     src/rpcmining.cpp \
-    src/rpcwallet.cpp \
     src/rpcblockchain.cpp \
     src/rpcrawtransaction.cpp \
     src/qt/overviewpage.cpp \
@@ -514,13 +509,18 @@ SOURCES += src/qt/bitcoin.cpp \
     src/univalue/univalue_write.cpp \
     src/utilmoneystr.cpp \
     src/utiltime.cpp \
-    src/wallet_ismine.cpp \
     src/compat/glibc_sanity.cpp \
     src/compat/glibcxx_sanity.cpp \
     src/compat/strnlen.cpp \
     src/qt/askmultisigdialog.cpp \
     src/qt/newpubkeydialog.cpp \
-    src/scheduler.cpp
+    src/scheduler.cpp \
+    src/wallet/db.cpp \
+    src/wallet/rpcdump.cpp \
+    src/wallet/rpcwallet.cpp \
+    src/wallet/wallet.cpp \
+    src/wallet/wallet_ismine.cpp \
+    src/wallet/walletdb.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
