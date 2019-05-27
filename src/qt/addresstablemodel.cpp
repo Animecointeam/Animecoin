@@ -492,7 +492,7 @@ QString AddressTableModel::getRawPubKeyString()
 {
     try {
         return QString::fromStdString(HexStr(getRawPubKey()));
-    } catch(std::runtime_error) {
+    } catch(std::runtime_error&) {
         return QString();
     }
 }

@@ -21,8 +21,8 @@ PROTO_DIR = src/qt
 include(share/qt/protobuf.pri)
 PROTOS = src/qt/paymentrequest.proto
 
-QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -flto"
-QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -Wno-deprecated-copy -flto"
+QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -flto=8"
+QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -Wno-deprecated-copy -flto=8"
 QMAKE_LFLAGS+="-flto"
 
 # for boost 1.37, add -mt to the boost libraries
@@ -200,7 +200,7 @@ QMAKE_CLEAN += src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 INCLUDEPATH += src/secp256k1/include
 LIBS += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
 	# we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --with-field=gmp --enable-endomorphism && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+    gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --with-field=64bit --with-bignum=none --enable-endomorphism && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
     gensecp256k1.target = $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
 	gensecp256k1.depends = FORCE
     PRE_TARGETDEPS += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
@@ -635,15 +635,15 @@ LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 !windows: {
-	LIBS += -lgmp
+    #LIBS += -lgmp
 } else {
 	INCLUDEPATH += $$SECP256K1_INCLUDE_PATH
     LIBS += -L/usr/local/lib -L/usr/lib
 # -lsecp256k1
 }
-LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
-win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
-macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
+LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX -lboost_chrono$$BOOST_LIB_SUFFIX
+#win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
+#macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
 
 contains(RELEASE, 1) {
     !win32:!macx {
