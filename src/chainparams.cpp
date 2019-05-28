@@ -23,6 +23,45 @@ struct SeedSpec6 {
 
 #include "chainparamsseeds.h"
 
+static CBlock CreateGenesisBlock(const char* pszTimestamp, CScript genesisOutputScript, uint32_t nTime=1231006505, uint32_t nNonce=2083236893, uint32_t nBits=0x1d00ffff, int32_t nVersion=1, const CAmount& genesisReward=50 * COIN)
+{
+    CMutableTransaction txNew;
+    txNew.nVersion = 1;
+    txNew.vin.resize(1);
+    txNew.vout.resize(1);
+    txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+    txNew.vout[0].nValue = genesisReward;
+    txNew.vout[0].scriptPubKey = genesisOutputScript;
+
+    CBlock genesis;
+    genesis.nTime    = nTime;
+    genesis.nBits    = nBits;
+    genesis.nNonce   = nNonce;
+    genesis.nVersion = nVersion;
+    genesis.vtx.push_back(txNew);
+    genesis.hashPrevBlock.SetNull();
+    genesis.hashMerkleRoot = genesis.BuildMerkleTree();
+    return genesis;
+}
+
+/**
+ * Build the genesis block. Note that the output of its generation
+ * transaction cannot be spent since it did not originally exist in the
+ * database.
+ *
+ * CBlock(hash=000000000019d6, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=4a5e1e, nTime=1231006505, nBits=1d00ffff, nNonce=2083236893, vtx=1)
+ *   CTransaction(hash=4a5e1e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+ *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
+ *     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
+ *   vMerkleTree: 4a5e1e
+ */
+static CBlock CreateGenesisBlock(uint32_t nTime=1390262400, uint32_t nNonce=13562315, uint32_t nBits=uint256(~uint256(0) >> 20).GetCompact(), int32_t nVersion=112, const CAmount& genesisReward=1 * COIN)
+{
+    const char* pszTimestamp = "Shueisha Reveals Winners of Shonen Jump Manga Contest";
+    CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
+    return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
+}
+
 /**
  * Main network
  */
@@ -44,14 +83,6 @@ static void convertSeed6(std::vector<CAddress> &vSeedsOut, const SeedSpec6 *data
         vSeedsOut.push_back(addr);
     }
 }
-
-static const unsigned int timeMainGenesisBlock = 1390262400;  // Updated for Animecoin
-uint256 hashMainGenesisBlock("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"); // Updated for Animecoin
-static uint256 nMainProofOfWorkLimit(~uint256(0) >> 20);
-
-static const int64_t nGenesisBlockRewardCoin = 1 * COIN;// Inherited by Animecoin
-static const int64_t nBlockRewardStartCoin = 8192 * COIN; //Updated for Animecoin
-static const int64_t nBlockRewardMinimumCoin = 8 * COIN;//Updated for Animecoin
 
 /**
  * What makes a good checkpoint block?
@@ -128,7 +159,7 @@ public:
         consensus.nMajorityEnforceBlockUpgrade = 7500;
         consensus.nMajorityRejectBlockOutdated = 9000;
         consensus.nMajorityWindow = 10000;
-        consensus.powLimit = nMainProofOfWorkLimit;
+        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 10 * 240; // 40 minutes
         consensus.nPowTargetSpacing = 30; // 30 seconds
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -147,35 +178,10 @@ public:
         nPruneAfterHeight = 100000;
         nMaxTipAge = 24 * 60 * 60;
 
-        /**
-         * Build the genesis block. Note that the output of the genesis coinbase cannot
-         * be spent as it did not originally exist in the database.
-         *
-         * CBlock(hash=000000000019d6, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=4a5e1e, nTime=1231006505, nBits=1d00ffff, nNonce=2083236893, vtx=1)
-         *   CTransaction(hash=4a5e1e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
-         *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
-         *     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
-         *   vMerkleTree: 4a5e1e
-         */
-        const char* pszTimestamp = "Shueisha Reveals Winners of Shonen Jump Manga Contest"; // Updated for Animecoin
-        CMutableTransaction txNew;
-        txNew.vin.resize(1);
-        txNew.vout.resize(1);
-        txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-        txNew.vout[0].nValue = nGenesisBlockRewardCoin;
-        txNew.vout[0].scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG; // Inherited by Animecoin
-        genesis.vtx.push_back(txNew);
-        genesis.hashPrevBlock = 0;
-        genesis.hashMerkleRoot = genesis.BuildMerkleTree();
-        genesis.nVersion = 112; // Inherited by Animecoin
-        genesis.nTime    = timeMainGenesisBlock;
-        genesis.nBits    = nMainProofOfWorkLimit.GetCompact();
-        genesis.nNonce   = 13562315; // Updated for Animecoin
-
-        assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9"));
+        genesis = CreateGenesisBlock();
 
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == hashMainGenesisBlock);
+        assert(consensus.hashGenesisBlock == uint256 ("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"));
         assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9")); // Updated for Animecoin
 
         // Updated for Animecoin
