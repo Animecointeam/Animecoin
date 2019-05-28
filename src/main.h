@@ -131,17 +131,17 @@ extern bool fPruneMode;
 /** Number of MiB of block files that we're trying to stay below. */
 extern uint64_t nPruneTarget;
 /** Block files containing a block-height within MIN_BLOCKS_TO_KEEP of chainActive.Tip() will not be pruned. */
-static const signed int MIN_BLOCKS_TO_KEEP = 288;
+static const signed int MIN_BLOCKS_TO_KEEP = 5760;
 
-// Require that user allocate at least 550MB for block & undo files (blk???.dat and rev???.dat)
-// At 1MB per block, 288 blocks = 288MB.
-// Add 15% for Undo data = 331MB
-// Add 20% for Orphan block rate = 397MB
-// We want the low water mark after pruning to be at least 397 MB and since we prune in
+// Require that user allocate space for block & undo files (blk???.dat and rev???.dat)
+// At 1MB per block, 5760 blocks = 5760MB. Realistically though, this can be divided by 10 at least.
+// Add 15% for Undo data = 666MB
+// Add 20% for Orphan block rate = 800MB
+// We want the low water mark after pruning to be at least 800 MB and since we prune in
 // full block file chunks, we need the high water mark which triggers the prune to be
-// one 128MB block file + added 15% undo data = 147MB greater for a total of 545MB
-// Setting the target to > than 550MB will make it likely we can respect the target.
-static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 550 * 1024 * 1024;
+// one 128MB block file + added 15% undo data = 147MB greater.
+// For the roundness purposes, let's make it 1GB.
+static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 1024 * 1024 * 1024;
 
 /** Register a wallet to receive updates from core */
 void RegisterValidationInterface(CValidationInterface* pwalletIn);
@@ -218,7 +218,7 @@ CAmount GetBlockValue(int nHeight, const CAmount& nFees);
  * Pruning functions are called from FlushStateToDisk when the global fCheckForPruning flag has been set.
  * Block and undo files are deleted in lock-step (when blk00003.dat is deleted, so is rev00003.dat.)
  * Pruning cannot take place until the longest chain is at least a certain length (100000 on mainnet, 1000 on testnet, 10 on regtest).
- * Pruning will never delete a block within a defined distance (currently 288) from the active chain's tip.
+ * Pruning will never delete a block within a defined distance (currently 5760) from the active chain's tip.
  * The block index is updated by unsetting HAVE_DATA and HAVE_UNDO for any blocks that were stored in the deleted files.
  * A db flag records the fact that at least some block files have been pruned.
  *
