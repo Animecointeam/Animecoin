@@ -123,6 +123,7 @@ BITCOIN_CORE_H = \
   primitives/transaction.h \
   pubkey.h \
   random.h \
+  reverselock.h \
   rpcclient.h \
   rpcprotocol.h \
   rpcserver.h \
