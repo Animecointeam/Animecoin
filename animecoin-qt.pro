@@ -385,7 +385,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/wallet/walletdb.h \
     src/consensus/consensus.h \
     src/consensus/validation.h \
-    src/reverselock.h
+    src/reverselock.h \
+    src/policy/fees.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -449,7 +450,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/chainparams.cpp \
     src/miner.cpp \
     src/coins.cpp \
-    src/txmempool.cpp \
     src/qt/intro.cpp \
     src/qt/utilitydialog.cpp \
     src/qt/winshutdownmonitor.cpp \
@@ -523,7 +523,9 @@ SOURCES += src/qt/bitcoin.cpp \
     src/wallet/rpcwallet.cpp \
     src/wallet/wallet.cpp \
     src/wallet/wallet_ismine.cpp \
-    src/wallet/walletdb.cpp
+    src/wallet/walletdb.cpp \
+    src/policy/fees.cpp \
+    src/txmempool.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

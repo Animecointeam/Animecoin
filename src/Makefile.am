@@ -117,6 +117,7 @@ BITCOIN_CORE_H = \
   netbase.h \
   net.h \
   noui.h \
+  policy/fees.h \
   pow.h \
   protocol.h \
   primitives/block.h \
@@ -188,6 +189,7 @@ libanimecoin_server_a_SOURCES = \
   miner.cpp \
   net.cpp \
   noui.cpp \
+  policy/fees.cpp \
   rest.cpp \
   rpcblockchain.cpp \
   rpcmining.cpp \
