@@ -19,7 +19,6 @@ public:
         MAIN,
         TESTNET,
         REGTEST,
-        UNITTEST,
 
         MAX_NETWORK_TYPES
     };
@@ -32,7 +31,6 @@ protected:
 
     int nRPCPort;
     std::string strDataDir;
-    Network networkID;
 };
 
 /**

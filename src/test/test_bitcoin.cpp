@@ -35,6 +35,7 @@ BasicTestingSetup::BasicTestingSetup(CBaseChainParams::Network network)
 {
         SetupEnvironment();
         fPrintToDebugLog = false; // don't want to write to debug.log file
+        SelectParams(CBaseChainParams::MAIN);
         fCheckBlockIndex = true;
         SelectParams(network);
         noui_connect();
