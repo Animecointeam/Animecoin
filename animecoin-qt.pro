@@ -282,7 +282,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/walletframe.h \
     src/qt/overviewpage.h \
     src/qt/csvmodelwriter.h \
-    src/crypter.h \
     src/qt/sendcoinsentry.h \
     src/qt/qvalidatedlineedit.h \
     src/qt/bitcoinunits.h \
@@ -386,7 +385,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/consensus/consensus.h \
     src/consensus/validation.h \
     src/reverselock.h \
-    src/policy/fees.h
+    src/policy/fees.h \
+    src/wallet/crypter.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -432,7 +432,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/rpcrawtransaction.cpp \
     src/qt/overviewpage.cpp \
     src/qt/csvmodelwriter.cpp \
-    src/crypter.cpp \
     src/qt/sendcoinsentry.cpp \
     src/qt/qvalidatedlineedit.cpp \
     src/qt/bitcoinunits.cpp \
@@ -525,7 +524,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/wallet/wallet_ismine.cpp \
     src/wallet/walletdb.cpp \
     src/policy/fees.cpp \
-    src/txmempool.cpp
+    src/txmempool.cpp \
+    src/wallet/crypter.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

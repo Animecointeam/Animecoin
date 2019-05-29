@@ -92,7 +92,6 @@ BITCOIN_CORE_H = \
   consensus/consensus.h \
   consensus/params.h \
   core_io.h \
-  crypter.h \
   crypto/sph_types.h \
   crypto/sph_blake.h \
   crypto/sph_groestl.h \
@@ -151,6 +150,7 @@ BITCOIN_CORE_H = \
   utilmoneystr.h \
   utiltime.h \
   version.h \
+  wallet/crypter.h \
   wallet/walletdb.h \
   wallet/wallet.h \
   wallet/wallet_ismine.h \
@@ -209,8 +209,8 @@ libanimecoin_server_a_SOURCES = \
 libanimecoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_wallet_a_SOURCES = \
+  wallet/crypter.cpp \
   wallet/db.cpp \
-  crypter.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
