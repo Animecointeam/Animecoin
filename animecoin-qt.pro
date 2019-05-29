@@ -198,15 +198,15 @@ QMAKE_CLEAN += src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 #Build Secp256k1
 !win32 {
 INCLUDEPATH += src/secp256k1/include
-LIBS += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
+LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 	# we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
     gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --with-field=64bit --with-bignum=none --enable-endomorphism && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
-    gensecp256k1.target = $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
+    gensecp256k1.target = $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 	gensecp256k1.depends = FORCE
-    PRE_TARGETDEPS += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o
+    PRE_TARGETDEPS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 	QMAKE_EXTRA_TARGETS += gensecp256k1
 	# Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
-    QMAKE_CLEAN += $$PWD/src/secp256k1/libsecp256k1_la-secp256k1.o; cd $$PWD/src/secp256k1; $(MAKE) clean
+    QMAKE_CLEAN += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o; cd $$PWD/src/secp256k1; $(MAKE) clean
 } else {
 	isEmpty(SECP256K1_LIB_PATH) {
 		windows:SECP256K1_LIB_PATH=src/secp256k1win2/
