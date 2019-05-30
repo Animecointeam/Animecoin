@@ -35,10 +35,12 @@ src/qt/test/moc*.cpp
 *.rej
 *.orig
 *.o
+*.lo
 *.o-*
 *.patch
 .animecoin
 *.a
+*.la
 *.pb.cc
 *.pb.h
 
