@@ -35,7 +35,8 @@ Value getconnectioncount(const Array& params, bool fHelp)
             + HelpExampleRpc("getconnectioncount", "")
         );
 
-    LOCK(cs_vNodes);
+    LOCK2(cs_main, cs_vNodes);
+
     return (int)vNodes.size();
 }
 
@@ -53,7 +54,8 @@ Value ping(const Array& params, bool fHelp)
         );
 
     // Request that each node send a ping during next message processing pass
-    LOCK(cs_vNodes);
+    LOCK2(cs_main, cs_vNodes);
+
     BOOST_FOREACH(CNode* pNode, vNodes) {
         pNode->fPingQueued = true;
     }
@@ -112,6 +114,8 @@ Value getpeerinfo(const Array& params, bool fHelp)
             + HelpExampleCli("getpeerinfo", "")
             + HelpExampleRpc("getpeerinfo", "")
         );
+
+    LOCK(cs_main);
 
     vector<CNodeStats> vstats;
     CopyNodeStats(vstats);
@@ -410,6 +414,8 @@ Value getnetworkinfo(const Array& params, bool fHelp)
             + HelpExampleRpc("getnetworkinfo", "")
         );
 
+    LOCK(cs_main);
+
     Object obj;
     obj.push_back(Pair("version",       CLIENT_VERSION));
     obj.push_back(Pair("subversion",
@@ -443,6 +449,8 @@ Value makekeypair(const Array& params, bool fHelp)
             "makekeypair [prefix]\n"
             "Make a public/private key pair.\n"
             "[prefix] is optional preferred prefix for the public key.\n");
+
+    LOCK(cs_main);
 
     string strPrefix = "";
     if (params.size() > 0)

@@ -21,7 +21,7 @@ struct CDiskBlockPos
     int nFile;
     unsigned int nPos;
 
-    ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
@@ -237,14 +237,6 @@ public:
         return pbegin[(pend - pbegin)*2/3];
     }
 
-    /**
-     * Returns true if there are nRequired or more blocks of minVersion or above
-     * in the last Params().ToCheckBlockUpgradeMajority() blocks, starting at pstart
-     * and going backwards.
-     */
-    static bool IsSuperMajority(int minVersion, const CBlockIndex* pstart,
-                                unsigned int nRequired,
-                                unsigned int nToCheck);
     static int CalcMajority(int minVersion, const CBlockIndex* pstart);
 
     std::string ToString() const
