@@ -27,8 +27,8 @@
 class CKeyID : public uint160
 {
 public:
-	CKeyID() : uint160(0) {}
-	CKeyID(const uint160& in) : uint160(in) {}
+    CKeyID() : uint160() {}
+    CKeyID(const uint160& in) : uint160(in) {}
 };
 
 /** An encapsulated public key. */

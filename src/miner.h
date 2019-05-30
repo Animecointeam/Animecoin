@@ -14,6 +14,7 @@ class CBlockIndex;
 class CReserveKey;
 class CScript;
 class CWallet;
+namespace Consensus { class Params; }
 
 struct CBlockTemplate;
 
@@ -26,7 +27,7 @@ CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey);
 void IncrementExtraNonce(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
 /** Check mined block */
 bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey);
-void UpdateTime(CBlockHeader* block, const CBlockIndex* pindexPrev);
+void UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
 
 extern double dHashesPerSec;
 extern int64_t nHPSTimerStart;

@@ -37,6 +37,11 @@ Also, the first time you run a 0.8 release on a 0.9+ wallet it will rescan the b
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
 
+Features in progress but not necessarily finalized before 0.10 release
+---------------------
+- Lightweight nodes (baseline support implemented, can only be run without wallet functionality yet).
+- Animecoin-specific optimizations (it's got a huge amount of block headers while the disk space usage is moderate, lots of small inputs from generated transactions etc).
+
 What's new in 0.9.2
 ---------------------
 - Default fee policy has been adjusted to ensure relaying of huge transactions.

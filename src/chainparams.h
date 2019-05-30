@@ -47,7 +47,6 @@ public:
     const MessageStartChars& MessageStart() const { return pchMessageStart; }
     const std::vector<unsigned char>& AlertKey() const { return vAlertPubKey; }
     int GetDefaultPort() const { return nDefaultPort; }
-    const uint256& ProofOfWorkLimit() const { return consensus.powLimit; }
     int SubsidyHalvingInterval() const { return consensus.nSubsidyHalvingInterval; }
     int EnforceBlockUpgradeMajority() const { return consensus.nMajorityEnforceBlockUpgrade; }
     int RejectBlockOutdatedMajority() const { return consensus.nMajorityRejectBlockOutdated; }
@@ -61,16 +60,11 @@ public:
     bool MiningRequiresPeers() const { return fMiningRequiresPeers; }
     /** Default value for -checkmempool and -checkblockindex argument */
     bool DefaultConsistencyChecks() const { return fDefaultConsistencyChecks; }
-    /** Allow mining of a min-difficulty block */
-    bool AllowMinDifficultyBlocks() const { return consensus.fPowAllowMinDifficultyBlocks; }
     /** Skip proof-of-work check: allow mining of any difficulty block */
     bool SkipProofOfWorkCheck() const { return fSkipProofOfWorkCheck; }
     /** Make standard checks */
     bool RequireStandard() const { return fRequireStandard; }
     int64_t PruneAfterHeight() const { return nPruneAfterHeight; }
-    int64_t TargetTimespan() const { return consensus.nPowTargetTimespan; }
-    int64_t TargetSpacing() const { return consensus.nPowTargetSpacing; }
-    int64_t DifficultyAdjustmentInterval() const { return consensus.nPowTargetTimespan / consensus.nPowTargetSpacing; }
     int64_t MaxTipAge() const { return nMaxTipAge; }
     /** Make miner stop after a block is found. In RPC, don't return until nGenProcLimit blocks are generated */
     bool MineBlocksOnDemand() const { return fMineBlocksOnDemand; }
