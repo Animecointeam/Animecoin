@@ -386,7 +386,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/consensus/validation.h \
     src/reverselock.h \
     src/policy/fees.h \
-    src/wallet/crypter.h
+    src/wallet/crypter.h \
+    src/support/cleanse.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -525,7 +526,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/wallet/walletdb.cpp \
     src/policy/fees.cpp \
     src/txmempool.cpp \
-    src/wallet/crypter.cpp
+    src/wallet/crypter.cpp \
+    src/support/cleanse.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
