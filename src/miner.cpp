@@ -95,7 +95,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
     // Create new block
     unique_ptr<CBlockTemplate> pblocktemplate(new CBlockTemplate());
     if(!pblocktemplate.get())
-        return NULL;
+        return nullptr;
     CBlock *pblock = &pblocktemplate->block; // pointer for convenience
 
     // -regtest only: allow overriding block.nVersion with
@@ -155,7 +155,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
             if (tx.IsCoinBase() || !IsFinalTx(tx, nHeight, pblock->nTime))
                 continue;
 
-            COrphan* porphan = NULL;
+            COrphan* porphan = nullptr;
             double dPriority = 0;
             CAmount nTotalIn = 0;
             bool fMissingInputs = false;
@@ -374,7 +374,7 @@ CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey)
 {
     CPubKey pubkey;
     if (!reservekey.GetReservedKey(pubkey))
-        return NULL;
+        return nullptr;
 
     CScript scriptPubKey = CScript() << ToByteVector(pubkey) << OP_CHECKSIG;
     return CreateNewBlock(scriptPubKey);
@@ -403,7 +403,7 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 
     // Process this block the same as if we had received it from another node
     CValidationState state;
-    if (!ProcessNewBlock(state, NULL, pblock, true, NULL))
+    if (!ProcessNewBlock(state, nullptr, pblock, true, nullptr))
         return error("AniMiner : ProcessNewBlock, block not accepted");
 
     return true;
@@ -421,7 +421,7 @@ void static BitcoinMiner(CWallet *pwallet)
     unsigned int nExtraNonce = 0;
 
     try {
-        CBlockIndex* pindexPrev = NULL;
+        CBlockIndex* pindexPrev = nullptr;
         while (true) {
             if (Params().MiningRequiresPeers()) {
                 // Busy-wait for the network to come online so we don't waste time mining
@@ -587,7 +587,7 @@ void static BitcoinMiner(CWallet *pwallet)
 
 void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads)
 {
-    static boost::thread_group* minerThreads = NULL;
+    static boost::thread_group* minerThreads = nullptr;
 
     if (nThreads < 0) {
         // In regtest threads defaults to 1
@@ -597,11 +597,11 @@ void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads)
             nThreads = boost::thread::hardware_concurrency();
     }
 
-    if (minerThreads != NULL)
+    if (minerThreads != nullptr)
     {
         minerThreads->interrupt_all();
         delete minerThreads;
-        minerThreads = NULL;
+        minerThreads = nullptr;
     }
 
     if (nThreads == 0 || !fGenerate)

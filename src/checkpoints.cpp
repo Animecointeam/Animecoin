@@ -39,10 +39,10 @@ namespace Checkpoints {
 
     //! Guess how far we are in the verification process at the given block index
     double GuessVerificationProgress(const CCheckpointData& data, CBlockIndex *pindex, bool fSigchecks) {
-        if (pindex==NULL)
+        if (pindex==nullptr)
             return 0.0;
 
-        int64_t nNow = time(NULL);
+        int64_t nNow = time(nullptr);
 
         double fSigcheckVerificationFactor = fSigchecks ? SIGCHECK_VERIFICATION_FACTOR : 1.0;
         double fWorkBefore = 0.0; // Amount of work done before pindex
@@ -80,7 +80,7 @@ namespace Checkpoints {
     CBlockIndex* GetLastCheckpoint(const CCheckpointData& data)
     {
         if (!fEnabled)
-            return NULL;
+            return nullptr;
 
         const MapCheckpoints& checkpoints = data.mapCheckpoints;
 
@@ -91,7 +91,7 @@ namespace Checkpoints {
             if (t != mapBlockIndex.end())
                 return t->second;
         }
-        return NULL;
+        return nullptr;
     }
 
 } // namespace Checkpoints

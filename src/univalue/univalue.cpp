@@ -206,5 +206,5 @@ const char *uvTypeName(UniValue::VType t)
     }
 
     // not reached
-    return NULL;
+    return nullptr;
 }

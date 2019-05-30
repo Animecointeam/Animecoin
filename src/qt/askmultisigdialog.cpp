@@ -20,7 +20,7 @@ AskMultisigDialog::AskMultisigDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AskMultisigDialog)
 {
-    model = NULL;
+    model = nullptr;
     ui->setupUi(this);
     QObject::connect(ui->buttonBox->addButton(
         QString("&Generate new pubkey"),
@@ -36,7 +36,7 @@ AskMultisigDialog::~AskMultisigDialog()
 
 void AskMultisigDialog::generatePubKey()
 {
-    assert(model != NULL);
+    assert(model != nullptr);
     QString pubKey = model->getRawPubKeyString();
     if(pubKey.isNull())
     {

@@ -78,7 +78,7 @@ TestingSetup::~TestingSetup()
 #ifdef ENABLE_WALLET
         UnregisterValidationInterface(pwalletMain);
         delete pwalletMain;
-        pwalletMain = NULL;
+        pwalletMain = nullptr;
 #endif
         UnloadBlockIndex();
         delete pcoinsTip;
@@ -125,7 +125,7 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     while (!CheckProofOfWork(block.GetHash(), block.nBits, Params(CBaseChainParams::REGTEST).GetConsensus())) ++block.nNonce;
 
     CValidationState state;
-    ProcessNewBlock(state, NULL, &block, true, NULL);
+    ProcessNewBlock(state, nullptr, &block, true, nullptr);
 
     CBlock result = block;
     delete pblocktemplate;

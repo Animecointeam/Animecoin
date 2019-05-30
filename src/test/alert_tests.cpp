@@ -208,8 +208,8 @@ BOOST_AUTO_TEST_CASE(PartitionAlert)
     SetMockTime(now);
     for (int i = 0; i < 100; i++)
     {
-        indexDummy[i].phashBlock = NULL;
-        if (i == 0) indexDummy[i].pprev = NULL;
+        indexDummy[i].phashBlock = nullptr;
+        if (i == 0) indexDummy[i].pprev = nullptr;
         else indexDummy[i].pprev = &indexDummy[i-1];
         indexDummy[i].nHeight = i;
         indexDummy[i].nTime = now - (100-i)*nPowTargetSpacing;

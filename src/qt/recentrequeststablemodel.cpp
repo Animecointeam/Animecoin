@@ -125,7 +125,7 @@ void RecentRequestsTableModel::updateAmountColumnTitle()
 QString RecentRequestsTableModel::getAmountTitle()
 {
     QString amountTitle = tr("Amount");
-    if (this->walletModel->getOptionsModel() != NULL)
+    if (this->walletModel->getOptionsModel() != nullptr)
     {
         amountTitle += " ("+BitcoinUnits::name(this->walletModel->getOptionsModel()->getDisplayUnit()) + ")";
     }
