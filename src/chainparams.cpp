@@ -93,8 +93,8 @@ static void convertSeed6(std::vector<CAddress> &vSeedsOut, const SeedSpec6 *data
  */
 static Checkpoints::MapCheckpoints mapCheckpoints =
         boost::assign::map_list_of
-        ( 0,     uint256("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"))
-        ( 1,     uint256("0x00000c3849197334206d575b9ab34ff04786ab7776ac72424ffed8dfcd3e5a5b"))
+        ( 0,     uint256S("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"))
+        ( 1,     uint256S("0x00000c3849197334206d575b9ab34ff04786ab7776ac72424ffed8dfcd3e5a5b"))
         ;
 static const Checkpoints::CCheckpointData data = {
         mapCheckpoints,
@@ -106,7 +106,7 @@ static const Checkpoints::CCheckpointData data = {
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
         boost::assign::map_list_of
-        ( 0, uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
+        ( 0, uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
         ;
 static const Checkpoints::CCheckpointData dataTestnet = {
         mapCheckpointsTestnet,
@@ -117,7 +117,7 @@ static const Checkpoints::CCheckpointData dataTestnet = {
 
 static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
         boost::assign::map_list_of
-        ( 0, uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
+        ( 0, uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
         ;
 static const Checkpoints::CCheckpointData dataRegtest = {
         mapCheckpointsRegtest,
@@ -181,8 +181,8 @@ public:
         genesis = CreateGenesisBlock();
 
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256 ("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"));
-        assert(genesis.hashMerkleRoot == uint256("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9")); // Updated for Animecoin
+        assert(consensus.hashGenesisBlock == uint256S("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"));
+        assert(genesis.hashMerkleRoot == uint256S("0x448f7de5e3a564ad723ea1ac11186466e35c9315acfba89d9b956b303340a7a9")); // Updated for Animecoin
 
         // Updated for Animecoin
         vSeeds.push_back(CDNSSeedData("seed.animeco.in", "seed.animeco.in"));
@@ -244,7 +244,7 @@ public:
         genesis.nTime = 978307200; // Updated for Animecoin
         genesis.nNonce = 907185573; // Updated for Animecoin
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")); // Updated for Animecoin
+        assert(consensus.hashGenesisBlock == uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")); // Updated for Animecoin
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -297,7 +297,7 @@ public:
         genesis.nNonce = 907185573;
         consensus.hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
-        //assert(hashGenesisBlock == uint256("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
+        //assert(hashGenesisBlock == uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
         nPruneAfterHeight = 1000;
 
         vFixedSeeds.clear(); //! Regtest mode doesn't have any fixed seeds.
