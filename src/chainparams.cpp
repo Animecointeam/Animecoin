@@ -91,65 +91,6 @@ static void convertSeed6(std::vector<CAddress> &vSeedsOut, const SeedSpec6 *data
  *    timestamp before)
  * + Contains no strange transactions
  */
-static Checkpoints::MapCheckpoints mapCheckpoints =
-        boost::assign::map_list_of
-        ( 0,     uint256S("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"))
-        ( 1,     uint256S("0x00000c3849197334206d575b9ab34ff04786ab7776ac72424ffed8dfcd3e5a5b"))
-        ;
-static const Checkpoints::CCheckpointData data = {
-        mapCheckpoints,
-        1390744420, // * UNIX timestamp of last checkpoint block
-        0,    		// * total number of transactions between genesis and last checkpoint
-                    //   (the tx=... number in the SetBestChain debug.log lines)
-        2880.0      // * estimated number of transactions per day after checkpoint
-    };
-
-static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
-        boost::assign::map_list_of
-        ( 0, uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
-        ;
-static const Checkpoints::CCheckpointData dataTestnet = {
-        mapCheckpointsTestnet,
-        978307200,
-        0,
-        2880.0
-    };
-
-static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
-        boost::assign::map_list_of
-        ( 0, uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"))
-        ;
-static const Checkpoints::CCheckpointData dataRegtest = {
-        mapCheckpointsRegtest,
-        0,
-        0,
-        0
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class CMainParams : public CChainParams {
 public:
@@ -210,11 +151,22 @@ public:
         fMineBlocksOnDemand = false;
         fSkipProofOfWorkCheck = false;
         fTestnetToBeDeprecatedFieldRPC = false;
-    }
 
-    const Checkpoints::CCheckpointData& Checkpoints() const
-    {
-        return data;
+        checkpointData = (Checkpoints::CCheckpointData) {
+            boost::assign::map_list_of
+            ( 0,     uint256S("0x0000099acc274b7b403a828238bad69414e03a1a51b297a250c0a0da8a337840"))
+            ( 1,     uint256S("0x00000c3849197334206d575b9ab34ff04786ab7776ac72424ffed8dfcd3e5a5b"))
+            ( 1000000,     uint256S("0000000960e8582c838a435500d3b258926b99a8b891eb0f46ffa42643969c94"))
+            ( 2000000,     uint256S("00000035c2e947c598355205a60ed583fe5e7dee0240f8831ab9c783f47741c4"))
+            ( 3000000,     uint256S("00000273d7a54e6d6a00faa4c7b1472453e06b9474eeca80d28a1adce44bc1ec"))
+            ( 4000000,     uint256S("000000016afda82d54e7f609ab072d5e8348c28a667e9ef2206aca421ee5d813"))
+            ( 5000000,     uint256S("000000001c81edc9edbb1ebc1e4970b1f21131ddd9357878809a3cede21acc31"))
+            ( 5460000,     uint256S("000000001c81edc9edbb1ebc1e4970b1f21131ddd9357878809a3cede21acc31")),
+            1559001567, // * UNIX timestamp of last checkpoint block
+            5733828,   // * total number of transactions between genesis and last checkpoint
+                        //   (the tx=... number in the SetBestChain debug.log lines)
+            2880.0     // * estimated number of transactions per day after checkpoint
+        };
     }
 };
 static CMainParams mainParams;
@@ -263,10 +215,14 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
         fTestnetToBeDeprecatedFieldRPC = true;
-    }
-    const Checkpoints::CCheckpointData& Checkpoints() const
-    {
-        return dataTestnet;
+
+        checkpointData = (Checkpoints::CCheckpointData) {
+            boost::assign::map_list_of
+            ( 0, uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")),
+            978307200,
+            1488,
+            2880.0
+        };
     }
 };
 static CTestNetParams testNetParams;
@@ -309,10 +265,14 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = true;
         fTestnetToBeDeprecatedFieldRPC = false;
-    }
-    const Checkpoints::CCheckpointData& Checkpoints() const
-    {
-        return dataRegtest;
+
+        checkpointData = (Checkpoints::CCheckpointData){
+            boost::assign::map_list_of
+            ( 0, uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c")),
+            0,
+            0,
+            0
+        };
     }
 };
 static CRegTestParams regTestParams;

@@ -41,9 +41,9 @@ using namespace json_spirit;
 using namespace boost::algorithm;
 
 // Uncomment if you want to output updated JSON tests.
-// #define UPDATE_JSON_TESTS
+ #define UPDATE_JSON_TESTS
 
-static const unsigned int flags = SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_STRICTENC;
+static const unsigned int flags = SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_STRICTENC | SCRIPT_VERIFY_CLEANSTACK;
 
 unsigned int ParseScriptFlags(string strFlags);
 string FormatScriptFlags(unsigned int flags);
@@ -564,6 +564,21 @@ BOOST_AUTO_TEST_CASE(script_build)
                                "2-of-2 with two identical keys and sigs pushed", SCRIPT_VERIFY_SIGPUSHONLY
                               ).Num(0).PushSig(keys.key1).PushSig(keys.key1));
 
+    good.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey0) << OP_CHECKSIG,
+                               "P2PK with unnecessary input but no CLEANSTACK", SCRIPT_VERIFY_P2SH
+                              ).Num(11).PushSig(keys.key0));
+    bad.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey0) << OP_CHECKSIG,
+                              "P2PK with unnecessary input", SCRIPT_VERIFY_CLEANSTACK | SCRIPT_VERIFY_P2SH
+                             ).Num(11).PushSig(keys.key0));
+    good.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey0) << OP_CHECKSIG,
+                               "P2SH with unnecessary input but no CLEANSTACK", SCRIPT_VERIFY_P2SH, true
+                              ).Num(11).PushSig(keys.key0).PushRedeem());
+    bad.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey0) << OP_CHECKSIG,
+                              "P2SH with unnecessary input", SCRIPT_VERIFY_CLEANSTACK | SCRIPT_VERIFY_P2SH, true
+                             ).Num(11).PushSig(keys.key0).PushRedeem());
+    good.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey0) << OP_CHECKSIG,
+                               "P2SH with CLEANSTACK", SCRIPT_VERIFY_CLEANSTACK | SCRIPT_VERIFY_P2SH, true
+                              ).PushSig(keys.key0).PushRedeem());
 
     std::set<std::string> tests_good;
     std::set<std::string> tests_bad;
