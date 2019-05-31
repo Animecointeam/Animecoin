@@ -40,6 +40,7 @@ Also, the first time you run a 0.8 release on a 0.9+ wallet it will rescan the b
 Features in progress but not necessarily finalized before 0.10 release
 ---------------------
 - Lightweight nodes (baseline support implemented, can only be run without wallet functionality yet).
+- BIP-0068, BIP-0112 and BIP-0113 aggregation (ideally merged into BIP-0065 fork).
 - Animecoin-specific optimizations (it's got a huge amount of block headers while the disk space usage is moderate, lots of small inputs from generated transactions etc).
 
 What's new in 0.9.2

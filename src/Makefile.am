@@ -117,6 +117,7 @@ BITCOIN_CORE_H = \
   net.h \
   noui.h \
   policy/fees.h \
+  policy/policy.h \
   pow.h \
   protocol.h \
   primitives/block.h \

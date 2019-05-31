@@ -387,7 +387,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/reverselock.h \
     src/policy/fees.h \
     src/wallet/crypter.h \
-    src/support/cleanse.h
+    src/support/cleanse.h \
+    src/policy/policy.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
