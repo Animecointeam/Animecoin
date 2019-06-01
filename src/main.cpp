@@ -2136,7 +2136,7 @@ void static UpdateTip(CBlockIndex *pindexNew) {
     LogPrintf("UpdateTip: new best=%s  height=%d  log2_work=%.8g  tx=%lu  date=%s progress=%f  cache=%u\n",
               chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(), log(chainActive.Tip()->nChainWork.getdouble())/log(2.0), (unsigned long)chainActive.Tip()->nChainTx,
               DateTimeStrFormat("%Y-%m-%d %H:%M:%S", chainActive.Tip()->GetBlockTime()),
-              Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), chainActive.Tip()), (unsigned int)pcoinsTip->GetCacheSize());
+              Checkpoints::GuessVerificationProgress(chainParams.TxData(), chainActive.Tip()), (unsigned int)pcoinsTip->GetCacheSize());
 
     cvBlockChange.notify_all();
 
@@ -3373,7 +3373,7 @@ bool static LoadBlockIndexDB()
     LogPrintf("LoadBlockIndexDB(): hashBestChain=%s height=%d date=%s progress=%f\n",
         chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(),
         DateTimeStrFormat("%Y-%m-%d %H:%M:%S", chainActive.Tip()->GetBlockTime()),
-        Checkpoints::GuessVerificationProgress(chainparams.Checkpoints(), chainActive.Tip()));
+        Checkpoints::GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()));
 
     return true;
 }

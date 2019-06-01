@@ -33,7 +33,7 @@ namespace Checkpoints {
     }
 
     //! Guess how far we are in the verification process at the given block index
-    double GuessVerificationProgress(const CCheckpointData& data, CBlockIndex *pindex, bool fSigchecks) {
+    double GuessVerificationProgress(const ChainTxData& data, CBlockIndex *pindex, bool fSigchecks) {
         if (pindex==nullptr)
             return 0.0;
 
