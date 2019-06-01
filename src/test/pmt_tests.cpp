@@ -6,12 +6,12 @@
 #include "serialize.h"
 #include "streams.h"
 #include "uint256.h"
+#include "arith_uint256.h"
 #include "version.h"
 #include "test/test_bitcoin.h"
 
 #include <vector>
 
-#include <boost/assign/list_of.hpp>
 #include <boost/test/unit_test.hpp>
 
 using namespace std;
@@ -108,8 +108,15 @@ BOOST_AUTO_TEST_CASE(pmt_test1)
 
 BOOST_AUTO_TEST_CASE(pmt_malleability)
 {
-    std::vector<uint256> vTxid = boost::assign::list_of(1)(2)(3)(4)(5)(6)(7)(8)(9)(10)(9)(10);
-    std::vector<bool> vMatch = boost::assign::list_of(false)(false)(false)(false)(false)(false)(false)(false)(false)(true)(true)(false);
+    std::vector<uint256> vTxid = {
+        ArithToUint256(1), ArithToUint256(2),
+        ArithToUint256(3), ArithToUint256(4),
+        ArithToUint256(5), ArithToUint256(6),
+        ArithToUint256(7), ArithToUint256(8),
+        ArithToUint256(9), ArithToUint256(10),
+        ArithToUint256(9), ArithToUint256(10),
+    };
+    std::vector<bool> vMatch = {false, false, false, false, false, false, false, false, false, true, true, false};
 
     CPartialMerkleTree tree(vTxid, vMatch);
     std::vector<uint256> vTxid2;
