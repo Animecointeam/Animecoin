@@ -10,7 +10,6 @@
 #include "compat.h"
 #include "hash.h"
 #include "limitedmap.h"
-#include "mruset.h"
 #include "netbase.h"
 #include "protocol.h"
 #include "random.h"
@@ -291,7 +290,7 @@ public:
     uint256 hashCheckpointKnown; // ppcoin: known sent sync-checkpoint
 
     // inventory based relay
-    mruset<CInv> setInventoryKnown;
+    CRollingBloomFilter filterInventoryKnown;
     std::vector<CInv> vInventoryToSend;
     CCriticalSection cs_inventory;
     std::multimap<int64_t, CInv> mapAskFor;
@@ -388,7 +387,7 @@ public:
     {
         {
             LOCK(cs_inventory);
-            setInventoryKnown.insert(inv);
+            filterInventoryKnown.insert(inv.hash);
         }
     }
 
@@ -396,8 +395,9 @@ public:
     {
         {
             LOCK(cs_inventory);
-            if (!setInventoryKnown.count(inv))
-                vInventoryToSend.push_back(inv);
+            if (inv.type == MSG_TX && filterInventoryKnown.contains(inv.hash))
+                return;
+            vInventoryToSend.push_back(inv);
         }
     }
 
