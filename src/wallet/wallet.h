@@ -7,12 +7,13 @@
 #define BITCOIN_WALLET_H
 
 #include "amount.h"
-#include "primitives/block.h"
-#include "primitives/transaction.h"
 #include "key.h"
 #include "keystore.h"
 #include "main.h"
+#include "primitives/block.h"
+#include "primitives/transaction.h"
 #include "ui_interface.h"
+#include "validationinterface.h"
 #include "wallet/crypter.h"
 #include "wallet/wallet_ismine.h"
 #include "wallet/walletdb.h"
@@ -278,10 +279,10 @@ public:
     bool AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet=false);
     void SyncTransaction(const CTransaction& tx, const CBlock* pblock);
     bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate);
-    void EraseFromWallet(const uint256 &hash);
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
     void ReacceptWalletTransactions();
-    void ResendWalletTransactions();
+    void ResendWalletTransactions(int64_t nBestBlockTime);
+    std::vector<uint256> ResendWalletTransactionsBefore(int64_t nTime);
     CAmount GetBalance() const;
     CAmount GetUnconfirmedBalance() const;
     CAmount GetImmatureBalance() const;
@@ -343,6 +344,13 @@ public:
                 (*mi).second++;
         }
     }
+
+    void GetScriptForMining(CScript &script);
+    void UpdateRequestCount(const CBlock& block)
+    {
+        LOCK(cs_wallet);
+        mapRequestCount[block.GetHash()] = 0;
+    };
 
     unsigned int GetKeyPoolSize()
     {
@@ -685,7 +693,7 @@ public:
     int64_t GetTxTime() const;
     int GetRequestCount() const;
 
-    void RelayWalletTransaction();
+    bool RelayWalletTransaction();
 
     std::set<uint256> GetConflicts() const;
 };

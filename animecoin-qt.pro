@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = animecoin-qt
 macx:TARGET = "Animecoin-Qt"
 VERSION = 0.10.0
-INCLUDEPATH += src src/json src/qt
+INCLUDEPATH += src src/qt
 QT += network printsupport
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE HAVE_WORKING_BOOST_SLEEP_FOR
 DEFINES += ENABLE_WALLET
@@ -230,7 +230,7 @@ LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
 
 # Input
-DEPENDPATH += src src/json src/qt
+DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
     src/qt/transactiontablemodel.h \
     src/qt/addresstablemodel.h \
@@ -256,15 +256,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/init.h \
     src/bloom.h \
     src/checkqueue.h \
-    src/json/json_spirit_writer_template.h \
-    src/json/json_spirit_writer.h \
-    src/json/json_spirit_value.h \
-    src/json/json_spirit_utils.h \
-    src/json/json_spirit_stream_reader.h \
-    src/json/json_spirit_reader_template.h \
-    src/json/json_spirit_reader.h \
-    src/json/json_spirit_error_position.h \
-    src/json/json_spirit.h \
     src/qt/clientmodel.h \
     src/qt/guiutil.h \
     src/qt/transactionrecord.h \
@@ -387,7 +378,12 @@ HEADERS += src/qt/bitcoingui.h \
     src/policy/fees.h \
     src/wallet/crypter.h \
     src/support/cleanse.h \
-    src/policy/policy.h
+    src/policy/policy.h \
+    src/zmq/zmqabstractnotifier.h \
+    src/zmq/zmqconfig.h \
+    src/zmq/zmqnotificationinterface.h \
+    src/zmq/zmqpublishnotifier.h \
+    src/validationinterface.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -527,7 +523,11 @@ SOURCES += src/qt/bitcoin.cpp \
     src/policy/fees.cpp \
     src/txmempool.cpp \
     src/wallet/crypter.cpp \
-    src/support/cleanse.cpp
+    src/support/cleanse.cpp \
+    src/zmq/zmqabstractnotifier.cpp \
+    src/zmq/zmqnotificationinterface.cpp \
+    src/zmq/zmqpublishnotifier.cpp \
+    src/validationinterface.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

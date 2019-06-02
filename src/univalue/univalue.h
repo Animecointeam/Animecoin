@@ -1,5 +1,5 @@
 // Copyright 2014 BitPay Inc.
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_UNIVALUE_UNIVALUE_H
@@ -11,9 +11,13 @@
 #include <map>
 #include <cassert>
 
+#include <sstream>        // .get_int64()
+#include <utility>        // std::pair
+#include <stdlib.h>       // atoi(), atof()   TODO: remove
+
 class UniValue {
 public:
-    enum VType { VNULL, VOBJ, VARR, VSTR, VNUM, VBOOL, };
+    enum VType { VNULL, VOBJ, VARR, VSTR, VNUM, VREAL, VBOOL, };
 
     UniValue() { typ = VNULL; }
     UniValue(UniValue::VType initialType, const std::string& initialStr = "") {
@@ -25,6 +29,9 @@ public:
     }
     UniValue(int64_t val_) {
         setInt(val_);
+    }
+    UniValue(bool val_) {
+        setBool(val_);
     }
     UniValue(int val_) {
         setInt(val_);
@@ -58,7 +65,7 @@ public:
     std::string getValStr() const { return val; }
     bool empty() const { return (values.size() == 0); }
 
-    size_t count() const { return values.size(); }
+    size_t size() const { return values.size(); }
 
     bool getBool() const { return isTrue(); }
     bool checkObject(const std::map<std::string,UniValue::VType>& memberTypes);
@@ -72,6 +79,7 @@ public:
     bool isBool() const { return (typ == VBOOL); }
     bool isStr() const { return (typ == VSTR); }
     bool isNum() const { return (typ == VNUM); }
+    bool isReal() const { return (typ == VREAL); }
     bool isArray() const { return (typ == VARR); }
     bool isObject() const { return (typ == VOBJ); }
 
@@ -130,7 +138,95 @@ private:
     int findKey(const std::string& key) const;
     void writeArray(unsigned int prettyIndent, unsigned int indentLevel, std::string& s) const;
     void writeObject(unsigned int prettyIndent, unsigned int indentLevel, std::string& s) const;
+
+public:
+    //
+    // The following were added for compatibility with json_spirit.
+    // Most duplicate other methods, and should be removed.
+    //
+    std::vector<std::string> getKeys() const { return keys; }
+    std::vector<UniValue> getValues() const { return values; }
+    bool get_bool() const { return getBool(); }
+    std::string get_str() const { return getValStr(); }
+    int get_int() const { return atoi(getValStr().c_str()); }
+    double get_real() const { return atof(getValStr().c_str()); }
+    const UniValue& get_obj() const { return *this; }
+    const UniValue& get_array() const { return *this; }
+    enum VType type() const { return getType(); }
+    bool push_back(std::pair<std::string,UniValue> pear) {
+        return pushKV(pear.first, pear.second);
+    }
+    int64_t get_int64() const {
+        int64_t ret;
+        std::istringstream(getValStr()) >> ret;
+        return ret;
+    }
+    friend const UniValue& find_value( const UniValue& obj, const std::string& name);
 };
+
+//
+// The following were added for compatibility with json_spirit.
+// Most duplicate other methods, and should be removed.
+//
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, const char *cVal)
+{
+    std::string key(cKey);
+    UniValue uVal(cVal);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, std::string strVal)
+{
+    std::string key(cKey);
+    UniValue uVal(strVal);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, uint64_t u64Val)
+{
+    std::string key(cKey);
+    UniValue uVal(u64Val);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, int64_t i64Val)
+{
+    std::string key(cKey);
+    UniValue uVal(i64Val);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, bool iVal)
+{
+    std::string key(cKey);
+    UniValue uVal(iVal);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, int iVal)
+{
+    std::string key(cKey);
+    UniValue uVal(iVal);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, double dVal)
+{
+    std::string key(cKey);
+    UniValue uVal(dVal);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, const UniValue& uVal)
+{
+    std::string key(cKey);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(std::string key, const UniValue& uVal)
+{
+    return std::make_pair(key, uVal);
+}
 
 enum jtokentype {
     JTOK_ERR        = -1,
@@ -151,5 +247,9 @@ enum jtokentype {
 extern enum jtokentype getJsonToken(std::string& tokenVal,
                                     unsigned int& consumed, const char *raw);
 extern const char *uvTypeName(UniValue::VType t);
+
+extern const UniValue NullUniValue;
+
+const UniValue& find_value( const UniValue& obj, const std::string& name);
 
 #endif // BITCOIN_UNIVALUE_UNIVALUE_H

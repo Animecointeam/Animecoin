@@ -1,15 +1,16 @@
 // Copyright 2014 BitPay Inc.
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <stdint.h>
 #include <ctype.h>
+#include <iomanip>
 #include <sstream>
 #include "univalue.h"
 
 using namespace std;
 
-static const UniValue nullValue;
+const UniValue NullUniValue;
 
 void UniValue::clear()
 {
@@ -78,9 +79,11 @@ bool UniValue::setFloat(double val)
     string s;
     ostringstream oss;
 
-    oss << val;
+    oss << std::setprecision(16) << val;
 
-    return setNumStr(oss.str());
+    bool ret = setNumStr(oss.str());
+    typ = VREAL;
+    return ret;
 }
 
 bool UniValue::setStr(const string& val_)
@@ -175,11 +178,11 @@ bool UniValue::checkObject(const std::map<std::string,UniValue::VType>& t)
 const UniValue& UniValue::operator[](const std::string& key) const
 {
     if (typ != VOBJ)
-        return nullValue;
+        return NullUniValue;
 
     int index = findKey(key);
     if (index < 0)
-        return nullValue;
+        return NullUniValue;
 
     return values[index];
 }
@@ -187,9 +190,9 @@ const UniValue& UniValue::operator[](const std::string& key) const
 const UniValue& UniValue::operator[](unsigned int index) const
 {
     if (typ != VOBJ && typ != VARR)
-        return nullValue;
+        return NullUniValue;
     if (index >= values.size())
-        return nullValue;
+        return NullUniValue;
 
     return values[index];
 }
@@ -203,8 +206,22 @@ const char *uvTypeName(UniValue::VType t)
     case UniValue::VARR: return "array";
     case UniValue::VSTR: return "string";
     case UniValue::VNUM: return "number";
+    case UniValue::VREAL: return "number";
     }
 
     // not reached
-    return nullptr;
+    return NULL;
+}
+
+const UniValue& find_value( const UniValue& obj, const std::string& name)
+{
+    for (unsigned int i = 0; i < obj.keys.size(); i++)
+    {
+        if( obj.keys[i] == name )
+        {
+            return obj.values[i];
+        }
+    }
+
+    return NullUniValue;
 }
