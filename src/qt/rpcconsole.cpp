@@ -180,7 +180,7 @@ void RPCExecutor::request(const QString &command)
 
         emit reply(RPCConsole::CMD_REPLY, QString::fromStdString(strPrint));
     }
-    catch (UniValue& objError)
+    catch (const UniValue& objError)
     {
         try // Nice formatting for standard-format error
         {
@@ -188,7 +188,7 @@ void RPCExecutor::request(const QString &command)
             std::string message = find_value(objError, "message").get_str();
             emit reply(RPCConsole::CMD_ERROR, QString::fromStdString(message) + " (code " + QString::number(code) + ")");
         }
-        catch(const std::runtime_error &) // raised when converting to invalid type, i.e. missing code or message
+        catch (const std::runtime_error&) // raised when converting to invalid type, i.e. missing code or message
         {   // Show raw JSON object
             emit reply(RPCConsole::CMD_ERROR, QString::fromStdString(objError.write()));
         }

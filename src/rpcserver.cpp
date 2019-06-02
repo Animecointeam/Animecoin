@@ -198,7 +198,7 @@ string CRPCTable::help(string strCommand) const
             if (setDone.insert(pfn).second)
                 (*pfn)(params, true);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             // Help text is returned in an exception
             string strHelp = string(e.what());
@@ -659,7 +659,7 @@ void StartRPCThreads()
             try {
                 vEndpoints.push_back(ParseEndpoint(addr, defaultPort));
             }
-            catch(const boost::system::system_error &)
+            catch (const boost::system::system_error&)
             {
                 uiInterface.ThreadSafeMessageBox(
                     strprintf(_("Could not parse -rpcbind value %s as network address"), addr),
@@ -706,7 +706,7 @@ void StartRPCThreads()
             if(bBindAny && bindAddress == asio::ip::address_v6::any() && !v6_only_error)
                 break;
         }
-        catch(boost::system::system_error &e)
+        catch (const boost::system::system_error& e)
         {
             LogPrintf("ERROR: Binding RPC on address %s port %i failed: %s\n", straddress, endpoint.port(), e.what());
             strerr = strprintf(_("An error occurred while setting up the RPC address %s port %u for listening: %s"), straddress, endpoint.port(), e.what());
@@ -877,7 +877,7 @@ static UniValue JSONRPCExecOne(const UniValue& req)
     {
         rpc_result = JSONRPCReplyObj(NullUniValue, objError, jreq.id);
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         rpc_result = JSONRPCReplyObj(NullUniValue,
                                      JSONRPCError(RPC_PARSE_ERROR, e.what()), jreq.id);
@@ -951,7 +951,7 @@ static bool HTTPReq_JSONRPC(AcceptedConnection *conn,
         ErrorReply(conn->stream(), objError, jreq.id);
         return false;
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         ErrorReply(conn->stream(), JSONRPCError(RPC_PARSE_ERROR, e.what()), jreq.id);
         return false;
@@ -1016,7 +1016,7 @@ UniValue CRPCTable::execute(const std::string &strMethod, const UniValue &params
     {
         return pcmd->actor(params, false);
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         throw JSONRPCError(RPC_MISC_ERROR, e.what());
     }

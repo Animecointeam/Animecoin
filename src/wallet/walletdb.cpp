@@ -461,7 +461,7 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             {
                 ssValue >> hash;
             }
-            catch(...){}
+            catch (...) {}
 
             bool fSkipCheck = false;
 
@@ -665,7 +665,7 @@ DBErrors CWalletDB::LoadWallet(CWallet* pwallet)
         }
         pcursor->close();
     }
-    catch (boost::thread_interrupted) {
+    catch (const boost::thread_interrupted&) {
         throw;
     }
     catch (...) {
@@ -758,7 +758,7 @@ DBErrors CWalletDB::FindWalletTx(CWallet* pwallet, vector<uint256>& vTxHash, vec
         }
         pcursor->close();
     }
-    catch (boost::thread_interrupted) {
+    catch (const boost::thread_interrupted&) {
         throw;
     }
     catch (...) {
@@ -879,7 +879,7 @@ bool BackupWallet(const CWallet& wallet, const string& strDest)
 #endif
                     LogPrintf("copied wallet.dat to %s\n", pathDest.string());
                     return true;
-                } catch(const filesystem::filesystem_error &e) {
+                } catch (const filesystem::filesystem_error& e) {
                     LogPrintf("error copying wallet.dat to %s - %s\n", pathDest.string(), e.what());
                     return false;
                 }

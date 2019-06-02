@@ -560,12 +560,12 @@ void static BitcoinMiner(const CChainParams& chainparams, const CScript& coinbas
             }
         }
     }
-    catch (boost::thread_interrupted)
+    catch (const boost::thread_interrupted&)
     {
         LogPrintf("AniMiner terminated\n");
         throw;
     }
-    catch (const std::runtime_error &e)
+    catch (const std::runtime_error& e)
     {
         LogPrintf("AniMiner runtime error: %s\n", e.what());
         return;
