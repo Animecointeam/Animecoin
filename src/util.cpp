@@ -32,6 +32,7 @@
 
 #include <algorithm>
 #include <fcntl.h>
+#include <mutex>
 #include <sys/resource.h>
 #include <sys/stat.h>
 
@@ -168,13 +169,13 @@ instance_of_cinit;
  * the mutex).
  */
 
-static boost::once_flag debugPrintInitFlag = BOOST_ONCE_INIT;
+static std::once_flag debugPrintInitFlag;
 /**
- * We use boost::call_once() to make sure these are initialized
+ * We use std::call_once() to make sure these are initialized
  * in a thread-safe manner the first time called:
  */
 static FILE* fileout = nullptr;
-static boost::mutex* mutexDebugLog = nullptr;
+static std::mutex* mutexDebugLog = nullptr;
 
 static void DebugPrintInit()
 {
@@ -185,7 +186,7 @@ static void DebugPrintInit()
     fileout = fopen(pathDebug.string().c_str(), "a");
     if (fileout) setbuf(fileout, nullptr); // unbuffered
 
-    mutexDebugLog = new boost::mutex();
+    mutexDebugLog = new std::mutex();
 }
 
 bool LogAcceptCategory(const char* category)
@@ -228,12 +229,12 @@ int LogPrintStr(const std::string &str)
     else if (fPrintToDebugLog && AreBaseParamsConfigured())
     {
         static bool fStartedNewLine = true;
-        boost::call_once(&DebugPrintInit, debugPrintInitFlag);
+        std::call_once(debugPrintInitFlag, &DebugPrintInit);
 
         if (fileout == nullptr)
             return ret;
 
-        boost::mutex::scoped_lock scoped_lock(*mutexDebugLog);
+        std::lock_guard<std::mutex> scoped_lock(*mutexDebugLog);
 
         // reopen the log file, if requested
         if (fReopenDebugLog) {

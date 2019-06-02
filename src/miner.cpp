@@ -21,6 +21,8 @@
 #include "utilmoneystr.h"
 #include "validationinterface.h"
 
+#include <thread>
+
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
 
@@ -581,7 +583,7 @@ void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainpar
         if (Params().DefaultMinerThreads())
             nThreads = Params().DefaultMinerThreads();
         else
-            nThreads = boost::thread::hardware_concurrency();
+            nThreads = std::thread::hardware_concurrency();
     }
 
     if (minerThreads != nullptr)
