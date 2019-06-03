@@ -383,7 +383,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/zmq/zmqconfig.h \
     src/zmq/zmqnotificationinterface.h \
     src/zmq/zmqpublishnotifier.h \
-    src/validationinterface.h
+    src/validationinterface.h \
+    src/reverse_iterator.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \

@@ -14,7 +14,6 @@
 
 #include <vector>
 
-#include <boost/foreach.hpp>
 
 struct CDiskBlockPos
 {

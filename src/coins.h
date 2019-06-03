@@ -15,7 +15,6 @@
 #include <stdint.h>
 #include <unordered_map>
 
-#include <boost/foreach.hpp>
 
 /**
  * Pruned version of CTransaction: only retains metadata and unspent transaction outputs
@@ -117,7 +116,7 @@ public:
     }
 
     void ClearUnspendable() {
-        BOOST_FOREACH(CTxOut &txout, vout) {
+        for (CTxOut &txout : vout) {
             if (txout.scriptPubKey.IsUnspendable())
                 txout.SetNull();
         }
@@ -251,7 +250,7 @@ public:
     //! check whether the entire CCoins is spent
     //! note that only !IsPruned() CCoins can be serialized
     bool IsPruned() const {
-        BOOST_FOREACH(const CTxOut &out, vout)
+        for (const CTxOut &out : vout)
             if (!out.IsNull())
                 return false;
         return true;

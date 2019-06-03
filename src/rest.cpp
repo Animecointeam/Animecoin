@@ -149,7 +149,7 @@ static bool rest_headers(AcceptedConnection* conn,
     }
 
     CDataStream ssHeader(SER_NETWORK, PROTOCOL_VERSION);
-    BOOST_FOREACH(const CBlockHeader &header, headers) {
+    for (const CBlockHeader &header : headers) {
         ssHeader << header;
     }
 
@@ -502,7 +502,7 @@ static bool rest_getutxos(AcceptedConnection* conn,
         objGetUTXOResponse.push_back(Pair("bitmap", bitmapStringRepresentation));
 
         UniValue utxos(UniValue::VARR);
-        BOOST_FOREACH (const CCoin& coin, outs) {
+        for (const CCoin& coin : outs) {
             UniValue utxo(UniValue::VOBJ);
             utxo.push_back(Pair("txvers", (int32_t)coin.nTxVer));
             utxo.push_back(Pair("height", (int32_t)coin.nHeight));
