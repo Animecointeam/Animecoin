@@ -118,6 +118,6 @@ License
 Copyright (c) 2009-2019 Bitcoin Developers
 Copyright (c) 2014-2019 Animecoin Developers
 
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://opensource.org/licenses/MIT.
+Distributed under the MIT/X11 software license, see the accompanying file COPYING.
 This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](http://www.openssl.org/).
 This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), UPnP software written by Thomas Bernard and sphlib 3.0 by Thomas Pornin.
