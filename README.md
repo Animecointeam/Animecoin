@@ -107,6 +107,8 @@ Solution: adding -fpermissive to CXXFLAGS gets the job done and is widely used b
 Solution: -DBOOST_NO_CXX11_SCOPED_ENUMS.
 - Undeclared nullptr. Happens to antique gcc releases.
 Solution: -std=gnu++11 or -std=c++11. Default since gcc 5.1.
+- Qt frontend demands -fPIC. Happens to distributions built with -reduce-relocations.
+Solution: the easiest one is probably passing -fPIC to CXXFLAGS and ./configure --disable-hardening (since hardening does -fPIE). Fixed in 0.10 trunk.
 
 Other release notes
 ---------------------
