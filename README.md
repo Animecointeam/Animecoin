@@ -26,13 +26,12 @@ Also, the first time you run a 0.8 release on a 0.9+ wallet it will rescan the b
 0.10 upcoming features
 ---------------------
 - Parallelized block syncing (testing).
-- Fee Control Features and transaction priorities according to bitcoin upstream (testing).
-- libsecp256k1 integration (testing).
+- Fee Control Features and transaction priorities according to bitcoin upstream (implemented).
+- libsecp256k1 integration (ongoing).
 - Improved application design, including animecoin-tx and consensus library (implemented).
-- Many security and RPC improvements for smoother integration of applications (implemented).
+- Many security and RPC improvements for smoother integration of applications (ongoing).
 - A soft fork akin to BIP-0065 (implemented, awaiting activation).
 - A user interface for multisig capabilities (in progress).
-- Graphical inteface for the list of peers (implemented).
 - getwork will be removed following bitcoin upstream, this may break certain antique mining software (implemented).
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
@@ -69,8 +68,8 @@ What's new in 0.9.1
 Building from source
 ---------------------
 You may use either way to build the Qt client:
-1. animecoin-qt.pro for qmake / Qt Creator. Simply adjust the library paths and prefixes if needed and build.
-2. Autotools for commandline (MSYS shell in Windows case):
+1. animecoin-qt.pro for qmake / Qt Creator. Adjust the library paths and prefixes as needed and build.
+2. Autotools for commandline (MSYS2 shell in Windows case):
  - ./autogen.sh
  - ./configure (with any options necessary)
  - make (use e.g. make -j8 for utilizing 8 CPU cores to speed up the build process)
