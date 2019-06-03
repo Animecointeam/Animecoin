@@ -96,6 +96,22 @@ class WalletTest (BitcoinTestFramework):
         assert_equal(self.nodes[2].getbalance(), 100)
         assert_equal(self.nodes[2].getbalance("from1"), 100-21)
 
+        # Send 10 XBT normal
+        address = self.nodes[0].getnewaddress("test")
+        self.nodes[2].settxfee(Decimal('0.001'))
+        txid = self.nodes[2].sendtoaddress(address, 10, "", "", False)
+        self.nodes[2].setgenerate(True, 1)
+        self.sync_all()
+        assert_equal(self.nodes[2].getbalance(), Decimal('89.99900000'))
+        assert_equal(self.nodes[0].getbalance(), Decimal('10.00000000'))
+
+        # Send 10 XBT with subtract fee from amount
+        txid = self.nodes[2].sendtoaddress(address, 10, "", "", True)
+        self.nodes[2].setgenerate(True, 1)
+        self.sync_all()
+        assert_equal(self.nodes[2].getbalance(), Decimal('79.99900000'))
+        assert_equal(self.nodes[0].getbalance(), Decimal('19.99900000'))
+        
         # Test ResendWalletTransactions:
         # Create a couple of transactions, then start up a fourth
         # node (nodes[3]) and ask nodes[0] to rebroadcast.

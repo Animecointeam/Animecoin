@@ -312,7 +312,7 @@ static const CRPCCommand vRPCCommands[] =
   { "rawtransactions",    "decodescript",           &decodescript,           true  },
   { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true  },
   { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false },
-  { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false }, /* uses wallet if enabled *
+  { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false }, /* uses wallet if enabled */
 #ifdef ENABLE_WALLET
   { "rawtransactions",    "fundrawtransaction",     &fundrawtransaction,     false },
 #endif
@@ -354,6 +354,7 @@ static const CRPCCommand vRPCCommands[] =
   { "wallet",             "importprivkey",          &importprivkey,          true  },
   { "wallet",             "importwallet",           &importwallet,           true  },
   { "wallet",             "importaddress",          &importaddress,          true  },
+  { "wallet",             "importpubkey",           &importpubkey,           true  },
   { "wallet",             "keypoolrefill",          &keypoolrefill,          true  },
   { "wallet",             "listaccounts",           &listaccounts,           false },
   { "wallet",             "listaddressgroupings",   &listaddressgroupings,   false },
