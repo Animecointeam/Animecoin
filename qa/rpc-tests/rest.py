@@ -23,7 +23,7 @@ except ImportError:
 def http_get_call(host, port, path, response_object = 0):
     conn = httplib.HTTPConnection(host, port)
     conn.request('GET', path)
-    
+
     if response_object:
         return conn.getresponse()
         
@@ -40,7 +40,30 @@ class RESTTest (BitcoinTestFramework):
         # check binary format
         response = http_get_call(url.hostname, url.port, '/rest/block/'+bb_hash+self.FORMAT_SEPARATOR+"bin", True)
         assert_equal(response.status, 200)
-        assert_greater_than(int(response.getheader('content-length')), 10)
+        assert_greater_than(int(response.getheader('content-length')), 80)
+        response_str = response.read()
+
+        # compare with block header
+        response_header = http_get_call(url.hostname, url.port, '/rest/headers/1/'+bb_hash+self.FORMAT_SEPARATOR+"bin", True)
+        assert_equal(response_header.status, 200)
+        assert_equal(int(response_header.getheader('content-length')), 80)
+        response_header_str = response_header.read()
+        assert_equal(response_str[0:80], response_header_str)
+
+        # check block hex format
+        response_hex = http_get_call(url.hostname, url.port, '/rest/block/'+bb_hash+self.FORMAT_SEPARATOR+"hex", True)
+        assert_equal(response_hex.status, 200)
+        assert_greater_than(int(response_hex.getheader('content-length')), 160)
+        response_hex_str = response_hex.read()
+        assert_equal(response_str.encode("hex")[0:160], response_hex_str[0:160])
+
+        # compare with hex block header
+        response_header_hex = http_get_call(url.hostname, url.port, '/rest/headers/1/'+bb_hash+self.FORMAT_SEPARATOR+"hex", True)
+        assert_equal(response_header_hex.status, 200)
+        assert_greater_than(int(response_header_hex.getheader('content-length')), 160)
+        response_header_hex_str = response_header_hex.read()
+        assert_equal(response_hex_str[0:160], response_header_hex_str[0:160])
+        assert_equal(response_header_str.encode("hex")[0:160], response_header_hex_str[0:160])
         
         # check json format
         json_string = http_get_call(url.hostname, url.port, '/rest/block/'+bb_hash+self.FORMAT_SEPARATOR+'json')
@@ -55,7 +78,7 @@ class RESTTest (BitcoinTestFramework):
         
         # check hex format response
         hex_string = http_get_call(url.hostname, url.port, '/rest/tx/'+tx_hash+self.FORMAT_SEPARATOR+"hex", True)
-        assert_equal(response.status, 200)
+        assert_equal(hex_string.status, 200)
         assert_greater_than(int(response.getheader('content-length')), 10)
         
         # check block tx details
@@ -83,7 +106,12 @@ class RESTTest (BitcoinTestFramework):
         for tx in txs:
             assert_equal(tx in json_obj['tx'], True)
                 
-        
+                #test rest bestblock
+        bb_hash = self.nodes[0].getbestblockhash()
+
+        json_string = http_get_call(url.hostname, url.port, '/rest/chaininfo.json')
+        json_obj = json.loads(json_string)
+        assert_equal(json_obj['bestblockhash'], bb_hash)
 
 if __name__ == '__main__':
     RESTTest ().main ()

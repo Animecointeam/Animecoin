@@ -90,6 +90,69 @@ static bool ParseHashStr(const string& strReq, uint256& v)
     return true;
 }
 
+static bool rest_headers(AcceptedConnection* conn,
+                         string& strReq,
+                         map<string, string>& mapHeaders,
+                         bool fRun)
+{
+    vector<string> params;
+    const RetFormat rf = ParseDataFormat(params, strReq);
+    vector<string> path;
+    boost::split(path, params[0], boost::is_any_of("/"));
+
+    if (path.size() != 2)
+        throw RESTERR(HTTP_BAD_REQUEST, "No header count specified. Use /rest/headers/<count>/<hash>.<ext>.");
+
+    long count = strtol(path[0].c_str(), NULL, 10);
+    if (count < 1 || count > 2000)
+        throw RESTERR(HTTP_BAD_REQUEST, "Header count out of range: " + path[0]);
+
+    string hashStr = path[1];
+    uint256 hash;
+    if (!ParseHashStr(hashStr, hash))
+        throw RESTERR(HTTP_BAD_REQUEST, "Invalid hash: " + hashStr);
+
+    std::vector<CBlockHeader> headers;
+    headers.reserve(count);
+    {
+        LOCK(cs_main);
+        BlockMap::const_iterator it = mapBlockIndex.find(hash);
+        const CBlockIndex *pindex = (it != mapBlockIndex.end()) ? it->second : NULL;
+        while (pindex != NULL && chainActive.Contains(pindex)) {
+            headers.push_back(pindex->GetBlockHeader());
+            if (headers.size() == (unsigned long)count)
+                break;
+            pindex = chainActive.Next(pindex);
+        }
+    }
+
+    CDataStream ssHeader(SER_NETWORK, PROTOCOL_VERSION);
+    BOOST_FOREACH(const CBlockHeader &header, headers) {
+        ssHeader << header;
+    }
+
+    switch (rf) {
+    case RF_BINARY: {
+        string binaryHeader = ssHeader.str();
+        conn->stream() << HTTPReplyHeader(HTTP_OK, fRun, binaryHeader.size(), "application/octet-stream") << binaryHeader << std::flush;
+        return true;
+    }
+
+    case RF_HEX: {
+        string strHex = HexStr(ssHeader.begin(), ssHeader.end()) + "\n";
+        conn->stream() << HTTPReply(HTTP_OK, strHex, fRun, false, "text/plain") << std::flush;
+        return true;
+    }
+
+    default: {
+        throw RESTERR(HTTP_NOT_FOUND, "output format not found (available: .bin, .hex)");
+    }
+    }
+
+    // not reached
+    return true; // continue to process further HTTP reqs on this cxn
+}
+
 static bool rest_block(AcceptedConnection* conn,
                        string& strReq,
                        map<string, string>& mapHeaders,
@@ -97,7 +160,7 @@ static bool rest_block(AcceptedConnection* conn,
                        bool showTxDetails)
 {
     vector<string> params;
-    enum RetFormat rf = ParseDataFormat(params, strReq);
+    const RetFormat rf = ParseDataFormat(params, strReq);
 
     string hashStr = params[0];
     uint256 hash;
@@ -167,13 +230,39 @@ static bool rest_block_notxdetails(AcceptedConnection* conn,
     return rest_block(conn, strReq, mapHeaders, fRun, false);
 }
 
+static bool rest_chaininfo(AcceptedConnection* conn,
+                                   string& strReq,
+                                   map<string, string>& mapHeaders,
+                                   bool fRun)
+{
+    vector<string> params;
+    const RetFormat rf = ParseDataFormat(params, strReq);
+
+    switch (rf) {
+    case RF_JSON: {
+        UniValue rpcParams(UniValue::VARR);
+        UniValue chainInfoObject = getblockchaininfo(rpcParams, false);
+
+        string strJSON = chainInfoObject.write() + "\n";
+        conn->stream() << HTTPReply(HTTP_OK, strJSON, fRun) << std::flush;
+        return true;
+    }
+    default: {
+        throw RESTERR(HTTP_NOT_FOUND, "output format not found (available: json)");
+    }
+    }
+
+    // not reached
+    return true; // continue to process further HTTP reqs on this cxn
+}
+
 static bool rest_tx(AcceptedConnection* conn,
                     string& strReq,
                     map<string, string>& mapHeaders,
                     bool fRun)
 {
     vector<string> params;
-    enum RetFormat rf = ParseDataFormat(params, strReq);
+    const RetFormat rf = ParseDataFormat(params, strReq);
 
     string hashStr = params[0];
     uint256 hash;
@@ -228,6 +317,8 @@ static const struct {
       {"/rest/tx/", rest_tx},
       {"/rest/block/notxdetails/", rest_block_notxdetails},
       {"/rest/block/", rest_block_extended},
+      {"/rest/chaininfo", rest_chaininfo},
+      {"/rest/headers/", rest_headers},
 };
 
 bool HTTPReq_REST(AcceptedConnection* conn,
