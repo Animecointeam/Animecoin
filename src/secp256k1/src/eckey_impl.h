@@ -17,7 +17,7 @@
 static int secp256k1_eckey_pubkey_parse(secp256k1_ge_t *elem, const unsigned char *pub, int size) {
     if (size == 33 && (pub[0] == 0x02 || pub[0] == 0x03)) {
         secp256k1_fe_t x;
-        return secp256k1_fe_set_b32(&x, pub+1) && secp256k1_ge_set_xo(elem, &x, pub[0] == 0x03);
+        return secp256k1_fe_set_b32(&x, pub+1) && secp256k1_ge_set_xo_var(elem, &x, pub[0] == 0x03);
     } else if (size == 65 && (pub[0] == 0x04 || pub[0] == 0x06 || pub[0] == 0x07)) {
         secp256k1_fe_t x, y;
         if (!secp256k1_fe_set_b32(&x, pub+1) || !secp256k1_fe_set_b32(&y, pub+33)) {
@@ -26,7 +26,7 @@ static int secp256k1_eckey_pubkey_parse(secp256k1_ge_t *elem, const unsigned cha
         secp256k1_ge_set_xy(elem, &x, &y);
         if ((pub[0] == 0x06 || pub[0] == 0x07) && secp256k1_fe_is_odd(&y) != (pub[0] == 0x07))
             return 0;
-        return secp256k1_ge_is_valid(elem);
+        return secp256k1_ge_is_valid_var(elem);
     } else {
         return 0;
     }
@@ -36,8 +36,8 @@ static int secp256k1_eckey_pubkey_serialize(secp256k1_ge_t *elem, unsigned char 
     if (secp256k1_ge_is_infinity(elem)) {
         return 0;
     }
-    secp256k1_fe_normalize(&elem->x);
-    secp256k1_fe_normalize(&elem->y);
+    secp256k1_fe_normalize_var(&elem->x);
+    secp256k1_fe_normalize_var(&elem->y);
     secp256k1_fe_get_b32(&pub[1], &elem->x);
     if (compressed) {
         *size = 33;
@@ -53,26 +53,20 @@ static int secp256k1_eckey_pubkey_serialize(secp256k1_ge_t *elem, unsigned char 
 static int secp256k1_eckey_privkey_parse(secp256k1_scalar_t *key, const unsigned char *privkey, int privkeylen) {
     const unsigned char *end = privkey + privkeylen;
     /* sequence header */
-    if (end < privkey+1 || *privkey != 0x30u)
+    if (end < privkey+1 || *privkey != 0x30)
         return 0;
     privkey++;
-    /* sequence length constructor 
-    size_t lenb = 0;
-    printf ("Long enough?\n");
-    if (end < privkey+1)
+    /* sequence length constructor
+    int lenb = 0;
+    if (end < privkey+1 || !(*privkey & 0x80))
         return 0;
-    printf ("Bad 80?\n");
-    if  (!(*privkey & 0x80u))
-		printf ("That's no 80! It's %i!\n",*privkey);
-		//return 0;
-    lenb = *privkey & ~0x80u; privkey++;
+    lenb = *privkey & ~0x80; privkey++;
     if (lenb < 1 || lenb > 2)
         return 0;
     if (end < privkey+lenb)
         return 0;
-    // sequence length 
-    size_t len = 0;
-    len = privkey[lenb-1] | (lenb > 1 ? privkey[lenb-2] << 8 : 0u);
+    int len = 0;
+    len = privkey[lenb-1] | (lenb > 1 ? privkey[lenb-2] << 8 : 0);
     privkey += lenb;
     if (end < privkey+len)
         return 0;*/
@@ -94,11 +88,11 @@ static int secp256k1_eckey_privkey_parse(secp256k1_scalar_t *key, const unsigned
 		}
 	}
     /* sequence element 0: version number (=1) */
-    if (end < privkey+3 || privkey[0] != 0x02u || privkey[1] != 0x01u || privkey[2] != 0x01u)
+    if (end < privkey+3 || privkey[0] != 0x02 || privkey[1] != 0x01 || privkey[2] != 0x01)
         return 0;
     privkey += 3;
     /* sequence element 1: octet string, up to 32 bytes */
-    if (end < privkey+2 || privkey[0] != 0x04u || privkey[1] > 0x20u || end < privkey+2+privkey[1])
+    if (end < privkey+2 || privkey[0] != 0x04 || privkey[1] > 0x20 || end < privkey+2+privkey[1])
         return 0;
     int overflow = 0;
     unsigned char c[32] = {0};
