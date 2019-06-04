@@ -3588,6 +3588,7 @@ int test_ecdsa_der_parse(const unsigned char *sig, size_t siglen, int certainly_
         ret |= (len_der != (size_t)len_openssl) << 8;
         ret |= (memcmp(roundtrip_der, roundtrip_openssl, len_der) != 0) << 9;
     }
+
 #endif
     return ret;
 }
