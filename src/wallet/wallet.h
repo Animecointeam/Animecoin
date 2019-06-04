@@ -41,8 +41,12 @@ extern bool fPayAtLeastCustomFee;
 static const CAmount DEFAULT_TRANSACTION_FEE = 0;
 //! -paytxfee will warn if called with a higher fee than this amount (in satoshis) per KB
 static const CAmount nHighTransactionFeeWarning = 0.01 * COIN;
+//! -mintxfee default
+static const CAmount DEFAULT_TRANSACTION_MINFEE = 100;
 //! -maxtxfee default
 static const CAmount DEFAULT_TRANSACTION_MAXFEE = 10 * COIN;
+//! minimum change amount
+static const CAmount MIN_CHANGE = CENT;
 //! -maxtxfee will warn if called with a higher fee than this amount (in satoshis)
 static const CAmount nHighTransactionMaxFeeWarning = 100 * nHighTransactionFeeWarning;
 //! Largest (in bytes) free transaction we're willing to create
@@ -218,7 +222,14 @@ public:
     //! check whether we are allowed to upgrade (or already support) to the named feature
     bool CanSupportFeature(enum WalletFeature wf) { AssertLockHeld(cs_wallet); return nWalletMaxVersion >= wf; }
 
+    /**
+     * populate vCoins with vector of available COutputs.
+     */
     void AvailableCoins(std::vector<COutput>& vCoins, bool fOnlyConfirmed=true, const CCoinControl *coinControl = nullptr) const;
+    /**
+     * Select coins until nTargetValue is reached. Return the actual value
+     * and the corresponding coin set.
+     */
     bool SelectCoinsMinConf(const CAmount& nTargetValue, int nConfMine, int nConfTheirs, std::vector<COutput> vCoins, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet) const;
 
     bool IsSpent(const uint256& hash, unsigned int n) const;
