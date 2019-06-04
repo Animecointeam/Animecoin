@@ -60,7 +60,7 @@ CWallet* pwalletMain = nullptr;
 bool fFeeEstimatesInitialized = false;
 
 #if ENABLE_ZMQ
-static CZMQNotificationInterface* pzmqNotificationInterface = NULL;
+static CZMQNotificationInterface* pzmqNotificationInterface = nullptr;
 #endif
 
 #ifdef WIN32
@@ -146,6 +146,7 @@ public:
 
 static CCoinsViewDB *pcoinsdbview = nullptr;
 static CCoinsViewErrorCatcher *pcoinscatcher = nullptr;
+static unique_ptr<ECCVerifyHandle> globalVerifyHandle;
 
 void Shutdown()
 {
@@ -205,7 +206,7 @@ void Shutdown()
         UnregisterValidationInterface(pzmqNotificationInterface);
         pzmqNotificationInterface->Shutdown();
         delete pzmqNotificationInterface;
-        pzmqNotificationInterface = NULL;
+        pzmqNotificationInterface = nullptr;
     }
 #endif
 
@@ -217,6 +218,8 @@ void Shutdown()
     delete pwalletMain;
     pwalletMain = nullptr;
 #endif
+    globalVerifyHandle.reset();
+    ECC_Stop();
     LogPrintf("%s: done\n", __func__);
 }
 
@@ -586,8 +589,7 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 bool InitSanityCheck(void)
 {
     if(!ECC_InitSanityCheck()) {
-        InitError("OpenSSL appears to lack support for elliptic curve cryptography. For more "
-                  "information, visit https://en.bitcoin.it/wiki/OpenSSL_and_EC_Libraries");
+        InitError("Elliptic curve cryptography sanity check failure. Aborting.");
         return false;
     }
     if (!glibc_sanity_test() || !glibcxx_sanity_test())
@@ -873,6 +875,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     fAlerts = GetBoolArg("-alerts", DEFAULT_ALERTS);
 
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
+
+    // Initialize elliptic curve code
+    ECC_Start();
+    globalVerifyHandle.reset(new ECCVerifyHandle());
 
     // Sanity check
     if (!InitSanityCheck())

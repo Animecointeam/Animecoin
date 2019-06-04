@@ -200,7 +200,7 @@ QMAKE_CLEAN += src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 INCLUDEPATH += src/secp256k1/include
 LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 	# we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --with-field=64bit --with-bignum=none --enable-endomorphism && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+    gensecp256k1.commands = cd $$PWD/src/secp256k1 && ./autogen.sh && ./configure --with-bignum=no --enable-module-recovery && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
     gensecp256k1.target = $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 	gensecp256k1.depends = FORCE
     PRE_TARGETDEPS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
@@ -353,8 +353,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/chainparamsseeds.h \
     src/compressor.h \
     src/config/bitcoin-config.h \
-    src/eccryptoverify.h \
-    src/ecwrapper.h \
     src/merkleblock.h \
     src/undo.h \
     src/qt/networkstyle.h \
@@ -497,8 +495,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/chainparamsbase.cpp \
     src/clientversion.cpp \
     src/compressor.cpp \
-    src/eccryptoverify.cpp \
-    src/ecwrapper.cpp \
     src/merkleblock.cpp \
     src/qt/networkstyle.cpp \
     src/qt/peertablemodel.cpp \

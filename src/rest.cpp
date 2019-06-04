@@ -125,7 +125,7 @@ static bool rest_headers(AcceptedConnection* conn,
     if (path.size() != 2)
         throw RESTERR(HTTP_BAD_REQUEST, "No header count specified. Use /rest/headers/<count>/<hash>.<ext>.");
 
-    long count = strtol(path[0].c_str(), NULL, 10);
+    long count = strtol(path[0].c_str(), nullptr, 10);
     if (count < 1 || count > 2000)
         throw RESTERR(HTTP_BAD_REQUEST, "Header count out of range: " + path[0]);
 
@@ -139,8 +139,8 @@ static bool rest_headers(AcceptedConnection* conn,
     {
         LOCK(cs_main);
         BlockMap::const_iterator it = mapBlockIndex.find(hash);
-        const CBlockIndex *pindex = (it != mapBlockIndex.end()) ? it->second : NULL;
-        while (pindex != NULL && chainActive.Contains(pindex)) {
+        const CBlockIndex *pindex = (it != mapBlockIndex.end()) ? it->second : nullptr;
+        while (pindex != nullptr && chainActive.Contains(pindex)) {
             headers.push_back(pindex->GetBlockHeader());
             if (headers.size() == (unsigned long)count)
                 break;

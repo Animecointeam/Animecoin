@@ -9,6 +9,7 @@
 #include "chainparams.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
+#include "key.h"
 #include "main.h"
 #include "miner.h"
 #include "pubkey.h"
@@ -33,6 +34,7 @@ extern void noui_connect();
 
 BasicTestingSetup::BasicTestingSetup(CBaseChainParams::Network network)
 {
+        ECC_Start();
         SetupEnvironment();
         fPrintToDebugLog = false; // don't want to write to debug.log file
         SelectParams(CBaseChainParams::MAIN);
@@ -43,6 +45,7 @@ BasicTestingSetup::BasicTestingSetup(CBaseChainParams::Network network)
 
 BasicTestingSetup::~BasicTestingSetup()
 {
+	    ECC_Stop();
 }
 
 TestingSetup::TestingSetup(CBaseChainParams::Network network) : BasicTestingSetup(network)
