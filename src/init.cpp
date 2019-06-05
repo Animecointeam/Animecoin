@@ -526,6 +526,7 @@ void CleanupBlockRevFiles()
 
 void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
+    const CChainParams& chainparams = Params();
     RenameThread("animecoin-loadblk");
     // -reindex
     if (fReindex) {
@@ -539,14 +540,14 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
             if (!file)
                 break; // This error is logged in OpenBlockFile
             LogPrintf("Reindexing block file blk%05u.dat...\n", (unsigned int)nFile);
-            LoadExternalBlockFile(file, &pos);
+            LoadExternalBlockFile(chainparams, file, &pos);
             nFile++;
         }
         pblocktree->WriteReindexing(false);
         fReindex = false;
         LogPrintf("Reindexing finished\n");
         // To avoid ending up in a situation without genesis block, re-try initializing (no-op if reindexing worked):
-        InitBlockIndex();
+        InitBlockIndex(chainparams);
     }
 
     // hardcoded $DATADIR/bootstrap.dat
@@ -557,7 +558,7 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
             CImportingNow imp;
             filesystem::path pathBootstrapOld = GetDataDir() / "bootstrap.dat.old";
             LogPrintf("Importing bootstrap.dat...\n");
-            LoadExternalBlockFile(file);
+            LoadExternalBlockFile(chainparams, file);
             RenameOver(pathBootstrap, pathBootstrapOld);
         } else {
             LogPrintf("Warning: Could not open bootstrap file %s\n", pathBootstrap.string());
@@ -570,7 +571,7 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
         if (file) {
             CImportingNow imp;
             LogPrintf("Importing blocks file %s...\n", path.string());
-            LoadExternalBlockFile(file);
+            LoadExternalBlockFile(chainparams, file);
         } else {
             LogPrintf("Warning: Could not open blocks file %s\n", path.string());
         }
@@ -666,6 +667,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 #endif
 #endif
     // ********************************************************* Step 2: parameter interactions
+    const CChainParams& chainparams = Params();
+
     // Set this early so that parameter interactions go to console
     fPrintToConsole = GetBoolArg("-printtoconsole", false);
     fLogTimestamps = GetBoolArg("-logtimestamps", true);
@@ -773,8 +776,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         InitWarning(_("Warning: Unsupported argument -benchmark ignored, use -debug=bench."));
 
     // Checkmempool and checkblockindex default to true in regtest mode
-    mempool.setSanityCheck(GetBoolArg("-checkmempool", Params().DefaultConsistencyChecks()));
-    fCheckBlockIndex = GetBoolArg("-checkblockindex", Params().DefaultConsistencyChecks());
+    mempool.setSanityCheck(GetBoolArg("-checkmempool", chainparams.DefaultConsistencyChecks()));
+    fCheckBlockIndex = GetBoolArg("-checkblockindex", chainparams.DefaultConsistencyChecks());
     fCheckpointsEnabled = GetBoolArg("-checkpoints", true);
 
     // -par=0 means autodetect, but nScriptCheckThreads==0 means no concurrency
@@ -1161,11 +1164,11 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
                 // If the loaded chain has a wrong genesis, bail out immediately
                 // (we're likely using a testnet datadir, or the other way around).
-                if (!mapBlockIndex.empty() && mapBlockIndex.count(Params().HashGenesisBlock()) == 0)
+                if (!mapBlockIndex.empty() && mapBlockIndex.count(chainparams.GetConsensus().hashGenesisBlock) == 0)
                     return InitError(_("Incorrect or no genesis block found. Wrong datadir for network?"));
 
                 // Initialize the block index (no-op if non-empty database was already loaded)
-                if (!InitBlockIndex()) {
+                if (!InitBlockIndex(chainparams)) {
                     strLoadError = _("Error initializing block database");
                     break;
                 }
@@ -1188,7 +1191,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                     LogPrintf("Prune: pruned datadir may not have more than %d blocks; -checkblocks=%d may fail\n",
                         MIN_BLOCKS_TO_KEEP, GetArg("-checkblocks", 5760));
                 }
-                if (!CVerifyDB().VerifyDB(pcoinsdbview, GetArg("-checklevel", 3),
+                if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview, GetArg("-checklevel", 3),
                               GetArg("-checkblocks", 5760))) {
                     strLoadError = _("Corrupted block database detected");
                     break;
@@ -1396,7 +1399,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // scan for better chains in the block chain database, that are not yet connected in the active best chain
     CValidationState state;
-    if (!ActivateBestChain(state))
+    if (!ActivateBestChain(state, chainparams))
         strErrors << "Failed to connect best block";
 
     std::vector<boost::filesystem::path> vImportFiles;

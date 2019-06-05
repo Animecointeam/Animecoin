@@ -37,6 +37,7 @@
 
 class CBlockIndex;
 class CBlockTreeDB;
+class CChainParams;
 class CBloomFilter;
 class CInv;
 class CScriptCheck;
@@ -76,6 +77,8 @@ static const unsigned int BLOCK_DOWNLOAD_WINDOW = 20480;
 static const unsigned int DATABASE_WRITE_INTERVAL = 3600;
 /** Maximum length of reject messages. */
 static const unsigned int MAX_REJECT_MESSAGE_LENGTH = 111;
+/** Maximum number of headers to announce when relaying blocks with headers message.*/
+static const unsigned int MAX_BLOCKS_TO_ANNOUNCE = 160; // Experimental
 
 struct BlockHasher
 {
@@ -146,7 +149,7 @@ void UnregisterNodeSignals(CNodeSignals& nodeSignals);
  * @param[out]  dbp     If pblock is stored to disk (or already there), this will be set to its location.
  * @return True if state.IsValid()
  */
-bool ProcessNewBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, bool fForceProcessing, CDiskBlockPos *dbp);
+bool ProcessNewBlock(CValidationState& state, const CChainParams& chainparams, const CNode* pfrom, const CBlock* pblock, bool fForceProcessing, CDiskBlockPos* dbp);
 /** Check whether enough disk space is available for an incoming block */
 bool CheckDiskSpace(uint64_t nAdditionalBytes = 0);
 /** Open a block file (blk?????.dat) */
@@ -156,9 +159,9 @@ FILE* OpenUndoFile(const CDiskBlockPos &pos, bool fReadOnly = false);
 /** Translation to a filesystem path */
 boost::filesystem::path GetBlockPosFilename(const CDiskBlockPos &pos, const char *prefix);
 /** Import blocks from an external file */
-bool LoadExternalBlockFile(FILE* fileIn, CDiskBlockPos *dbp = nullptr);
+bool LoadExternalBlockFile(const CChainParams& chainparams, FILE* fileIn, CDiskBlockPos *dbp = nullptr);
 /** Initialize a new block tree database + block data on disk */
-bool InitBlockIndex();
+bool InitBlockIndex(const CChainParams& chainparams);
 /** Load the block tree and coins database from disk */
 bool LoadBlockIndex();
 /** Unload database information */
@@ -183,7 +186,7 @@ std::string GetWarnings(std::string strFor);
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
 bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow = false);
 /** Find the best known block, and make it the tip of the block chain */
-bool ActivateBestChain(CValidationState &state, CBlock *pblock = nullptr);
+bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, const CBlock* pblock = nullptr);
 CAmount GetBlockValue(int nHeight, const CAmount& nFees);
 
 /**
@@ -201,7 +204,7 @@ CAmount GetBlockValue(int nHeight, const CAmount& nFees);
  *
  * @param[out]   setFilesToPrune   The set of file indices that can be unlinked will be returned
  */
-void FindFilesToPrune(std::set<int>& setFilesToPrune);
+void FindFilesToPrune(std::set<int>& setFilesToPrune, uint64_t nPruneAfterHeight);
 
 /**
  *  Actually unlink the specified files
@@ -381,7 +384,7 @@ public:
 
 
 /** Functions for disk access for blocks */
-bool WriteBlockToDisk(CBlock& block, CDiskBlockPos& pos);
+bool WriteBlockToDisk(const CBlock& block, CDiskBlockPos& pos);
 bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos);
 bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex);
 
@@ -406,11 +409,9 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
 bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIndex *pindexPrev);
 
 /** Check a block is completely valid from start to finish (only works on top of our current best block, with cs_main held) */
-bool TestBlockValidity(CValidationState &state, const CBlock& block, CBlockIndex *pindexPrev, bool fCheckPOW = true, bool fCheckMerkleRoot = true);
+bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams, const CBlock& block, CBlockIndex* pindexPrev, bool fCheckPOW = true, bool fCheckMerkleRoot = true);
 
-/** Store block on disk. If dbp is non-nullptr, the file is known to already reside on disk */
-bool AcceptBlock(CBlock& block, CValidationState& state, CBlockIndex **pindex, bool fRequested, CDiskBlockPos* dbp);
-bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state, CBlockIndex **ppindex= nullptr);
+//bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state, CBlockIndex **ppindex= nullptr);
 
 
 
@@ -473,7 +474,7 @@ class CVerifyDB {
 public:
     CVerifyDB();
     ~CVerifyDB();
-    bool VerifyDB(CCoinsView *coinsview, int nCheckLevel, int nCheckDepth);
+    bool VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview, int nCheckLevel, int nCheckDepth);
 };
 
 /** Find the last common block between the parameter chain and a locator. */

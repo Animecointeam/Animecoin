@@ -50,6 +50,7 @@ BasicTestingSetup::~BasicTestingSetup()
 
 TestingSetup::TestingSetup(CBaseChainParams::Network network) : BasicTestingSetup(network)
 {
+    const CChainParams& chainparams = Params();
 #ifdef ENABLE_WALLET
         bitdb.MakeMock();
 #endif
@@ -61,7 +62,7 @@ TestingSetup::TestingSetup(CBaseChainParams::Network network) : BasicTestingSetu
         pblocktree = new CBlockTreeDB(1 << 20, isObfuscated, true);
         pcoinsdbview = new CCoinsViewDB(1 << 23, isObfuscated, true);
         pcoinsTip = new CCoinsViewCache(pcoinsdbview);
-        InitBlockIndex();
+        InitBlockIndex(chainparams);
 #ifdef ENABLE_WALLET
         bool fFirstRun;
         pwalletMain = new CWallet("wallet.dat");
@@ -115,6 +116,7 @@ TestChain100Setup::TestChain100Setup() : TestingSetup(CBaseChainParams::REGTEST)
 CBlock
 TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
 {
+    const CChainParams& chainparams = Params();
     CBlockTemplate *pblocktemplate = CreateNewBlock(scriptPubKey);
     CBlock& block = pblocktemplate->block;
 
@@ -126,10 +128,10 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     unsigned int extraNonce = 0;
     IncrementExtraNonce(&block, chainActive.Tip(), extraNonce);
 
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, Params(CBaseChainParams::REGTEST).GetConsensus())) ++block.nNonce;
+    while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
 
     CValidationState state;
-    ProcessNewBlock(state, nullptr, &block, true, nullptr);
+    ProcessNewBlock(state, chainparams, NULL, &block, true, NULL);
 
     CBlock result = block;
     delete pblocktemplate;

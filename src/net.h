@@ -184,7 +184,7 @@ public:
 
     int64_t nTime;                  // time (in microseconds) of message receipt.
 
-    CNetMessage(int nTypeIn, int nVersionIn) : hdrbuf(nTypeIn, nVersionIn), vRecv(nTypeIn, nVersionIn) {
+    CNetMessage(const CMessageHeader::MessageStartChars& pchMessageStartIn, int nTypeIn, int nVersionIn) : hdrbuf(nTypeIn, nVersionIn), hdr(pchMessageStartIn), vRecv(nTypeIn, nVersionIn) {
         hdrbuf.resize(24);
         in_data = false;
         nHdrPos = 0;
@@ -293,6 +293,9 @@ public:
     std::vector<CInv> vInventoryToSend;
     CCriticalSection cs_inventory;
     std::multimap<int64_t, CInv> mapAskFor;
+    // Used for headers announcements - unfiltered blocks to relay
+    // Also protected by cs_inventory
+    std::vector<uint256> vBlockHashesToAnnounce;
 
     // Ping time measurement:
     // The pong reply we're expecting, or 0 if no pong expected.
@@ -404,6 +407,12 @@ public:
                 return;
             vInventoryToSend.push_back(inv);
         }
+    }
+
+    void PushBlockHash(const uint256 &hash)
+    {
+        LOCK(cs_inventory);
+        vBlockHashesToAnnounce.push_back(hash);
     }
 
     void AskFor(const CInv& inv);
