@@ -214,7 +214,7 @@ extern const char *REJECT;
 /**
  * Indicates that a node prefers to receive new block announcements via a
  * "headers" message rather than an "inv".
- * @since protocol version 70012 as described by BIP130.
+ * @since protocol version 70012 as described by BIP130 (70004 for Animecoin).
  * @see https://bitcoin.org/en/developer-reference#sendheaders
  */
 extern const char *SENDHEADERS;
