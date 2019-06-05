@@ -46,7 +46,7 @@ static int ec_privkey_import_der(const secp256k1_context* ctx, unsigned char *ou
     if (end - privkey < 1) {
         return 0;
     }
-    int len = *privkey++;
+    size_t len = *privkey++;
     if (len >= 0x80) {
         if ((size_t)(end - privkey) < (len - 0x80)) {
             return 0;

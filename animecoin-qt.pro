@@ -5,7 +5,7 @@ VERSION = 0.10.0
 INCLUDEPATH += src src/qt
 QT += network printsupport
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE HAVE_WORKING_BOOST_SLEEP_FOR
-DEFINES += ENABLE_WALLET
+DEFINES += ENABLE_WALLET ENABLE_ZMQ
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
@@ -382,7 +382,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/zmq/zmqnotificationinterface.h \
     src/zmq/zmqpublishnotifier.h \
     src/validationinterface.h \
-    src/reverse_iterator.h
+    src/reverse_iterator.h \
+    src/torcontrol.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -524,7 +525,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/zmq/zmqabstractnotifier.cpp \
     src/zmq/zmqnotificationinterface.cpp \
     src/zmq/zmqpublishnotifier.cpp \
-    src/validationinterface.cpp
+    src/validationinterface.cpp \
+    src/torcontrol.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
@@ -635,7 +637,7 @@ macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf
+LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf -levent -levent_pthreads
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 !windows: {

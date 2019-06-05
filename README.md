@@ -69,6 +69,7 @@ Building from source
 ---------------------
 You may use either way to build the Qt client:
 1. animecoin-qt.pro for qmake / Qt Creator. Adjust the library paths and prefixes as needed and build.
+The .pro file may not be up to date with the latest trunk changes.
 2. Autotools for commandline (MSYS2 shell in Windows case):
  - ./autogen.sh
  - ./configure (with any options necessary)
