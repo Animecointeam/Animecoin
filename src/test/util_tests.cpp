@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(util_GetArg)
 
 BOOST_AUTO_TEST_CASE(util_FormatMoney)
 {
-    /*
+
     BOOST_CHECK_EQUAL(FormatMoney(0), "0.00");
     BOOST_CHECK_EQUAL(FormatMoney((COIN/10000)*123456789), "12345.6789");
     BOOST_CHECK_EQUAL(FormatMoney(-COIN), "-1.00");
@@ -165,10 +165,9 @@ BOOST_AUTO_TEST_CASE(util_FormatMoney)
     BOOST_CHECK_EQUAL(FormatMoney(COIN/1000), "0.001");
     BOOST_CHECK_EQUAL(FormatMoney(COIN/10000), "0.0001");
     BOOST_CHECK_EQUAL(FormatMoney(COIN/100000), "0.00001");
-    BOOST_CHECK_EQUAL(FormatMoney(COIN/1000000), "0.000001");
+    /*BOOST_CHECK_EQUAL(FormatMoney(COIN/1000000), "0.000001"); // Zeroes out with Animecoin settings.
     BOOST_CHECK_EQUAL(FormatMoney(COIN/10000000), "0.0000001");
-    BOOST_CHECK_EQUAL(FormatMoney(COIN/100000000), "0.00000001");
-    */
+    BOOST_CHECK_EQUAL(FormatMoney(COIN/100000000), "0.00000001");*/
 }
 
 BOOST_AUTO_TEST_CASE(util_ParseMoney)

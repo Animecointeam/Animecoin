@@ -16,6 +16,8 @@ typedef int64_t CAmount;
 static const CAmount COIN = 100000;
 static const CAmount CENT = 1000;
 
+extern const std::string CURRENCY_UNIT;
+
 /** No amount larger than this (in satoshi) is valid */
 static const CAmount MAX_MONEY = 2500000000 * COIN; // ~2.000 billion + ~8 million pa (inflation). Updated for Animecoin.
 inline bool MoneyRange(const CAmount& nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }

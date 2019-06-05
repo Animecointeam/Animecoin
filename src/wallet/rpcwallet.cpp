@@ -394,7 +394,7 @@ UniValue sendtoaddress(const UniValue& params, bool fHelp)
                 + HelpRequiringPassphrase() +
                 "\nArguments:\n"
                 "1. \"animecoinaddress\"  (string, required) The animecoin address to send to.\n"
-                "2. \"amount\"      (numeric, required) The amount in ANI to send. eg 0.1\n"
+                "2. \"amount\"      (numeric, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
                 "3. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
                 "                             This is not part of the transaction, just kept in your wallet.\n"
                 "4. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
@@ -456,7 +456,7 @@ UniValue listaddressgroupings(const UniValue& params, bool fHelp)
             "  [\n"
             "    [\n"
             "      \"animecoinaddress\",       (string) The animecoin address\n"
-            "      amount,                 (numeric) The amount in ANI\n"
+            "      amount,                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
             "      \"account\"             (string, optional) The account\n"
             "    ]\n"
             "    ,...\n"
@@ -560,7 +560,7 @@ UniValue getreceivedbyaddress(const UniValue& params, bool fHelp)
                 "1. \"animecoinaddress\"    (string, required) The animecoin address for transactions.\n"
                 "2. minconf             (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
                 "\nResult:\n"
-                "amount   (numeric) The total amount in ANI received at this address.\n"
+                "amount   (numeric) The total amount in " + CURRENCY_UNIT + " received at this address.\n"
                 "\nExamples:\n"
                 "\nThe amount from transactions with at least 1 confirmation\n"
                 + HelpExampleCli("getreceivedbyaddress", "\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\"") +
@@ -618,7 +618,7 @@ UniValue getreceivedbyaccount(const UniValue& params, bool fHelp)
                 "1. \"account\"      (string, required) The selected account, may be the default account using \"\".\n"
                 "2. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
                 "\nResult:\n"
-                "amount              (numeric) The total amount in ANI received for this account.\n"
+                "amount              (numeric) The total amount in " + CURRENCY_UNIT + " received for this account.\n"
                 "\nExamples:\n"
                 "\nAmount received by the default account with at least 1 confirmation\n"
                 + HelpExampleCli("getreceivedbyaccount", "\"\"") +
@@ -711,7 +711,7 @@ UniValue getbalance(const UniValue& params, bool fHelp)
                 "2. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
                 "3. includeWatchonly (bool, optional, default=false) Also include balance in watchonly addresses (see 'importaddress')\n"
                 "\nResult:\n"
-                "amount              (numeric) The total amount in ANI received for this account.\n"
+                "amount              (numeric) The total amount in " + CURRENCY_UNIT + " received for this account.\n"
                 "\nExamples:\n"
                 "\nThe total amount in the server across all accounts\n"
                 + HelpExampleCli("getbalance", "") +
@@ -801,14 +801,15 @@ UniValue movecmd(const UniValue& params, bool fHelp)
                 "\nArguments:\n"
                 "1. \"fromaccount\"   (string, required) The name of the account to move funds from. May be the default account using \"\".\n"
                 "2. \"toaccount\"     (string, required) The name of the account to move funds to. May be the default account using \"\".\n"
-                "3. minconf           (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
-                "4. \"comment\"       (string, optional) An optional comment, stored in the wallet only.\n"
+                "3. amount            (numeric) Quantity of " + CURRENCY_UNIT + " to move between accounts.\n"
+                "4. minconf           (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
+                "5. \"comment\"       (string, optional) An optional comment, stored in the wallet only.\n"
                 "\nResult:\n"
                 "true|false           (boolean) true if successful.\n"
                 "\nExamples:\n"
-                "\nMove 0.01 ANI from the default account to the account named tabby\n"
+                "\nMove 0.01 " + CURRENCY_UNIT + " from the default account to the account named tabby\n"
                 + HelpExampleCli("move", "\"\" \"tabby\" 0.01") +
-                "\nMove 0.01 ANI timotei to akiko with a comment and funds have 6 confirmations\n"
+                "\nMove 0.01 " + CURRENCY_UNIT + " timotei to akiko with a comment and funds have 6 confirmations\n"
                 + HelpExampleCli("move", "\"timotei\" \"akiko\" 0.01 6 \"happy birthday!\"") +
                 "\nAs a json rpc call\n"
                 + HelpExampleRpc("move", "\"timotei\", \"akiko\", 0.01, 6, \"happy birthday!\"")
@@ -875,7 +876,7 @@ UniValue sendfrom(const UniValue& params, bool fHelp)
                 "\nArguments:\n"
                 "1. \"fromaccount\"       (string, required) The name of the account to send funds from. May be the default account using \"\".\n"
                 "2. \"toanimecoinaddress\"    (string, required) The animecoin address to send funds to.\n"
-                "3. amount                (numeric, required) The amount in ANI. (transaction fee is added on top).\n"
+                "3. amount                (numeric, required) The amount in " + CURRENCY_UNIT + " (transaction fee is added on top).\n"
                 "4. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
                 "5. \"comment\"           (string, optional) A comment used to store what the transaction is for. \n"
                 "                                     This is not part of the transaction, just kept in your wallet.\n"
@@ -885,7 +886,7 @@ UniValue sendfrom(const UniValue& params, bool fHelp)
                 "\nResult:\n"
                 "\"transactionid\"        (string) The transaction id.\n"
                 "\nExamples:\n"
-                "\nSend 0.01 ANI from the default account to the address, must have at least 1 confirmation\n"
+                "\nSend 0.01 " + CURRENCY_UNIT + " from the default account to the address, must have at least 1 confirmation\n"
                 + HelpExampleCli("sendfrom", "\"\" \"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\" 0.01") +
                 "\nSend 0.01 from the tabby account to the given address, funds must have at least 6 confirmations\n"
                 + HelpExampleCli("sendfrom", "\"tabby\" \"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\" 0.01 6 \"donation\" \"seans outpost\"") +
@@ -940,7 +941,7 @@ UniValue sendmany(const UniValue& params, bool fHelp)
                 "1. \"fromaccount\"         (string, required) The account to send the funds from, can be \"\" for the default account\n"
                 "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
                 "    {\n"
-                "      \"address\":amount   (numeric) The animecoin address is the key, the numeric amount in ANI is the value\n"
+                "      \"address\":amount   (numeric) The bitcoin address is the key, the numeric amount in " + CURRENCY_UNIT + " is the value\n"
                 "      ,...\n"
                 "    }\n"
                 "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
@@ -1240,7 +1241,7 @@ UniValue listreceivedbyaddress(const UniValue& params, bool fHelp)
                 "    \"involvesWatchonly\" : \"true\",    (bool) Only returned if imported addresses were involved in transaction\n"
                 "    \"address\" : \"receivingaddress\",  (string) The receiving address\n"
                 "    \"account\" : \"accountname\",       (string) The account of the receiving address. The default account is \"\".\n"
-                "    \"amount\" : x.xxx,                  (numeric) The total amount in ANI received by the address\n"
+                "    \"amount\" : x.xxx,                  (numeric) The total amount in " + CURRENCY_UNIT + " received by the address\n"
                 "    \"confirmations\" : n                (numeric) The number of confirmations of the most recent transaction included\n"
                 "  }\n"
                 "  ,...\n"
@@ -1413,11 +1414,11 @@ UniValue listtransactions(const UniValue& params, bool fHelp)
                 "                                                transaction between accounts, and not associated with an address,\n"
                 "                                                transaction id or block. 'send' and 'receive' transactions are \n"
                 "                                                associated with an address, transaction id and block details\n"
-                "    \"amount\": x.xxx,          (numeric) The amount in ANI. This is negative for the 'send' category, and for the\n"
+                "    \"amount\": x.xxx,          (numeric) The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and for the\n"
                 "                                         'move' category for moves outbound. It is positive for the 'receive' category,\n"
                 "                                         and for the 'move' category for inbound funds.\n"
                 "    \"vout\" : n,               (numeric) the vout value\n"
-                "    \"fee\": x.xxx,             (numeric) The amount of the fee in ANI. This is negative and only available for the \n"
+                "    \"fee\": x.xxx,             (numeric) The amount of the fee in " + CURRENCY_UNIT + ". This is negative and only available for the \n"
                 "                                         'send' category of transactions.\n"
                 "    \"confirmations\": n,       (numeric) The number of confirmations for the transaction. Available for 'send' and \n"
                 "                                         'receive' category of transactions.\n"
@@ -1608,10 +1609,10 @@ UniValue listsinceblock(const UniValue& params, bool fHelp)
                 "    \"account\":\"accountname\",       (string) The account name associated with the transaction. Will be \"\" for the default account.\n"
                 "    \"address\":\"animecoinaddress\",      (string) The animecoin address of the transaction. Not present for move transactions (category = move).\n"
                 "    \"category\":\"send|receive\",     (string) The transaction category. 'send' has negative amounts, 'receive' has positive amounts.\n"
-                "    \"amount\": x.xxx,          (numeric) The amount in ANI. This is negative for the 'send' category, and for the 'move' category for moves \n"
+                "    \"amount\": x.xxx,          (numeric) The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and for the 'move' category for moves \n"
                 "                                          outbound. It is positive for the 'receive' category, and for the 'move' category for inbound funds.\n"
                 "    \"vout\" : n,               (numeric) the vout value\n"
-                "    \"fee\": x.xxx,             (numeric) The amount of the fee in ANI. This is negative and only available for the 'send' category of transactions.\n"
+                "    \"fee\": x.xxx,             (numeric) The amount of the fee in " + CURRENCY_UNIT + ". This is negative and only available for the 'send' category of transactions.\n"
                 "    \"confirmations\": n,       (numeric) The number of confirmations for the transaction. Available for 'send' and 'receive' category of transactions.\n"
                 "    \"blockhash\": \"hashvalue\",     (string) The block hash containing the transaction. Available for 'send' and 'receive' category of transactions.\n"
                 "    \"blockindex\": n,          (numeric) The block index containing the transaction. Available for 'send' and 'receive' category of transactions.\n"
@@ -1694,7 +1695,7 @@ UniValue gettransaction(const UniValue& params, bool fHelp)
                 "2. \"includeWatchonly\"    (bool, optional, default=false) Whether to include watchonly addresses in balance calculation and details[]\n"
                 "\nResult:\n"
                 "{\n"
-                "  \"amount\" : x.xxx,        (numeric) The transaction amount in ANI\n"
+                "  \"amount\" : x.xxx,        (numeric) The transaction amount in " + CURRENCY_UNIT + "\n"
                 "  \"confirmations\" : n,     (numeric) The number of confirmations\n"
                 "  \"blockhash\" : \"hash\",  (string) The block hash\n"
                 "  \"blockindex\" : xx,       (numeric) The block index\n"
@@ -1707,7 +1708,7 @@ UniValue gettransaction(const UniValue& params, bool fHelp)
                 "      \"account\" : \"accountname\",  (string) The account name involved in the transaction, can be \"\" for the default account.\n"
                 "      \"address\" : \"animecoinaddress\",     (string) The animecoinaddress involved in the transaction\n"
                 "      \"category\" : \"send|receive\",    (string) The category, either 'send' or 'receive'\n"
-                "      \"amount\" : x.xxx                  (numeric) The amount in ANI\n"
+                "      \"amount\" : x.xxx                  (numeric) The amount in " + CURRENCY_UNIT + "\n"
                 "      \"vout\" : n,                       (numeric) the vout value\n"
                 "    }\n"
                 "    ,...\n"
@@ -2173,7 +2174,7 @@ UniValue settxfee(const UniValue& params, bool fHelp)
                 "settxfee amount\n"
                 "\nSet the transaction fee per kB.\n"
                 "\nArguments:\n"
-                "1. amount         (numeric, required) The transaction fee in ANI/kB rounded to the nearest 0.00000001\n"
+                "1. amount         (numeric, required) The transaction fee in " + CURRENCY_UNIT + "/kB rounded to the nearest 0.00000001\n"
                 "\nResult\n"
                 "true|false        (boolean) Returns true if successful\n"
                 "\nExamples:\n"
@@ -2202,11 +2203,14 @@ UniValue getwalletinfo(const UniValue& params, bool fHelp)
             "\nResult:\n"
             "{\n"
             "  \"walletversion\": xxxxx,     (numeric) the wallet version\n"
-            "  \"balance\": xxxxxxx,         (numeric) the total animecoin balance of the wallet\n"
+            "  \"balance\": xxxxxxx,         (numeric) the total confirmed balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "  \"unconfirmed_balance\": xxx, (numeric) the total unconfirmed balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "  \"immature_balance\": xxxxxx, (numeric) the total immature balance of the wallet in " + CURRENCY_UNIT + "\n"
             "  \"txcount\": xxxxxxx,         (numeric) the total number of transactions in the wallet\n"
             "  \"keypoololdest\": xxxxxx,    (numeric) the timestamp (seconds since GMT epoch) of the oldest pre-generated key in the key pool\n"
             "  \"keypoolsize\": xxxx,        (numeric) how many new keys are pre-generated\n"
             "  \"unlocked_until\": ttt,      (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked\n"
+            "  \"paytxfee\": x.xxxx,         (numeric) the transaction fee configuration, set in " + CURRENCY_UNIT + "/kB\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getwalletinfo", "")
@@ -2218,11 +2222,14 @@ UniValue getwalletinfo(const UniValue& params, bool fHelp)
     UniValue obj(UniValue::VOBJ);
     obj.push_back(Pair("walletversion", pwalletMain->GetVersion()));
     obj.push_back(Pair("balance",       ValueFromAmount(pwalletMain->GetBalance())));
+    obj.push_back(Pair("unconfirmed_balance", ValueFromAmount(pwalletMain->GetUnconfirmedBalance())));
+    obj.push_back(Pair("immature_balance",    ValueFromAmount(pwalletMain->GetImmatureBalance())));
     obj.push_back(Pair("txcount",       (int)pwalletMain->mapWallet.size()));
     obj.push_back(Pair("keypoololdest", pwalletMain->GetOldestKeyPoolTime()));
     obj.push_back(Pair("keypoolsize",   (int)pwalletMain->GetKeyPoolSize()));
     if (pwalletMain->IsCrypted())
         obj.push_back(Pair("unlocked_until", nWalletUnlockTime));
+    obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
     return obj;
 }
 
@@ -2280,7 +2287,7 @@ UniValue listunspent(const UniValue& params, bool fHelp)
                 "    \"address\" : \"address\",  (string) the animecoin address\n"
                 "    \"account\" : \"account\",  (string) The associated account, or \"\" for the default account\n"
                 "    \"scriptPubKey\" : \"key\", (string) the script key\n"
-                "    \"amount\" : x.xxx,         (numeric) the transaction amount in ANI\n"
+                "    \"amount\" : x.xxx,         (numeric) the transaction amount in " + CURRENCY_UNIT + "\n"
                 "    \"confirmations\" : n       (numeric) The number of confirmations\n"
                 "  }\n"
                 "  ,...\n"

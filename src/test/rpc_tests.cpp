@@ -140,27 +140,27 @@ BOOST_AUTO_TEST_CASE(rpc_parse_monetary_values)
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("-0.00000001")), UniValue);
     BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0")), 0LL);
     BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.00000000")), 0LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.00000001")), 1LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.17622195")), 17622195LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.5")), 50000000LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.50000000")), 50000000LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.89898989")), 89898989LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("1.00000000")), 100000000LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("2099999.9999999")), 209999999999990LL);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("2099999.99999999")), 209999999999999LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.00001")), 1LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.17622")), 17622LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.5")), 50000LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.50000000")), 50000LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.89898")), 89898LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("1.00000000")), 100000LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("2099999.9999")), 209999999990LL);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("2099999.99999")), 209999999999LL);
 
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("1e-8")), COIN/100000);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.1e-7")), COIN/100000);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.01e-6")), COIN/100000);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.0000000000000000000000000000000000000000000000000000000000000000000000000001e+68")), COIN/100000);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("10000000000000000000000000000000000000000000000000000000000000000e-64")), COIN*1000);
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000e64")), COIN*1000);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("1e-5")), COIN/100000);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.1e-4")), COIN/100000);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.01e-3")), COIN/100000);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.0000000000000000000000000000000000000000000000000000000000000000000000001e+68")), COIN/100000);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("10000000000000000000000000000000000000000000000000000000000000000000e-64")), COIN*1000);
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000e64")), COIN*1000);
 
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("1e-9")), UniValue); //should fail
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("0.000000019")), UniValue); //should fail
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.00000001000000")), 1LL); //should pass, cut trailing 0
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.00001000000")), 1LL); //should pass, cut trailing 0
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("19e-9")), UniValue); //should fail
-    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.19e-6")), 19); //should pass, leading 0 is present
+    BOOST_CHECK_EQUAL(AmountFromValue(ValueFromString("0.19e-3")), 19); //should pass, leading 0 is present
 
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("92233720368.54775808")), UniValue); //overflow error
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("1e+11")), UniValue); //overflow error
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(json_parse_errors)
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNL"), std::runtime_error);
 
     BOOST_CHECK_THROW(AmountFromValue(ParseNonRFCJSONValue(".19e-6")), std::runtime_error); //should fail, missing leading 0, therefore invalid JSON
-    BOOST_CHECK_EQUAL(AmountFromValue(ParseNonRFCJSONValue("0.00000000000000000000000000000000000001e+30 ")), 1);
+    BOOST_CHECK_EQUAL(AmountFromValue(ParseNonRFCJSONValue("0.00000000000000000000000000000000001e+30 ")), 1);
 }
 
 BOOST_AUTO_TEST_CASE(rpc_boostasiotocnetaddr)

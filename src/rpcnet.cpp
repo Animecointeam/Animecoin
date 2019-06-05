@@ -406,7 +406,7 @@ UniValue getnetworkinfo(const UniValue& params, bool fHelp)
             "  }\n"
             "  ,...\n"
             "  ],\n"
-            "  \"relayfee\": x.xxxxxxxx,                (numeric) minimum relay fee for non-free transactions in btc/kb\n"
+            "  \"relayfee\": x.xxxxxxxx,                (numeric) minimum relay fee for non-free transactions in " + CURRENCY_UNIT + "/kB\n"
             "  \"localaddresses\": [                    (array) list of local addresses\n"
             "  {\n"
             "    \"address\": \"xxxx\",                 (string) network address\n"
@@ -415,6 +415,7 @@ UniValue getnetworkinfo(const UniValue& params, bool fHelp)
             "  }\n"
             "  ,...\n"
             "  ]\n"
+            "  \"warnings\": \"...\"                    (string) any network warnings (such as alert messages) \n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getnetworkinfo", "")
@@ -446,6 +447,7 @@ UniValue getnetworkinfo(const UniValue& params, bool fHelp)
         }
     }
     obj.push_back(Pair("localaddresses", localAddresses));
+    obj.push_back(Pair("warnings",       GetWarnings("statusbar")));
     return obj;
 }
 
