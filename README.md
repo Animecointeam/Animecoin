@@ -32,9 +32,7 @@ Also, the first time you run a 0.8 release on a 0.9+ wallet it will rescan the b
 - Many security and RPC improvements for smoother integration of applications (ongoing).
 - A soft fork akin to BIP-0065 (implemented, awaiting activation).
 - A user interface for multisig capabilities (in progress).
-- getwork will be removed following bitcoin upstream, this may break certain antique mining software (implemented).
-- Deprecated option -tor will be removed, use -onion instead (implemented)!
-- SOCKS4 support will be removed (implemented).
+- Tor hidden service setup automation (implemented).
 
 Features in progress but not necessarily finalized before 0.10 release
 ---------------------
@@ -43,13 +41,19 @@ Features in progress but not necessarily finalized before 0.10 release
 - Animecoin-specific optimizations (it's got a huge amount of block headers while the disk space usage is moderate, lots of small inputs from generated transactions etc).
 - Minimize third-party dependencies.
 
-What's new in 0.9.2
+Features to be removed in 0.10
+---------------------
+- getwork will be removed following bitcoin upstream, this may break certain antique mining software (implemented).
+- Deprecated option -tor will be removed, use -onion instead (implemented)!
+- SOCKS4 support will be removed (implemented).
+
+0.9.2 release notes
 ---------------------
 - Default fee policy has been adjusted to ensure relaying of huge transactions.
 - Paper wallet generation and printing support.
 - DNS seed is online.
 
-What's new in 0.9.1
+0.9.1 release notes
 ---------------------
 - The client is now OpenSSL-1.1 compatible (included in win32 build). Also compatible with the newer Boost and miniupnpc releases!
 - Coin Control Features available.
@@ -84,9 +88,11 @@ Required libraries
 - OpenSSL
 - Berkeley DB
 - protobuf (since Animecoin 0.9.1)
+- libevent2 (since Animecoin 0.10 trunk)
 - Qt (optional if you don't need the GUI client)
 - miniupnpc (optional)
 - qrencode (optional)
+- ZeroMQ (optional)
 
 Berkeley DB notes
 ---------------------
