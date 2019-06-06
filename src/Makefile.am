@@ -95,6 +95,7 @@ BITCOIN_CORE_H = \
   consensus/consensus.h \
   consensus/params.h \
   core_io.h \
+  core_memusage.h \
   crypto/sph_types.h \
   crypto/sph_blake.h \
   crypto/sph_groestl.h \
@@ -111,6 +112,7 @@ BITCOIN_CORE_H = \
   leveldbwrapper.h \
   limitedmap.h \
   main.h \
+  memusage.h \
   merkleblock.h \
   miner.h \
   netbase.h \
