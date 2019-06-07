@@ -53,5 +53,31 @@ struct TestChain100Setup : public TestingSetup {
     std::vector<CTransaction> coinbaseTxns; // For convenience, coinbase transactions
     CKey coinbaseKey; // private/public key needed to spend coinbase transactions
 };
+class CTxMemPoolEntry;
+class CTxMemPool;
 
+struct TestMemPoolEntryHelper
+{
+    // Default values
+    CAmount nFee;
+    int64_t nTime;
+    double dPriority;
+    unsigned int nHeight;
+    bool hadNoDependencies;
+    bool spendsCoinbase;
+
+    TestMemPoolEntryHelper() :
+        nFee(0), nTime(0), dPriority(0.0), nHeight(1),
+        hadNoDependencies(false), spendsCoinbase(false) { }
+
+    CTxMemPoolEntry FromTx(CMutableTransaction &tx, CTxMemPool *pool = NULL);
+
+    // Change the default value
+    TestMemPoolEntryHelper &Fee(CAmount _fee) { nFee = _fee; return *this; }
+    TestMemPoolEntryHelper &Time(int64_t _time) { nTime = _time; return *this; }
+    TestMemPoolEntryHelper &Priority(double _priority) { dPriority = _priority; return *this; }
+    TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
+    TestMemPoolEntryHelper &HadNoDependencies(bool _hnd) { hadNoDependencies = _hnd; return *this; }
+    TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
+};
 #endif

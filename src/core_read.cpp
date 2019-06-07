@@ -19,7 +19,6 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-using namespace boost;
 using namespace boost::algorithm;
 using namespace std;
 

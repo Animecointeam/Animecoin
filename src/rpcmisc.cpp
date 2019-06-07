@@ -21,7 +21,6 @@
 
 #include "univalue/univalue.h"
 
-using namespace boost;
 using namespace std;
 
 /**

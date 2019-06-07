@@ -21,7 +21,6 @@
 #include "univalue/univalue.h"
 
 using namespace std;
-using namespace boost;
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;

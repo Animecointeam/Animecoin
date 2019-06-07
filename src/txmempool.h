@@ -62,9 +62,11 @@ private:
     size_t nModSize; //! ... and modified size for priority
     size_t nUsageSize; //! ... and total memory usage
     int64_t nTime; //! Local time when entering the mempool
-    double dPriority; //! Priority when entering the mempool
-    unsigned int nHeight; //! Chain height when entering the mempool
+    double entryPriority; //! Priority when entering the mempool
+    unsigned int entryHeight; //! Chain height when entering the mempool
     bool hadNoDependencies; //! Not dependent on any other txs when it entered the mempool
+    CAmount inChainInputValue; //! Sum of all txin values that are already in blockchain
+    bool spendsCoinbase; //! keep track of transactions that spend a coinbase
 
     // Information about descendants of this transaction that are in the
     // mempool; if we remove this transaction we must remove all of these
@@ -77,15 +79,20 @@ private:
 
 public:
     CTxMemPoolEntry(const CTransaction& _tx, const CAmount& _nFee,
-                    int64_t _nTime, double _dPriority, unsigned int _nHeight, bool poolHasNoInputsOf = false);
-	CTxMemPoolEntry(const CTxMemPoolEntry& other);
+                    int64_t _nTime, double _entryPriority, unsigned int _entryHeight,
+                    bool poolHasNoInputsOf, CAmount _inChainInputValue, bool spendsCoinbase);
+    CTxMemPoolEntry(const CTxMemPoolEntry& other);
 
 	const CTransaction& GetTx() const { return this->tx; }
-	double GetPriority(unsigned int currentHeight) const;
+    /**
+     * Fast calculation of lower bound of current priority as update
+     * from entry priority. Only inputs that were originally in-chain will age.
+     */
+    double GetPriority(unsigned int currentHeight) const;
     const CAmount& GetFee() const { return nFee; }
     size_t GetTxSize() const { return nTxSize; }
 	int64_t GetTime() const { return nTime; }
-	unsigned int GetHeight() const { return nHeight; }
+    unsigned int GetHeight() const { return entryHeight; }
     bool WasClearAtEntry() const { return hadNoDependencies; }
     size_t DynamicMemoryUsage() const { return nUsageSize; }
 
@@ -102,6 +109,8 @@ public:
     uint64_t GetCountWithDescendants() const { return nCountWithDescendants; }
     uint64_t GetSizeWithDescendants() const { return nSizeWithDescendants; }
     CAmount GetFeesWithDescendants() const { return nFeesWithDescendants; }
+
+    bool GetSpendsCoinbase() const { return spendsCoinbase; }
 };
 
 // Helpers for modifying CTxMemPool::mapTx, which is a boost multi_index.
@@ -366,7 +375,7 @@ public:
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry, setEntries &setAncestors, bool fCurrentEstimate = true);
 
     void remove(const CTransaction &tx, std::list<CTransaction>& removed, bool fRecursive = false);
-    void removeCoinbaseSpends(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight);
+    void removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight, int flags);
     void removeConflicts(const CTransaction &tx, std::list<CTransaction>& removed);
     void removeForBlock(const std::vector<CTransaction>& vtx, unsigned int nBlockHeight,
                         std::list<CTransaction>& conflicts, bool fCurrentEstimate = true);
