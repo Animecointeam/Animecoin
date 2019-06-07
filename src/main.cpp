@@ -1168,27 +1168,119 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
         // than the ones it replaces.
         CAmount nConflictingFees = 0;
         size_t nConflictingSize = 0;
+        uint64_t nConflictingCount = 0;
+        CTxMemPool::setEntries allConflicting;
+
+        // If we don't hold the lock allConflicting might be incomplete; the
+        // subsequent RemoveStaged() and addUnchecked() calls don't guarantee
+        // mempool consistency for us.
+        LOCK(pool.cs);
         if (setConflicts.size())
         {
-            LOCK(pool.cs);
-
-            // For efficiency we simply sum up the pre-calculated
-            // fees/size-with-descendants values from the mempool package
-            // tracking; this does mean the pathological case of diamond tx
-            // graphs will be overcounted.
-            for (const uint256 hashConflicting : setConflicts)
+            CFeeRate newFeeRate(nFees, nSize);
+            set<uint256> setConflictsParents;
+            const int maxDescendantsToVisit = 100;
+            CTxMemPool::setEntries setIterConflicting;
+            for (const uint256 &hashConflicting : setConflicts)
             {
                 CTxMemPool::txiter mi = pool.mapTx.find(hashConflicting);
                 if (mi == pool.mapTx.end())
                     continue;
-                nConflictingFees += mi->GetFeesWithDescendants();
-                nConflictingSize += mi->GetSizeWithDescendants();
+
+                // Save these to avoid repeated lookups
+                setIterConflicting.insert(mi);
+
+                // If this entry is "dirty", then we don't have descendant
+                // state for this transaction, which means we probably have
+                // lots of in-mempool descendants.
+                // Don't allow replacements of dirty transactions, to ensure
+                // that we don't spend too much time walking descendants.
+                // This should be rare.
+                if (mi->IsDirty()) {
+                    return state.DoS(0,
+                            error("AcceptToMemoryPool: rejecting replacement %s; cannot replace tx %s with untracked descendants",
+                                hash.ToString(),
+                                mi->GetTx().GetHash().ToString()),
+                            REJECT_NONSTANDARD, "too many potential replacements");
+                }
+
+                // Don't allow the replacement to reduce the feerate of the
+                // mempool.
+                //
+                // We usually don't want to accept replacements with lower
+                // feerates than what they replaced as that would lower the
+                // feerate of the next block. Requiring that the feerate always
+                // be increased is also an easy-to-reason about way to prevent
+                // DoS attacks via replacements.
+                //
+                // The mining code doesn't (currently) take children into
+                // account (CPFP) so we only consider the feerates of
+                // transactions being directly replaced, not their indirect
+                // descendants. While that does mean high feerate children are
+                // ignored when deciding whether or not to replace, we do
+                // require the replacement to pay more overall fees too,
+                // mitigating most cases.
+                CFeeRate oldFeeRate(mi->GetFee(), mi->GetTxSize());
+                if (newFeeRate <= oldFeeRate)
+                {
+                    return state.DoS(0,
+                            error("AcceptToMemoryPool: rejecting replacement %s; new feerate %s <= old feerate %s",
+                                  hash.ToString(),
+                                  newFeeRate.ToString(),
+                                  oldFeeRate.ToString()),
+                            REJECT_INSUFFICIENTFEE, "insufficient fee");
+                }
+
+                for (const CTxIn &txin : mi->GetTx().vin)
+                {
+                    setConflictsParents.insert(txin.prevout.hash);
+                }
+
+                nConflictingCount += mi->GetCountWithDescendants();
+            }
+            // This potentially overestimates the number of actual descendants
+            // but we just want to be conservative to avoid doing too much
+            // work.
+            if (nConflictingCount <= maxDescendantsToVisit) {
+                // If not too many to replace, then calculate the set of
+                // transactions that would have to be evicted
+                for (CTxMemPool::txiter it : setIterConflicting) {
+                    pool.CalculateDescendants(it, allConflicting);
+                }
+                for (CTxMemPool::txiter it : allConflicting) {
+                    nConflictingFees += it->GetFee();
+                    nConflictingSize += it->GetTxSize();
+                }
+            } else {
+                return state.DoS(0,
+                        error("AcceptToMemoryPool: rejecting replacement %s; too many potential replacements (%d > %d)\n",
+                            hash.ToString(),
+                            nConflictingCount,
+                            maxDescendantsToVisit),
+                        REJECT_NONSTANDARD, "too many potential replacements");
             }
 
-            // First of all we can't allow a replacement unless it pays greater
-            // fees than the transactions it conflicts with - if we did the
-            // bandwidth used by those conflicting transactions would not be
-            // paid for
+            for (unsigned int j = 0; j < tx.vin.size(); j++)
+            {
+                // We don't want to accept replacements that require low
+                // feerate junk to be mined first. Ideally we'd keep track of
+                // the ancestor feerates and make the decision based on that,
+                // but for now requiring all new inputs to be confirmed works.
+                if (!setConflictsParents.count(tx.vin[j].prevout.hash))
+                {
+                    // Rather than check the UTXO set - potentially expensive -
+                    // it's cheaper to just check if the new input refers to a
+                    // tx that's in the mempool.
+                    if (pool.mapTx.find(tx.vin[j].prevout.hash) != pool.mapTx.end())
+                        return state.DoS(0, error("AcceptToMemoryPool: replacement %s adds unconfirmed input, idx %d",
+                                                  hash.ToString(), j),
+                                         REJECT_NONSTANDARD, "replacement-adds-unconfirmed");
+                }
+            }
+
+            // The replacement must pay greater fees than the transactions it
+            // replaces - if we did the bandwidth used by those conflicting
+            // transactions would not be paid for.
             if (nFees < nConflictingFees)
             {
                 return state.DoS(0, error("AcceptToMemoryPool: rejecting replacement %s, less fees than conflicting txs; %s < %s",
@@ -1196,8 +1288,8 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
                                  REJECT_INSUFFICIENTFEE, "insufficient fee");
             }
 
-            // Secondly in addition to paying more fees than the conflicts the
-            // new transaction must additionally pay for its own bandwidth.
+            // Finally in addition to paying more fees than the conflicts the
+            // new transaction must pay for its own bandwidth.
             CAmount nDeltaFees = nFees - nConflictingFees;
             if (nDeltaFees < ::minRelayTxFee.GetFee(nSize))
             {
@@ -1206,20 +1298,6 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
                               hash.ToString(),
                               FormatMoney(nDeltaFees),
                               FormatMoney(::minRelayTxFee.GetFee(nSize))),
-                        REJECT_INSUFFICIENTFEE, "insufficient fee");
-            }
-
-            // Finally replace only if we end up with a larger fees-per-kb than
-            // the replacements.
-            CFeeRate oldFeeRate(nConflictingFees, nConflictingSize);
-            CFeeRate newFeeRate(nFees, nSize);
-            if (newFeeRate <= oldFeeRate)
-            {
-                return state.DoS(0,
-                        error("AcceptToMemoryPool: rejecting replacement %s; new feerate %s <= old feerate %s",
-                              hash.ToString(),
-                              newFeeRate.ToString(),
-                              oldFeeRate.ToString()),
                         REJECT_INSUFFICIENTFEE, "insufficient fee");
             }
         }
@@ -1246,17 +1324,15 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
         }
 
         // Remove conflicting transactions from the mempool
-        list<CTransaction> ltxConflicted;
-        pool.removeConflicts(tx, ltxConflicted);
-
-        for (const CTransaction &txConflicted : ltxConflicted)
+        for (const CTxMemPool::txiter it : allConflicting)
         {
             LogPrint("mempool", "replacing tx %s with %s for %s BTC additional fees, %d delta bytes\n",
-                    txConflicted.GetHash().ToString(),
+                    it->GetTx().GetHash().ToString(),
                     hash.ToString(),
                     FormatMoney(nFees - nConflictingFees),
                     (int)nSize - (int)nConflictingSize);
         }
+        pool.RemoveStaged(allConflicting);
 
         // Store transaction in memory
         pool.addUnchecked(hash, entry, setAncestors, !IsInitialBlockDownload());
