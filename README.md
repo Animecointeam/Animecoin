@@ -46,6 +46,7 @@ Features to be removed in 0.10
 - getwork will be removed following bitcoin upstream, this may break certain antique mining software (implemented).
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
+- RPC over SSL will be removed (was never good, removal in progress). Use tunneling instead.
 
 0.9.2 release notes
 ---------------------
