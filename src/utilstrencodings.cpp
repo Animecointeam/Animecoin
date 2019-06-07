@@ -14,18 +14,21 @@
 
 using namespace std;
 
-string SanitizeString(const string& str)
+static const string CHARS_ALPHA_NUM = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+static const string SAFE_CHARS[] =
 {
-	/**
-	 * safeChars chosen to allow simple messages/URLs/email addresses, but avoid anything
-	 * even possibly remotely dangerous like & or >
-	 */
-	static string safeChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 .,;_/:?@()");
+    CHARS_ALPHA_NUM + " .,;_/:?@()", // SAFE_CHARS_DEFAULT
+    CHARS_ALPHA_NUM + " .,;_?@" // SAFE_CHARS_UA_COMMENT
+};
+
+string SanitizeString(const string& str, int rule)
+{
 	string strResult;
 	for (std::string::size_type i = 0; i < str.size(); i++)
 	{
-		if (safeChars.find(str[i]) != std::string::npos)
-			strResult.push_back(str[i]);
+        if (SAFE_CHARS[rule].find(str[i]) != std::string::npos)
+            strResult.push_back(str[i]);
 	}
 	return strResult;
 }
@@ -416,18 +419,59 @@ string DecodeBase32(const string& str)
 	return (vchRet.size() == 0) ? string() : string((const char*)&vchRet[0], vchRet.size());
 }
 
+static bool ParsePrechecks(const std::string& str)
+{
+    if (str.empty()) // No empty string allowed
+        return false;
+    if (str.size() >= 1 && (isspace(str[0]) || isspace(str[str.size()-1]))) // No padding allowed
+        return false;
+    if (str.size() != strlen(str.c_str())) // No embedded NUL characters allowed
+        return false;
+    return true;
+}
+
 bool ParseInt32(const std::string& str, int32_t *out)
 {
-	char *endp = nullptr;
+    if (!ParsePrechecks(str))
+        return false;
+    char *endp = nullptr;
 	errno = 0; // strtol will not set errno if valid
 	long int n = strtol(str.c_str(), &endp, 10);
-	if(out) *out = (int)n;
-	// Note that strtol returns a *long int*, so even if strtol doesn't report a over/underflow
+    if(out) *out = (int32_t)n;
+    // Note that strtol returns a *long int*, so even if strtol doesn't report a over/underflow
 	// we still have to check that the returned value is within the range of an *int32_t*. On 64-bit
 	// platforms the size of these types may be different.
 	return endp && *endp == 0 && !errno &&
 		n >= std::numeric_limits<int32_t>::min() &&
 		n <= std::numeric_limits<int32_t>::max();
+}
+
+bool ParseInt64(const std::string& str, int64_t *out)
+{
+    if (!ParsePrechecks(str))
+        return false;
+    char *endp = nullptr;
+    errno = 0; // strtoll will not set errno if valid
+    long long int n = strtoll(str.c_str(), &endp, 10);
+    if(out) *out = (int64_t)n;
+    // Note that strtoll returns a *long long int*, so even if strtol doesn't report a over/underflow
+    // we still have to check that the returned value is within the range of an *int64_t*.
+    return endp && *endp == 0 && !errno &&
+        n >= std::numeric_limits<int64_t>::min() &&
+        n <= std::numeric_limits<int64_t>::max();
+}
+
+bool ParseDouble(const std::string& str, double *out)
+{
+    if (!ParsePrechecks(str))
+        return false;
+    if (str.size() >= 2 && str[0] == '0' && str[1] == 'x') // No hexadecimal floats allowed
+        return false;
+    char *endp = nullptr;
+    errno = 0; // strtod will not set errno if valid
+    double n = strtod(str.c_str(), &endp);
+    if(out) *out = n;
+    return endp && *endp == 0 && !errno;
 }
 
 std::string FormatParagraph(const std::string in, size_t width, size_t indent)

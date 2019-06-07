@@ -275,7 +275,7 @@ public:
 class CTxMemPool
 {
 private:
-    bool fSanityCheck; //! Normally false, true if -checkmempool or -regtest
+    uint32_t nCheckFrequency; //! Value n means that n times in 2^32 we check.
     unsigned int nTransactionsUpdated;
     CBlockPolicyEstimator* minerPolicyEstimator;
 
@@ -356,7 +356,7 @@ public:
 	 * check does nothing.
 	 */
     void check(const CCoinsViewCache *pcoins) const;
-    void setSanityCheck(bool _fSanityCheck) { fSanityCheck = _fSanityCheck; }
+    void setSanityCheck(double dFrequency = 1.0) { nCheckFrequency = dFrequency * 4294967295.0; }
 
     // addUnchecked must updated state for all ancestors of a given transaction,
     // to track size/count of descendant transactions.  First version of
@@ -371,7 +371,8 @@ public:
     void removeForBlock(const std::vector<CTransaction>& vtx, unsigned int nBlockHeight,
                         std::list<CTransaction>& conflicts, bool fCurrentEstimate = true);
     void clear();
-	void queryHashes(std::vector<uint256>& vtxid);
+    void _clear(); //lock free
+    void queryHashes(std::vector<uint256>& vtxid);
 	void pruneSpent(const uint256& hash, CCoins &coins);
 	unsigned int GetTransactionsUpdated() const;
 	void AddTransactionsUpdated(unsigned int n);
