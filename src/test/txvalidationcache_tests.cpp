@@ -23,7 +23,7 @@ ToMemPool(CMutableTransaction& tx)
     LOCK(cs_main);
 
     CValidationState state;
-    return AcceptToMemoryPool(mempool, state, tx, false, nullptr, false);
+    return AcceptToMemoryPool(mempool, state, tx, false, nullptr, true, false);
 }
 
 /*
