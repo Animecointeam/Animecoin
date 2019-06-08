@@ -679,7 +679,7 @@ void InterruptTorControl()
 
 void StopTorControl()
 {
-    InterruptTorControl(); // To be removed after http server migrates to libevent.
+    //InterruptTorControl(); // To be removed after http server migrates to libevent.
 
     if (base) {
         torControlThread.join();

@@ -385,7 +385,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/reverse_iterator.h \
     src/torcontrol.h \
     src/memusage.h \
-    src/core_memusage.h
+    src/core_memusage.h \
+    src/httprpc.h \
+    src/httpserver.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -528,7 +530,9 @@ SOURCES += src/qt/bitcoin.cpp \
     src/zmq/zmqnotificationinterface.cpp \
     src/zmq/zmqpublishnotifier.cpp \
     src/validationinterface.cpp \
-    src/torcontrol.cpp
+    src/torcontrol.cpp \
+    src/httprpc.cpp \
+    src/httpserver.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

@@ -106,6 +106,8 @@ BITCOIN_CORE_H = \
   wallet/db.h \
   hash.h \
   hashblock.h \
+  httprpc.h \
+  httpserver.h \
   init.h \
   key.h \
   keystore.h \
@@ -182,6 +184,8 @@ libanimecoin_server_a_SOURCES = \
   bloom.cpp \
   chain.cpp \
   checkpoints.cpp \
+  httprpc.cpp \
+  httpserver.cpp \
   init.cpp \
   leveldbwrapper.cpp \
   main.cpp \
@@ -374,7 +378,8 @@ animecoin_cli_LDADD = \
   $(LIBBITCOIN_UTIL) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
-  $(CRYPTO_LIBS)
+  $(CRYPTO_LIBS) \
+  $(EVENT_LIBS)
 
 animecoin_cli_SOURCES = \
   bitcoin-cli.cpp
