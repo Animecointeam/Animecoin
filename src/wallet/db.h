@@ -20,6 +20,8 @@
 
 #include <db_cxx.h>
 
+static const bool DEFAULT_WALLET_PRIVDB = true;
+
 class CDiskBlockIndex;
 class COutPoint;
 

@@ -194,6 +194,7 @@ libanimecoin_server_a_SOURCES = \
   net.cpp \
   noui.cpp \
   policy/fees.cpp \
+  policy/policy.cpp \
   rest.cpp \
   rpcblockchain.cpp \
   rpcmining.cpp \

@@ -532,7 +532,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/validationinterface.cpp \
     src/torcontrol.cpp \
     src/httprpc.cpp \
-    src/httpserver.cpp
+    src/httpserver.cpp \
+    src/policy/policy.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

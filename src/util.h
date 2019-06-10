@@ -28,6 +28,9 @@
 #include <boost/signals2/signal.hpp>
 #include <boost/thread/exceptions.hpp>
 
+static const bool DEFAULT_LOGIPS        = false;
+static const bool DEFAULT_LOGTIMESTAMPS = true;
+
 /** Signals for translation. */
 class CTranslationInterface
 {
@@ -48,6 +51,9 @@ extern bool fLogIPs;
 extern volatile bool fReopenDebugLog;
 
 extern CTranslationInterface translationInterface;
+
+extern const char * const BITCOIN_CONF_FILENAME;
+extern const char * const BITCOIN_PID_FILENAME;
 
 /**
  * Translation function: Call Translate signal on UI interface, which returns a boost::optional result.

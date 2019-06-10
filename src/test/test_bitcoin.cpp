@@ -33,14 +33,14 @@ CWallet* pwalletMain;
 extern bool fPrintToConsole;
 extern void noui_connect();
 
-BasicTestingSetup::BasicTestingSetup(CBaseChainParams::Network network)
+BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
 {
         ECC_Start();
         SetupEnvironment();
         fPrintToDebugLog = false; // don't want to write to debug.log file
         SelectParams(CBaseChainParams::MAIN);
         fCheckBlockIndex = true;
-        SelectParams(network);
+        SelectParams(chainName);
         noui_connect();
 }
 
@@ -49,7 +49,7 @@ BasicTestingSetup::~BasicTestingSetup()
 	    ECC_Stop();
 }
 
-TestingSetup::TestingSetup(CBaseChainParams::Network network) : BasicTestingSetup(network)
+TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(chainName)
 {
     const CChainParams& chainparams = Params();
 #ifdef ENABLE_WALLET
