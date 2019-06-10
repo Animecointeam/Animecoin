@@ -91,7 +91,13 @@ public:
     // This is now public, because we use it in paymentservertests.cpp
      static bool readPaymentRequestFromFile(const QString& filename, PaymentRequestPlus& request);
 
- signals:
+    // Verify that the payment request network matches the client network
+     static bool verifyNetwork(const payments::PaymentDetails& requestDetails);
+
+    // Verify if the payment request is expired
+     static bool verifyExpired(const payments::PaymentDetails& requestDetails);
+
+signals:
     // Fired when a valid payment request is received
     void receivedPaymentRequest(SendCoinsRecipient);
 
@@ -124,7 +130,7 @@ protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private:
-    bool processPaymentRequest(PaymentRequestPlus& request, SendCoinsRecipient& recipient);
+    bool processPaymentRequest(const PaymentRequestPlus& request, SendCoinsRecipient& recipient);
     void fetchRequest(const QUrl& url);
 
     // Setup networking

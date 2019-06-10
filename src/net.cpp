@@ -78,7 +78,8 @@ static CNode* pnodeLocalHost = nullptr;
 uint64_t nLocalHostNonce = 0;
 static std::vector<ListenSocket> vhListenSocket;
 CAddrMan addrman;
-int nMaxConnections = 125;
+int nMaxConnections = DEFAULT_MAX_PEER_CONNECTIONS;
+int nWhiteConnections = 0;
 bool fAddressesInitialized = false;
 std::string strSubVersion;
 
@@ -873,6 +874,7 @@ void ThreadSocketHandler()
                 SOCKET hSocket = accept(hListenSocket.socket, (struct sockaddr*)&sockaddr, &len);
                 CAddress addr;
                 int nInbound = 0;
+                int nMaxInbound = nMaxConnections - MAX_OUTBOUND_CONNECTIONS;
 
                 if (hSocket != INVALID_SOCKET)
                     if (!addr.SetSockAddr((const struct sockaddr*)&sockaddr))
@@ -897,10 +899,14 @@ void ThreadSocketHandler()
                     LogPrintf("connection from %s dropped: non-selectable socket\n", addr.ToString());
                     CloseSocket(hSocket);
                 }
-                else if (nInbound >= nMaxConnections - MAX_OUTBOUND_CONNECTIONS)
+                else if (nInbound >= nMaxInbound)
                 {
                     LogPrint("net", "connection from %s dropped (full)\n", addr.ToString());
                     CloseSocket(hSocket);
+                }
+                else if (!whitelisted && (nInbound >= (nMaxInbound - nWhiteConnections)))
+                {
+                    LogPrint("net", "connection from %s dropped (non-whitelisted)\n", addr.ToString());
                 }
                 else if (CNode::IsBanned(addr) && !whitelisted)
                 {
@@ -921,6 +927,8 @@ void ThreadSocketHandler()
                     CNode* pnode = new CNode(hSocket, addr, "", true);
                     pnode->AddRef();
                     pnode->fWhitelisted = whitelisted;
+
+                    LogPrint("net", "connection from %s accepted\n", addr.ToString());
 
                     {
                         LOCK(cs_vNodes);
@@ -1846,8 +1854,8 @@ void CNode::SetMaxOutboundTarget(uint64_t limit)
     uint64_t recommendedMinimum = (nMaxOutboundTimeframe / 600) * MAX_BLOCK_SIZE;
     nMaxOutboundLimit = limit;
 
-    if (limit < recommendedMinimum)
-        LogPrintf("Max outbound target is very small (%s) and will be overshot. Recommended minimum is %s\n.", nMaxOutboundLimit, recommendedMinimum);
+    if (limit > 0 && limit < recommendedMinimum)
+        LogPrintf("Max outbound target is very small (%s bytes) and will be overshot. Recommended minimum is %s bytes.\n", nMaxOutboundLimit, recommendedMinimum);
 }
 
 uint64_t CNode::GetMaxOutboundTarget()

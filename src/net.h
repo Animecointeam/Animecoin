@@ -59,6 +59,10 @@ static const bool DEFAULT_UPNP = false;
 #endif
 /** The maximum number of entries in mapAskFor */
 static const size_t MAPASKFOR_MAX_SZ = MAX_INV_SZ;
+/** The maximum number of peer connections to maintain. */
+static const unsigned int DEFAULT_MAX_PEER_CONNECTIONS = 125;
+/** The default for -maxuploadtarget. 0 = Unlimited */
+static const uint64_t DEFAULT_MAX_UPLOAD_TARGET = 0;
 /** Default for blocks only*/
 static const bool DEFAULT_BLOCKSONLY = false;
 
@@ -136,7 +140,20 @@ extern bool fListen;
 extern uint64_t nLocalServices;
 extern uint64_t nLocalHostNonce;
 extern CAddrMan addrman;
+
+// The allocation of connections against the maximum allowed (nMaxConnections)
+// is prioritized as follows:
+// 1st: Outbound connections (MAX_OUTBOUND_CONNECTIONS)
+// 2nd: Inbound connections from whitelisted peers (nWhiteConnections)
+// 3rd: Inbound connections from non-whitelisted peers
+// Thus, the number of connection slots for the general public to use is:
+// nMaxConnections - (MAX_OUTBOUND_CONNECTIONS + nWhiteConnections)
+// Any additional inbound connections beyond limits will be immediately closed
+
+/** Maximum number of connections to simultaneously allow (aka connection slots) */
 extern int nMaxConnections;
+/** Number of connection slots to reserve for inbound from whitelisted peers */
+extern int nWhiteConnections;
 
 extern std::vector<CNode*> vNodes;
 extern CCriticalSection cs_vNodes;
