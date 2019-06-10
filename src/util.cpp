@@ -106,6 +106,7 @@ bool fDaemon = false;
 bool fServer = false;
 string strMiscWarning;
 bool fLogTimestamps = DEFAULT_LOGTIMESTAMPS;
+bool fLogTimeMicros = DEFAULT_LOGTIMEMICROS;
 bool fLogIPs = DEFAULT_LOGIPS;
 volatile bool fReopenDebugLog = false;
 CTranslationInterface translationInterface;
@@ -174,22 +175,50 @@ instance_of_cinit;
 
 static std::once_flag debugPrintInitFlag;
 /**
- * We use std::call_once() to make sure these are initialized
- * in a thread-safe manner the first time called:
+ * We use std::call_once() to make sure mutexDebugLog and
+ * vMsgsBeforeOpenLog are initialized in a thread-safe manner.
+ *
+ * NOTE: fileout, mutexDebugLog and sometimes vMsgsBeforeOpenLog
+ * are leaked on exit. This is ugly, but will be cleaned up by
+ * the OS/libc. When the shutdown sequence is fully audited and
+ * tested, explicit destruction of these objects can be implemented.
  */
 static FILE* fileout = nullptr;
 static std::mutex* mutexDebugLog = nullptr;
+static list<string> *vMsgsBeforeOpenLog;
+
+static int FileWriteStr(const std::string &str, FILE *fp)
+{
+    return fwrite(str.data(), 1, str.size(), fp);
+}
 
 static void DebugPrintInit()
 {
-    assert(fileout == nullptr);
     assert(mutexDebugLog == nullptr);
+    mutexDebugLog = new std::mutex();
+    vMsgsBeforeOpenLog = new list<string>;
+}
+
+void OpenDebugLog()
+{
+    std::call_once(debugPrintInitFlag, &DebugPrintInit);
+    std::lock_guard<std::mutex> scoped_lock(*mutexDebugLog);
+
+    assert(fileout == NULL);
+    assert(vMsgsBeforeOpenLog);
 
     boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
     fileout = fopen(pathDebug.string().c_str(), "a");
     if (fileout) setbuf(fileout, nullptr); // unbuffered
 
-    mutexDebugLog = new std::mutex();
+    // dump buffered messages from before we opened the log
+    while (!vMsgsBeforeOpenLog->empty()) {
+        FileWriteStr(vMsgsBeforeOpenLog->front(), fileout);
+        vMsgsBeforeOpenLog->pop_front();
+    }
+
+    delete vMsgsBeforeOpenLog;
+    vMsgsBeforeOpenLog = nullptr;
 }
 
 bool LogAcceptCategory(const char* category)
@@ -220,44 +249,72 @@ bool LogAcceptCategory(const char* category)
     return true;
 }
 
+/**
+ * fStartedNewLine is a state variable held by the calling context that will
+ * suppress printing of the timestamp when multiple calls are made that don't
+ * end in a newline. Initialize it to true, and hold it, in the calling context.
+ */
+static std::string LogTimestampStr(const std::string &str, bool *fStartedNewLine)
+{
+    string strStamped;
+
+    if (!fLogTimestamps)
+        return str;
+
+    if (*fStartedNewLine) {
+        int64_t nTimeMicros = GetLogTimeMicros();
+        strStamped = DateTimeStrFormat("%Y-%m-%d %H:%M:%S", nTimeMicros/1000000);
+        if (fLogTimeMicros)
+            strStamped += strprintf(".%06d", nTimeMicros%1000000);
+        strStamped += ' ' + str;
+    } else
+        strStamped = str;
+
+    if (!str.empty() && str[str.size()-1] == '\n')
+        *fStartedNewLine = true;
+    else
+        *fStartedNewLine = false;
+
+    return strStamped;
+}
+
 int LogPrintStr(const std::string &str)
 {
     int ret = 0; // Returns total number of characters written
+    static bool fStartedNewLine = true;
     if (fPrintToConsole)
     {
         // print to console
         ret = fwrite(str.data(), 1, str.size(), stdout);
         fflush(stdout);
     }
-    else if (fPrintToDebugLog && AreBaseParamsConfigured())
+    else if (fPrintToDebugLog)
     {
-        static bool fStartedNewLine = true;
         std::call_once(debugPrintInitFlag, &DebugPrintInit);
-
-        if (fileout == nullptr)
-            return ret;
 
         std::lock_guard<std::mutex> scoped_lock(*mutexDebugLog);
 
-        // reopen the log file, if requested
-        if (fReopenDebugLog) {
-            fReopenDebugLog = false;
-            boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
-            if (freopen(pathDebug.string().c_str(),"a",fileout) != nullptr)
-                setbuf(fileout, nullptr); // unbuffered
+        string strTimestamped = LogTimestampStr(str, &fStartedNewLine);
+
+        // buffer if we haven't opened the log yet
+        if (fileout == NULL) {
+            assert(vMsgsBeforeOpenLog);
+            ret = strTimestamped.length();
+            vMsgsBeforeOpenLog->push_back(strTimestamped);
         }
-
-        // Debug print useful for profiling
-        if (fLogTimestamps && fStartedNewLine)
-            ret += fprintf(fileout, "%s ", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()).c_str());
-        if (!str.empty() && str[str.size()-1] == '\n')
-            fStartedNewLine = true;
         else
-            fStartedNewLine = false;
+        {
+            // reopen the log file, if requested
+            if (fReopenDebugLog) {
+                fReopenDebugLog = false;
+                boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
+                if (freopen(pathDebug.string().c_str(),"a",fileout) != NULL)
+                    setbuf(fileout, NULL); // unbuffered
+            }
 
-        ret = fwrite(str.data(), 1, str.size(), fileout);
+            ret = FileWriteStr(strTimestamped, fileout);
+        }
     }
-
     return ret;
 }
 
