@@ -52,7 +52,7 @@ public:
                  const std::string &_strDebugMessage="") {
         return DoS(0, ret, _chRejectCode, _strRejectReason, false, _strDebugMessage);
     }
-    bool Error(std::string strRejectReasonIn="") {
+    bool Error(const std::string& strRejectReasonIn="") {
         if (mode == MODE_VALID)
             strRejectReason = strRejectReasonIn;
         mode = MODE_ERROR;

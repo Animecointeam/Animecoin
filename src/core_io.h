@@ -15,7 +15,7 @@ class uint256;
 class UniValue;
 
 // core_read.cpp
-extern CScript ParseScript(std::string s);
+extern CScript ParseScript(const std::string& s);
 extern std::string ScriptToAsmStr(const CScript& script, const bool fAttemptSighashDecode = false);
 extern bool DecodeHexTx(CTransaction& tx, const std::string& strHexTx);
 extern bool DecodeHexBlk(CBlock&, const std::string& strHexBlk);
