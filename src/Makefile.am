@@ -1,4 +1,4 @@
-DIST_SUBDIRS = secp256k1
+DIST_SUBDIRS = secp256k1 univalue
 
 AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
 AM_CXXFLAGS = $(HARDENED_CXXFLAGS)
@@ -9,6 +9,7 @@ BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
 BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
+BITCOIN_INCLUDES += -I$(srcdir)/univalue/include
 
 LIBBITCOIN_SERVER=libanimecoin_server.a
 LIBBITCOIN_WALLET=libanimecoin_wallet.a
@@ -16,20 +17,23 @@ LIBBITCOIN_COMMON=libanimecoin_common.a
 LIBBITCOIN_CLI=libanimecoin_cli.a
 LIBBITCOIN_UTIL=libanimecoin_util.a
 LIBBITCOIN_CRYPTO=crypto/libanimecoin_crypto.a
-LIBBITCOIN_UNIVALUE=univalue/libanimecoin_univalue.a
 LIBBITCOINQT=qt/libanimecoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
+LIBUNIVALUE=univalue/lib/libunivalue.la
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
 
+
+$(LIBUNIVALUE): $(wildcard univalue/lib/*)
+	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C univalue/
+	
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
   crypto/libanimecoin_crypto.a \
   libanimecoin_util.a \
   libanimecoin_common.a \
-  univalue/libanimecoin_univalue.a \
   libanimecoin_server.a \
   libanimecoin_cli.a
 if ENABLE_WALLET
@@ -254,14 +258,6 @@ crypto_libanimecoin_crypto_a_SOURCES = \
   crypto/sph_jh.h \
   crypto/sph_skein.h
 
-# univalue JSON library
-univalue_libanimecoin_univalue_a_SOURCES = \
-  univalue/univalue.cpp \
-  univalue/univalue_read.cpp \
-  univalue/univalue_write.cpp \
-  univalue/univalue_escapes.h \
-  univalue/univalue.h
-
 # common: shared between animecoind, and animecoin-qt and non-server tools
 libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -332,7 +328,7 @@ nodist_libanimecoin_util_a_SOURCES = $(srcdir)/obj/build.h
 animecoind_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UNIVALUE) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
@@ -361,7 +357,7 @@ animecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 # animecoin-cli binary #
 animecoin_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
-  $(LIBBITCOIN_UNIVALUE) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
@@ -377,7 +373,7 @@ animecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 # animecoin-tx binary #
 animecoin_tx_LDADD = \
-  $(LIBBITCOIN_UNIVALUE) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \

@@ -217,6 +217,18 @@ LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 	}
 }
 
+#Build univalue
+INCLUDEPATH += src/univalue/include
+LIBS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
+    genunivalue.commands = cd $$PWD/src/univalue && ./autogen.sh && ./configure && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+    genunivalue.target = $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    genunivalue.depends = FORCE
+    PRE_TARGETDEPS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    QMAKE_EXTRA_TARGETS += genunivalue
+    # Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
+    QMAKE_CLEAN += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o; cd $$PWD/src/univalue; $(MAKE) clean
+
 # regenerate src/build.h
 !win32:contains(USE_BUILD_INFO, 1) {
     message(Building with build info)
@@ -358,8 +370,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/undo.h \
     src/qt/networkstyle.h \
     src/qt/peertablemodel.h \
-    src/univalue/univalue.h \
-    src/univalue/univalue_escapes.h \
     src/utilmoneystr.h \
     src/utiltime.h \
     src/qt/askmultisigdialog.h \
@@ -506,9 +516,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/peertablemodel.cpp \
     src/rest.cpp \
     src/uint256.cpp \
-    src/univalue/univalue.cpp \
-    src/univalue/univalue_read.cpp \
-    src/univalue/univalue_write.cpp \
     src/utilmoneystr.cpp \
     src/utiltime.cpp \
     src/compat/glibc_sanity.cpp \

@@ -15,8 +15,7 @@
 #include "version.h"
 #include "base58.h"
 
-
-#include "univalue/univalue.h"
+#include <univalue.h>
 
 using namespace std;
 
