@@ -22,7 +22,7 @@ public:
     void Shutdown();
 
 protected: // CValidationInterface
-    void SyncTransaction(const CTransaction &tx, const CBlock *pblock);
+    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock);
     void UpdatedBlockTip(const uint256 &newHashTip);
 
 private:

@@ -734,7 +734,7 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pbl
     return false;
 }
 
-void CWallet::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
+void CWallet::SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock)
 {
     LOCK2(cs_main, cs_wallet);
     if (!AddToWalletIfInvolvingMe(tx, pblock, true))

@@ -298,7 +298,7 @@ public:
 
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet=false);
-    void SyncTransaction(const CTransaction& tx, const CBlock* pblock);
+    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock);
     bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate);
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
     void ReacceptWalletTransactions();
