@@ -36,8 +36,8 @@ std::string CTxIn::ToString() const
 	if (prevout.IsNull())
 		str += strprintf(", coinbase %s", HexStr(scriptSig));
 	else
-		str += strprintf(", scriptSig=%s", scriptSig.ToString().substr(0,24));
-	if (nSequence != std::numeric_limits<unsigned int>::max())
+        str += strprintf(", scriptSig=%s", HexStr(scriptSig).substr(0, 24));
+    if (nSequence != std::numeric_limits<unsigned int>::max())
 		str += strprintf(", nSequence=%u", nSequence);
 	str += ")";
 	return str;
@@ -56,7 +56,7 @@ uint256 CTxOut::GetHash() const
 
 std::string CTxOut::ToString() const
 {
-    return strprintf("CTxOut(nValue=%d.%05d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, scriptPubKey.ToString().substr(0,30)); // QA: magic number inherited from Quark (!). Fixed.
+    return strprintf("CTxOut(nValue=%d.%05d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30)); // QA: magic number inherited from Quark (!). Fixed.
 }
 
 CMutableTransaction::CMutableTransaction() : nVersion(CTransaction::CURRENT_VERSION), nLockTime(0), strTxComment("") {}
