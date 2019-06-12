@@ -15,14 +15,13 @@ void zmqError(const char *str)
     LogPrint("zmq", "Error: %s, errno=%s\n", str, zmq_strerror(errno));
 }
 
-CZMQNotificationInterface::CZMQNotificationInterface() : pcontext(NULL)
+CZMQNotificationInterface::CZMQNotificationInterface() : pcontext(nullptr)
 {
 }
 
 CZMQNotificationInterface::~CZMQNotificationInterface()
 {
-    // ensure Shutdown if Initialize is called
-    assert(!pcontext);
+    Shutdown();
 
     for (std::list<CZMQAbstractNotifier*>::iterator i=notifiers.begin(); i!=notifiers.end(); ++i)
     {
@@ -32,7 +31,7 @@ CZMQNotificationInterface::~CZMQNotificationInterface()
 
 CZMQNotificationInterface* CZMQNotificationInterface::CreateWithArguments(const std::map<std::string, std::string> &args)
 {
-    CZMQNotificationInterface* notificationInterface = NULL;
+    CZMQNotificationInterface* notificationInterface = nullptr;
     std::map<std::string, CZMQNotifierFactory> factories;
     std::list<CZMQAbstractNotifier*> notifiers;
 
@@ -59,6 +58,12 @@ CZMQNotificationInterface* CZMQNotificationInterface::CreateWithArguments(const 
     {
         notificationInterface = new CZMQNotificationInterface();
         notificationInterface->notifiers = notifiers;
+
+        if (!notificationInterface->Initialize())
+        {
+            delete notificationInterface;
+            notificationInterface = nullptr;
+        }
     }
 
     return notificationInterface;
@@ -99,7 +104,7 @@ bool CZMQNotificationInterface::Initialize()
         return false;
     }
 
-    return false;
+    return true;
 }
 
 // Called during shutdown sequence
