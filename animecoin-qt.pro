@@ -398,7 +398,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/memusage.h \
     src/core_memusage.h \
     src/httprpc.h \
-    src/httpserver.h
+    src/httpserver.h \
+    src/consensus/merkle.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -541,7 +542,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/torcontrol.cpp \
     src/httprpc.cpp \
     src/httpserver.cpp \
-    src/policy/policy.cpp
+    src/policy/policy.cpp \
+    src/consensus/merkle.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

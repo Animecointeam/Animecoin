@@ -118,7 +118,7 @@ CBlock
 TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
-    CBlockTemplate *pblocktemplate = CreateNewBlock(scriptPubKey);
+    CBlockTemplate *pblocktemplate = CreateNewBlock(chainparams, scriptPubKey);
     CBlock& block = pblocktemplate->block;
 
     // Replace mempool-selected txns with just coinbase plus passed-in txns:
@@ -132,7 +132,7 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
 
     CValidationState state;
-    ProcessNewBlock(state, chainparams, NULL, &block, true, NULL);
+    ProcessNewBlock(state, chainparams, nullptr, &block, true, nullptr);
 
     CBlock result = block;
     delete pblocktemplate;
@@ -150,7 +150,7 @@ CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(CMutableTransaction &tx, CTxMemPo
     CAmount inChainValue = hasNoDependencies ? txn.GetValueOut() : 0;
 
     return CTxMemPoolEntry(txn, nFee, nTime, dPriority, nHeight,
-                           hasNoDependencies, inChainValue, spendsCoinbase);
+                           hasNoDependencies, inChainValue, spendsCoinbase, sigOpCount);
 }
 
 void Shutdown(void* parg)

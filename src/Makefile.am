@@ -83,6 +83,7 @@ BITCOIN_CORE_H = \
   compat.h \
   compressor.h \
   consensus/consensus.h \
+  consensus/merkle.h \
   consensus/params.h \
   core_io.h \
   core_memusage.h \
@@ -268,6 +269,7 @@ libanimecoin_common_a_SOURCES = \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
+  consensus/merkle.cpp \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
