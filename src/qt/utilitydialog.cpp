@@ -144,7 +144,8 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, bool about) :
             "  -lang=<lang>              " + tr("Set language, for example \"de_DE\" (default: system locale)") + "\n" +
             "  -min                      " + tr("Start minimized") + "\n" +
             "  -rootcertificates=<file>  " + tr("Set SSL root certificates for payment request (default: -system-)") + "\n" +
-            "  -splash                   " + tr("Show splash screen on startup (default: 1)");
+            "  -splash                   " + tr("Show splash screen on startup (default: 1)") + "\n" +
+            "  -resetguisettings         " + tr("Reset all settings changes made over the GUI");
 
         ui->helpMessageLabel->setFont(GUIUtil::bitcoinAddressFont());
         text = version + "\n" + header + "\n" + coreOptions + "\n" + uiOptions;

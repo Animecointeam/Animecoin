@@ -201,7 +201,7 @@ public:
     /// parameter interaction/setup based on rules
     void parameterSetup();
     /// Create options model
-    void createOptionsModel();
+    void createOptionsModel(bool resetSettings);
     /// Create main window
     void createWindow(const NetworkStyle *networkStyle);
     /// Create splash screen
@@ -332,9 +332,9 @@ void BitcoinApplication::createPaymentServer()
 }
 #endif
 
-void BitcoinApplication::createOptionsModel()
+void BitcoinApplication::createOptionsModel(bool resetSettings)
 {
-    optionsModel = new OptionsModel();
+    optionsModel = new OptionsModel(nullptr, resetSettings);
 }
 
 void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
@@ -624,7 +624,7 @@ int main(int argc, char *argv[])
     // Allow parameter interaction before we create the options model
     app.parameterSetup();
     // Load GUI settings from QSettings
-    app.createOptionsModel();
+    app.createOptionsModel(mapArgs.count("-resetguisettings") != 0);
 
     // Subscribe to global signals from core
     uiInterface.InitMessage.connect(InitMessage);

@@ -24,7 +24,7 @@ class OptionsModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    explicit OptionsModel(QObject *parent = 0);
+    explicit OptionsModel(QObject *parent = 0, bool resetSettings = false);
 
     enum OptionID {
         StartAtStartup,         // bool
@@ -46,7 +46,7 @@ public:
         OptionIDRowCount,
     };
 
-    void Init();
+    void Init(bool resetSettings = false);
     void Reset();
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
