@@ -15,7 +15,7 @@
 struct BasicTestingSetup {
     ECCVerifyHandle globalVerifyHandle;
 
-    BasicTestingSetup(CBaseChainParams::Network network = CBaseChainParams::MAIN);
+    BasicTestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
     ~BasicTestingSetup();
 };
 
@@ -28,7 +28,7 @@ struct TestingSetup: public BasicTestingSetup {
     boost::filesystem::path pathTemp;
     boost::thread_group threadGroup;
 
-    TestingSetup(CBaseChainParams::Network network = CBaseChainParams::MAIN);
+    TestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
     ~TestingSetup();
 };
 
@@ -65,10 +65,11 @@ struct TestMemPoolEntryHelper
     unsigned int nHeight;
     bool hadNoDependencies;
     bool spendsCoinbase;
+    unsigned int sigOpCount;
 
     TestMemPoolEntryHelper() :
         nFee(0), nTime(0), dPriority(0.0), nHeight(1),
-        hadNoDependencies(false), spendsCoinbase(false) { }
+        hadNoDependencies(false), spendsCoinbase(false), sigOpCount(1) { }
 
     CTxMemPoolEntry FromTx(CMutableTransaction &tx, CTxMemPool *pool = NULL);
 
@@ -79,5 +80,6 @@ struct TestMemPoolEntryHelper
     TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
     TestMemPoolEntryHelper &HadNoDependencies(bool _hnd) { hadNoDependencies = _hnd; return *this; }
     TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
+    TestMemPoolEntryHelper &SigOps(unsigned int _sigops) { sigOpCount = _sigops; return *this; }
 };
 #endif

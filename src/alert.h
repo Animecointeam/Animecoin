@@ -84,7 +84,7 @@ public:
         SetNull();
     }
 
-    ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
@@ -97,7 +97,7 @@ public:
     uint256 GetHash() const;
     bool IsInEffect() const;
     bool Cancels(const CAlert& alert) const;
-    bool AppliesTo(int nVersion, std::string strSubVerIn) const;
+    bool AppliesTo(int nVersion, const std::string& strSubVerIn) const;
     bool AppliesToMe() const;
     bool RelayTo(CNode* pnode) const;
     bool CheckSignature() const;

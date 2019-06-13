@@ -78,7 +78,8 @@ static CNode* pnodeLocalHost = nullptr;
 uint64_t nLocalHostNonce = 0;
 static std::vector<ListenSocket> vhListenSocket;
 CAddrMan addrman;
-int nMaxConnections = 125;
+int nMaxConnections = DEFAULT_MAX_PEER_CONNECTIONS;
+int nWhiteConnections = 0;
 bool fAddressesInitialized = false;
 std::string strSubVersion;
 
@@ -109,7 +110,7 @@ void setChurnMode(){
   churnNode=true;
   MAX_OUTBOUND_CONNECTIONS = 50;
 }
-void AddOneShot(string strDest)
+void AddOneShot(const std::string& strDest)
 {
     LOCK(cs_vOneShots);
     vOneShots.push_back(strDest);
@@ -477,9 +478,8 @@ void CNode::PushVersion()
     else
         LogPrint("net", "send version message: version %d, blocks=%d, us=%s, peer=%d\n", PROTOCOL_VERSION, nBestHeight, addrMe.ToString(), id);
     PushMessage(NetMsgType::VERSION, PROTOCOL_VERSION, nLocalServices, nTime, addrYou, addrMe,
-                nLocalHostNonce, strSubVersion, nBestHeight, true);
+                nLocalHostNonce, strSubVersion, nBestHeight, !GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY));
 }
-
 
 
 
@@ -509,7 +509,7 @@ bool CNode::IsBanned(CNetAddr ip)
 }
 
 bool CNode::Ban(const CNetAddr &addr) {
-    int64_t banTime = GetTime()+GetArg("-bantime", 60*60*24);  // Default 24-hour ban
+    int64_t banTime = GetTime()+GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME);
     {
         LOCK(cs_setBanned);
         if (setBanned[addr] < banTime)
@@ -874,6 +874,7 @@ void ThreadSocketHandler()
                 SOCKET hSocket = accept(hListenSocket.socket, (struct sockaddr*)&sockaddr, &len);
                 CAddress addr;
                 int nInbound = 0;
+                int nMaxInbound = nMaxConnections - MAX_OUTBOUND_CONNECTIONS;
 
                 if (hSocket != INVALID_SOCKET)
                     if (!addr.SetSockAddr((const struct sockaddr*)&sockaddr))
@@ -898,10 +899,14 @@ void ThreadSocketHandler()
                     LogPrintf("connection from %s dropped: non-selectable socket\n", addr.ToString());
                     CloseSocket(hSocket);
                 }
-                else if (nInbound >= nMaxConnections - MAX_OUTBOUND_CONNECTIONS)
+                else if (nInbound >= nMaxInbound)
                 {
                     LogPrint("net", "connection from %s dropped (full)\n", addr.ToString());
                     CloseSocket(hSocket);
+                }
+                else if (!whitelisted && (nInbound >= (nMaxInbound - nWhiteConnections)))
+                {
+                    LogPrint("net", "connection from %s dropped (non-whitelisted)\n", addr.ToString());
                 }
                 else if (CNode::IsBanned(addr) && !whitelisted)
                 {
@@ -922,6 +927,8 @@ void ThreadSocketHandler()
                     CNode* pnode = new CNode(hSocket, addr, "", true);
                     pnode->AddRef();
                     pnode->fWhitelisted = whitelisted;
+
+                    LogPrint("net", "connection from %s accepted\n", addr.ToString());
 
                     {
                         LOCK(cs_vNodes);
@@ -1167,7 +1174,7 @@ void ThreadDNSAddressSeed()
 {
     // goal: only query DNS seeds if address need is acute
     if ((addrman.size() > 0) &&
-        (!GetBoolArg("-forcednsseed", false))) {
+            (!GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED))) {
         MilliSleep(11 * 1000);
 
         LOCK(cs_vNodes);
@@ -1190,7 +1197,7 @@ void ThreadDNSAddressSeed()
             vector<CAddress> vAdd;
             if (LookupHost(seed.host.c_str(), vIPs))
             {
-                for (CNetAddr& ip : vIPs)
+                for (const CNetAddr& ip : vIPs)
                 {
                     int nOneDay = 24*3600;
                     CAddress addr = CAddress(CService(ip, Params().GetDefaultPort()));
@@ -1254,7 +1261,7 @@ void ThreadOpenConnections()
         for (int64_t nLoop = 0;; nLoop++)
         {
             ProcessOneShot();
-            for (string strAddr : mapMultiArgs["-connect"])
+            for (const std::string& strAddr : mapMultiArgs["-connect"])
             {
                 CAddress addr;
                 OpenNetworkConnection(addr, nullptr, strAddr.c_str());
@@ -1357,10 +1364,10 @@ void ThreadOpenAddedConnections()
             list<string> lAddresses(0);
             {
                 LOCK(cs_vAddedNodes);
-                for (string& strAddNode : vAddedNodes)
+                for (const std::string& strAddNode : vAddedNodes)
                     lAddresses.push_back(strAddNode);
             }
-            for (string& strAddNode : lAddresses) {
+            for (const std::string& strAddNode : lAddresses) {
                 CAddress addr;
                 CSemaphoreGrant grant(*semOutbound);
                 OpenNetworkConnection(addr, &grant, strAddNode.c_str());
@@ -1375,12 +1382,12 @@ void ThreadOpenAddedConnections()
         list<string> lAddresses(0);
         {
             LOCK(cs_vAddedNodes);
-            for (string& strAddNode : vAddedNodes)
+            for (const std::string& strAddNode : vAddedNodes)
                 lAddresses.push_back(strAddNode);
         }
 
         list<vector<CService> > lservAddressesToAdd(0);
-        for (string& strAddNode : lAddresses)
+        for (const std::string& strAddNode : lAddresses)
         {
             vector<CService> vservNode(0);
             if(Lookup(strAddNode.c_str(), vservNode, Params().GetDefaultPort(), fNameLookup, 0))
@@ -1388,7 +1395,7 @@ void ThreadOpenAddedConnections()
                 lservAddressesToAdd.push_back(vservNode);
                 {
                     LOCK(cs_setservAddNodeAddresses);
-                    for (CService& serv : vservNode)
+                    for (const CService& serv : vservNode)
                         setservAddNodeAddresses.insert(serv);
                 }
             }
@@ -1399,7 +1406,7 @@ void ThreadOpenAddedConnections()
             LOCK(cs_vNodes);
             for (CNode* pnode : vNodes)
                 for (list<vector<CService> >::iterator it = lservAddressesToAdd.begin(); it != lservAddressesToAdd.end(); it++)
-                    for (CService& addrNode : *(it))
+                    for (const CService& addrNode : *(it))
                         if (pnode->addr == addrNode)
                         {
                             it = lservAddressesToAdd.erase(it);
@@ -1847,8 +1854,8 @@ void CNode::SetMaxOutboundTarget(uint64_t limit)
     uint64_t recommendedMinimum = (nMaxOutboundTimeframe / 600) * MAX_BLOCK_SIZE;
     nMaxOutboundLimit = limit;
 
-    if (limit < recommendedMinimum)
-        LogPrintf("Max outbound target is very small (%s) and will be overshot. Recommended minimum is %s\n.", nMaxOutboundLimit, recommendedMinimum);
+    if (limit > 0 && limit < recommendedMinimum)
+        LogPrintf("Max outbound target is very small (%s bytes) and will be overshot. Recommended minimum is %s bytes.\n", nMaxOutboundLimit, recommendedMinimum);
 }
 
 uint64_t CNode::GetMaxOutboundTarget()
@@ -2066,10 +2073,10 @@ bool CAddrDB::Read(CAddrMan& addr)
     return true;
 }
 
-unsigned int ReceiveFloodSize() { return 1000*GetArg("-maxreceivebuffer", 5*1000); }
-unsigned int SendBufferSize() { return 1000*GetArg("-maxsendbuffer", 1*1000); }
+unsigned int ReceiveFloodSize() { return 1000*GetArg("-maxreceivebuffer", DEFAULT_MAXRECEIVEBUFFER); }
+unsigned int SendBufferSize() { return 1000*GetArg("-maxsendbuffer", DEFAULT_MAXSENDBUFFER); }
 
-CNode::CNode(SOCKET hSocketIn, CAddress addrIn, std::string addrNameIn, bool fInboundIn) :
+CNode::CNode(SOCKET hSocketIn, const CAddress& addrIn, const std::string& addrNameIn, bool fInboundIn) :
     ssSend(SER_NETWORK, INIT_PROTO_VERSION),
     addrKnown(5000, 0.001),
     filterInventoryKnown(50000, 0.000001)

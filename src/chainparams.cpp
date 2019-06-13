@@ -4,9 +4,11 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "chainparams.h"
+#include "consensus/merkle.h"
 
 #include "random.h"
 #include "util.h"
+#include "tinyformat.h"
 #include "utilstrencodings.h"
 
 #include <assert.h>
@@ -35,7 +37,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, CScript genesisOutput
     genesis.nVersion = nVersion;
     genesis.vtx.push_back(txNew);
     genesis.hashPrevBlock.SetNull();
-    genesis.hashMerkleRoot = genesis.ComputeMerkleRoot();
+    genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
     return genesis;
 }
 
@@ -156,13 +158,12 @@ public:
                 { 3000000,     uint256S("00000273d7a54e6d6a00faa4c7b1472453e06b9474eeca80d28a1adce44bc1ec")},
                 { 4000000,     uint256S("000000016afda82d54e7f609ab072d5e8348c28a667e9ef2206aca421ee5d813")},
                 { 5000000,     uint256S("000000001c81edc9edbb1ebc1e4970b1f21131ddd9357878809a3cede21acc31")},
-                { 5460000,     uint256S("0000000129a85e7536a0d57110d79ab39e210d87cf9dfce432de8a55d4b2c6c7")},
             }
         };
 
         chainTxData = ChainTxData {
-            1559001567, // * UNIX timestamp of last checkpoint block
-            5733828,   // * total number of transactions between genesis and last checkpoint
+            1545549393, // * UNIX timestamp of last checkpoint block
+            5258811,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2880.0     // * estimated number of transactions per day after checkpoint
         };
@@ -292,31 +293,20 @@ const CChainParams &Params() {
     return *pCurrentParams;
 }
 
-CChainParams &Params(CBaseChainParams::Network network) {
-    switch (network) {
-    case CBaseChainParams::MAIN:
+CChainParams& Params(const std::string& chain)
+{
+    if (chain == CBaseChainParams::MAIN)
         return mainParams;
-    case CBaseChainParams::TESTNET:
+    else if (chain == CBaseChainParams::TESTNET)
         return testNetParams;
-    case CBaseChainParams::REGTEST:
+    else if (chain == CBaseChainParams::REGTEST)
         return regTestParams;
-    default:
-        assert(false && "Unimplemented network");
-        return mainParams;
-    }
+    else
+        throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
 
-void SelectParams(CBaseChainParams::Network network) {
+void SelectParams(const std::string& network)
+{
     SelectBaseParams(network);
     pCurrentParams = &Params(network);
-}
-
-bool SelectParamsFromCommandLine()
-{
-    CBaseChainParams::Network network = NetworkIdFromCommandLine();
-    if (network == CBaseChainParams::MAX_NETWORK_TYPES)
-        return false;
-
-    SelectParams(network);
-    return true;
 }

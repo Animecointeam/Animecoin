@@ -198,8 +198,10 @@ public:
     /// Create payment server
     void createPaymentServer();
 #endif
+    /// parameter interaction/setup based on rules
+    void parameterSetup();
     /// Create options model
-    void createOptionsModel();
+    void createOptionsModel(bool resetSettings);
     /// Create main window
     void createWindow(const NetworkStyle *networkStyle);
     /// Create splash screen
@@ -330,9 +332,9 @@ void BitcoinApplication::createPaymentServer()
 }
 #endif
 
-void BitcoinApplication::createOptionsModel()
+void BitcoinApplication::createOptionsModel(bool resetSettings)
 {
-    optionsModel = new OptionsModel();
+    optionsModel = new OptionsModel(nullptr, resetSettings);
 }
 
 void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
@@ -373,6 +375,12 @@ void BitcoinApplication::startThread()
     connect(this, SIGNAL(stopThread()), coreThread, SLOT(quit()));
 
     coreThread->start();
+}
+
+void BitcoinApplication::parameterSetup()
+{
+    InitLogging();
+    InitParameterInteraction();
 }
 
 void BitcoinApplication::requestInitialize()
@@ -566,8 +574,10 @@ int main(int argc, char *argv[])
     // - Needs to be done before createOptionsModel
 
     // Check for -testnet or -regtest parameter (Params() calls are only valid after this clause)
-    if (!SelectParamsFromCommandLine()) {
-        QMessageBox::critical(0, QObject::tr("Animecoin"), QObject::tr("Error: Invalid combination of -regtest and -testnet."));
+    try {
+        SelectParams(ChainNameFromCommandLine());
+    } catch(const std::exception& e) {
+        QMessageBox::critical(0, QObject::tr("Animecoin"), QObject::tr("Error: %1").arg(e.what()));
         return 1;
     }
 #ifdef ENABLE_WALLET
@@ -611,13 +621,15 @@ int main(int argc, char *argv[])
     // Install qDebug() message handler to route to debug.log
     qInstallMessageHandler(DebugMessageHandler);
 #endif
+    // Allow parameter interaction before we create the options model
+    app.parameterSetup();
     // Load GUI settings from QSettings
-    app.createOptionsModel();
+    app.createOptionsModel(mapArgs.count("-resetguisettings") != 0);
 
     // Subscribe to global signals from core
     uiInterface.InitMessage.connect(InitMessage);
 
-    if (GetBoolArg("-splash", true) && !GetBoolArg("-min", false))
+    if (GetBoolArg("-splash", DEFAULT_SPLASHSCREEN) && !GetBoolArg("-min", false))
         app.createSplashScreen(networkStyle.data());
 
     try

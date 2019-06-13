@@ -4,7 +4,7 @@ macx:TARGET = "Animecoin-Qt"
 VERSION = 0.10.0
 INCLUDEPATH += src src/qt
 QT += network printsupport
-DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE HAVE_WORKING_BOOST_SLEEP_FOR
+DEFINES += QT_GUI BOOST_THREAD_USE_LIB HAVE_WORKING_BOOST_SLEEP_FOR
 DEFINES += ENABLE_WALLET ENABLE_ZMQ
 CONFIG += no_include_pwd
 CONFIG += thread
@@ -176,24 +176,25 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
 }
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers src/leveldb/helpers/memenv
-LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
+LIBS += $$PWD/src/leveldb/out-static/libleveldb.a $$PWD/src/leveldb/out-static/libmemenv.a
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
 } else {
     # make an educated guess about what the ranlib command is called
     isEmpty(QMAKE_RANLIB) {
         QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
     }
     LIBS += -lshlwapi
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+# && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
-genleveldb.target = src/leveldb/libleveldb.a
+genleveldb.target = src/leveldb/out-static/libleveldb.a
 genleveldb.depends = FORCE
-PRE_TARGETDEPS += src/leveldb/libleveldb.a
+PRE_TARGETDEPS += src/leveldb/out-static/libleveldb.a
 QMAKE_EXTRA_TARGETS += genleveldb
 # Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
-QMAKE_CLEAN += src/leveldb/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
+QMAKE_CLEAN += src/leveldb/out-static/libleveldb.a; cd $$PWD/src/leveldb ; $(MAKE) clean
 
 #Build Secp256k1
 !win32 {
@@ -215,6 +216,18 @@ LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 		windows:SECP256K1_INCLUDE_PATH=src/secp256k1win2/include
 	}
 }
+
+#Build univalue
+INCLUDEPATH += src/univalue/include
+LIBS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
+    genunivalue.commands = cd $$PWD/src/univalue && ./autogen.sh && ./configure && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
+    genunivalue.target = $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    genunivalue.depends = FORCE
+    PRE_TARGETDEPS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    QMAKE_EXTRA_TARGETS += genunivalue
+    # Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
+    QMAKE_CLEAN += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o; cd $$PWD/src/univalue; $(MAKE) clean
 
 # regenerate src/build.h
 !win32:contains(USE_BUILD_INFO, 1) {
@@ -357,8 +370,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/undo.h \
     src/qt/networkstyle.h \
     src/qt/peertablemodel.h \
-    src/univalue/univalue.h \
-    src/univalue/univalue_escapes.h \
     src/utilmoneystr.h \
     src/utiltime.h \
     src/qt/askmultisigdialog.h \
@@ -387,7 +398,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/memusage.h \
     src/core_memusage.h \
     src/httprpc.h \
-    src/httpserver.h
+    src/httpserver.h \
+    src/consensus/merkle.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -505,9 +517,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/peertablemodel.cpp \
     src/rest.cpp \
     src/uint256.cpp \
-    src/univalue/univalue.cpp \
-    src/univalue/univalue_read.cpp \
-    src/univalue/univalue_write.cpp \
     src/utilmoneystr.cpp \
     src/utiltime.cpp \
     src/compat/glibc_sanity.cpp \
@@ -532,7 +541,9 @@ SOURCES += src/qt/bitcoin.cpp \
     src/validationinterface.cpp \
     src/torcontrol.cpp \
     src/httprpc.cpp \
-    src/httpserver.cpp
+    src/httpserver.cpp \
+    src/policy/policy.cpp \
+    src/consensus/merkle.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

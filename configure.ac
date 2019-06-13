@@ -242,7 +242,7 @@ case $host in
      fi
 
      CPPFLAGS="$CPPFLAGS -D_MT -DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB"
-     LEVELDB_TARGET_FLAGS="TARGET_OS=OS_WINDOWS_CROSSCOMPILE"
+     LEVELDB_TARGET_FLAGS="-DOS_WINDOWS"
      if test "x$CXXFLAGS_overridden" = "xno"; then
        CXXFLAGS="$CXXFLAGS -w"
      fi
@@ -264,7 +264,7 @@ case $host in
      ;;
   *darwin*)
      TARGET_OS=darwin
-     LEVELDB_TARGET_FLAGS="TARGET_OS=Darwin"
+     LEVELDB_TARGET_FLAGS="-DOS_MACOSX"
      if  test x$cross_compiling != xyes; then
        BUILD_OS=darwin
        AC_CHECK_PROG([PORT],port, port)
@@ -326,9 +326,11 @@ case $host in
      OBJCXXFLAGS="$CXXFLAGS"
      ;;
    *linux*)
-     TARGET_OS=linux
+     LEVELDB_TARGET_FLAGS="-DOS_LINUX"
      ;;
    *)
+     OTHER_OS=`echo ${host_os} | awk '{print toupper($0)}'`
+     LEVELDB_TARGET_FLAGS="-DOS_${OTHER_OS}"
      ;;
 esac
 
@@ -433,6 +435,7 @@ if test x$use_hardening != xno; then
 
   AX_CHECK_LINK_FLAG([[-Wl,--dynamicbase]], [HARDENED_LDFLAGS="$HARDENED_LDFLAGS -Wl,--dynamicbase"])
   AX_CHECK_LINK_FLAG([[-Wl,--nxcompat]], [HARDENED_LDFLAGS="$HARDENED_LDFLAGS -Wl,--nxcompat"])
+  AX_CHECK_LINK_FLAG([[-Wl,--high-entropy-va]], [HARDENED_LDFLAGS="$HARDENED_LDFLAGS -Wl,--high-entropy-va"])
   AX_CHECK_LINK_FLAG([[-Wl,-z,relro]], [HARDENED_LDFLAGS="$HARDENED_LDFLAGS -Wl,-z,relro"])
   AX_CHECK_LINK_FLAG([[-Wl,-z,now]], [HARDENED_LDFLAGS="$HARDENED_LDFLAGS -Wl,-z,now"])
 
@@ -526,6 +529,18 @@ if test x$use_reduce_exports != xno; then
     use_reduce_exports=no
   ])
 fi
+
+dnl This can go away when we require c++11
+TEMP_CXXFLAGS="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS -std=c++0x"
+AC_MSG_CHECKING(for c++11 atomics)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+  #include <atomic>
+  ]],[[]])],
+  [ AC_MSG_RESULT(yes); LEVELDB_ATOMIC_CPPFLAGS="-DLEVELDB_ATOMIC_PRESENT"; LEVELDB_ATOMIC_CXXFLAGS="-std=c++0x"],
+  [ AC_MSG_RESULT(no)]
+)
+CXXFLAGS="$TEMP_CXXFLAGS"
 
 LEVELDB_CPPFLAGS=
 LIBLEVELDB=
@@ -754,15 +769,6 @@ fi
 #  )
 #])
 
-CFLAGS_TEMP="$CFLAGS"
-LIBS_TEMP="$LIBS"
-CFLAGS="$CFLAGS $SSL_CFLAGS $CRYPTO_CFLAGS"
-LIBS="$LIBS $SSL_LIBS $CRYPTO_LIBS"
-AC_CHECK_HEADER([openssl/ec.h],, AC_MSG_ERROR(OpenSSL ec header missing),)
-
-CFLAGS="$CFLAGS_TEMP"
-LIBS="$LIBS_TEMP"
-
 BITCOIN_QT_PATH_PROGS([PROTOC], [protoc],$protoc_bin_path)
 
 AC_MSG_CHECKING([whether to build animecoind])
@@ -956,6 +962,8 @@ AC_SUBST(BUILD_QT)
 AC_SUBST(BUILD_TEST_QT)
 AC_SUBST(MINIUPNPC_CPPFLAGS)
 AC_SUBST(MINIUPNPC_LIBS)
+AC_SUBST(LEVELDB_ATOMIC_CPPFLAGS)
+AC_SUBST(LEVELDB_ATOMIC_CXXFLAGS)
 AC_CONFIG_FILES([Makefile src/Makefile share/setup.nsi share/qt/Info.plist src/test/buildenv.py])
 AC_CONFIG_FILES([qa/pull-tester/run-bitcoind-for-test.sh],[chmod +x qa/pull-tester/run-bitcoind-for-test.sh])
 AC_CONFIG_FILES([qa/pull-tester/tests-config.sh],[chmod +x qa/pull-tester/tests-config.sh])
@@ -984,7 +992,7 @@ unset PKG_CONFIG_LIBDIR
 PKG_CONFIG_LIBDIR="$PKGCONFIG_LIBDIR_TEMP"
 
 ac_configure_args="${ac_configure_args} --disable-shared --with-pic --with-bignum=no"
-AC_CONFIG_SUBDIRS([src/secp256k1])
+AC_CONFIG_SUBDIRS([src/secp256k1 src/univalue])
 
 AC_OUTPUT
 

@@ -17,7 +17,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/dynamic_bitset.hpp>
 
-#include "univalue/univalue.h"
+#include <univalue.h>
 
 using namespace std;
 
@@ -453,7 +453,7 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
         std::vector<unsigned char> strRequestV = ParseHex(strRequestMutable);
         strRequestMutable.assign(strRequestV.begin(), strRequestV.end());
     }
-
+    // fall through
     case RF_BINARY: {
         try {
             //deserialize only if user sent a request

@@ -59,11 +59,24 @@ static const bool DEFAULT_UPNP = false;
 #endif
 /** The maximum number of entries in mapAskFor */
 static const size_t MAPASKFOR_MAX_SZ = MAX_INV_SZ;
+/** The maximum number of peer connections to maintain. */
+static const unsigned int DEFAULT_MAX_PEER_CONNECTIONS = 125;
+/** The default for -maxuploadtarget. 0 = Unlimited */
+static const uint64_t DEFAULT_MAX_UPLOAD_TARGET = 0;
+/** Default for blocks only*/
+static const bool DEFAULT_BLOCKSONLY = false;
+
+static const bool DEFAULT_FORCEDNSSEED = false;
+static const size_t DEFAULT_MAXRECEIVEBUFFER = 5 * 1000;
+static const size_t DEFAULT_MAXSENDBUFFER    = 1 * 1000;
+
+// NOTE: When adjusting this, update rpcnet:setban's help ("24h")
+static const unsigned int DEFAULT_MISBEHAVING_BANTIME = 60 * 60 * 24;  // Default 24-hour ban
 void setChurnMode();
 unsigned int ReceiveFloodSize();
 unsigned int SendBufferSize();
 
-void AddOneShot(std::string strDest);
+void AddOneShot(const std::string& strDest);
 bool RecvLine(SOCKET hSocket, std::string& strLine);
 void AddressCurrentlyConnected(const CService& addr);
 CNode* FindNode(const CNetAddr& ip);
@@ -127,7 +140,20 @@ extern bool fListen;
 extern uint64_t nLocalServices;
 extern uint64_t nLocalHostNonce;
 extern CAddrMan addrman;
+
+// The allocation of connections against the maximum allowed (nMaxConnections)
+// is prioritized as follows:
+// 1st: Outbound connections (MAX_OUTBOUND_CONNECTIONS)
+// 2nd: Inbound connections from whitelisted peers (nWhiteConnections)
+// 3rd: Inbound connections from non-whitelisted peers
+// Thus, the number of connection slots for the general public to use is:
+// nMaxConnections - (MAX_OUTBOUND_CONNECTIONS + nWhiteConnections)
+// Any additional inbound connections beyond limits will be immediately closed
+
+/** Maximum number of connections to simultaneously allow (aka connection slots) */
 extern int nMaxConnections;
+/** Number of connection slots to reserve for inbound from whitelisted peers */
+extern int nWhiteConnections;
 
 extern std::vector<CNode*> vNodes;
 extern CCriticalSection cs_vNodes;
@@ -261,7 +287,7 @@ public:
     // We use fRelayTxes for two purposes -
     // a) it allows us to not relay tx invs before receiving the peer's version message
     // b) the peer may tell us in their version message that we should not relay tx invs
-    //    until they have initialized their bloom filter.
+    //    unless it loads a bloom filter.
     bool fRelayTxes;
     CSemaphoreGrant grantOutbound;
     CCriticalSection cs_filter;
@@ -313,7 +339,7 @@ public:
     // Whether a ping is requested.
     bool fPingQueued;
 
-    CNode(SOCKET hSocketIn, CAddress addrIn, std::string addrNameIn = "", bool fInboundIn=false);
+    CNode(SOCKET hSocketIn, const CAddress &addrIn, const std::string &addrNameIn = "", bool fInboundIn = false);
     ~CNode();
 
 private:

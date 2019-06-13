@@ -49,6 +49,8 @@ struct CNodeStateStats;
 
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = true;
+/** Default for DEFAULT_WHITELISTALWAYSRELAY. */
+static const bool DEFAULT_WHITELISTALWAYSRELAY = true;
 /** Default for -minrelaytxfee, minimum relay fee for transactions */
 static const unsigned int DEFAULT_MIN_RELAY_TX_FEE = 100;
 /** Default for -maxorphantx, maximum number of orphan transactions kept in memory */
@@ -71,6 +73,7 @@ static const unsigned int MAX_BLOCKFILE_SIZE = 0x8000000; // 128 MiB
 static const unsigned int BLOCKFILE_CHUNK_SIZE = 0x1000000; // 16 MiB
 /** The pre-allocation chunk size for rev?????.dat files (since 0.8) */
 static const unsigned int UNDOFILE_CHUNK_SIZE = 0x100000; // 1 MiB
+
 /** Maximum number of script-checking threads allowed */
 static const int MAX_SCRIPTCHECK_THREADS = 16;
 /** -par default (number of script-checking threads, 0 = auto) */
@@ -87,12 +90,22 @@ static const unsigned int MAX_HEADERS_RESULTS = 2000;
  *  degree of disordering of blocks on disk (which make reindexing and in the future perhaps pruning
  *  harder). We'll probably want to make this a per-peer adaptive value at some point. */
 static const unsigned int BLOCK_DOWNLOAD_WINDOW = 20480;
-/** Time to wait (in seconds) between writing blockchain state to disk. */
-static const unsigned int DATABASE_WRITE_INTERVAL = 3600;
+/** Time to wait (in seconds) between writing blocks/block index to disk. */
+static const unsigned int DATABASE_WRITE_INTERVAL = 60 * 60;
+/** Time to wait (in seconds) between flushing chainstate to disk. */
+static const unsigned int DATABASE_FLUSH_INTERVAL = 24 * 60 * 60;
 /** Maximum length of reject messages. */
 static const unsigned int MAX_REJECT_MESSAGE_LENGTH = 111;
-
+static const unsigned int DEFAULT_LIMITFREERELAY = 15;
 static const bool DEFAULT_RELAYPRIORITY = true;
+
+/** Default for -permitbaremultisig */
+static const bool DEFAULT_PERMIT_BAREMULTISIG = true;
+static const bool DEFAULT_CHECKPOINTS_ENABLED = true;
+static const bool DEFAULT_TXINDEX = false;
+static const unsigned int DEFAULT_BANSCORE_THRESHOLD = 100;
+
+static const bool DEFAULT_TESTSAFEMODE = false;
 
 /** Maximum number of headers to announce when relaying blocks with headers message.*/
 static const unsigned int MAX_BLOCKS_TO_ANNOUNCE = 160; // Experimental
@@ -119,7 +132,7 @@ extern bool fTxIndex;
 extern bool fIsBareMultisigStd;
 extern bool fCheckBlockIndex;
 extern bool fCheckpointsEnabled;
-extern unsigned int nCoinCacheSize;
+extern size_t nCoinCacheUsage;
 extern CFeeRate minRelayTxFee;
 extern bool fAlerts;
 
@@ -199,7 +212,7 @@ void PartitionCheck(bool (*initialDownloadCheck)(), CCriticalSection& cs, const 
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
 bool IsInitialBlockDownload();
 /** Format a string that describes several potential problems detected by the core */
-std::string GetWarnings(std::string strFor);
+std::string GetWarnings(const std::string &strFor);
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
 bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow = false);
 /** Find the best known block, and make it the tip of the block chain */
@@ -243,7 +256,8 @@ void PruneAndFlush();
 bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransaction &tx, bool fLimitFree,
                         bool* pfMissingInputs, bool fOverrideMempoolLimit=false, bool fRejectAbsurdFee=false);
 
-
+/** Convert CValidationState to a human-readable message for logging */
+std::string FormatStateMessage(const CValidationState &state);
 
 struct CNodeStateStats {
     int nMisbehavior;
@@ -281,25 +295,6 @@ struct CDiskTxPos : public CDiskBlockPos
 CAmount GetMinRelayFee(const CTransaction& tx, unsigned int nBytes, bool fAllowFree);
 
 /**
- * Check transaction inputs, and make sure any
- * pay-to-script-hash transactions are evaluating IsStandard scripts
- *
- * Why bother? To avoid denial-of-service attacks; an attacker
- * can submit a standard HASH... OP_EQUAL transaction,
- * which will get accepted into blocks. The redemption
- * script can be anything; an attacker could use a very
- * expensive-to-check-upon-redemption script like:
- *   DUP CHECKSIG DROP ... repeated 100 times... OP_1
- */
-
-/**
- * Check for standard transaction types
- * @param[in] mapInputs    Map of previous transactions that have outputs we're spending
- * @return True if all inputs (scriptSigs) use only standard transaction forms
- */
-bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs);
-
-/**
  * Count ECDSA signature operations the old-fashioned (pre-0.6) way
  * @return number of sigops this transaction's outputs will produce when spent
  * @see CTransaction::FetchInputs
@@ -329,11 +324,6 @@ void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCach
 
 /** Context-independent validity checks */
 bool CheckTransaction(const CTransaction& tx, CValidationState& state);
-
-/** Check for standard transaction types
- * @return True if all outputs (scriptPubKeys) use only standard transaction forms
- */
-bool IsStandardTx(const CTransaction& tx, std::string& reason);
 
 /**
  * Check if transaction is final and can be included in a block with the

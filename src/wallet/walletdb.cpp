@@ -397,7 +397,7 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             if (wtx.nOrderPos == -1)
                 wss.fAnyUnordered = true;
 
-            pwallet->AddToWallet(wtx, true);
+            pwallet->AddToWallet(wtx, true, nullptr);
         }
         else if (strType == "acentry")
         {
@@ -803,7 +803,7 @@ void ThreadFlushWalletDB(const string& strFile)
     if (fOneThread)
         return;
     fOneThread = true;
-    if (!GetBoolArg("-flushwallet", true))
+    if (!GetBoolArg("-flushwallet", DEFAULT_FLUSHWALLET))
         return;
 
     unsigned int nLastSeen = nWalletDBUpdated;
@@ -846,8 +846,7 @@ void ThreadFlushWalletDB(const string& strFile)
                         // Flush wallet.dat so it's self contained
                         bitdb.CloseDb(strFile);
                         bitdb.CheckpointLSN(strFile);
-
-                        bitdb.mapFileUseCount.erase(mi++);
+                        // bitdb.mapFileUseCount.erase(mi++);
                         LogPrint("db", "Flushed wallet.dat %dms\n", GetTimeMillis() - nStart);
                     }
                 }
@@ -869,6 +868,8 @@ bool BackupWallet(const CWallet& wallet, const string& strDest)
                 // Flush log data to the dat file
                 bitdb.CloseDb(wallet.strWalletFile);
                 bitdb.CheckpointLSN(wallet.strWalletFile);
+                printf("Issuing lsn_reset for backup file portability.\n");
+                bitdb.lsn_reset(wallet.strWalletFile);
                 bitdb.mapFileUseCount.erase(wallet.strWalletFile);
 
                 // Copy wallet.dat

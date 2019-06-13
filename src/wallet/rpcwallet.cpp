@@ -18,7 +18,7 @@
 
 #include <stdint.h>
 
-#include "univalue/univalue.h"
+#include <univalue.h>
 
 using namespace std;
 
@@ -61,6 +61,8 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
         entry.push_back(Pair("blockhash", wtx.hashBlock.GetHex()));
         entry.push_back(Pair("blockindex", wtx.nIndex));
         entry.push_back(Pair("blocktime", mapBlockIndex[wtx.hashBlock]->GetBlockTime()));
+    } else {
+        entry.push_back(Pair("trusted", wtx.IsTrusted()));
     }
     uint256 hash = wtx.GetHash();
     entry.push_back(Pair("txid", hash.GetHex()));
@@ -1420,7 +1422,9 @@ UniValue listtransactions(const UniValue& params, bool fHelp)
                 "    \"fee\": x.xxx,             (numeric) The amount of the fee in " + CURRENCY_UNIT + ". This is negative and only available for the \n"
                 "                                         'send' category of transactions.\n"
                 "    \"confirmations\": n,       (numeric) The number of confirmations for the transaction. Available for 'send' and \n"
-                "                                         'receive' category of transactions.\n"
+                "                                         'receive' category of transactions. Negative confirmations indicate the\n"
+                "                                         transation conflicts with the block chain\n"
+                "    \"trusted\": xxx            (bool) Whether we consider the outputs of this unconfirmed transaction safe to spend.\n"
                 "    \"blockhash\": \"hashvalue\", (string) The block hash containing the transaction. Available for 'send' and 'receive'\n"
                 "                                          category of transactions.\n"
                 "    \"blockindex\": n,          (numeric) The block index containing the transaction. Available for 'send' and 'receive'\n"

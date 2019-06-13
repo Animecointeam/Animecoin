@@ -14,7 +14,7 @@
 #include "utilmoneystr.h"
 #include "utilstrencodings.h"
 
-#include "univalue/univalue.h"
+#include <univalue.h>
 
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
@@ -156,7 +156,7 @@ vector<unsigned char> ParseHexO(const UniValue& o, string strKey)
  * Note: This interface may still be subject to change.
  */
 
-string CRPCTable::help(string strCommand) const
+std::string CRPCTable::help(const std::string& strCommand) const
 {
     string strRet;
     string category;
@@ -375,7 +375,7 @@ CRPCTable::CRPCTable()
     }
 }
 
-const CRPCCommand *CRPCTable::operator[](const std::string &name) const
+const CRPCCommand *CRPCTable::operator[](const std::string& name) const
 {
     map<string, const CRPCCommand*>::const_iterator it = mapCommands.find(name);
     if (it == mapCommands.end())
@@ -522,11 +522,13 @@ UniValue CRPCTable::execute(const std::string &strMethod, const UniValue &params
     g_rpcSignals.PostCommand(*pcmd);
 }
 
-std::string HelpExampleCli(string methodname, string args){
+std::string HelpExampleCli(const std::string& methodname, const std::string& args)
+{
     return "> animecoin-cli " + methodname + " " + args + "\n";
 }
 
-std::string HelpExampleRpc(string methodname, string args){
+std::string HelpExampleRpc(const std::string& methodname, const std::string& args)
+{
     return "> curl --user myusername --data-binary '{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", "
         "\"method\": \"" + methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:8332/\n";
 }

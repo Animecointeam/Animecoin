@@ -27,6 +27,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+
 /**
  * Settings
  */
@@ -37,6 +39,7 @@ extern bool bSpendZeroConfChange;
 extern bool fSendFreeTransactions;
 extern bool fPayAtLeastCustomFee;
 
+static const unsigned int DEFAULT_KEYPOOL_SIZE = 100;
 //! -paytxfee default
 static const CAmount DEFAULT_TRANSACTION_FEE = 0;
 //! -paytxfee will warn if called with a higher fee than this amount (in satoshis) per KB
@@ -47,10 +50,15 @@ static const CAmount DEFAULT_TRANSACTION_MINFEE = 100;
 static const CAmount DEFAULT_TRANSACTION_MAXFEE = 10 * COIN;
 //! minimum change amount
 static const CAmount MIN_CHANGE = CENT;
+//! Default for -spendzeroconfchange
+static const bool DEFAULT_SPEND_ZEROCONF_CHANGE = true;
+//! Default for -sendfreetransactions
+static const bool DEFAULT_SEND_FREE_TRANSACTIONS = false;
 //! -maxtxfee will warn if called with a higher fee than this amount (in satoshis)
 static const CAmount nHighTransactionMaxFeeWarning = 100 * nHighTransactionFeeWarning;
 //! Largest (in bytes) free transaction we're willing to create
 static const unsigned int MAX_FREE_TRANSACTION_CREATE_SIZE = 1000;
+static const bool DEFAULT_WALLETBROADCAST = true;
 
 class CAccountingEntry;
 class CCoinControl;
@@ -134,6 +142,7 @@ private:
 
     int64_t nNextResend;
     int64_t nLastResend;
+    bool fBroadcastTransactions;
 
     /**
      * Used to keep track of spent outpoints, and
@@ -144,6 +153,10 @@ private:
     TxSpends mapTxSpends;
     void AddToSpends(const COutPoint& outpoint, const uint256& wtxid);
     void AddToSpends(const uint256& wtxid);
+
+    /* Mark a transaction (and its in-wallet descendants) as conflicting with a particular block. */
+    void MarkConflicted(const uint256& hashBlock, const uint256& hashTx);
+
 
     void SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator>);
 
@@ -172,7 +185,7 @@ public:
         SetNull();
     }
 
-    CWallet(std::string strWalletFileIn)
+    CWallet(const std::string& strWalletFileIn)
     {
         SetNull();
 
@@ -197,6 +210,7 @@ public:
         nNextResend = 0;
         nLastResend = 0;
         nTimeFirstKey = 0;
+        fBroadcastTransactions = false;
     }
 
     std::map<uint256, CWalletTx> mapWallet;
@@ -289,8 +303,8 @@ public:
     int64_t IncOrderPosNext(CWalletDB *pwalletdb = nullptr);
 
     void MarkDirty();
-    bool AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet=false);
-    void SyncTransaction(const CTransaction& tx, const CBlock* pblock);
+    bool AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletDB* pwalletdb);
+    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock);
     bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate);
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
     void ReacceptWalletTransactions();
@@ -324,7 +338,7 @@ public:
     std::set< std::set<CTxDestination> > GetAddressGroupings();
     std::map<CTxDestination, CAmount> GetAddressBalances();
 
-    std::set<CTxDestination> GetAccountAddresses(std::string strAccount) const;
+    std::set<CTxDestination> GetAccountAddresses(const std::string& strAccount) const;
 
     isminetype IsMine(const CTxIn& txin) const;
     CAmount GetDebit(const CTxIn& txin, const isminefilter& filter) const;
@@ -359,12 +373,12 @@ public:
         }
     }
 
-    void GetScriptForMining(CScript &script);
-    void UpdateRequestCount(const CBlock& block)
+    void GetScriptForMining(boost::shared_ptr<CReserveScript> &script);
+    void ResetRequestCount(const uint256 &hash)
     {
         LOCK(cs_wallet);
-        mapRequestCount[block.GetHash()] = 0;
-    };
+        mapRequestCount[hash] = 0;
+    }
 
     unsigned int GetKeyPoolSize()
     {
@@ -413,10 +427,15 @@ public:
 
     /** Watch-only address added */
     boost::signals2::signal<void (bool fHaveWatchOnly)> NotifyWatchonlyChanged;
+
+    /** Inquire whether this wallet broadcasts transactions. */
+    bool GetBroadcastTransactions() const { return fBroadcastTransactions; }
+    /** Set whether this wallet broadcasts transactions. */
+    void SetBroadcastTransactions(bool broadcast) { fBroadcastTransactions = broadcast; }
 };
 
 /** A key allocated from the key pool. */
-class CReserveKey
+class CReserveKey : public CReserveScript
 {
 protected:
     CWallet* pwallet;
@@ -437,6 +456,7 @@ public:
     void ReturnKey();
     bool GetReservedKey(CPubKey &pubkey);
     void KeepKey();
+    void KeepScript() { KeepKey(); }
 };
 
 
@@ -471,11 +491,14 @@ struct COutputEntry
 /** A transaction with a merkle branch linking it to the block chain. */
 class CMerkleTx : public CTransaction
 {
-private:
-    int GetDepthInMainChainINTERNAL(const CBlockIndex* &pindexRet) const;
-
 public:
     uint256 hashBlock;
+
+    /* An nIndex == -1 means that hashBlock (in nonzero) refers to the earliest
+     * block in the chain we know this or any in-wallet dependency conflicts
+     * with. Older clients interpret nIndex == -1 as unconfirmed for backward
+     * compatibility.
+     */
     int nIndex;
 
     CMerkleTx()
@@ -508,16 +531,15 @@ public:
 
     int SetMerkleBranch(const CBlock& block);
 
-
     /**
      * Return depth of transaction in blockchain:
-     * -1  : not in blockchain, and not in memory pool (conflicted transaction)
+     * <0  : conflicts with a transaction this deep in the blockchain
      *  0  : in memory pool, waiting to be included in a block
      * >=1 : this many blocks deep in the main chain
      */
     int GetDepthInMainChain(const CBlockIndex* &pindexRet) const;
     int GetDepthInMainChain() const { const CBlockIndex *pindexRet; return GetDepthInMainChain(pindexRet); }
-    bool IsInMainChain() const { const CBlockIndex *pindexRet; return GetDepthInMainChainINTERNAL(pindexRet) > 0; }
+    bool IsInMainChain() const { const CBlockIndex *pindexRet; return GetDepthInMainChain(pindexRet) > 0; }
     int GetBlocksToMaturity() const;
     bool AcceptToMemoryPool(bool fLimitFree=true, bool fRejectAbsurdFee=true);
 };
@@ -697,7 +719,7 @@ public:
 
     bool IsTrusted() const;
 
-    bool WriteToDisk();
+    bool WriteToDisk(CWalletDB *pwalletdb);
 
     int64_t GetTxTime() const;
     int GetRequestCount() const;

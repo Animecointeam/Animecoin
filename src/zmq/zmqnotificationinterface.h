@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 
+class CBlockIndex;
 class CZMQAbstractNotifier;
 
 class CZMQNotificationInterface : public CValidationInterface
@@ -18,12 +19,13 @@ public:
 
     static CZMQNotificationInterface* CreateWithArguments(const std::map<std::string, std::string> &args);
 
+protected:
     bool Initialize();
     void Shutdown();
 
-protected: // CValidationInterface
-    void SyncTransaction(const CTransaction &tx, const CBlock *pblock);
-    void UpdatedBlockTip(const uint256 &newHashTip);
+    // CValidationInterface
+    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock);
+    void UpdatedBlockTip(const CBlockIndex *pindex);
 
 private:
     CZMQNotificationInterface();

@@ -15,8 +15,7 @@
 #include "version.h"
 #include "base58.h"
 
-
-#include "univalue/univalue.h"
+#include <univalue.h>
 
 using namespace std;
 
@@ -251,19 +250,20 @@ UniValue getaddednodeinfo(const UniValue& params, bool fHelp)
     if (params.size() == 1)
     {
         LOCK(cs_vAddedNodes);
-        for (string& strAddNode : vAddedNodes)
+        for (const std::string& strAddNode : vAddedNodes)
             laddedNodes.push_back(strAddNode);
     }
     else
     {
         string strNode = params[1].get_str();
         LOCK(cs_vAddedNodes);
-        for (string& strAddNode : vAddedNodes)
+        for (const std::string& strAddNode : vAddedNodes) {
             if (strAddNode == strNode)
             {
                 laddedNodes.push_back(strAddNode);
                 break;
             }
+        }
         if (laddedNodes.size() == 0)
             throw JSONRPCError(RPC_CLIENT_NODE_NOT_ADDED, "Error: Node has not been added.");
     }
@@ -271,7 +271,7 @@ UniValue getaddednodeinfo(const UniValue& params, bool fHelp)
     UniValue ret(UniValue::VARR);
     if (!fDns)
     {
-        for (string& strAddNode : laddedNodes)
+        for (const std::string& strAddNode : laddedNodes)
         {
             UniValue obj(UniValue::VOBJ);
             obj.push_back(Pair("addednode", strAddNode));
@@ -281,7 +281,7 @@ UniValue getaddednodeinfo(const UniValue& params, bool fHelp)
     }
 
     list<pair<string, vector<CService> > > laddedAddreses(0);
-    for (string& strAddNode : laddedNodes)
+    for (const std::string& strAddNode : laddedNodes)
     {
         vector<CService> vservNode(0);
         if(Lookup(strAddNode.c_str(), vservNode, Params().GetDefaultPort(), fNameLookup, 0))
@@ -304,12 +304,12 @@ UniValue getaddednodeinfo(const UniValue& params, bool fHelp)
 
         UniValue addresses(UniValue::VARR);
         bool fConnected = false;
-        for (CService& addrNode : it->second)
+        for (const CService& addrNode : it->second)
         {
             bool fFound = false;
             UniValue node(UniValue::VOBJ);
             node.push_back(Pair("address", addrNode.ToString()));
-            for (CNode* pnode : vNodes)
+            for (CNode* pnode : vNodes) {
                 if (pnode->addr == addrNode)
                 {
                     fFound = true;
@@ -317,6 +317,7 @@ UniValue getaddednodeinfo(const UniValue& params, bool fHelp)
                     node.push_back(Pair("connected", pnode->fInbound ? "inbound" : "outbound"));
                     break;
                 }
+            }
             if (!fFound)
                 node.push_back(Pair("connected", "false"));
             addresses.push_back(node);
@@ -377,7 +378,8 @@ static UniValue GetNetworksInfo()
         obj.push_back(Pair("name", GetNetworkName(network)));
         obj.push_back(Pair("limited", IsLimited(network)));
         obj.push_back(Pair("reachable", IsReachable(network)));
-        obj.push_back(Pair("proxy", proxy.IsValid() ? proxy.ToStringIPPort() : string()));
+        obj.push_back(Pair("proxy", proxy.IsValid() ? proxy.proxy.ToStringIPPort() : string()));
+        obj.push_back(Pair("proxy_randomize_credentials", proxy.randomize_credentials));
         networks.push_back(obj);
     }
     return networks;

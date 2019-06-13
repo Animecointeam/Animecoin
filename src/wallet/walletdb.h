@@ -17,6 +17,8 @@
 #include <utility>
 #include <vector>
 
+static const bool DEFAULT_FLUSHWALLET = true;
+
 class CAccount;
 class CAccountingEntry;
 struct CBlockLocator;
@@ -76,7 +78,7 @@ public:
 class CWalletDB : public CDB
 {
 public:
-    CWalletDB(const std::string& strFilename, const char* pszMode = "r+") : CDB(strFilename, pszMode)
+    CWalletDB(const std::string& strFilename, const char* pszMode = "r+", bool fFlushOnClose = true) : CDB(strFilename, pszMode, fFlushOnClose)
     {
     }
 

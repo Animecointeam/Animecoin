@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 # Copyright (c) 2014 The Bitcoin Core developers
-# Distributed under the MIT/X11 software license, see the accompanying
+# Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #
@@ -42,6 +42,10 @@ class WalletTest (BitcoinTestFramework):
 
         self.nodes[0].setgenerate(True, 1)
 
+        walletinfo = self.nodes[0].getwalletinfo()
+        assert_equal(walletinfo['immature_balance'], 50)
+        assert_equal(walletinfo['balance'], 0)
+
         self.sync_all()
         self.nodes[1].setgenerate(True, 101)
         self.sync_all()
@@ -55,7 +59,10 @@ class WalletTest (BitcoinTestFramework):
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 11)
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 10)
 
-        # Have node0 mine a block, thus he will collect his own fee. 
+        walletinfo = self.nodes[0].getwalletinfo()
+        assert_equal(walletinfo['immature_balance'], 0)
+
+        # Have node0 mine a block, thus they will collect their own fee. 
         self.nodes[0].setgenerate(True, 1)
         self.sync_all()
 
@@ -96,7 +103,7 @@ class WalletTest (BitcoinTestFramework):
         assert_equal(self.nodes[2].getbalance(), 100)
         assert_equal(self.nodes[2].getbalance("from1"), 100-21)
 
-        # Send 10 XBT normal
+        # Send 10 BTC normal
         address = self.nodes[0].getnewaddress("test")
         self.nodes[2].settxfee(Decimal('0.001'))
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", False)
@@ -105,13 +112,27 @@ class WalletTest (BitcoinTestFramework):
         assert_equal(self.nodes[2].getbalance(), Decimal('89.99900000'))
         assert_equal(self.nodes[0].getbalance(), Decimal('10.00000000'))
 
-        # Send 10 XBT with subtract fee from amount
+        # Send 10 BTC with subtract fee from amount
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", True)
         self.nodes[2].setgenerate(True, 1)
         self.sync_all()
         assert_equal(self.nodes[2].getbalance(), Decimal('79.99900000'))
         assert_equal(self.nodes[0].getbalance(), Decimal('19.99900000'))
-        
+
+        # Sendmany 10 BTC
+        txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [])
+        self.nodes[2].setgenerate(True, 1)
+        self.sync_all()
+        assert_equal(self.nodes[2].getbalance(), Decimal('69.99800000'))
+        assert_equal(self.nodes[0].getbalance(), Decimal('29.99900000'))
+
+        # Sendmany 10 BTC with subtract fee from amount
+        txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [address])
+        self.nodes[2].setgenerate(True, 1)
+        self.sync_all()
+        assert_equal(self.nodes[2].getbalance(), Decimal('59.99800000'))
+        assert_equal(self.nodes[0].getbalance(), Decimal('39.99800000'))
+
         # Test ResendWalletTransactions:
         # Create a couple of transactions, then start up a fourth
         # node (nodes[3]) and ask nodes[0] to rebroadcast.
@@ -129,6 +150,47 @@ class WalletTest (BitcoinTestFramework):
         sync_mempools(self.nodes)
 
         assert(txid1 in self.nodes[3].getrawmempool())
+        
+        
+        #do some -walletbroadcast tests
+        stop_nodes(self.nodes)
+        wait_bitcoinds()
+        self.nodes = start_nodes(3, self.options.tmpdir, [["-walletbroadcast=0"],["-walletbroadcast=0"],["-walletbroadcast=0"]])
+        connect_nodes_bi(self.nodes,0,1)
+        connect_nodes_bi(self.nodes,1,2)
+        connect_nodes_bi(self.nodes,0,2)
+        self.sync_all()
 
+        txIdNotBroadcasted  = self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 2);
+        txObjNotBroadcasted = self.nodes[0].gettransaction(txIdNotBroadcasted)
+        self.nodes[1].setgenerate(True, 1) #mine a block, tx should not be in there
+        self.sync_all()
+        assert_equal(self.nodes[2].getbalance(), Decimal('59.99800000')); #should not be changed because tx was not broadcasted
+        
+        #now broadcast from another node, mine a block, sync, and check the balance
+        self.nodes[1].sendrawtransaction(txObjNotBroadcasted['hex'])
+        self.nodes[1].setgenerate(True, 1)
+        self.sync_all()
+        txObjNotBroadcasted = self.nodes[0].gettransaction(txIdNotBroadcasted)
+        assert_equal(self.nodes[2].getbalance(), Decimal('61.99800000')); #should not be
+        
+        #create another tx
+        txIdNotBroadcasted  = self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 2);
+        
+        #restart the nodes with -walletbroadcast=1
+        stop_nodes(self.nodes)
+        wait_bitcoinds()
+        self.nodes = start_nodes(3, self.options.tmpdir)
+        connect_nodes_bi(self.nodes,0,1)
+        connect_nodes_bi(self.nodes,1,2)
+        connect_nodes_bi(self.nodes,0,2)
+        sync_blocks(self.nodes)
+        
+        self.nodes[0].setgenerate(True, 1)
+        sync_blocks(self.nodes)
+        
+        #tx should be added to balance because after restarting the nodes tx should be broadcastet
+        assert_equal(self.nodes[2].getbalance(), Decimal('63.99800000')); #should not be
+        
 if __name__ == '__main__':
     WalletTest ().main ()

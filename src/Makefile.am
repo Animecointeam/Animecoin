@@ -1,28 +1,15 @@
-DIST_SUBDIRS = secp256k1
+DIST_SUBDIRS = secp256k1 univalue
 
 AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
 AM_CXXFLAGS = $(HARDENED_CXXFLAGS)
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
-
-if EMBEDDED_LEVELDB
-LEVELDB_CPPFLAGS += -I$(srcdir)/leveldb/include
-LEVELDB_CPPFLAGS += -I$(srcdir)/leveldb/helpers/memenv
-LIBLEVELDB += $(builddir)/leveldb/libleveldb.a
-LIBMEMENV  += $(builddir)/leveldb/libmemenv.a
-
-# NOTE: This dependency is not strictly necessary, but without it make may try to build both in parallel, which breaks the LevelDB build system in a race
-$(LIBLEVELDB): $(LIBMEMENV)
-
-$(LIBLEVELDB) $(LIBMEMENV):
-	@echo "Building LevelDB ..." && $(MAKE) -C $(@D) $(@F) CXX="$(CXX)" \
-	  CC="$(CC)" PLATFORM=$(TARGET_OS) AR="$(AR)" $(LEVELDB_TARGET_FLAGS) \
-          OPT="$(AM_CXXFLAGS) $(PIE_FLAGS) $(CXXFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS)"
-endif
+EXTRA_LIBRARIES =
 
 BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
 BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
+BITCOIN_INCLUDES += -I$(srcdir)/univalue/include
 
 LIBBITCOIN_SERVER=libanimecoin_server.a
 LIBBITCOIN_WALLET=libanimecoin_wallet.a
@@ -30,20 +17,23 @@ LIBBITCOIN_COMMON=libanimecoin_common.a
 LIBBITCOIN_CLI=libanimecoin_cli.a
 LIBBITCOIN_UTIL=libanimecoin_util.a
 LIBBITCOIN_CRYPTO=crypto/libanimecoin_crypto.a
-LIBBITCOIN_UNIVALUE=univalue/libanimecoin_univalue.a
 LIBBITCOINQT=qt/libanimecoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
+LIBUNIVALUE=univalue/lib/libunivalue.la
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
 
+
+$(LIBUNIVALUE): $(wildcard univalue/lib/*) $(wildcard univalue/include/*)
+	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
+	
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
-EXTRA_LIBRARIES = \
+EXTRA_LIBRARIES += \
   crypto/libanimecoin_crypto.a \
   libanimecoin_util.a \
   libanimecoin_common.a \
-  univalue/libanimecoin_univalue.a \
   libanimecoin_server.a \
   libanimecoin_cli.a
 if ENABLE_WALLET
@@ -93,6 +83,7 @@ BITCOIN_CORE_H = \
   compat.h \
   compressor.h \
   consensus/consensus.h \
+  consensus/merkle.h \
   consensus/params.h \
   core_io.h \
   core_memusage.h \
@@ -194,6 +185,7 @@ libanimecoin_server_a_SOURCES = \
   net.cpp \
   noui.cpp \
   policy/fees.cpp \
+  policy/policy.cpp \
   rest.cpp \
   rpcblockchain.cpp \
   rpcmining.cpp \
@@ -267,14 +259,6 @@ crypto_libanimecoin_crypto_a_SOURCES = \
   crypto/sph_jh.h \
   crypto/sph_skein.h
 
-# univalue JSON library
-univalue_libanimecoin_univalue_a_SOURCES = \
-  univalue/univalue.cpp \
-  univalue/univalue_read.cpp \
-  univalue/univalue_write.cpp \
-  univalue/univalue_escapes.h \
-  univalue/univalue.h
-
 # common: shared between animecoind, and animecoin-qt and non-server tools
 libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -285,6 +269,7 @@ libanimecoin_common_a_SOURCES = \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
+  consensus/merkle.cpp \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
@@ -345,7 +330,7 @@ nodist_libanimecoin_util_a_SOURCES = $(srcdir)/obj/build.h
 animecoind_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UNIVALUE) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
@@ -374,7 +359,7 @@ animecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 # animecoin-cli binary #
 animecoin_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
-  $(LIBBITCOIN_UNIVALUE) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
@@ -390,7 +375,7 @@ animecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 # animecoin-tx binary #
 animecoin_tx_LDADD = \
-  $(LIBBITCOIN_UNIVALUE) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \
@@ -447,6 +432,7 @@ EXTRA_DIST = leveldb
 clean-local:
 	-$(MAKE) -C leveldb clean
 	-$(MAKE) -C secp256k1 clean
+	-$(MAKE) -C univalue clean
 	rm -f leveldb/*/*.gcno leveldb/helpers/memenv/*.gcno
 	-rm -f config.h
 
@@ -461,6 +447,10 @@ clean-local:
 %.pb.cc %.pb.h: %.proto
 	@test -f $(PROTOC)
 	$(AM_V_GEN) $(PROTOC) --cpp_out=$(@D) --proto_path=$(abspath $(<D) $<)
+
+if EMBEDDED_LEVELDB
+include Makefile.leveldb.include
+endif
 
 if ENABLE_TESTS
 include Makefile.test.include

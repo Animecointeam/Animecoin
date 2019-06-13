@@ -23,10 +23,10 @@ using namespace std;
 CTxMemPoolEntry::CTxMemPoolEntry(const CTransaction& _tx, const CAmount& _nFee,
                                  int64_t _nTime, double _entryPriority, unsigned int _entryHeight,
                                  bool poolHasNoInputsOf, CAmount _inChainInputValue,
-                                 bool _spendsCoinbase):
+                                 bool _spendsCoinbase, unsigned int _sigOps):
     tx(_tx), nFee(_nFee), nTime(_nTime), entryPriority(_entryPriority), entryHeight(_entryHeight),
     hadNoDependencies(poolHasNoInputsOf), inChainInputValue(_inChainInputValue),
-    spendsCoinbase(_spendsCoinbase)
+    spendsCoinbase(_spendsCoinbase), sigOpCount(_sigOps)
 {
     nTxSize = ::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION);
     nModSize = tx.CalculateModifiedSize(nTxSize);
@@ -37,6 +37,8 @@ CTxMemPoolEntry::CTxMemPoolEntry(const CTransaction& _tx, const CAmount& _nFee,
     nFeesWithDescendants = nFee;
     CAmount nValueIn = tx.GetValueOut()+nFee;
     assert(inChainInputValue <= nValueIn);
+
+    feeDelta = 0;
 }
 
 CTxMemPoolEntry::CTxMemPoolEntry(const CTxMemPoolEntry& other)
@@ -52,6 +54,11 @@ CTxMemPoolEntry::GetPriority(unsigned int currentHeight) const
     if (dResult < 0) // This should only happen if it was called with a height below entry height
         dResult = 0;
     return dResult;
+}
+
+void CTxMemPoolEntry::UpdateFeeDelta(int64_t newFeeDelta)
+{
+    feeDelta = newFeeDelta;
 }
 
 // Update the given tx for any in-mempool descendants.
@@ -371,6 +378,15 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
         }
     }
     UpdateAncestorsOf(true, newit, setAncestors);
+
+    // Update transaction's score for any feeDelta created by PrioritiseTransaction
+    std::map<uint256, std::pair<double, CAmount> >::const_iterator pos = mapDeltas.find(hash);
+    if (pos != mapDeltas.end()) {
+        const std::pair<double, CAmount> &deltas = pos->second;
+        if (deltas.second) {
+            mapTx.modify(newit, update_fee_delta(deltas.second));
+        }
+    }
 
     nTransactionsUpdated++;
     totalTxSize += entry.GetTxSize();
@@ -741,6 +757,10 @@ void CTxMemPool::PrioritiseTransaction(const uint256 hash, const string strHash,
         std::pair<double, CAmount> &deltas = mapDeltas[hash];
         deltas.first += dPriorityDelta;
         deltas.second += nFeeDelta;
+        txiter it = mapTx.find(hash);
+        if (it != mapTx.end()) {
+            mapTx.modify(it, update_fee_delta(deltas.second));
+        }
     }
     LogPrintf("PrioritiseTransaction: %s priority += %f, fee += %d\n", strHash, dPriorityDelta, FormatMoney(nFeeDelta));
 }
@@ -790,8 +810,8 @@ bool CCoinsViewMemPool::HaveCoins(const uint256 &txid) const {
 
 size_t CTxMemPool::DynamicMemoryUsage() const {
     LOCK(cs);
-    // Estimate the overhead of mapTx to be 9 pointers + an allocation, as no exact formula for boost::multi_index_contained is implemented.
-    return memusage::MallocUsage(sizeof(CTxMemPoolEntry) + 9 * sizeof(void*)) * mapTx.size() + memusage::DynamicUsage(mapNextTx) + memusage::DynamicUsage(mapDeltas) + memusage::DynamicUsage(mapLinks) + cachedInnerUsage;
+    // Estimate the overhead of mapTx to be 12 pointers + an allocation, as no exact formula for boost::multi_index_contained is implemented.
+    return memusage::MallocUsage(sizeof(CTxMemPoolEntry) + 12 * sizeof(void*)) * mapTx.size() + memusage::DynamicUsage(mapNextTx) + memusage::DynamicUsage(mapDeltas) + memusage::DynamicUsage(mapLinks) + cachedInnerUsage;
 }
 
 void CTxMemPool::RemoveStaged(setEntries &stage) {
@@ -896,7 +916,7 @@ void CTxMemPool::trackPackageRemoved(const CFeeRate& rate) {
     }
 }
 
-void CTxMemPool::TrimToSize(size_t sizelimit) {
+void CTxMemPool::TrimToSize(size_t sizelimit, std::vector<uint256>* pvNoSpendsRemaining) {
     LOCK(cs);
 
     unsigned nTxnRemoved = 0;
@@ -915,8 +935,26 @@ void CTxMemPool::TrimToSize(size_t sizelimit) {
 
         setEntries stage;
         CalculateDescendants(mapTx.project<0>(it), stage);
-        RemoveStaged(stage);
         nTxnRemoved += stage.size();
+
+        std::vector<CTransaction> txn;
+        if (pvNoSpendsRemaining) {
+            txn.reserve(stage.size());
+            for (txiter it : stage)
+                txn.push_back(it->GetTx());
+        }
+        RemoveStaged(stage);
+        if (pvNoSpendsRemaining) {
+            for (const CTransaction& tx : txn) {
+                for (const CTxIn& txin : tx.vin) {
+                    if (exists(txin.prevout.hash))
+                        continue;
+                    std::map<COutPoint, CInPoint>::iterator it = mapNextTx.lower_bound(COutPoint(txin.prevout.hash, 0));
+                    if (it == mapNextTx.end() || it->first.hash != txin.prevout.hash)
+                        pvNoSpendsRemaining->push_back(txin.prevout.hash);
+                }
+            }
+        }
     }
 
     if (maxFeeRateRemoved > CFeeRate(0))

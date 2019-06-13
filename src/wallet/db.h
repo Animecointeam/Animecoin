@@ -20,6 +20,9 @@
 
 #include <db_cxx.h>
 
+static const unsigned int DEFAULT_WALLET_DBLOGSIZE = 100;
+static const bool DEFAULT_WALLET_PRIVDB = true;
+
 class CDiskBlockIndex;
 class COutPoint;
 
@@ -79,6 +82,7 @@ public:
     void Flush(bool fShutdown);
     void CheckpointLSN(const std::string& strFile);
 
+    void lsn_reset(const std::string& strFile);
     void CloseDb(const std::string& strFile);
     bool RemoveDb(const std::string& strFile);
 
@@ -103,8 +107,9 @@ protected:
     std::string strFile;
     DbTxn* activeTxn;
     bool fReadOnly;
+    bool fFlushOnClose;
 
-    explicit CDB(const std::string& strFilename, const char* pszMode = "r+");
+    explicit CDB(const std::string& strFilename, const char* pszMode = "r+", bool fFlushOnCloseIn=true);
     ~CDB() { Close(); }
 
 public:

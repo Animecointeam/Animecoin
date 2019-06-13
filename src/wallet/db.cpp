@@ -85,7 +85,7 @@ bool CDBEnv::Open(const boost::filesystem::path& pathIn)
     LogPrintf("CDBEnv::Open : LogDir=%s ErrorFile=%s\n", pathLogDir.string(), pathErrorFile.string());
 
     unsigned int nEnvFlags = 0;
-    if (GetBoolArg("-privdb", true))
+    if (GetBoolArg("-privdb", DEFAULT_WALLET_PRIVDB))
         nEnvFlags |= DB_PRIVATE;
 
     dbenv->set_lg_dir(pathLogDir.string().c_str());
@@ -220,14 +220,19 @@ void CDBEnv::CheckpointLSN(const std::string& strFile)
     dbenv->txn_checkpoint(0, 0, 0);
     if (fMockDb)
         return;
+    // dbenv->lsn_reset(strFile.c_str(), 0); // Expreimental. This seems redundant.
+}
+
+void CDBEnv::lsn_reset(const std::string& strFile)
+{
     dbenv->lsn_reset(strFile.c_str(), 0);
 }
 
-
-CDB::CDB(const std::string& strFilename, const char* pszMode) : pdb(nullptr), activeTxn(nullptr)
+CDB::CDB(const std::string& strFilename, const char* pszMode, bool fFlushOnCloseIn) : pdb(NULL), activeTxn(NULL)
 {
     int ret;
     fReadOnly = (!strchr(pszMode, '+') && !strchr(pszMode, 'w'));
+    fFlushOnClose = fFlushOnCloseIn;
     if (strFilename.empty())
         return;
 
@@ -292,7 +297,7 @@ void CDB::Flush()
     if (fReadOnly)
         nMinutes = 1;
 
-    bitdb.dbenv->txn_checkpoint(nMinutes ? GetArg("-dblogsize", 100) * 1024 : 0, nMinutes, 0);
+    bitdb.dbenv->txn_checkpoint(nMinutes ? GetArg("-dblogsize", DEFAULT_WALLET_DBLOGSIZE) * 1024 : 0, nMinutes, 0);
 }
 
 void CDB::Close()
@@ -304,7 +309,8 @@ void CDB::Close()
     activeTxn = nullptr;
     pdb = nullptr;
 
-    Flush();
+    if (fFlushOnClose)
+        Flush();
 
     {
         LOCK(bitdb.cs_db);

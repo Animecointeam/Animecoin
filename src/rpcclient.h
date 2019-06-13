@@ -6,7 +6,7 @@
 #ifndef BITCOIN_RPCCLIENT_H
 #define BITCOIN_RPCCLIENT_H
 
-#include "univalue/univalue.h"
+#include <univalue.h>
 
 UniValue RPCConvertValues(const std::string& strMethod, const std::vector<std::string>& strParams);
 
