@@ -32,7 +32,6 @@
 
 #include <algorithm>
 #include <fcntl.h>
-#include <mutex>
 #include <sys/resource.h>
 #include <sys/stat.h>
 
@@ -76,6 +75,7 @@
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <boost/thread.hpp>
+#include <mutex>
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 #include <openssl/conf.h>
