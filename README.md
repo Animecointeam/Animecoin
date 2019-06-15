@@ -1,5 +1,6 @@
 Animecoin 0.10.0 alpha
 ====================
+![Animecoin](https://miningbase.tk/images/coin-ANI.png)
 0.10 is in active development. Check out 0.9.2 branch for the current release candidate, or Releases section for the current and stable source.
 
 Intro
