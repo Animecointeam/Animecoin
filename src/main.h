@@ -161,14 +161,14 @@ extern uint64_t nPruneTarget;
 static const signed int MIN_BLOCKS_TO_KEEP = 5760;
 
 // Require that user allocate space for block & undo files (blk???.dat and rev???.dat)
-// At 1MB per block, 5760 blocks = 5760MB. Realistically though, this can be divided by 10 at least.
-// Add 15% for Undo data = 666MB
-// Add 20% for Orphan block rate = 800MB
-// We want the low water mark after pruning to be at least 800 MB and since we prune in
+// Rough real-life estimation: 4GB per 5.5M blocks = 780B per block on average.
+// Add 15% for Undo data = 900B
+// Add 20% for Orphan block rate = 1100B
+// We want the low water mark after pruning to be at least 5760*1100B=6MB and since we prune in
 // full block file chunks, we need the high water mark which triggers the prune to be
 // one 128MB block file + added 15% undo data = 147MB greater.
-// For the roundness purposes, let's make it 1GB.
-static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 1024 * 1024 * 1024;
+// For the roundness purposes, let's make it 200MB total.
+static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 200 * 1024 * 1024;
 
 /** Register with a network node to receive its signals */
 void RegisterNodeSignals(CNodeSignals& nodeSignals);

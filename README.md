@@ -38,7 +38,7 @@ The wallet format has also been updated. The first time you run an older release
 
 Features in progress but not necessarily finalized before 0.10 release
 ---------------------
-- Lightweight nodes (baseline support implemented, can only be run without wallet functionality yet).
+- Lightweight nodes (running a wallet in pruned mode is possible now).
 - BIP-0068, BIP-0112 and BIP-0113 aggregation (ideally merged into BIP-0065 fork).
 - Animecoin-specific optimizations (it's got a huge amount of block headers while the disk space usage is moderate, lots of small inputs from generated transactions etc).
 - Minimize third-party dependencies.
