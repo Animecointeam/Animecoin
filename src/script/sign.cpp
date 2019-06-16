@@ -12,10 +12,9 @@
 #include "script/standard.h"
 #include "uint256.h"
 
-
 using namespace std;
 
-typedef vector<unsigned char> valtype;
+typedef std::vector<unsigned char> valtype;
 
 TransactionSignatureCreator::TransactionSignatureCreator(const CKeyStore* keystoreIn, const CTransaction* txToIn, unsigned int nInIn, int nHashTypeIn) : BaseSignatureCreator(keystoreIn), txTo(txToIn), nIn(nInIn), nHashType(nHashTypeIn), checker(txTo, nIn) {}
 
@@ -116,7 +115,7 @@ bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPu
         bool fSolved =
                 SignStep(creator, subscript, scriptSig, subType) && subType != TX_SCRIPTHASH;
         // Append serialized subscript whether or not it is completely signed:
-        scriptSig << static_cast<valtype>(subscript);
+        scriptSig << valtype(subscript.begin(), subscript.end());
         if (!fSolved) return false;
     }
 

@@ -1023,8 +1023,8 @@ public:
 		// Serialize the script
 		if (nInput != nIn)
 			// Blank out other inputs' signatures
-			::Serialize(s, CScript(), nType, nVersion);
-		else
+            ::Serialize(s, CScriptBase(), nType, nVersion);
+        else
 			SerializeScriptCode(s, nType, nVersion);
 		// Serialize the nSequence
 		if (nInput != nIn && (fHashSingle || fHashNone))

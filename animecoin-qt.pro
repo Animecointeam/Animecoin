@@ -399,7 +399,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/core_memusage.h \
     src/httprpc.h \
     src/httpserver.h \
-    src/consensus/merkle.h
+    src/consensus/merkle.h \
+    src/prevector.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
