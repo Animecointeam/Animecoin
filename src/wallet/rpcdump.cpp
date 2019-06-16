@@ -94,9 +94,6 @@ UniValue importprivkey(const UniValue& params, bool fHelp)
                 + HelpExampleRpc("importprivkey", "\"mykey\", \"testing\", false")
             );
 
-    if (fPruneMode)
-        throw JSONRPCError(RPC_WALLET_ERROR, "Importing keys is disabled in pruned mode");
-
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     EnsureWalletIsUnlocked();
@@ -110,6 +107,9 @@ UniValue importprivkey(const UniValue& params, bool fHelp)
     bool fRescan = true;
     if (params.size() > 2)
         fRescan = params[2].get_bool();
+
+    if (fRescan && fPruneMode)
+        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in pruned mode");
 
     CBitcoinSecret vchSecret;
     bool fGood = vchSecret.SetString(strSecret);
@@ -198,9 +198,6 @@ UniValue importaddress(const UniValue& params, bool fHelp)
             + HelpExampleRpc("importaddress", "\"myscript\", \"testing\", false")
         );
 
-    if (fPruneMode)
-        throw JSONRPCError(RPC_WALLET_ERROR, "Importing addresses is disabled in pruned mode");
-
     string strLabel = "";
     if (params.size() > 1)
         strLabel = params[1].get_str();
@@ -209,6 +206,9 @@ UniValue importaddress(const UniValue& params, bool fHelp)
     bool fRescan = true;
     if (params.size() > 2)
         fRescan = params[2].get_bool();
+
+    if (fRescan && fPruneMode)
+        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in pruned mode");
 
     // Whether to import a p2sh version, too
     bool fP2SH = false;
@@ -261,9 +261,6 @@ UniValue importpubkey(const UniValue& params, bool fHelp)
             + HelpExampleRpc("importpubkey", "\"mypubkey\", \"testing\", false")
         );
 
-    if (fPruneMode)
-        throw JSONRPCError(RPC_WALLET_ERROR, "Importing public keys is disabled in pruned mode");
-
     string strLabel = "";
     if (params.size() > 1)
         strLabel = params[1].get_str();
@@ -272,6 +269,9 @@ UniValue importpubkey(const UniValue& params, bool fHelp)
     bool fRescan = true;
     if (params.size() > 2)
         fRescan = params[2].get_bool();
+
+    if (fRescan && fPruneMode)
+        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in pruned mode");
 
     if (!IsHex(params[0].get_str()))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Pubkey must be a hex string");
