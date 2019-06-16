@@ -257,11 +257,15 @@ static const CRPCCommand vRPCCommands[] =
     /* P2P networking */
   { "network",            "getnetworkinfo",         &getnetworkinfo,         true  },
   { "network",            "addnode",                &addnode,                true  },
+  { "network",            "disconnectnode",         &disconnectnode,         true  },
   { "network",            "getaddednodeinfo",       &getaddednodeinfo,       true  },
   { "network",            "getconnectioncount",     &getconnectioncount,     true  },
   { "network",            "getnettotals",           &getnettotals,           true  },
   { "network",            "getpeerinfo",            &getpeerinfo,            true  },
   { "network",            "ping",                   &ping,                   true  },
+  { "network",            "setban",                 &setban,                 true  },
+  { "network",            "listbanned",             &listbanned,             true  },
+  { "network",            "clearbanned",            &clearbanned,            true  },
 
     /* Block chain and UTXO */
   { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true  },

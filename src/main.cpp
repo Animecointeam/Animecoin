@@ -5212,7 +5212,7 @@ bool SendMessages(CNode* pto)
                     LogPrintf("Warning: not banning local peer %s!\n", pto->addr.ToString());
                 else
                 {
-                    CNode::Ban(pto->addr);
+                    CNode::Ban(pto->addr, BanReasonNodeMisbehaving);
                 }
             }
             state.fShouldBan = false;
