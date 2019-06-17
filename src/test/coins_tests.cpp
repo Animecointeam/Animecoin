@@ -215,8 +215,7 @@ BOOST_AUTO_TEST_CASE(coins_cache_simulation_test)
 // random txs are created and UpdateCoins is used to update the cache stack
 // In particular it is tested that spending a duplicate coinbase tx
 // has the expected effect (the other duplicate is overwitten at all cache levels)
-// Since Animecoin enforces BIP30/34 from the start and the check are omitted now, this will assert with a scream.
-/*
+
 BOOST_AUTO_TEST_CASE(updatecoins_simulation_test)
 {
     bool spent_a_duplicate_coinbase = false;
@@ -349,5 +348,5 @@ BOOST_AUTO_TEST_CASE(updatecoins_simulation_test)
     // Verify coverage.
      BOOST_CHECK(spent_a_duplicate_coinbase);
 }
-*/                    
+                    
 BOOST_AUTO_TEST_SUITE_END()

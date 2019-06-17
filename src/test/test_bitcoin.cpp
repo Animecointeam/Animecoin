@@ -17,6 +17,7 @@
 #include "txdb.h"
 #include "txmempool.h"
 #include "ui_interface.h"
+#include "script/sigcache.h"
 #include "util.h"
 #ifdef ENABLE_WALLET
 #include "wallet/db.h"
@@ -37,6 +38,7 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
 {
         ECC_Start();
         SetupEnvironment();
+        InitSignatureCache();
         fPrintToDebugLog = false; // don't want to write to debug.log file
         SelectParams(CBaseChainParams::MAIN);
         fCheckBlockIndex = true;

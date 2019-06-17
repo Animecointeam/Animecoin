@@ -400,7 +400,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/httprpc.h \
     src/httpserver.h \
     src/consensus/merkle.h \
-    src/prevector.h
+    src/prevector.h \
+    src/cuckoocache.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
