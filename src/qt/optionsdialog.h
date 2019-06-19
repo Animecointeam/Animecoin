@@ -47,6 +47,8 @@ private slots:
     void showRestartWarning(bool fPersistent = false);
     void clearStatusLabel();
     void doProxyIpChecks(QValidatedLineEdit *pUiProxyIp, int nProxyPort);
+    /* query the networks, for which the default proxy is used */
+    void updateDefaultProxyNets();
 
 signals:
     void proxyIpChecks(QValidatedLineEdit *pUiProxyIp, int nProxyPort);
@@ -55,7 +57,7 @@ private:
     Ui::OptionsDialog *ui;
     OptionsModel *model;
     QDataWidgetMapper *mapper;
-    bool fProxyIpValid;
+    bool fProxyIpsValid;
 };
 
 #endif // BITCOIN_QT_OPTIONSDIALOG_H

@@ -13,24 +13,25 @@
 #include "clientversion.h"
 #include "main.h"
 #include "net.h"
+#include "txmempool.h"
 #include "ui_interface.h"
 #include "util.h"
 
 #include <stdint.h>
 
-#include <QDateTime>
 #include <QDebug>
 #include <QTimer>
 
+class CBlockIndex;
+
 static const int64_t nClientStartupTime = GetTime();
+static int64_t nLastBlockTipUpdateNotification = 0;
 
 ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
     QObject(parent),
     optionsModel(optionsModel),
     peerTableModel(0),
-    cachedNumBlocks(0),
-    cachedReindexing(0), cachedImporting(0),
-    numBlocksAtStartup(-1), pollTimer(0)
+    pollTimer(0)
 {
     peerTableModel = new PeerTableModel(this);
     pollTimer = new QTimer(this);
@@ -65,12 +66,6 @@ int ClientModel::getNumBlocks() const
     return chainActive.Height();
 }
 
-int ClientModel::getNumBlocksAtStartup()
-{
-    if (numBlocksAtStartup == -1) numBlocksAtStartup = getNumBlocks();
-    return numBlocksAtStartup;
-}
-
 quint64 ClientModel::getTotalBytesRecv() const
 {
     return CNode::GetTotalBytesRecv();
@@ -86,39 +81,37 @@ QDateTime ClientModel::getLastBlockDate() const
     LOCK(cs_main);
     if (chainActive.Tip())
         return QDateTime::fromTime_t(chainActive.Tip()->GetBlockTime());
-    else
-        return QDateTime::fromTime_t(Params().GenesisBlock().GetBlockTime()); // Genesis block's time of current network
+
+    return QDateTime::fromTime_t(Params().GenesisBlock().GetBlockTime()); // Genesis block's time of current network
 }
 
-double ClientModel::getVerificationProgress() const
+long ClientModel::getMempoolSize() const
 {
-    LOCK(cs_main);
-    return Checkpoints::GuessVerificationProgress(Params().TxData(), chainActive.Tip());
+    return mempool.size();
+}
+
+size_t ClientModel::getMempoolDynamicUsage() const
+{
+    return mempool.DynamicMemoryUsage();
+}
+
+double ClientModel::getVerificationProgress(const CBlockIndex *tipIn) const
+{
+    CBlockIndex *tip = const_cast<CBlockIndex *>(tipIn);
+    if (!tip)
+    {
+        LOCK(cs_main);
+        tip = chainActive.Tip();
+    }
+    return Checkpoints::GuessVerificationProgress(Params().TxData(), tip);
 }
 
 void ClientModel::updateTimer()
 {
-    // Get required lock upfront. This avoids the GUI from getting stuck on
-    // periodical polls if the core is holding the locks for a longer time -
-    // for example, during a wallet rescan.
-    TRY_LOCK(cs_main, lockMain);
-    if(!lockMain)
-        return;
-    // Some quantities (such as number of blocks) change so fast that we don't want to be notified for each change.
-    // Periodically check and update with a timer.
-    int newNumBlocks = getNumBlocks();
+    // no locking required at this point
+    // the following calls will aquire the required lock
 
-    // check for changed number of blocks we have, number of blocks peers claim to have, reindexing state and importing state
-    if (cachedNumBlocks != newNumBlocks ||
-        cachedReindexing != fReindex || cachedImporting != fImporting)
-    {
-        cachedNumBlocks = newNumBlocks;
-        cachedReindexing = fReindex;
-        cachedImporting = fImporting;
-
-        emit numBlocksChanged(newNumBlocks);
-    }
-
+    emit mempoolSizeChanged(getMempoolSize(), getMempoolDynamicUsage());
     emit bytesChanged(getTotalBytesRecv(), getTotalBytesSent());
 }
 
@@ -181,6 +174,11 @@ QString ClientModel::formatFullVersion() const
     return QString::fromStdString(FormatFullVersion());
 }
 
+QString ClientModel::formatSubVersion() const
+{
+    return QString::fromStdString(strSubVersion);
+}
+
 QString ClientModel::formatBuildDate() const
 {
     return QString::fromStdString(CLIENT_DATE);
@@ -225,12 +223,30 @@ static void NotifyAlertChanged(ClientModel *clientmodel, const uint256 &hash, Ch
                               Q_ARG(int, status));
 }
 
+static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CBlockIndex *pIndex)
+{
+    // lock free async UI updates in case we have a new block tip
+    // during initial sync, only update the UI if the last update
+    // was > 250ms (MODEL_UPDATE_DELAY) ago
+    int64_t now = 0;
+    if (initialSync)
+        now = GetTimeMillis();
+
+    // if we are in-sync, update the UI regardless of last update time
+    if (!initialSync || now - nLastBlockTipUpdateNotification > MODEL_UPDATE_DELAY) {
+        //pass a async signal to the UI thread
+        Q_EMIT clientmodel->numBlocksChanged(pIndex->nHeight, QDateTime::fromTime_t(pIndex->GetBlockTime()), clientmodel->getVerificationProgress(pIndex));
+        nLastBlockTipUpdateNotification = now;
+    }
+}
+
 void ClientModel::subscribeToCoreSignals()
 {
     // Connect signals to client
     uiInterface.ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
     uiInterface.NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this, _1, _2));
+    uiInterface.NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -239,4 +255,5 @@ void ClientModel::unsubscribeFromCoreSignals()
     uiInterface.ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
     uiInterface.NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this, _1, _2));
+    uiInterface.NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2));
 }

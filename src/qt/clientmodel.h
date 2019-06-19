@@ -6,6 +6,7 @@
 #define BITCOIN_QT_CLIENTMODEL_H
 
 #include <QObject>
+#include <QDateTime>
 
 class AddressTableModel;
 class OptionsModel;
@@ -13,9 +14,9 @@ class PeerTableModel;
 class TransactionTableModel;
 
 class CWallet;
+class CBlockIndex;
 
 QT_BEGIN_NAMESPACE
-class QDateTime;
 class QTimer;
 QT_END_NAMESPACE
 
@@ -48,12 +49,16 @@ public:
     //! Return number of connections, default is in- and outbound (total)
     int getNumConnections(unsigned int flags = CONNECTIONS_ALL) const;
     int getNumBlocks() const;
-    int getNumBlocksAtStartup();
+
+    //! Return number of transactions in the mempool
+    long getMempoolSize() const;
+    //! Return the dynamic memory usage of the mempool
+    size_t getMempoolDynamicUsage() const;
 
     quint64 getTotalBytesRecv() const;
     quint64 getTotalBytesSent() const;
 
-    double getVerificationProgress() const;
+    double getVerificationProgress(const CBlockIndex *tip) const;
     QDateTime getLastBlockDate() const;
 
     //! Return true if core is doing initial block download
@@ -64,6 +69,7 @@ public:
     QString getStatusBarWarnings() const;
 
     QString formatFullVersion() const;
+    QString formatSubVersion() const;
     QString formatBuildDate() const;
     bool isReleaseVersion() const;
     QString clientName() const;
@@ -73,12 +79,6 @@ private:
     OptionsModel *optionsModel;
     PeerTableModel *peerTableModel;
 
-    int cachedNumBlocks;
-    bool cachedReindexing;
-    bool cachedImporting;
-
-    int numBlocksAtStartup;
-
     QTimer *pollTimer;
 
     void subscribeToCoreSignals();
@@ -86,7 +86,8 @@ private:
 
 signals:
     void numConnectionsChanged(int count);
-    void numBlocksChanged(int count);
+    void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress);
+    void mempoolSizeChanged(long count, size_t mempoolSizeInBytes);
     void alertsChanged(const QString &warnings);
     void bytesChanged(quint64 totalBytesIn, quint64 totalBytesOut);
 
