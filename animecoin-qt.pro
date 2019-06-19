@@ -293,7 +293,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/protocol.h \
     src/qt/notificator.h \
     src/qt/paymentserver.h \
-    src/allocators.h \
     src/ui_interface.h \
     src/qt/rpcconsole.h \
     src/version.h \
@@ -401,7 +400,10 @@ HEADERS += src/qt/bitcoingui.h \
     src/httpserver.h \
     src/consensus/merkle.h \
     src/prevector.h \
-    src/cuckoocache.h
+    src/cuckoocache.h \
+    src/support/allocators/secure.h \
+    src/support/allocators/zeroafterfree.h \
+    src/support/pagelocker.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -459,7 +461,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/noui.cpp \
     src/txdb.cpp \
     src/qt/splashscreen.cpp \
-    src/allocators.cpp \
     src/base58.cpp \
     src/chainparams.cpp \
     src/miner.cpp \
@@ -546,7 +547,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/httpserver.cpp \
     src/policy/policy.cpp \
     src/consensus/merkle.cpp \
-    src/arith_uint256.cpp
+    src/arith_uint256.cpp \
+    src/support/pagelocker.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

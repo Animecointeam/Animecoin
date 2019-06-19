@@ -67,7 +67,6 @@ endif
 BITCOIN_CORE_H = \
   addrman.h \
   alert.h \
-  allocators.h \
   amount.h \
   arith_uint256.h \
   base58.h \
@@ -135,7 +134,10 @@ BITCOIN_CORE_H = \
   script/script_error.h \
   serialize.h \
   streams.h \
+  support/allocators/secure.h \
+  support/allocators/zeroafterfree.h \
   support/cleanse.h \
+  support/pagelocker.h \
   sync.h \
   threadsafety.h \
   timedata.h \
@@ -265,7 +267,6 @@ crypto_libanimecoin_crypto_a_SOURCES = \
 libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_common_a_SOURCES = \
-  allocators.cpp \
   amount.cpp \
   base58.cpp \
   chainparams.cpp \
@@ -306,6 +307,7 @@ libanimecoin_util_a_SOURCES = \
   random.cpp \
   rpcprotocol.cpp \
   support/cleanse.cpp \
+  support/pagelocker.cpp \
   sync.cpp \
   uint256.cpp \
   util.cpp \
