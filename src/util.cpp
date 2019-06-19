@@ -204,7 +204,7 @@ void OpenDebugLog()
     std::call_once(debugPrintInitFlag, &DebugPrintInit);
     std::lock_guard<std::mutex> scoped_lock(*mutexDebugLog);
 
-    assert(fileout == NULL);
+    assert(fileout == nullptr);
     assert(vMsgsBeforeOpenLog);
 
     boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
@@ -297,7 +297,7 @@ int LogPrintStr(const std::string &str)
         string strTimestamped = LogTimestampStr(str, &fStartedNewLine);
 
         // buffer if we haven't opened the log yet
-        if (fileout == NULL) {
+        if (fileout == nullptr) {
             assert(vMsgsBeforeOpenLog);
             ret = strTimestamped.length();
             vMsgsBeforeOpenLog->push_back(strTimestamped);
@@ -308,8 +308,8 @@ int LogPrintStr(const std::string &str)
             if (fReopenDebugLog) {
                 fReopenDebugLog = false;
                 boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
-                if (freopen(pathDebug.string().c_str(),"a",fileout) != NULL)
-                    setbuf(fileout, NULL); // unbuffered
+                if (freopen(pathDebug.string().c_str(),"a",fileout) != nullptr)
+                    setbuf(fileout, nullptr); // unbuffered
             }
 
             ret = FileWriteStr(strTimestamped, fileout);

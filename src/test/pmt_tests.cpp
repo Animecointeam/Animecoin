@@ -24,8 +24,7 @@ public:
     void Damage() {
         unsigned int n = rand() % vHash.size();
         int bit = rand() % 256;
-        uint256 &hash = vHash[n];
-        hash ^= ((uint256)1 << bit);
+        *(vHash[n].begin() + (bit>>3)) ^= 1<<(bit&7);
     }
 };
 
@@ -90,7 +89,7 @@ BOOST_AUTO_TEST_CASE(pmt_test1)
 
             // check that it has the same merkle root as the original, and a valid one
             BOOST_CHECK(merkleRoot1 == merkleRoot2);
-            BOOST_CHECK(merkleRoot2 != 0);
+            BOOST_CHECK(!merkleRoot2.IsNull());
 
             // check that it contains the matched transactions (in the same order!)
             BOOST_CHECK(vMatchTxid1 == vMatchTxid2);
@@ -121,7 +120,7 @@ BOOST_AUTO_TEST_CASE(pmt_malleability)
 
     CPartialMerkleTree tree(vTxid, vMatch);
     std::vector<uint256> vTxid2;
-    BOOST_CHECK(tree.ExtractMatches(vTxid) == 0);
+    BOOST_CHECK(tree.ExtractMatches(vTxid).IsNull());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

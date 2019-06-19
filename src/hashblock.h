@@ -1,7 +1,7 @@
 #ifndef HASHBLOCK_H
 #define HASHBLOCK_H
 
-#include "uint256.h"
+#include "arith_uint256.h"
 #include "crypto/sph_blake.h"
 #include "crypto/sph_bmw.h"
 #include "crypto/sph_groestl.h"
@@ -139,7 +139,7 @@ inline uint256 Hash9(const T1 pbegin, const T1 pend)
         sph_jh512_close(&ctx_jh, static_cast<void*>(&hash[8]));
     }
 
-    return hash[8].trim256();
+    return ArithToUint256(hash[8].trim256());
 }
 
 

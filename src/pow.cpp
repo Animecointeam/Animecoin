@@ -68,8 +68,8 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
 
 	// Retarget
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
-    uint256 bnNew;
-	uint256 bnOld;
+    arith_uint256 bnNew;
+    arith_uint256 bnOld;
 	bnNew.SetCompact(pindexLast->nBits);
 	bnOld = bnNew;
 	bnNew *= nActualTimespan;
@@ -91,7 +91,7 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
 {
 	bool fNegative;
 	bool fOverflow;
-	uint256 bnTarget;
+    arith_uint256 bnTarget;
 
 	bnTarget.SetCompact(nBits, &fNegative, &fOverflow);
 
@@ -100,23 +100,23 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
         return error("CheckProofOfWork(): nBits below minimum work");
 
 	// Check proof of work matches claimed amount
-    if (hash > bnTarget)
-		return error("CheckProofOfWork() : hash doesn't match nBits");
+    if (UintToArith256(hash) > bnTarget)
+        return error("CheckProofOfWork() : hash doesn't match nBits");
 
 	return true;
 }
 
-uint256 GetBlockProof(const CBlockIndex& block)
+arith_uint256 GetBlockProof(const CBlockIndex& block)
 {
-	uint256 bnTarget;
-	bool fNegative;
+    arith_uint256 bnTarget;
+    bool fNegative;
 	bool fOverflow;
 	bnTarget.SetCompact(block.nBits, &fNegative, &fOverflow);
 	if (fNegative || fOverflow || bnTarget == 0)
 		return 0;
 	// We need to compute 2**256 / (bnTarget+1), but we can't represent 2**256
-	// as it's too large for a uint256. However, as 2**256 is at least as large
-	// as bnTarget+1, it is equal to ((2**256 - bnTarget - 1) / (bnTarget+1)) + 1,
+    // as it's too large for a arith_uint256. However, as 2**256 is at least as large
+    // as bnTarget+1, it is equal to ((2**256 - bnTarget - 1) / (bnTarget+1)) + 1,
 	// or ~bnTarget / (nTarget+1) + 1.
 	return (~bnTarget / (bnTarget + 1)) + 1;
 }

@@ -69,6 +69,7 @@ BITCOIN_CORE_H = \
   alert.h \
   allocators.h \
   amount.h \
+  arith_uint256.h \
   base58.h \
   bloom.h \
   chain.h \
@@ -299,6 +300,7 @@ libanimecoin_util_a_SOURCES = \
   compat/strnlen.cpp \
   compat/glibc_sanity.cpp \
   compat/glibcxx_sanity.cpp \
+  arith_uint256.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
   random.cpp \
@@ -400,6 +402,7 @@ if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h
 libanimecoinconsensus_la_SOURCES = \
   primitives/transaction.cpp \
+  arith_uint256.cpp \
   crypto/hmac_sha512.cpp \
   crypto/sha1.cpp \
   crypto/sha256.cpp \

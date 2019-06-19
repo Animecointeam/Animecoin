@@ -1,4 +1,3 @@
-
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Distributed under the MIT software license, see the accompanying
@@ -7,6 +6,7 @@
 #ifndef BITCOIN_CHAIN_H
 #define BITCOIN_CHAIN_H
 
+#include "arith_uint256.h"
 #include "primitives/block.h"
 #include "pow.h"
 #include "tinyformat.h"
@@ -117,7 +117,7 @@ public:
     unsigned int nUndoPos;
 
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
-    uint256 nChainWork;
+    arith_uint256 nChainWork;
 
     //! Number of transactions in this block.
     //! Note: in a potential headers-first mode, this number cannot be relied upon
@@ -150,7 +150,7 @@ public:
         nFile = 0;
         nDataPos = 0;
         nUndoPos = 0;
-        nChainWork = uint256();
+        nChainWork = arith_uint256();
         nTx = 0;
         nChainTx = 0;
         nStatus = 0;

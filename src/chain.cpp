@@ -79,7 +79,7 @@ int static inline GetSkipHeight(int height) {
 CBlockIndex* CBlockIndex::GetAncestor(int height)
 {
     if (height > nHeight || height < 0)
-        return NULL;
+        return nullptr;
 
     CBlockIndex* pindexWalk = this;
     int heightWalk = nHeight;

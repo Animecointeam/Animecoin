@@ -413,7 +413,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
             // Search
             //
             int64_t nStart = GetTime();
-            uint256 hashTarget = uint256().SetCompact(pblock->nBits);
+            arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
             uint256 hash;
             while (true)
             {
@@ -425,7 +425,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                     nHashesDone++;
                     pblock->nNonce++;
                     hash = pblock->GetHash();
-                    fFound = (hash <= hashTarget);
+                    fFound = ((UintToArith256(hash) <= hashTarget));
                     if (fFound)
                         break;
                 }

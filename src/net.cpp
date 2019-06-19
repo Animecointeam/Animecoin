@@ -2227,7 +2227,7 @@ CNode::CNode(SOCKET hSocketIn, const CAddress& addrIn, const std::string& addrNa
     nStartingHeight = -1;
     filterInventoryKnown.reset();
     fGetAddr = false;
-    hashCheckpointKnown = 0;
+    hashCheckpointKnown = uint256();
     nNextLocalAddrSend = 0;
     nNextAddrSend = 0;
     nNextInvSend = 0;

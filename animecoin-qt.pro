@@ -545,7 +545,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/httprpc.cpp \
     src/httpserver.cpp \
     src/policy/policy.cpp \
-    src/consensus/merkle.cpp
+    src/consensus/merkle.cpp \
+    src/arith_uint256.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
