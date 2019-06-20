@@ -571,6 +571,11 @@ static inline bool ProcessMantissaDigit(char ch, int64_t &mantissa, int &mantiss
     return true;
 }
 
+static inline int64_t roundint64(double d)
+{
+    return (int64_t)(d > 0 ? d + 0.5 : d - 0.5);
+}
+
 bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out)
 {
     int64_t mantissa = 0;
@@ -604,7 +609,7 @@ bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out)
         ++ptr;
         if (ptr < end && val[ptr] >= '0' && val[ptr] <= '9')
         {
-            while (ptr < end && val[ptr] >= '0' && val[ptr] <= '9' && point_ofs < decimals) {
+            while (ptr < end && val[ptr] >= '0' && val[ptr] <= '9') {
                 if (!ProcessMantissaDigit(val[ptr], mantissa, mantissa_tzeros))
                     return false; /* overflow */
                 ++ptr;
@@ -630,7 +635,7 @@ bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out)
             }
         } else return false; /* missing expected digit */
     }
-    if (ptr != end && point_ofs < decimals)
+    if (ptr != end)
         return false; /* trailing garbage */
 
     /* finalize exponent */
@@ -638,24 +643,37 @@ bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out)
         exponent = -exponent;
     exponent = exponent - point_ofs + mantissa_tzeros;
 
-    /* finalize mantissa */
-    if (mantissa_sign)
-        mantissa = -mantissa;
+    if (mantissa!=0)
+    {
+        /* finalize mantissa */
+        if (mantissa_sign)
+            mantissa = -mantissa;
 
-    /* convert to one 64-bit fixed-point value */
-    exponent += decimals;
-    if (exponent < 0)
-        return false; /* cannot represent values smaller than 10^-decimals */
-    if (exponent >= 18)
-        return false; /* cannot represent values larger than or equal to 10^(18-decimals) */
-
-    for (int i=0; i < exponent; ++i) {
-        if (mantissa > (UPPER_BOUND / 10LL) || mantissa < -(UPPER_BOUND / 10LL))
+        /* convert to one 64-bit fixed-point value */
+        exponent += decimals;
+        if (exponent >= 18)
+            return false; /* cannot represent values larger than or equal to 10^(18-decimals) */
+        if (exponent < 0)
+        {
+            for (int i=0; i > exponent; --i) {
+                if (mantissa > (UPPER_BOUND / 10LL) || mantissa < -(UPPER_BOUND / 10LL))
+                    return false; /* overflow */
+                mantissa = roundint64(double(mantissa)/10);
+            }
+            if (mantissa == 0)
+                return false; /* cannot represent values smaller than 10^-decimals */
+        }
+        else
+        {
+            for (int i=0; i < exponent; ++i) {
+                if (mantissa > (UPPER_BOUND / 10LL) || mantissa < -(UPPER_BOUND / 10LL))
+                    return false; /* overflow */
+                mantissa *= 10;
+            }
+        }
+        if (mantissa > UPPER_BOUND || mantissa < -UPPER_BOUND)
             return false; /* overflow */
-        mantissa *= 10;
     }
-    if (mantissa > UPPER_BOUND || mantissa < -UPPER_BOUND)
-        return false; /* overflow */
 
     if (amount_out)
         *amount_out = mantissa;

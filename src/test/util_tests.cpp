@@ -456,7 +456,19 @@ BOOST_AUTO_TEST_CASE(test_ParseFixedPoint)
     BOOST_CHECK_EQUAL(amount, 999999999999999999LL);
     BOOST_CHECK(ParseFixedPoint("-9999999999.99999999", 8, &amount));
     BOOST_CHECK_EQUAL(amount, -999999999999999999LL);
-
+    BOOST_CHECK(ParseFixedPoint("1.1", 5, &amount));
+    BOOST_CHECK_EQUAL(amount, 110000LL);
+    BOOST_CHECK(ParseFixedPoint("1.12345", 5, &amount));
+    BOOST_CHECK_EQUAL(amount, 112345LL);
+    BOOST_CHECK(ParseFixedPoint("1.12345567", 5, &amount));
+    BOOST_CHECK_EQUAL(amount, 112346LL);
+    BOOST_CHECK(ParseFixedPoint("1.12345432", 5, &amount));
+    BOOST_CHECK_EQUAL(amount, 112345LL);
+    BOOST_CHECK(ParseFixedPoint("321.12345567", 5, &amount));
+    BOOST_CHECK_EQUAL(amount, 32112346LL);
+    BOOST_CHECK(ParseFixedPoint("321.12345432", 5, &amount));
+    BOOST_CHECK_EQUAL(amount, 32112345LL);
+    
     BOOST_CHECK(!ParseFixedPoint("", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("-", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("a-1000", 8, &amount));
@@ -468,7 +480,7 @@ BOOST_AUTO_TEST_CASE(test_ParseFixedPoint)
     BOOST_CHECK(!ParseFixedPoint("--0.1", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("0.000000001", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("-0.000000001", 8, &amount));
-    BOOST_CHECK(!ParseFixedPoint("0.00000001000000001", 8, &amount));
+    //BOOST_CHECK(!ParseFixedPoint("0.00000001000000001", 8, &amount)); // This should be truncated now and not fail.
     BOOST_CHECK(!ParseFixedPoint("-10000000000.00000000", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("10000000000.00000000", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("-10000000000.00000001", 8, &amount));
@@ -484,6 +496,7 @@ BOOST_AUTO_TEST_CASE(test_ParseFixedPoint)
     BOOST_CHECK(!ParseFixedPoint("1.1e", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("1.1e-", 8, &amount));
     BOOST_CHECK(!ParseFixedPoint("1.", 8, &amount));
+    BOOST_CHECK(!ParseFixedPoint("0.000001", 5, &amount));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
