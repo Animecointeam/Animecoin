@@ -108,7 +108,7 @@ void RPCTypeCheckObj(const UniValue& o,
 
 CAmount AmountFromValue(const UniValue& value)
 {
-    if (!value.isReal() && !value.isNum())
+    if (!value.isNum())
         throw JSONRPCError(RPC_TYPE_ERROR, "Amount is not a number");
     CAmount amount;
     if (!ParseFixedPoint(value.getValStr(), 5, &amount)) // QA: Magic number. Rationalize 8->5 somehow.
@@ -120,7 +120,12 @@ CAmount AmountFromValue(const UniValue& value)
 
 UniValue ValueFromAmount(const CAmount& amount)
 {
-    return UniValue(UniValue::VREAL, FormatMoney(amount));
+    bool sign = amount < 0;
+    int64_t n_abs = (sign ? -amount : amount);
+    int64_t quotient = n_abs / COIN;
+    int64_t remainder = n_abs % COIN;
+    return UniValue(UniValue::VNUM,
+            strprintf("%s%d.%05d", sign ? "-" : "", quotient, remainder));
 }
 
 uint256 ParseHashV(const UniValue& v, string strName)

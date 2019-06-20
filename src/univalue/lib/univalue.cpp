@@ -147,7 +147,7 @@ bool UniValue::setFloat(double val)
     oss << std::setprecision(16) << val;
 
     bool ret = setNumStr(oss.str());
-    typ = VREAL;
+    typ = VNUM;
     return ret;
 }
 
@@ -271,7 +271,6 @@ const char *uvTypeName(UniValue::VType t)
     case UniValue::VARR: return "array";
     case UniValue::VSTR: return "string";
     case UniValue::VNUM: return "number";
-    case UniValue::VREAL: return "number";
     }
 
     // not reached
