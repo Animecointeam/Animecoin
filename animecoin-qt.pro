@@ -403,7 +403,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/cuckoocache.h \
     src/support/allocators/secure.h \
     src/support/allocators/zeroafterfree.h \
-    src/support/pagelocker.h
+    src/support/pagelocker.h \
+    src/qt/bantablemodel.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -548,7 +549,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/policy/policy.cpp \
     src/consensus/merkle.cpp \
     src/arith_uint256.cpp \
-    src/support/pagelocker.cpp
+    src/support/pagelocker.cpp \
+    src/qt/bantablemodel.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

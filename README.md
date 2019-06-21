@@ -40,6 +40,7 @@ Features in progress but not necessarily finalized before 0.10 release
 ---------------------
 - Lightweight nodes (running a wallet in pruned mode is possible now).
 - BIP-0068, BIP-0112 and BIP-0113 aggregation (ideally merged into BIP-0065 fork).
+- BIP-0009 for smoother softforking, also needed by certain solo mining software after getwork removal (planned).
 - Animecoin-specific optimizations (it's got a huge amount of block headers while the disk space usage is moderate, lots of small inputs from generated transactions etc).
 - Minimize third-party dependencies.
 
