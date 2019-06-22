@@ -1346,8 +1346,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
                 uiInterface.InitMessage(_("Verifying blocks..."));
                 if (fHavePruned && GetArg("-checkblocks", 5760) > MIN_BLOCKS_TO_KEEP) {
-                    LogPrintf("Prune: pruned datadir may not have more than %d blocks; -checkblocks=%d may fail\n",
-                        MIN_BLOCKS_TO_KEEP, GetArg("-checkblocks", 5760));
+                    LogPrintf("Prune: pruned datadir may not have more than %d blocks; only checking available blocks",
+                        MIN_BLOCKS_TO_KEEP);
                 }
                 if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview, GetArg("-checklevel", 3),
                               GetArg("-checkblocks", 5760))) {
