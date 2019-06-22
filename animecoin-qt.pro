@@ -318,7 +318,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/winshutdownmonitor.h \
     src/rpcserver.h \
     src/qt/openuridialog.h \
-    src/leveldbwrapper.h \
     src/rpcprotocol.h \
     src/qt/receivecoinsdialog.h \
     src/qt/paymentrequestplus.h \
@@ -404,7 +403,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/support/allocators/secure.h \
     src/support/allocators/zeroafterfree.h \
     src/support/pagelocker.h \
-    src/qt/bantablemodel.h
+    src/qt/bantablemodel.h \
+    src/dbwrapper.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -471,7 +471,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/winshutdownmonitor.cpp \
     src/rpcserver.cpp \
     src/qt/openuridialog.cpp \
-    src/leveldbwrapper.cpp \
     src/rpcprotocol.cpp \
     src/qt/receivecoinsdialog.cpp \
     src/qt/paymentrequestplus.cpp \
@@ -550,7 +549,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/consensus/merkle.cpp \
     src/arith_uint256.cpp \
     src/support/pagelocker.cpp \
-    src/qt/bantablemodel.cpp
+    src/qt/bantablemodel.cpp \
+    src/dbwrapper.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

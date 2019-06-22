@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "leveldbwrapper.h"
+#include "dbwrapper.h"
 
 #include "random.h"
 #include "util.h"
@@ -15,22 +15,23 @@
 #include <memenv.h>
 #include <stdint.h>
 
-void HandleError(const leveldb::Status& status)
-{
-    if (status.ok())
-        return;
-    LogPrintf("%s\n", status.ToString());
-    if (status.IsCorruption())
-        throw leveldb_error("Database corrupted");
-    if (status.IsIOError())
-        throw leveldb_error("Database I/O error");
-    if (status.IsNotFound())
-        throw leveldb_error("Database entry missing");
-    throw leveldb_error("Unknown database error");
+// Mmap is only used on 64-bit Unix systems.
+static constexpr bool LevelDBUsesMmap() {
+#ifdef WIN32
+    return false;
+#else
+    return sizeof(void*) >= 8;
+#endif
 }
 
-static void SetMaxOpenFiles(leveldb::Options *options) {
-    // On most platforms the default setting of max_open_files (which is 1000)
+// Systems with mmap do not use the block cache.
+static constexpr bool LevelDBUsesBlockCache()
+{
+    return !LevelDBUsesMmap();
+}
+
+static void SetMaxOpenFiles(leveldb::Options *options)
+{    // On most platforms the default setting of max_open_files (which is 1000)
     // is optimal. On Windows using a large file count is OK because the handles
     // do not interfere with select() loops. On 64-bit Unix hosts this value is
     // also OK, because up to that amount LevelDB will use an mmap
@@ -45,22 +46,32 @@ static void SetMaxOpenFiles(leveldb::Options *options) {
     // See bitcoin PR #12495 for further discussion.
 
     int default_open_files = options->max_open_files;
-#ifndef WIN32
-    if (sizeof(void*) < 8) {
+  if (!LevelDBUsesMmap())
         options->max_open_files = 64;
-    }
-#endif
+
     LogPrintf("LevelDB using max_open_files=%d (default=%d)\n",
              options->max_open_files, default_open_files);
 }
 
-static leveldb::Options GetOptions(size_t nCacheSize)
+static leveldb::Options GetOptions(size_t nCacheSize, bool compression)
 {
     leveldb::Options options;
-    options.block_cache = leveldb::NewLRUCache(nCacheSize / 2);
-    options.write_buffer_size = nCacheSize / 4; // up to two write buffers may be held in memory simultaneously
+
+    // Only give LevelDB memory for the block cache if it will actually use it;
+    // on systems mmap this space is not used by LevelDB (as it's already in the
+    // page cache), so don't bother in that case.
+    //
+    // Up to two write buffers may be held in memory simultaneously, so set
+    // write_buffer_size for the worst case.
+    if (LevelDBUsesBlockCache()) {
+        options.write_buffer_size = nCacheSize / 4;
+        options.block_cache = leveldb::NewLRUCache(nCacheSize / 2);
+    } else {
+        options.write_buffer_size = nCacheSize / 2;
+    }
+
     options.filter_policy = leveldb::NewBloomFilterPolicy(10);
-    options.compression = leveldb::kNoCompression;
+    options.compression = compression ? leveldb::kSnappyCompression : leveldb::kNoCompression;
     if (leveldb::kMajorVersion > 1 || (leveldb::kMajorVersion == 1 && leveldb::kMinorVersion >= 16)) {
         // LevelDB versions before 1.16 consider short writes to be corruption. Only trigger error
         // on corruption in later versions.
@@ -70,14 +81,14 @@ static leveldb::Options GetOptions(size_t nCacheSize)
     return options;
 }
 
-CLevelDBWrapper::CLevelDBWrapper(const boost::filesystem::path& path, size_t nCacheSize, bool fMemory, bool fWipe, bool obfuscate)
+CDBWrapper::CDBWrapper(const boost::filesystem::path& path, size_t nCacheSize, bool fMemory, bool fWipe, bool obfuscate, bool compression)
 {
     penv = nullptr;
     readoptions.verify_checksums = true;
     iteroptions.verify_checksums = true;
     iteroptions.fill_cache = false;
     syncoptions.sync = true;
-    options = GetOptions(nCacheSize);
+    options = GetOptions(nCacheSize, compression);
     options.create_if_missing = true;
     if (fMemory) {
         penv = leveldb::NewMemEnv(leveldb::Env::Default());
@@ -86,13 +97,13 @@ CLevelDBWrapper::CLevelDBWrapper(const boost::filesystem::path& path, size_t nCa
         if (fWipe) {
             LogPrintf("Wiping LevelDB in %s\n", path.string());
             leveldb::Status result = leveldb::DestroyDB(path.string(), options);
-            HandleError(result);
+            dbwrapper_private::HandleError(result);
         }
         TryCreateDirectory(path);
         LogPrintf("Opening LevelDB in %s\n", path.string());
     }
     leveldb::Status status = leveldb::DB::Open(options, path.string(), &pdb);
-    HandleError(status);
+    dbwrapper_private::HandleError(status);
     LogPrintf("Opened LevelDB successfully\n");
 
         // The base-case obfuscation key, which is a noop.
@@ -109,14 +120,14 @@ CLevelDBWrapper::CLevelDBWrapper(const boost::filesystem::path& path, size_t nCa
         Write(OBFUSCATE_KEY_KEY, new_key);
         obfuscate_key = new_key;
 
-        LogPrintf("Wrote new obfuscate key for %s: %s\n", path.string(), GetObfuscateKeyHex());
+        LogPrintf("Wrote new obfuscate key for %s: %s\n", path.string(), HexStr(obfuscate_key));
     }
 
-    LogPrintf("Using obfuscation key for %s: %s\n", path.string(), GetObfuscateKeyHex());
+    LogPrintf("Using obfuscation key for %s: %s\n", path.string(), HexStr(obfuscate_key));
 
 }
 
-CLevelDBWrapper::~CLevelDBWrapper()
+CDBWrapper::~CDBWrapper()
 {
     delete pdb;
     pdb = nullptr;
@@ -128,10 +139,10 @@ CLevelDBWrapper::~CLevelDBWrapper()
     options.env = nullptr;
 }
 
-bool CLevelDBWrapper::WriteBatch(CLevelDBBatch& batch, bool fSync)
+bool CDBWrapper::WriteBatch(CDBBatch& batch, bool fSync)
 {
     leveldb::Status status = pdb->Write(fSync ? syncoptions : writeoptions, &batch.batch);
-    HandleError(status);
+    dbwrapper_private::HandleError(status);
     return true;
 }
 
@@ -139,15 +150,15 @@ bool CLevelDBWrapper::WriteBatch(CLevelDBBatch& batch, bool fSync)
 //
 // We must use a string constructor which specifies length so that we copy
 // past the null-terminator.
-const std::string CLevelDBWrapper::OBFUSCATE_KEY_KEY("\000obfuscate_key", 14);
+const std::string CDBWrapper::OBFUSCATE_KEY_KEY("\000obfuscate_key", 14);
 
-const unsigned int CLevelDBWrapper::OBFUSCATE_KEY_NUM_BYTES = 8;
+const unsigned int CDBWrapper::OBFUSCATE_KEY_NUM_BYTES = 8;
 
 /**
  * Returns a string (consisting of 8 random bytes) suitable for use as an
  * obfuscating XOR key.
  */
-std::vector<unsigned char> CLevelDBWrapper::CreateObfuscateKey() const
+std::vector<unsigned char> CDBWrapper::CreateObfuscateKey() const
 {
     unsigned char buff[OBFUSCATE_KEY_NUM_BYTES];
     GetRandBytes(buff, OBFUSCATE_KEY_NUM_BYTES);
@@ -155,26 +166,36 @@ std::vector<unsigned char> CLevelDBWrapper::CreateObfuscateKey() const
 
 }
 
-bool CLevelDBWrapper::IsEmpty()
+bool CDBWrapper::IsEmpty()
 {
-    std::unique_ptr<CLevelDBIterator> it(NewIterator());
+    std::unique_ptr<CDBIterator> it(NewIterator());
     it->SeekToFirst();
     return !(it->Valid());
 }
 
-const std::vector<unsigned char>& CLevelDBWrapper::GetObfuscateKey() const
-{
-    return obfuscate_key;
+CDBIterator::~CDBIterator() { delete piter; }
+bool CDBIterator::Valid() { return piter->Valid(); }
+void CDBIterator::SeekToFirst() { piter->SeekToFirst(); }
+void CDBIterator::Next() { piter->Next(); }
+
+namespace dbwrapper_private {
+
+void HandleError(const leveldb::Status& status){
+    if (status.ok())
+        return;
+    LogPrintf("%s\n", status.ToString());
+    if (status.IsCorruption())
+        throw dbwrapper_error("Database corrupted");
+    if (status.IsIOError())
+        throw dbwrapper_error("Database I/O error");
+    if (status.IsNotFound())
+        throw dbwrapper_error("Database entry missing");
+    throw dbwrapper_error("Unknown database error");
 }
 
-std::string CLevelDBWrapper::GetObfuscateKeyHex() const
+const std::vector<unsigned char>& GetObfuscateKey(const CDBWrapper &w)
 {
-    return HexStr(obfuscate_key);
+    return w.obfuscate_key;
 }
 
-CLevelDBIterator::~CLevelDBIterator() { delete piter; }
-bool CLevelDBIterator::Valid() { return piter->Valid(); }
-void CLevelDBIterator::SeekToFirst() { piter->SeekToFirst(); }
-void CLevelDBIterator::SeekToLast() { piter->SeekToLast(); }
-void CLevelDBIterator::Next() { piter->Next(); }
-void CLevelDBIterator::Prev() { piter->Prev(); }
+}
