@@ -124,6 +124,7 @@ Other release notes
 ---------------------
 - Translations need people to work upon.
 - Regression test network code (like testnet, but special) was added following the mainstream Bitcoin client, this remains untested so far.
+- Animecoin operates on 5 decimals internally. For the software compatibility purposes, it still accepts extra decimals via RPC, those will be rounded-to-nearest. This case inevitably violates Bitcoin (and JSON) guidelines on precision, thus it's highly recommended to configure your software for using no more than 5 decimals in Animecoin amounts whenever possible.
 
 License
 ---------------------
