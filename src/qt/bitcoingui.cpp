@@ -115,8 +115,8 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :
     }
     windowTitle += " " + networkStyle->getTitleAddText();
 #ifndef Q_OS_MAC
-    QApplication::setWindowIcon(networkStyle->getAppIcon());
-    setWindowIcon(networkStyle->getAppIcon());
+    QApplication::setWindowIcon(networkStyle->getTrayAndWindowIcon());
+    setWindowIcon(networkStyle->getTrayAndWindowIcon());
 #else
     MacDockIconHandler::instance()->setIcon(networkStyle->getAppIcon());
 #endif
@@ -496,7 +496,7 @@ void BitcoinGUI::createTrayIcon(const NetworkStyle *networkStyle)
     trayIcon = new QSystemTrayIcon(this);
     QString toolTip = tr("Animecoin client") + " " + networkStyle->getTitleAddText();
     trayIcon->setToolTip(toolTip);
-    trayIcon->setIcon(networkStyle->getAppIcon());
+    trayIcon->setIcon(networkStyle->getTrayAndWindowIcon());
     trayIcon->show();
 #endif
 

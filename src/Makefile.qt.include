@@ -202,8 +202,6 @@ RES_ICONS = \
   qt/res/icons/address-book.png \
   qt/res/icons/bitcoin.ico \
   qt/res/icons/bitcoin.png \
-  qt/res/icons/bitcoin_testnet.ico \
-  qt/res/icons/bitcoin_testnet.png \
   qt/res/icons/clock1.png \
   qt/res/icons/clock2.png \
   qt/res/icons/clock3.png \
@@ -368,7 +366,7 @@ qt_animecoin_qt_LIBTOOLFLAGS = --tag CXX
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
-.SECONDARY: $(QT_QM)
+SECONDARY: $(QT_QM)
 
 qt/bitcoinstrings.cpp: $(libanimecoin_server_a_SOURCES) $(libanimecoin_wallet_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
