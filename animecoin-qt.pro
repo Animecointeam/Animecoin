@@ -316,15 +316,12 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/intro.h \
     src/qt/utilitydialog.h \
     src/qt/winshutdownmonitor.h \
-    src/rpcserver.h \
     src/qt/openuridialog.h \
-    src/rpcprotocol.h \
     src/qt/receivecoinsdialog.h \
     src/qt/paymentrequestplus.h \
     src/qt/walletmodeltransaction.h \
     src/qt/recentrequeststablemodel.h \
     src/qt/trafficgraphwidget.h \
-    src/rpcclient.h \
 	src/qt/receiverequestdialog.h \
     src/qt/verticallabel.h \
     src/crypto/sha512.h \
@@ -405,7 +402,10 @@ HEADERS += src/qt/bitcoingui.h \
     src/support/pagelocker.h \
     src/qt/bantablemodel.h \
     src/dbwrapper.h \
-    src/wallet/rpcwallet.h
+    src/wallet/rpcwallet.h \
+    src/rpc/client.h \
+    src/rpc/protocol.h \
+    src/rpc/server.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -445,10 +445,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/walletmodel.cpp \
     src/qt/walletview.cpp \
     src/qt/walletframe.cpp \
-    src/rpcnet.cpp \
-    src/rpcmining.cpp \
-    src/rpcblockchain.cpp \
-    src/rpcrawtransaction.cpp \
     src/qt/overviewpage.cpp \
     src/qt/csvmodelwriter.cpp \
     src/qt/sendcoinsentry.cpp \
@@ -470,17 +466,13 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/intro.cpp \
     src/qt/utilitydialog.cpp \
     src/qt/winshutdownmonitor.cpp \
-    src/rpcserver.cpp \
     src/qt/openuridialog.cpp \
-    src/rpcprotocol.cpp \
     src/qt/receivecoinsdialog.cpp \
     src/qt/paymentrequestplus.cpp \
     src/qt/walletmodeltransaction.cpp \
     src/qt/recentrequeststablemodel.cpp \
     src/qt/trafficgraphwidget.cpp \
-    src/rpcclient.cpp \
     src/qt/receiverequestdialog.cpp \
-	src/rpcmisc.cpp \
     src/qt/verticallabel.cpp \
     src/crypto/sha512.cpp \
     src/crypto/skein.c \
@@ -551,7 +543,15 @@ SOURCES += src/qt/bitcoin.cpp \
     src/arith_uint256.cpp \
     src/support/pagelocker.cpp \
     src/qt/bantablemodel.cpp \
-    src/dbwrapper.cpp
+    src/dbwrapper.cpp \
+    src/rpc/blockchain.cpp \
+    src/rpc/client.cpp \
+    src/rpc/mining.cpp \
+    src/rpc/misc.cpp \
+    src/rpc/net.cpp \
+    src/rpc/protocol.cpp \
+    src/rpc/rawtransaction.cpp \
+    src/rpc/server.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

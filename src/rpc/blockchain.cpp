@@ -8,7 +8,7 @@
 #include "consensus/validation.h"
 #include "main.h"
 #include "primitives/transaction.h"
-#include "rpcserver.h"
+#include "rpc/server.h"
 #include "sync.h"
 #include "util.h"
 #include "hash.h"
