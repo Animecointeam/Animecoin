@@ -30,7 +30,7 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
     pixmap = ColorizePixmap(pixmap, iconColorHueShift, iconColorSaturationReduction);
 
     appIcon             = QIcon(pixmap);
-    trayAndWindowIcon   = QIcon(pixmap.scaled(QSize(256,256)));
+    trayAndWindowIcon   = QIcon(pixmap); // Huge-sized image may need resizing for certain desktops.
 
     QPixmap splash(":/images/splash");
     splashImage = ColorizePixmap (splash, iconColorHueShift, iconColorSaturationReduction);
