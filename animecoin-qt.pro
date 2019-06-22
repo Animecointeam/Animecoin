@@ -404,7 +404,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/support/allocators/zeroafterfree.h \
     src/support/pagelocker.h \
     src/qt/bantablemodel.h \
-    src/dbwrapper.h
+    src/dbwrapper.h \
+    src/wallet/rpcwallet.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \

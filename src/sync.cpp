@@ -98,7 +98,6 @@ static void push_lock(void* c, const CLockLocation& locklocation, bool fTry)
     if (lockstack.get() == nullptr)
         lockstack.reset(new LockStack);
 
-    LogPrint("lock", "Locking: %s\n", locklocation.ToString());
     boost::unique_lock<boost::mutex> lock(lockdata.dd_mutex);
 
     (*lockstack).push_back(std::make_pair(c, locklocation));
@@ -125,10 +124,6 @@ static void push_lock(void* c, const CLockLocation& locklocation, bool fTry)
 
 static void pop_lock()
 {
-    if (fDebug) {
-        const CLockLocation& locklocation = (*lockstack).rbegin()->second;
-        LogPrint("lock", "Unlocked: %s\n", locklocation.ToString());
-    }
     (*lockstack).pop_back();
 }
 

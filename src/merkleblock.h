@@ -75,14 +75,14 @@ protected:
 
     /**
      * recursive function that traverses tree nodes, consuming the bits and hashes produced by TraverseAndBuild.
-     * it returns the hash of the respective node.
+     * it returns the hash of the respective node and its respective index.
      */
-    uint256 TraverseAndExtract(int height, unsigned int pos, unsigned int &nBitsUsed, unsigned int &nHashUsed, std::vector<uint256> &vMatch);
+    uint256 TraverseAndExtract(int height, unsigned int pos, unsigned int &nBitsUsed, unsigned int &nHashUsed, std::vector<uint256> &vMatch, std::vector<unsigned int> &vnIndex);
 
 public:
 
     /** serialization implementation */
-    ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
@@ -104,16 +104,17 @@ public:
         }
     }
 
-    /** Construct a partial merkle tree from a list of transaction id's, and a mask that selects a subset of them */
+    /** Construct a partial merkle tree from a list of transaction ids, and a mask that selects a subset of them */
     CPartialMerkleTree(const std::vector<uint256> &vTxid, const std::vector<bool> &vMatch);
 
     CPartialMerkleTree();
 
     /**
-     * extract the matching txid's represented by this partial merkle tree.
+     * extract the matching txid's represented by this partial merkle tree
+     * and their respective indices within the partial tree.
      * returns the merkle root, or 0 in case of failure
      */
-    uint256 ExtractMatches(std::vector<uint256> &vMatch);
+    uint256 ExtractMatches(std::vector<uint256> &vMatch, std::vector<unsigned int> &vnIndex);
 };
 
 
@@ -139,7 +140,12 @@ public:
      */
     CMerkleBlock(const CBlock& block, CBloomFilter& filter);
 
-    ADD_SERIALIZE_METHODS;
+    // Create from a CBlock, matching the txids in the set
+    CMerkleBlock(const CBlock& block, const std::set<uint256>& txids);
+
+    CMerkleBlock() {}
+
+    ADD_SERIALIZE_METHODS
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
