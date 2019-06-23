@@ -14,7 +14,6 @@
 
 #include <vector>
 
-#include <boost/assign/list_of.hpp>
 #include <boost/test/unit_test.hpp>
 
 BOOST_FIXTURE_TEST_SUITE(crypto_tests, BasicTestingSetup)

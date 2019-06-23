@@ -418,7 +418,8 @@ void AddressTableModel::saveReceiveScript(CScript script, CScriptID scriptID, QS
     // Add entry
     {
         LOCK(wallet->cs_wallet);
-        wallet->AddCScript(script);
+        wallet->AddCScript (script);
+        wallet->AddWatchOnly (GetScriptForDestination(CBitcoinAddress(script).Get()));
         wallet->SetAddressBook(scriptID, label.toStdString(), "receive");
     }
 }

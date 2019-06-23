@@ -129,7 +129,7 @@ QString AskMultisigDialog::generateAddress(QString label)
         // Save
         model->saveReceiveScript(script, scriptID, _label);
         return QString::fromStdString(address.ToString());
-    } catch (std::runtime_error &err) {
+    } catch (std::runtime_error& err) {
         QMessageBox::critical(this, QString("Error generating multisig"), QString(err.what()));
 
         return QString();
