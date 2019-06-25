@@ -13,6 +13,7 @@ BITCOIN_INCLUDES += -I$(srcdir)/univalue/include
 
 LIBBITCOIN_SERVER=libanimecoin_server.a
 LIBBITCOIN_COMMON=libanimecoin_common.a
+LIBBITCOIN_CONSENSUS=libanimecoin_consensus.a
 LIBBITCOIN_CLI=libanimecoin_cli.a
 LIBBITCOIN_UTIL=libanimecoin_util.a
 LIBBITCOIN_CRYPTO=crypto/libanimecoin_crypto.a
@@ -21,13 +22,13 @@ LIBSECP256K1=secp256k1/libsecp256k1.la
 LIBUNIVALUE=univalue/lib/libunivalue.la
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libbitcoin_zmq.a
+LIBBITCOIN_ZMQ=libanimecoin_zmq.a
 endif
 if BUILD_BITCOIN_LIBS
-LIBBITCOINCONSENSUS=libbitcoinconsensus.la
+LIBBITCOINCONSENSUS=libanimecoinconsensus.la
 endif
 if ENABLE_WALLET
-LIBBITCOIN_WALLET=libbitcoin_wallet.a
+LIBBITCOIN_WALLET=libanimecoin_wallet.a
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -39,6 +40,7 @@ $(LIBUNIVALUE): $(wildcard univalue/lib/*) $(wildcard univalue/include/*)
 	
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
+EXTRA_LIBRARIES += \
 $(LIBBITCOIN_CRYPTO) \
 $(LIBBITCOIN_UTIL) \
 $(LIBBITCOIN_COMMON) \
@@ -66,7 +68,6 @@ endif
 BITCOIN_CORE_H = \
   addrman.h \
   alert.h \
-  amount.h \
   arith_uint256.h \
   base58.h \
   bloom.h \
@@ -94,7 +95,6 @@ BITCOIN_CORE_H = \
   crypto/sph_jh.h \
   crypto/sph_skein.h \
   wallet/db.h \
-  hash.h \
   hashblock.h \
   httprpc.h \
   httpserver.h \
@@ -113,11 +113,8 @@ BITCOIN_CORE_H = \
   policy/fees.h \
   policy/policy.h \
   pow.h \
-  prevector.h \
   protocol.h \
   primitives/block.h \
-  primitives/transaction.h \
-  pubkey.h \
   random.h \
   reverse_iterator.h \
   reverselock.h \
@@ -125,13 +122,9 @@ BITCOIN_CORE_H = \
   rpc/protocol.h \
   rpc/server.h \
   scheduler.h \
-  script/interpreter.h \
-  script/script.h \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
-  script/script_error.h \
-  serialize.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -140,19 +133,15 @@ BITCOIN_CORE_H = \
   sync.h \
   threadsafety.h \
   timedata.h \
-  tinyformat.h \
   torcontrol.h \
   txdb.h \
   txmempool.h \
   ui_interface.h \
-  uint256.h \
   undo.h \
   util.h \
-  utilstrencodings.h \
   utilmoneystr.h \
   utiltime.h \
   validationinterface.h \
-  version.h \
   wallet/crypter.h \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
@@ -206,8 +195,9 @@ libanimecoin_server_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 if ENABLE_ZMQ
-libbitcoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES)
-libbitcoin_zmq_a_SOURCES = \
+libanimecoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES)
+libbitcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libanimecoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp
@@ -263,6 +253,33 @@ crypto_libanimecoin_crypto_a_SOURCES = \
   crypto/sph_jh.h \
   crypto/sph_skein.h
 
+# consensus: shared between all executables that validate any consensus rules.
+libanimecoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libanimecoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libanimecoin_consensus_a_SOURCES = \
+  amount.h \
+  hash.cpp \
+  hash.h \
+  prevector.h \
+  primitives/transaction.cpp \
+  primitives/transaction.h \
+  pubkey.cpp \
+  pubkey.h \
+  script/bitcoinconsensus.cpp \
+  script/interpreter.cpp \
+  script/interpreter.h \
+  script/script.cpp \
+  script/script.h \
+  script/script_error.cpp \
+  script/script_error.h \
+  serialize.h \
+  tinyformat.h \
+  uint256.cpp \
+  uint256.h \
+  utilstrencodings.cpp \
+  utilstrencodings.h \
+  version.h
+
 # common: shared between animecoind, and animecoin-qt and non-server tools
 libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -275,21 +292,15 @@ libanimecoin_common_a_SOURCES = \
   consensus/merkle.cpp \
   core_read.cpp \
   core_write.cpp \
-  hash.cpp \
   key.cpp \
   keystore.cpp \
   netbase.cpp \
   pow.cpp \
   primitives/block.cpp \
-  primitives/transaction.cpp \
   protocol.cpp \
-  pubkey.cpp \
   scheduler.cpp \
-  script/interpreter.cpp \
-  script/script.cpp \
   script/sign.cpp \
   script/standard.cpp \
-  script/script_error.cpp \
   $(BITCOIN_CORE_H)
 
 # util: shared between all executables.
@@ -309,7 +320,6 @@ libanimecoin_util_a_SOURCES = \
   support/cleanse.cpp \
   support/pagelocker.cpp \
   sync.cpp \
-  uint256.cpp \
   util.cpp \
   utilstrencodings.cpp \
   utilmoneystr.cpp \
@@ -332,6 +342,15 @@ nodist_libanimecoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # animecoind binary #
+animecoind_SOURCES = bitcoind.cpp
+animecoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+animecoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+animecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+if TARGET_WINDOWS
+animecoind_SOURCES += bitcoind-res.rc
+endif
+
 animecoind_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
@@ -339,21 +358,24 @@ animecoind_LDADD = \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_ZMQ) \
+  $(LIBBITCOIN_CONSENSUS) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-if TARGET_WINDOWS
-animecoind_SOURCES += bitcoind-res.rc
-endif
-
 animecoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
-animecoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-animecoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-animecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 # animecoin-cli binary #
+animecoin_cli_SOURCES = bitcoin-cli.cpp
+animecoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+animecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+animecoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+if TARGET_WINDOWS
+animecoin_cli_SOURCES += bitcoin-cli-res.rc
+endif
+
 animecoin_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
@@ -362,53 +384,30 @@ animecoin_cli_LDADD = \
   $(SSL_LIBS) \
   $(CRYPTO_LIBS) \
   $(EVENT_LIBS)
-
-animecoin_cli_SOURCES = \
-  bitcoin-cli.cpp
-
-animecoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-animecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 #
 
 # animecoin-tx binary #
+animecoin_tx_SOURCES = bitcoin-tx.cpp
+animecoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+animecoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+animecoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
 animecoin_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
+  $(LIBBITCOIN_CONSENSUS) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1) \
   $(BOOST_LIBS) \
   $(CRYPTO_LIBS) \
   $(EVENT_LIBS)
-
-animecoin_tx_SOURCES = bitcoin-tx.cpp
-animecoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-animecoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 #
-animecoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
-if TARGET_WINDOWS
-animecoin_cli_SOURCES += bitcoin-cli-res.rc
-endif
-animecoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-
+# bitcoinconsensus library #
 if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h
-libanimecoinconsensus_la_SOURCES = \
-  primitives/transaction.cpp \
-  arith_uint256.cpp \
-  crypto/hmac_sha512.cpp \
-  crypto/sha1.cpp \
-  crypto/sha256.cpp \
-  crypto/sha512.cpp \
-  crypto/ripemd160.cpp \
-  hash.cpp \
-  pubkey.cpp \
-  script/script.cpp \
-  script/interpreter.cpp \
-  script/bitcoinconsensus.cpp \
-  uint256.cpp \
-  utilstrencodings.cpp
+libanimecoinconsensus_la_SOURCES = $(crypto_libanimecoin_crypto_a_SOURCES) $(libanimecoin_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
   libanimecoinconsensus_la_SOURCES += compat/glibc_compat.cpp
@@ -420,6 +419,7 @@ libanimecoinconsensus_la_LIBADD = $(LIBSECP256K1)
 libanimecoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
 libanimecoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 endif
+#
 
 CTAES_DIST =  crypto/ctaes/bench.c
 CTAES_DIST += crypto/ctaes/ctaes.c
@@ -428,6 +428,7 @@ CTAES_DIST += crypto/ctaes/README.md
 CTAES_DIST += crypto/ctaes/test.c
 
 CLEANFILES = leveldb/libleveldb.a leveldb/libmemenv.a *.gcda *.gcno
+CLEANFILES += $(EXTRA_LIBRARIES)
 
 DISTCLEANFILES = obj/build.h
 
