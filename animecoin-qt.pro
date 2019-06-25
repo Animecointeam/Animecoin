@@ -245,6 +245,7 @@ QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wform
 # Input
 DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
+    src/crypto/aes.h \
     src/qt/transactiontablemodel.h \
     src/qt/addresstablemodel.h \
     src/qt/optionsdialog.h \
@@ -405,9 +406,14 @@ HEADERS += src/qt/bitcoingui.h \
     src/wallet/rpcwallet.h \
     src/rpc/client.h \
     src/rpc/protocol.h \
-    src/rpc/server.h
+    src/rpc/server.h \
+    src/crypto/ctaes/ctaes.h
 
 SOURCES += src/qt/bitcoin.cpp \
+    src/crypto/aes.cpp \
+    src/crypto/ctaes/bench.c \
+    src/crypto/ctaes/ctaes.c \
+    src/crypto/ctaes/test.c \
     src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
