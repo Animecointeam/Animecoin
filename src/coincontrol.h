@@ -6,6 +6,8 @@
 #define BITCOIN_COINCONTROL_H
 
 #include "primitives/transaction.h"
+#include "script/standard.h"
+#include "pubkey.h"
 
 /** Coin Control Features. */
 class CCoinControl

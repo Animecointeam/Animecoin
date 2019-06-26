@@ -421,7 +421,9 @@ void BitcoinApplication::initializeResult(int retval)
     if(retval)
     {
 #ifdef ENABLE_WALLET
+#ifdef ENABLE_BIP70
         PaymentServer::LoadRootCAs();
+#endif
         paymentServer->setOptionsModel(optionsModel);
 #endif
 
@@ -436,8 +438,10 @@ void BitcoinApplication::initializeResult(int retval)
             window->addWallet(BitcoinGUI::DEFAULT_WALLET, walletModel);
             window->setCurrentWallet(BitcoinGUI::DEFAULT_WALLET);
 
+#ifdef ENABLE_BIP70
             connect(walletModel, SIGNAL(coinsSent(CWallet*,SendCoinsRecipient,QByteArray)),
                              paymentServer, SLOT(fetchPaymentACK(CWallet*,const SendCoinsRecipient&,QByteArray)));
+#endif
         }
 #endif
 

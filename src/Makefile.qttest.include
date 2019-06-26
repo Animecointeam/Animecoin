@@ -4,8 +4,11 @@ TESTS += qt/test/test_animecoin-qt
 TEST_QT_MOC_CPP = qt/test/moc_uritests.cpp
 
 if ENABLE_WALLET
-TEST_QT_MOC_CPP += qt/test/moc_paymentservertests.cpp
-endif
+if ENABLE_BIP70
+TEST_QT_MOC_CPP += \
+  qt/test/moc_paymentservertests.cpp
+endif # ENABLE_BIP70
+endif # ENABLE_WALLET
 
 TEST_QT_H = \
   qt/test/uritests.h \
@@ -20,9 +23,11 @@ qt_test_test_animecoin_qt_SOURCES = \
   qt/test/uritests.cpp \
   $(TEST_QT_H)
 if ENABLE_WALLET
+if ENABLE_BIP70
 qt_test_test_animecoin_qt_SOURCES += \
   qt/test/paymentservertests.cpp
-endif
+endif # ENABLE_BIP70
+endif # ENABLE_WALLET
 
 nodist_qt_test_test_animecoin_qt_SOURCES = $(TEST_QT_MOC_CPP)
 

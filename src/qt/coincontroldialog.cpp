@@ -2,10 +2,15 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#if defined(HAVE_CONFIG_H)
+#include <config/bitcoin-config.h>
+#endif
+
 #include "coincontroldialog.h"
 #include "ui_coincontroldialog.h"
 
 #include "addresstablemodel.h"
+#include <base58.h>
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "init.h"

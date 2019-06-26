@@ -9,6 +9,7 @@
 #include "qvalidatedlineedit.h"
 #include "walletmodel.h"
 
+#include "base58.h"
 #include "primitives/transaction.h"
 #include "init.h"
 #include "main.h"
