@@ -762,7 +762,6 @@ static const CRPCCommand commands[] =
 
     { "util",               "estimatefee",            &estimatefee,            true  },
     { "util",               "estimatepriority",       &estimatepriority,       true  },
-    { "util",               "makekeypair",            &makekeypair,            true  },
     //{ "util",               "estimatesmartfee",       &estimatesmartfee,       true  },
     //{ "util",               "estimatesmartpriority",  &estimatesmartpriority,  true  },
 };

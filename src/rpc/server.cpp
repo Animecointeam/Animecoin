@@ -73,10 +73,10 @@ void RPCTypeCheck(const UniValue& params,
     unsigned int i = 0;
     for (UniValue::VType t : typesExpected)
     {
-        if (jsonRequest.params.size() <= i)
+        if (params.size() <= i)
             break;
 
-        const UniValue& v = jsonRequest.params[i];
+        const UniValue& v = params[i];
         if (!((v.type() == t) || (fAllowNull && (v.isNull()))))
         {
             string err = strprintf("Expected type %s, got %s",
@@ -184,7 +184,7 @@ std::string CRPCTable::help(const std::string& strCommand) const
         try
         {
             JSONRPCRequest jreq;
-            jreq.jsonRequest.fHelp = true;
+            jreq.fHelp = true;
             rpcfn_type pfn = pcmd->actor;
             if (setDone.insert(pfn).second)
                 (*pfn)(jreq);

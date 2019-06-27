@@ -774,7 +774,7 @@ UniValue getbalance(const JSONRPCRequest& request)
     return ValueFromAmount(nBalance);
 }
 
-UniValue getunconfirmedbalance(const UniValue &params, bool request.fHelp)
+UniValue getunconfirmedbalance(const JSONRPCRequest& request)
 {
     if (!EnsureWalletIsAvailable(request.fHelp))
         return NullUniValue;
@@ -1081,7 +1081,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
         strAccount = AccountFromValue(request.params[2]);
 
     // Construct using pay-to-script-hash:
-    CScript inner = _createmultisig_redeemScript(params);
+    CScript inner = _createmultisig_redeemScript(request.params);
     CScriptID innerID(inner);
     pwalletMain->AddCScript(inner);
 
@@ -1108,17 +1108,17 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
 {
     // Minimum confirmations
     int nMinDepth = 1;
-    if (request.params.size() > 0)
-        nMinDepth = request.params[0].get_int();
+    if (params.size() > 0)
+        nMinDepth = params[0].get_int();
 
     // Whether to include empty accounts
     bool fIncludeEmpty = false;
-    if (request.params.size() > 1)
-        fIncludeEmpty = request.params[1].get_bool();
+    if (params.size() > 1)
+        fIncludeEmpty = params[1].get_bool();
 
     isminefilter filter = ISMINE_SPENDABLE;
-    if(request.params.size() > 2)
-        if(request.params[2].get_bool())
+    if(params.size() > 2)
+        if(params[2].get_bool())
             filter = filter | ISMINE_WATCH_ONLY;
 
     // Tally
@@ -1256,7 +1256,7 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    return ListReceived(params, false);
+    return ListReceived(request.params, false);
 }
 
 UniValue listreceivedbyaccount(const JSONRPCRequest& request)
@@ -1292,7 +1292,7 @@ UniValue listreceivedbyaccount(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    return ListReceived(params, true);
+    return ListReceived(request.params, true);
 }
 
 static void MaybePushAddress(UniValue & entry, const CTxDestination &dest)
@@ -2111,9 +2111,9 @@ UniValue lockunspent(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     if (request.params.size() == 1)
-        RPCTypeCheck(params, {UniValue::VBOOL});
+        RPCTypeCheck(request.params, {UniValue::VBOOL});
     else
-        RPCTypeCheck(params, {UniValue::VBOOL, UniValue::VARR});
+        RPCTypeCheck(request.params, {UniValue::VBOOL, UniValue::VARR});
 
     bool fUnlock = request.params[0].get_bool();
 
@@ -2335,7 +2335,7 @@ UniValue listunspent(const JSONRPCRequest& request)
                 + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\\\",\\\"Ad9gq1rYvKDiFWCQPnrXVBCZEhwmQYXNks\\\"]\"")
             );
 
-    RPCTypeCheck(params, {UniValue::VNUM, UniValue::VNUM, UniValue::VARR});
+    RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM, UniValue::VARR});
 
     int nMinDepth = 1;
     if (request.params.size() > 0)
@@ -2444,7 +2444,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             + HelpExampleCli("sendrawtransaction", "\"signedtransactionhex\"")
                             );
 
-    RPCTypeCheck(params, {UniValue::VSTR, UniValue::VBOOL});
+    RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VBOOL});
 
     // parse hex string from parameter
     CTransaction origTx;

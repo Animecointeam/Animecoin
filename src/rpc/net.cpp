@@ -641,6 +641,7 @@ static const CRPCCommand commands[] =
     { "network",            "setban",                 &setban,                 true  },
     { "network",            "listbanned",             &listbanned,             true  },
     { "network",            "clearbanned",            &clearbanned,            true  },
+    { "util",               "makekeypair",            &makekeypair,            true  },
 };
 
 void RegisterNetRPCCommands(CRPCTable &tableRPC)
