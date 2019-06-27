@@ -183,10 +183,11 @@ std::string CRPCTable::help(const std::string& strCommand) const
             continue;
         try
         {
-            UniValue params;
+            JSONRPCRequest jreq;
+            jreq.fHelp = true;
             rpcfn_type pfn = pcmd->actor;
             if (setDone.insert(pfn).second)
-                (*pfn)(params, true);
+                (*pfn)(jreq);
         }
         catch (const std::exception& e)
         {
@@ -216,9 +217,9 @@ std::string CRPCTable::help(const std::string& strCommand) const
     return strRet;
 }
 
-UniValue help(const UniValue& params, bool fHelp)
+UniValue help(const JSONRPCRequest& jsonRequest)
 {
-    if (fHelp || params.size() > 1)
+    if (jsonRequest.fHelp || jsonRequest.params.size() > 1)
         throw runtime_error(
                 "help ( \"command\" )\n"
                 "\nList all commands, or get help for a specified command.\n"
@@ -229,17 +230,17 @@ UniValue help(const UniValue& params, bool fHelp)
             );
 
     string strCommand;
-    if (params.size() > 0)
-        strCommand = params[0].get_str();
+    if (jsonRequest.params.size() > 0)
+        strCommand = jsonRequest.params[0].get_str();
 
     return tableRPC.help(strCommand);
 }
 
 
-UniValue stop(const UniValue& params, bool fHelp)
+UniValue stop(const JSONRPCRequest& jsonRequest)
 {
     // Accept the deprecated and ignored 'detach' boolean argument
-    if (fHelp || params.size() > 1)
+    if (jsonRequest.fHelp || jsonRequest.params.size() > 1)
         throw runtime_error(
             "stop\n"
             "Stop Animecoin server.");
@@ -254,74 +255,9 @@ UniValue stop(const UniValue& params, bool fHelp)
 static const CRPCCommand vRPCCommands[] =
 { //  category              name                      actor (function)         okSafeMode
   //  --------------------- ------------------------  -----------------------  ----------
-    /* Overall control/query calls */
-  { "control",            "getinfo",                &getinfo,                true  }, /* uses wallet if enabled */
+  /* Overall control/query calls */
   { "control",            "help",                   &help,                   true  },
   { "control",            "stop",                   &stop,                   true  },
-
-    /* P2P networking */
-  { "network",            "getnetworkinfo",         &getnetworkinfo,         true  },
-  { "network",            "addnode",                &addnode,                true  },
-  { "network",            "disconnectnode",         &disconnectnode,         true  },
-  { "network",            "getaddednodeinfo",       &getaddednodeinfo,       true  },
-  { "network",            "getconnectioncount",     &getconnectioncount,     true  },
-  { "network",            "getnettotals",           &getnettotals,           true  },
-  { "network",            "getpeerinfo",            &getpeerinfo,            true  },
-  { "network",            "ping",                   &ping,                   true  },
-  { "network",            "setban",                 &setban,                 true  },
-  { "network",            "listbanned",             &listbanned,             true  },
-  { "network",            "clearbanned",            &clearbanned,            true  },
-
-    /* Block chain and UTXO */
-  { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true  },
-  { "blockchain",         "getbestblockhash",       &getbestblockhash,       true  },
-  { "blockchain",         "getblockcount",          &getblockcount,          true  },
-  { "blockchain",         "getblock",               &getblock,               true  },
-  { "blockchain",         "getblockhash",           &getblockhash,           true  },
-  { "blockchain",         "getblockheader",         &getblockheader,         true  },
-  { "blockchain",         "getchaintips",           &getchaintips,           true  },
-  { "blockchain",         "getdifficulty",          &getdifficulty,          true  },
-  { "blockchain",         "getmempoolinfo",         &getmempoolinfo,         true  },
-  { "blockchain",         "getrawmempool",          &getrawmempool,          true  },
-  { "blockchain",         "gettxout",               &gettxout,               true  },
-  { "blockchain",         "gettxoutproof",          &gettxoutproof,          true  },
-  { "blockchain",         "verifytxoutproof",       &verifytxoutproof,       true  },
-  { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        true  },
-  { "blockchain",         "verifychain",            &verifychain,            true  },
-
-  /* Mining */
-  { "mining",             "getblocktemplate",       &getblocktemplate,       true  },
-  { "mining",             "getmininginfo",          &getmininginfo,          true  },
-  { "mining",             "getnetworkhashps",       &getnetworkhashps,       true  },
-  { "mining",             "prioritisetransaction",  &prioritisetransaction,  true  },
-  { "mining",             "submitblock",            &submitblock,            true  },
-
-  /* Coin generation */
-  { "generating",         "getgenerate",            &getgenerate,            true  },
-  { "generating",         "gethashespersec",        &gethashespersec,        true  },
-  { "generating",         "setgenerate",            &setgenerate,            true  },
-  { "generating",         "generate",               &generate,               true  },
-
-  /* Raw transactions */
-  { "rawtransactions",    "createrawtransaction",   &createrawtransaction,   true  },
-  { "rawtransactions",    "decoderawtransaction",   &decoderawtransaction,   true  },
-  { "rawtransactions",    "decodescript",           &decodescript,           true  },
-  { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true  },
-  { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false },
-  { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false }, /* uses wallet if enabled */
-
-  /* Utility functions */
-  { "util",               "createmultisig",         &createmultisig,         true  },
-  { "util",               "validateaddress",        &validateaddress,        true  }, /* uses wallet if enabled */
-  { "util",               "verifymessage",          &verifymessage,          true  },
-  { "util",               "estimatefee",            &estimatefee,            true  },
-  { "util",               "estimatepriority",       &estimatepriority,       true  },
-  { "util",               "makekeypair",            &makekeypair,            true  },
-
-  /* Not shown in help */
-  { "hidden",             "invalidateblock",        &invalidateblock,        true  },
-  { "hidden",             "reconsiderblock",        &reconsiderblock,        true  },
-  { "hidden",             "setmocktime",            &setmocktime,            true  },
 };
 
 CRPCTable::CRPCTable()
@@ -406,7 +342,7 @@ bool RPCIsInWarmup(std::string *outStatus)
     return fRPCInWarmup;
 }
 
-void JSONRequest::parse(const UniValue& valRequest)
+void JSONRPCRequest::parse(const UniValue& valRequest)
 {
     // Parse request
     if (!valRequest.isObject())
@@ -440,11 +376,11 @@ static UniValue JSONRPCExecOne(const UniValue& req)
 {
     UniValue rpc_result(UniValue::VOBJ);
 
-    JSONRequest jreq;
+    JSONRPCRequest jreq;
     try {
         jreq.parse(req);
 
-        UniValue result = tableRPC.execute(jreq.strMethod, jreq.params);
+        UniValue result = tableRPC.execute(jreq);
         rpc_result = JSONRPCReplyObj(result, NullUniValue, jreq.id);
     }
     catch (const UniValue& objError)
@@ -469,7 +405,7 @@ std::string JSONRPCExecBatch(const UniValue& vReq)
     return ret.write() + "\n";
 }
 
-UniValue CRPCTable::execute(const std::string &strMethod, const UniValue &params) const
+UniValue CRPCTable::execute(const JSONRPCRequest &request) const
 {
     // Return immediately if in warmup
     {
@@ -479,7 +415,7 @@ UniValue CRPCTable::execute(const std::string &strMethod, const UniValue &params
     }
 
     // Find method
-    const CRPCCommand *pcmd = tableRPC[strMethod];
+    const CRPCCommand *pcmd = tableRPC[request.strMethod];
     if (!pcmd)
         throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Method not found");
 
@@ -487,7 +423,7 @@ UniValue CRPCTable::execute(const std::string &strMethod, const UniValue &params
 
     try
     {
-        return pcmd->actor(params, false);
+        return pcmd->actor(request);
     }
     catch (const std::exception& e)
     {
