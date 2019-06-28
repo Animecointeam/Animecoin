@@ -7,6 +7,7 @@
 #include "checkpoints.h"
 #include "consensus/validation.h"
 #include "main.h"
+#include "policy/policy.h"
 #include "primitives/transaction.h"
 #include "rpc/server.h"
 #include "sync.h"
