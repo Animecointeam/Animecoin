@@ -93,7 +93,7 @@ public:
     static void LoadRootCAs(X509_STORE* store = nullptr);
 
     // Return certificate store
-    static X509_STORE* getCertStore() { return certStore; }
+    static X509_STORE* getCertStore();
 
     // This is now public, because we use it in paymentservertests.cpp
      static bool readPaymentRequestFromFile(const QString& filename, PaymentRequestPlus& request);
@@ -154,9 +154,6 @@ private:
 
     // Setup networking
     void initNetManager();
-
-    static X509_STORE* certStore;       // Trusted root certificates
-    static void freeCertStore();
 
     QNetworkAccessManager* netManager;  // Used to fetch payment requests
 #endif

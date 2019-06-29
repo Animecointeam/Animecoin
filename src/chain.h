@@ -289,7 +289,7 @@ public:
         return pbegin[(pend - pbegin)*2/3];
     }
 
-    static int CalcMajority(int minVersion, const CBlockIndex* pstart);
+    static int CalcMajority(int minVersion, const CBlockIndex* pstart, const Consensus::Params& consensusParams);
 
     std::string ToString() const
     {

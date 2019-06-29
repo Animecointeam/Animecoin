@@ -12,7 +12,7 @@
 
 
 RecentRequestsTableModel::RecentRequestsTableModel(CWallet *wallet, WalletModel *parent) :
-	walletModel(parent)
+    QAbstractTableModel(parent), walletModel(parent)
 {
 	Q_UNUSED(wallet);
 	nReceiveRequestsMaxId = 0;
