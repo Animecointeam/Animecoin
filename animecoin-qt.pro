@@ -408,7 +408,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/rpc/client.h \
     src/rpc/protocol.h \
     src/rpc/server.h \
-    src/crypto/ctaes/ctaes.h
+    src/crypto/ctaes/ctaes.h \
+    src/versionbits.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
@@ -558,7 +559,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/rpc/net.cpp \
     src/rpc/protocol.cpp \
     src/rpc/rawtransaction.cpp \
-    src/rpc/server.cpp
+    src/rpc/server.cpp \
+    src/versionbits.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

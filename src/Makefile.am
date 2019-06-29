@@ -143,6 +143,7 @@ BITCOIN_CORE_H = \
   utilmoneystr.h \
   utiltime.h \
   validationinterface.h \
+  versionbits.h \
   wallet/crypter.h \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
@@ -193,6 +194,7 @@ libanimecoin_server_a_SOURCES = \
   txdb.cpp \
   txmempool.cpp \
   validationinterface.cpp \
+  versionbits.cpp \
   $(BITCOIN_CORE_H)
 
 if ENABLE_ZMQ
