@@ -120,6 +120,7 @@ BITCOIN_CORE_H = \
   reverselock.h \
   rpc/client.h \
   rpc/protocol.h \
+  rpc/register.h \
   rpc/server.h \
   scheduler.h \
   script/sigcache.h \
