@@ -5,25 +5,53 @@ VERSION = 0.10.0
 INCLUDEPATH += src src/qt
 QT += network printsupport
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB HAVE_WORKING_BOOST_SLEEP_FOR
-DEFINES += ENABLE_WALLET ENABLE_ZMQ
+DEFINES += ENABLE_WALLET
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
-CONFIG += openssl
+#CONFIG += openssl
 CONFIG += c++14
+CONFIG += object_parallel_to_source
 
 greaterThan(QT_MAJOR_VERSION, 4) {
      QT += widgets
      DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
  }
 
-PROTO_DIR = src/qt
-include(share/qt/protobuf.pri)
-PROTOS = src/qt/paymentrequest.proto
+contains(USE_BIP70, 1) {
+    message(Building with deprecated BIP70 support)
+    PROTO_DIR = src/qt
+    include(share/qt/protobuf.pri)
+    PROTOS = src/qt/paymentrequest.proto
+    DEFINES += ENABLE_BIP70
+    HEADERS += src/qt/paymentrequestplus.h
+    SOURCES += src/qt/paymentrequestplus.cpp
+}
+else
+{
+    DEFINES += DISABLE_BIP70
+}
 
-QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -flto=8"
-QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -Wno-deprecated-copy -flto=8"
-QMAKE_LFLAGS+="-flto"
+contains(USE_ZMQ, 1) {
+    message(Building with ZMQ support)
+    DEFINES += ENABLE_ZMQ
+    HEADERS += src/zmq/zmqabstractnotifier.h \
+    src/zmq/zmqconfig.h \
+    src/zmq/zmqnotificationinterface.h \
+    src/zmq/zmqpublishnotifier.h
+    SOURCES += src/zmq/zmqabstractnotifier.cpp \
+    src/zmq/zmqnotificationinterface.cpp \
+    src/zmq/zmqpublishnotifier.cpp
+    LIBS += -lzmq
+}
+else
+{
+    DEFINES += DISABLE_ZMQ
+}
+
+QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
+QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -Wno-deprecated-copy"
+#QMAKE_LFLAGS+="-flto"
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -320,7 +348,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/winshutdownmonitor.h \
     src/qt/openuridialog.h \
     src/qt/receivecoinsdialog.h \
-    src/qt/paymentrequestplus.h \
     src/qt/walletmodeltransaction.h \
     src/qt/recentrequeststablemodel.h \
     src/qt/trafficgraphwidget.h \
@@ -385,10 +412,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/wallet/crypter.h \
     src/support/cleanse.h \
     src/policy/policy.h \
-    src/zmq/zmqabstractnotifier.h \
-    src/zmq/zmqconfig.h \
-    src/zmq/zmqnotificationinterface.h \
-    src/zmq/zmqpublishnotifier.h \
     src/validationinterface.h \
     src/reverse_iterator.h \
     src/torcontrol.h \
@@ -412,9 +435,9 @@ HEADERS += src/qt/bitcoingui.h \
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
-    src/crypto/ctaes/bench.c \
+    #src/crypto/ctaes/bench.c \
     src/crypto/ctaes/ctaes.c \
-    src/crypto/ctaes/test.c \
+    #src/crypto/ctaes/test.c \
     src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
@@ -475,7 +498,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/winshutdownmonitor.cpp \
     src/qt/openuridialog.cpp \
     src/qt/receivecoinsdialog.cpp \
-    src/qt/paymentrequestplus.cpp \
     src/qt/walletmodeltransaction.cpp \
     src/qt/recentrequeststablemodel.cpp \
     src/qt/trafficgraphwidget.cpp \
@@ -538,9 +560,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/txmempool.cpp \
     src/wallet/crypter.cpp \
     src/support/cleanse.cpp \
-    src/zmq/zmqabstractnotifier.cpp \
-    src/zmq/zmqnotificationinterface.cpp \
-    src/zmq/zmqpublishnotifier.cpp \
     src/validationinterface.cpp \
     src/torcontrol.cpp \
     src/httprpc.cpp \
@@ -669,7 +688,7 @@ macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf -levent -levent_pthreads -lzmq
+LIBS += -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf -levent -levent_pthreads
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 !windows: {
