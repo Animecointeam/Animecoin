@@ -693,11 +693,11 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     obj.push_back(Pair("verificationprogress",  Checkpoints::GuessVerificationProgress(Params().TxData(), chainActive.Tip())));
     obj.push_back(Pair("chainwork",             chainActive.Tip()->nChainWork.GetHex()));
     obj.push_back(Pair("pruned",                fPruneMode));
-    obj.push_back(Pair("v2blocks",              CBlockIndex::CalcMajority(2, chainActive.Tip())));
-    obj.push_back(Pair("v112blocks",            CBlockIndex::CalcMajority(112, chainActive.Tip())));
-    obj.push_back(Pair("v113blocks",            CBlockIndex::CalcMajority(113, chainActive.Tip())));
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
+    obj.push_back(Pair("v2blocks",              CBlockIndex::CalcMajority(2, chainActive.Tip(), consensusParams)));
+    obj.push_back(Pair("v112blocks",            CBlockIndex::CalcMajority(112, chainActive.Tip(), consensusParams)));
+    obj.push_back(Pair("v113blocks",            CBlockIndex::CalcMajority(113, chainActive.Tip(), consensusParams)));
     CBlockIndex* tip = chainActive.Tip();
     UniValue softforks(UniValue::VARR);
     softforks.push_back(SoftForkDesc("bip65", 113, tip, consensusParams));

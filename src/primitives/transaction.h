@@ -181,7 +181,6 @@ private:
 
 public:
     static const int32_t CURRENT_VERSION = 1;
-    static const int32_t TXCOMMENT_VERSION = 2;
 
     // The local variables are made const to prevent unintended modification
     // without updating the cached hash value. However, CTransaction is not
@@ -192,7 +191,6 @@ public:
     const std::vector<CTxIn> vin;
     const std::vector<CTxOut> vout;
     const uint32_t nLockTime;
-    std::string strTxComment;
 
     /** Construct a CTransaction that qualifies as IsNull() */
     CTransaction();
@@ -211,8 +209,6 @@ public:
         READWRITE(*const_cast<std::vector<CTxIn>*>(&vin));
         READWRITE(*const_cast<std::vector<CTxOut>*>(&vout));
         READWRITE(*const_cast<uint32_t*>(&nLockTime));
-        if(this->nVersion >= TXCOMMENT_VERSION) {
-        READWRITE(strTxComment); }
         if (ser_action.ForRead())
             UpdateHash();
     }
@@ -261,7 +257,6 @@ struct CMutableTransaction
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
     uint32_t nLockTime;
-    std::string strTxComment;
 
     CMutableTransaction();
     CMutableTransaction(const CTransaction& tx);
@@ -275,8 +270,6 @@ struct CMutableTransaction
         READWRITE(vin);
         READWRITE(vout);
         READWRITE(nLockTime);
-        if(this->nVersion >= CTransaction::TXCOMMENT_VERSION) {
-        READWRITE(strTxComment); }
     }
 
     /** Compute the hash of this CMutableTransaction. This is computed on the

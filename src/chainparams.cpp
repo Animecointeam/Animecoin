@@ -114,7 +114,6 @@ public:
         nDefaultPort = 1212;
         nMinerThreads = 0;
         nPruneAfterHeight = 100000;
-        nMaxTipAge = 24 * 60 * 60;
 
         genesis = CreateGenesisBlock();
 
@@ -190,7 +189,6 @@ public:
         nDefaultPort = 11212; // Contradictory.
         nPruneAfterHeight = 1000;
         nMinerThreads = 0;
-        nMaxTipAge = 0x7fffffff;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 978307200; // Updated for Animecoin
@@ -251,7 +249,6 @@ public:
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
         nMinerThreads = 1;
-        nMaxTipAge = 24 * 60 * 60;
         genesis.nTime = 978307200;
         genesis.nBits = 0x1e0fffff;
         genesis.nNonce = 907185573;

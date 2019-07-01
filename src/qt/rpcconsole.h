@@ -11,6 +11,7 @@
 #include "net.h"
 
 #include <QDialog>
+#include <QThread>
 
 class ClientModel;
 class RPCTimerInterface;
@@ -123,6 +124,7 @@ private:
     RPCTimerInterface *rpcTimerInterface;
     QMenu *peersTableContextMenu;
     QMenu *banTableContextMenu;
+    QThread thread;
 };
 
 #endif // BITCOIN_QT_RPCCONSOLE_H

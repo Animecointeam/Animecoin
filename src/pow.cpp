@@ -103,7 +103,7 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
     if (UintToArith256(hash) > bnTarget)
         return error("CheckProofOfWork() : hash doesn't match nBits");
 
-	return true;
+    return true;
 }
 
 arith_uint256 GetBlockProof(const CBlockIndex& block)

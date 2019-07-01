@@ -59,8 +59,8 @@ std::string CTxOut::ToString() const
     return strprintf("CTxOut(nValue=%d.%05d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30)); // QA: magic number inherited from Quark (!). Fixed.
 }
 
-CMutableTransaction::CMutableTransaction() : nVersion(CTransaction::CURRENT_VERSION), nLockTime(0), strTxComment("") {}
-CMutableTransaction::CMutableTransaction(const CTransaction& tx) : nVersion(tx.nVersion), vin(tx.vin), vout(tx.vout), nLockTime(tx.nLockTime), strTxComment(tx.strTxComment) {}
+CMutableTransaction::CMutableTransaction() : nVersion(CTransaction::CURRENT_VERSION), nLockTime(0) {}
+CMutableTransaction::CMutableTransaction(const CTransaction& tx) : nVersion(tx.nVersion), vin(tx.vin), vout(tx.vout), nLockTime(tx.nLockTime) {}
 
 uint256 CMutableTransaction::GetHash() const
 {
@@ -74,7 +74,7 @@ void CTransaction::UpdateHash() const
 
 CTransaction::CTransaction() : nVersion(CTransaction::CURRENT_VERSION), vin(), vout(), nLockTime(0) { }
 
-CTransaction::CTransaction(const CMutableTransaction &tx) : nVersion(tx.nVersion), vin(tx.vin), vout(tx.vout), nLockTime(tx.nLockTime), strTxComment(tx.strTxComment) {
+CTransaction::CTransaction(const CMutableTransaction &tx) : nVersion(tx.nVersion), vin(tx.vin), vout(tx.vout), nLockTime(tx.nLockTime) {
 	UpdateHash();
 }
 
@@ -84,7 +84,6 @@ CTransaction& CTransaction::operator=(const CTransaction &tx) {
 	*const_cast<std::vector<CTxOut>*>(&vout) = tx.vout;
 	*const_cast<unsigned int*>(&nLockTime) = tx.nLockTime;
 	*const_cast<uint256*>(&hash) = tx.hash;
-	strTxComment = tx.strTxComment;
 	return *this;
 }
 
