@@ -475,6 +475,7 @@ std::string HelpMessage(HelpMessageMode mode)
     AppendParamsHelpMessages(strUsage, showDebug);
 
     strUsage += HelpMessageGroup(_("Node relay options:"));
+    strUsage += HelpMessageOpt("-bytespersigop", strprintf(_("Minimum bytes per sigop in transactions we relay and mine (default: %u)"), DEFAULT_BYTES_PER_SIGOP));
     strUsage += HelpMessageOpt("-datacarrier", strprintf(_("Relay and mine data carrier transactions (default: %u)"), DEFAULT_ACCEPT_DATACARRIER));
     strUsage += HelpMessageOpt("-datacarriersize", strprintf(_("Maximum size of data in data carrier transactions we relay and mine (default: %u)"), MAX_OP_RETURN_RELAY));
 
@@ -972,6 +973,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         else
             return InitError(strprintf(_("Invalid amount for -minrelaytxfee=<amount>: '%s'"), mapArgs["-minrelaytxfee"]));
     }
+
+    nBytesPerSigOp = GetArg("-bytespersigop", nBytesPerSigOp);
 
 #ifdef ENABLE_WALLET
     if (mapArgs.count("-mintxfee"))
