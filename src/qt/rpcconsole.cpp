@@ -16,8 +16,6 @@
 #include "rpc/client.h"
 #include "util.h"
 
-#include <openssl/crypto.h>
-
 #include <univalue.h>
 
 #ifdef ENABLE_WALLET
@@ -354,7 +352,6 @@ RPCConsole::RPCConsole(QWidget *parent) :
     connect(ui->btnClearTrafficGraph, SIGNAL(clicked()), ui->trafficGraph, SLOT(clear()));
 
     // set library version labels
-    ui->openSSLVersion->setText(SSLeay_version(SSLEAY_VERSION));
 #ifdef ENABLE_WALLET
     ui->berkeleyDBVersion->setText(DbEnv::version(0, 0, 0));
 #else

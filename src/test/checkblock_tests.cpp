@@ -42,6 +42,7 @@ bool read_block(const std::string& filename, CBlock& block)
 
 BOOST_AUTO_TEST_CASE(May15)
 {
+/*
     // Putting a 1MB binary file in the git repository is not a great
     // idea, so this test is only run if you manually download
     // test/data/Mar12Fork.dat from
@@ -60,6 +61,7 @@ BOOST_AUTO_TEST_CASE(May15)
     }
 
     SetMockTime(0);
+*/
 }
 
 BOOST_AUTO_TEST_SUITE_END()
