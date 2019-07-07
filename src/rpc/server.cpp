@@ -16,7 +16,6 @@
 
 #include <univalue.h>
 
-#include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/iostreams/concepts.hpp>
 #include <boost/iostreams/stream.hpp>
@@ -431,6 +430,13 @@ UniValue CRPCTable::execute(const JSONRPCRequest &request) const
     }
 
     g_rpcSignals.PostCommand(*pcmd);
+}
+
+std::vector<std::string> CRPCTable::listCommands() const
+{
+    std::vector<std::string> commandList;
+    for (const auto& i : mapCommands) commandList.emplace_back(i.first);
+    return commandList;
 }
 
 std::string HelpExampleCli(const std::string& methodname, const std::string& args)

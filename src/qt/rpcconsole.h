@@ -12,6 +12,7 @@
 
 #include <QDialog>
 #include <QThread>
+#include <QCompleter>
 
 class ClientModel;
 class RPCTimerInterface;
@@ -124,6 +125,7 @@ private:
     RPCTimerInterface *rpcTimerInterface;
     QMenu *peersTableContextMenu;
     QMenu *banTableContextMenu;
+    QCompleter *autoCompleter;
     QThread thread;
 };
 
