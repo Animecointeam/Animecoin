@@ -424,14 +424,14 @@ HEADERS += src/qt/bitcoingui.h \
     src/cuckoocache.h \
     src/support/allocators/secure.h \
     src/support/allocators/zeroafterfree.h \
-    src/support/pagelocker.h \
     src/qt/bantablemodel.h \
     src/dbwrapper.h \
     src/wallet/rpcwallet.h \
     src/rpc/client.h \
     src/rpc/protocol.h \
     src/rpc/server.h \
-    src/crypto/ctaes/ctaes.h
+    src/crypto/ctaes/ctaes.h \
+    src/support/lockedpool.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
@@ -567,7 +567,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/policy/policy.cpp \
     src/consensus/merkle.cpp \
     src/arith_uint256.cpp \
-    src/support/pagelocker.cpp \
     src/qt/bantablemodel.cpp \
     src/dbwrapper.cpp \
     src/rpc/blockchain.cpp \
@@ -577,7 +576,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/rpc/net.cpp \
     src/rpc/protocol.cpp \
     src/rpc/rawtransaction.cpp \
-    src/rpc/server.cpp
+    src/rpc/server.cpp \
+    src/support/lockedpool.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
