@@ -14,6 +14,7 @@ Boost dependency is a subject to be removed eventually. No new features should u
 
 - NULL is deprecated. For C++ pointers, use nullptr. For C, use 0.
 - throw() in function declarations should be changed to noexcept.
+- [0] should migrate to .data() where applicable.
 
 Boost features that are mostly search-and-replace-upgradeable
 ---------------------

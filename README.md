@@ -2,7 +2,7 @@ Animecoin 0.10.0 alpha
 ====================
 ![Animecoin](https://miningbase.tk/images/coin-ANI.png)
 
-0.10 is in active development. Check out 0.9.2 branch for the current release candidate, or Releases section for the current and stable source.
+0.10 is in active development. Do not rush to build the master branch. Check out the Releases section for the current and stable source.
 
 Intro
 ---------------------
@@ -49,7 +49,7 @@ Features to be removed in 0.10
 - getwork will be removed following bitcoin upstream, this may break certain antique mining software (implemented).
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
-- RPC over SSL will be removed (was never good, removal in progress). Use tunneling instead.
+- RPC over SSL will be removed (implemented, was never good). Use tunneling instead.
 
 0.9.2 release notes
 ---------------------

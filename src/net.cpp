@@ -13,6 +13,7 @@
 #include "chainparams.h"
 #include "clientversion.h"
 #include "consensus/consensus.h"
+#include "crypto/sha256.h"
 #include "primitives/transaction.h"
 #include "scheduler.h"
 #include "ui_interface.h"
