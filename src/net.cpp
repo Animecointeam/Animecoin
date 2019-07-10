@@ -1907,15 +1907,15 @@ instance_of_cnetcleanup;
 
 
 
-void RelayTransaction(const CTransaction& tx)
+void RelayTransaction(const CTransaction& tx, CFeeRate feerate)
 {
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
     ss.reserve(10000);
     ss << tx;
-    RelayTransaction(tx, ss);
+    RelayTransaction(tx, feerate, ss);
 }
 
-void RelayTransaction(const CTransaction& tx, const CDataStream& ss)
+void RelayTransaction(const CTransaction& tx, CFeeRate feerate, const CDataStream& ss)
 {
     CInv inv(MSG_TX, tx.GetHash());
     {
@@ -1936,6 +1936,11 @@ void RelayTransaction(const CTransaction& tx, const CDataStream& ss)
     {
         if(!pnode->fRelayTxes)
             continue;
+        {
+            LOCK(pnode->cs_feeFilter);
+            if (feerate.GetFeePerK() < pnode->minFeeFilter)
+                continue;
+        }
         LOCK(pnode->cs_filter);
         if (pnode->pfilter)
         {
@@ -2239,6 +2244,10 @@ CNode::CNode(SOCKET hSocketIn, const CAddress& addrIn, const std::string& addrNa
     nPingUsecStart = 0;
     nPingUsecTime = 0;
     fPingQueued = false;
+//    nMinPingUsecTime = std::numeric_limits<int64_t>::max();
+    minFeeFilter = 0;
+    lastSentFeeFilter = 0;
+    nextSendTimeFeeFilter = 0;
 
     {
         LOCK(cs_nLastNodeId);
@@ -2269,8 +2278,12 @@ CNode::~CNode()
 
 void CNode::AskFor(const CInv& inv)
 {
-    if (mapAskFor.size() > MAPASKFOR_MAX_SZ)
+    if (mapAskFor.size() > MAPASKFOR_MAX_SZ || setAskFor.size() > SETASKFOR_MAX_SZ)
         return;
+    // a peer may not have multiple non-responded queue positions for a single inv item
+    if (!setAskFor.insert(inv.hash).second)
+        return;
+
     // We're using mapAskFor as a priority queue,
     // the key is the earliest time the request can be sent
     int64_t nRequestTime;

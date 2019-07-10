@@ -6,6 +6,7 @@
 #ifndef BITCOIN_NET_H
 #define BITCOIN_NET_H
 
+#include "amount.h"
 #include "bloom.h"
 #include "compat.h"
 #include "hash.h"
@@ -59,6 +60,8 @@ static const bool DEFAULT_UPNP = false;
 #endif
 /** The maximum number of entries in mapAskFor */
 static const size_t MAPASKFOR_MAX_SZ = MAX_INV_SZ;
+/** The maximum number of entries in setAskFor (larger due to getdata latency)*/
+static const size_t SETASKFOR_MAX_SZ = 2 * MAX_INV_SZ;
 /** The maximum number of peer connections to maintain. */
 static const unsigned int DEFAULT_MAX_PEER_CONNECTIONS = 125;
 /** The default for -maxuploadtarget. 0 = Unlimited */
@@ -403,6 +406,7 @@ public:
     CRollingBloomFilter filterInventoryKnown;
     std::vector<CInv> vInventoryToSend;
     CCriticalSection cs_inventory;
+    std::set<uint256> setAskFor;
     std::multimap<int64_t, CInv> mapAskFor;
     int64_t nNextInvSend;
     // Used for headers announcements - unfiltered blocks to relay
@@ -418,6 +422,11 @@ public:
     int64_t nPingUsecTime;
     // Whether a ping is requested.
     bool fPingQueued;
+    // Minimum fee rate with which to filter inv's to this node
+    CAmount minFeeFilter;
+    CCriticalSection cs_feeFilter;
+    CAmount lastSentFeeFilter;
+    int64_t nextSendTimeFeeFilter;
 
     CNode(SOCKET hSocketIn, const CAddress &addrIn, const std::string &addrNameIn = "", bool fInboundIn = false);
     ~CNode();
@@ -772,8 +781,8 @@ public:
 
 
 class CTransaction;
-void RelayTransaction(const CTransaction& tx);
-void RelayTransaction(const CTransaction& tx, const CDataStream& ss);
+void RelayTransaction(const CTransaction& tx, CFeeRate feerate);
+void RelayTransaction(const CTransaction& tx, CFeeRate feerate, const CDataStream& ss);
 
 /** Access to the (IP) address database (peers.dat) */
 class CAddrDB

@@ -324,6 +324,7 @@ std::string HelpMessage(HelpMessageMode mode)
        }
    strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
    strUsage += HelpMessageOpt("-dbcache=<n>", strprintf(_("Set database cache size in megabytes (%d to %d, default: %d)"), nMinDbCache, nMaxDbCache, nDefaultDbCache));
+   strUsage += HelpMessageOpt("-feefilter", strprintf(_("Tell other nodes to filter invs to us by our mempool min fee (default: %u)"), DEFAULT_FEEFILTER));
    strUsage += HelpMessageOpt("-loadblock=<file>", _("Imports blocks from external blk000??.dat file") + " " + _("on startup"));
    strUsage += HelpMessageOpt("-maxorphantx=<n>", strprintf(_("Keep at most <n> unconnectable transactions in memory (default: %u)"), DEFAULT_MAX_ORPHAN_TRANSACTIONS));
    strUsage += HelpMessageOpt("-maxmempool=<n>", strprintf(_("Keep the transaction memory pool below <n> megabytes (default: %u)"), DEFAULT_MAX_MEMPOOL_SIZE));
@@ -386,7 +387,8 @@ std::string HelpMessage(HelpMessageMode mode)
    strUsage += HelpMessageOpt("-whitelist=<netmask>", _("Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.") +
        " " + _("Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway"));
    strUsage += HelpMessageOpt("-whiteconnections=<n>", strprintf(_("Reserve this many inbound connections for whitelisted peers (default: %d)"), 0));
-   strUsage += HelpMessageOpt("-whitelistalwaysrelay", strprintf(_("Always relay transactions received from whitelisted peers (default: %d)"), DEFAULT_WHITELISTALWAYSRELAY));
+   strUsage += HelpMessageOpt("-whitelistrelay", strprintf(_("Accept relayed transactions received from whitelisted peers even when not relaying transactions (default: %d)"), DEFAULT_WHITELISTRELAY));
+   strUsage += HelpMessageOpt("-whitelistforcerelay", strprintf(_("Force relay of transactions from whitelisted peers even they violate local relay policy (default: %d)"), DEFAULT_WHITELISTFORCERELAY));
    strUsage += HelpMessageOpt("-maxuploadtarget=<n>", strprintf(_("Tries to keep outbound traffic under the given target (in MiB per 24h), 0 = no limit (default: %d)"), DEFAULT_MAX_UPLOAD_TARGET));
 
 #ifdef ENABLE_WALLET
@@ -746,14 +748,20 @@ void InitParameterInteraction()
             LogPrintf("%s: parameter interaction: -zapwallettxes=<mode> -> setting -rescan=1\n", __func__);
     }
 
-    // disable walletbroadcast and whitelistalwaysrelay in blocksonly mode
+    // disable walletbroadcast and whitelistrelay in blocksonly mode
     if (GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY)) {
-        if (SoftSetBoolArg("-whitelistalwaysrelay", false))
-            LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -whitelistalwaysrelay=0\n", __func__);
+        if (SoftSetBoolArg("-whitelistrelay", false))
+            LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -whitelistrelay=0\n", __func__);
 #ifdef ENABLE_WALLET
         if (SoftSetBoolArg("-walletbroadcast", false))
             LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
 #endif
+    }
+
+    // Forcing relay from whitelisted hosts implies we will accept relays from them in the first place.
+    if (GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY)) {
+        if (SoftSetBoolArg("-whitelistrelay", true))
+            LogPrintf("%s: parameter interaction: -whitelistforcerelay=1 -> setting -whitelistrelay=1\n", __func__);
     }
 }
 
@@ -907,6 +915,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     if (GetBoolArg("-benchmark", false))
         InitWarning(_("Warning: Unsupported argument -benchmark ignored, use -debug=bench."));
+
+    if (GetBoolArg("-whitelistalwaysrelay", false))
+        InitWarning(_("Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay."));
 
     // Checkmempool and checkblockindex default to true in regtest mode
     int ratio = std::min<int>(std::max<int>(GetArg("-checkmempool", chainparams.DefaultConsistencyChecks() ? 1 : 0), 0), 1000000);

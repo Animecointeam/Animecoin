@@ -1251,7 +1251,9 @@ bool CWalletTx::RelayWalletTransaction()
     {
         if (GetDepthInMainChain() == 0 && !isAbandoned()) {
             LogPrintf("Relaying wtx %s\n", GetHash().ToString());
-            RelayTransaction((CTransaction)*this);
+            CFeeRate feeRate;
+            mempool.lookupFeeRate(GetHash(), feeRate);
+            RelayTransaction((CTransaction)*this, feeRate);
             return true;
         }
     }
@@ -2991,5 +2993,5 @@ int CMerkleTx::GetBlocksToMaturity() const
 bool CMerkleTx::AcceptToMemoryPool(bool fLimitFree, CAmount nAbsurdFee)
 {
     CValidationState state;
-    return ::AcceptToMemoryPool(mempool, state, *this, fLimitFree, nullptr, false, nAbsurdFee);
+    return ::AcceptToMemoryPool(mempool, state, *this, fLimitFree, nullptr, nullptr, false, nAbsurdFee);
 }
