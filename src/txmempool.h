@@ -480,6 +480,7 @@ public:
                         std::list<CTransaction>& conflicts, bool fCurrentEstimate = true);
     void clear();
     void _clear(); //lock free
+    bool CompareDepthAndScore(const uint256& hasha, const uint256& hashb);
     void queryHashes(std::vector<uint256>& vtxid);
 	void pruneSpent(const uint256& hash, CCoins &coins);
 	unsigned int GetTransactionsUpdated() const;
@@ -569,6 +570,7 @@ public:
 	}
 
 	bool lookup(uint256 hash, CTransaction& result) const;
+    bool lookup(uint256 hash, CTransaction& result, int64_t& time) const;
     bool lookupFeeRate(const uint256& hash, CFeeRate& feeRate) const;
 
     /** Estimate fee rate needed to get into the next nBlocks */
