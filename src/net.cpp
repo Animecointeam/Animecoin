@@ -1923,7 +1923,7 @@ instance_of_cnetcleanup;
 
 
 
-void RelayTransaction(const CTransaction& tx, CFeeRate feerate)
+void RelayTransaction(const CTransaction& tx)
 {
     CInv inv(MSG_TX, tx.GetHash());
     LOCK(cs_vNodes);
