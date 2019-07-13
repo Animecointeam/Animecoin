@@ -87,7 +87,6 @@ CNode* FindNode(const CNetAddr& ip);
 CNode* FindNode(const CSubNet& subNet);
 CNode* FindNode(const std::string& addrName);
 CNode* FindNode(const CService& ip);
-CNode* ConnectNode(CAddress addrConnect, const char *pszDest = nullptr);
 bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound = nullptr, const char *strDest = nullptr, bool fOneShot = false);
 void MapPort(bool fUseUPnP);
 unsigned short GetListenPort();
@@ -161,19 +160,8 @@ extern uint64_t nLocalServices;
 extern uint64_t nLocalHostNonce;
 extern CAddrMan addrman;
 
-// The allocation of connections against the maximum allowed (nMaxConnections)
-// is prioritized as follows:
-// 1st: Outbound connections (MAX_OUTBOUND_CONNECTIONS)
-// 2nd: Inbound connections from whitelisted peers (nWhiteConnections)
-// 3rd: Inbound connections from non-whitelisted peers
-// Thus, the number of connection slots for the general public to use is:
-// nMaxConnections - (MAX_OUTBOUND_CONNECTIONS + nWhiteConnections)
-// Any additional inbound connections beyond limits will be immediately closed
-
 /** Maximum number of connections to simultaneously allow (aka connection slots) */
 extern int nMaxConnections;
-/** Number of connection slots to reserve for inbound from whitelisted peers */
-extern int nWhiteConnections;
 
 extern std::vector<CNode*> vNodes;
 extern CCriticalSection cs_vNodes;
@@ -435,6 +423,8 @@ public:
     int64_t nPingUsecStart;
     // Last measured round-trip time.
     int64_t nPingUsecTime;
+    // Best measured round-trip time.
+    int64_t nMinPingUsecTime;
     // Whether a ping is requested.
     bool fPingQueued;
     // Minimum fee rate with which to filter inv's to this node
@@ -821,8 +811,6 @@ public:
     bool Write(const banmap_t& banSet);
     bool Read(banmap_t& banSet);
 };
-
-void DumpBanlist();
 
 /** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
 int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);
