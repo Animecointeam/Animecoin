@@ -49,4 +49,7 @@ static inline uint32_t insecure_rand(void)
     return (insecure_rand_Rw << 16) + insecure_rand_Rz;
 }
 
+/** Initialize the RNG. */
+void RandomInit();
+
 #endif // BITCOIN_RANDOM_H

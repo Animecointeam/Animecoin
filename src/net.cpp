@@ -13,6 +13,7 @@
 #include "chainparams.h"
 #include "clientversion.h"
 #include "consensus/consensus.h"
+#include "crypto/common.h"
 #include "crypto/sha256.h"
 #include "primitives/transaction.h"
 #include "scheduler.h"
@@ -2445,7 +2446,7 @@ void CNode::EndMessage(const char* pszCommand) UNLOCK_FUNCTION(cs_vSend)
     }
     // Set the size
     unsigned int nSize = ssSend.size() - CMessageHeader::HEADER_SIZE;
-    memcpy((char*)&ssSend[CMessageHeader::MESSAGE_SIZE_OFFSET], &nSize, sizeof(nSize));
+    WriteLE32((uint8_t*)&ssSend[CMessageHeader::MESSAGE_SIZE_OFFSET], nSize);
 
     //log total amount of bytes per command
     mapSendBytesPerMsgCmd[std::string(pszCommand)] += nSize + CMessageHeader::HEADER_SIZE;

@@ -431,7 +431,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/rpc/protocol.h \
     src/rpc/server.h \
     src/crypto/ctaes/ctaes.h \
-    src/support/lockedpool.h
+    src/support/lockedpool.h \
+    src/compat/byteswap.h \
+    src/compat/endian.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
