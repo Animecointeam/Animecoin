@@ -224,6 +224,32 @@ extern const char *SENDHEADERS;
  * @since protocol version 70013 as described by BIP133 (70005 for Animecoin).
  */
 extern const char *FEEFILTER;
+/**
+ * Contains a 1-byte bool and 8-byte LE version number.
+ * Indicates that a node is willing to provide blocks via "cmpctblock" messages.
+ * May indicate that a node prefers to receive new block announcements via a
+ * "cmpctblock" message rather than an "inv", depending on message contents.
+ * @since protocol version 70014 as described by BIP 152 (70005 for Animecoin).
+ */
+extern const char *SENDCMPCT;
+/**
+ * Contains a CBlockHeaderAndShortTxIDs object - providing a header and
+ * list of "short txids".
+ * @since protocol version 70014 as described by BIP 152 (70005 for Animecoin).
+ */
+extern const char *CMPCTBLOCK;
+/**
+ * Contains a BlockTransactionsRequest
+ * Peer should respond with "blocktxn" message.
+ * @since protocol version 70014 as described by BIP 152 (70005 for Animecoin).
+ */
+extern const char *GETBLOCKTXN;
+/**
+ * Contains a BlockTransactions.
+ * Sent in response to a "getblocktxn" message.
+ * @since protocol version 70014 as described by BIP 152 (70005 for Animecoin).
+ */
+extern const char *BLOCKTXN;
 }
 
 /* Get a vector of all valid message types (see above) */
@@ -299,7 +325,7 @@ public:
     CInv(int typeIn, const uint256& hashIn);
     CInv(const std::string& strType, const uint256& hashIn);
 
-    ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
@@ -323,9 +349,10 @@ public:
 enum {
     MSG_TX = 1,
     MSG_BLOCK,
-    // Nodes may always request a MSG_FILTERED_BLOCK in a getdata, however,
-    // MSG_FILTERED_BLOCK should not appear in any invs except as a part of getdata.
+    // Nodes may always request a MSG_FILTERED_BLOCK/MSG_CMPCT_BLOCK in a getdata, however,
+    // MSG_FILTERED_BLOCK/MSG_CMPCT_BLOCK should not appear in any invs except as a part of getdata.
     MSG_FILTERED_BLOCK,
+    MSG_CMPCT_BLOCK,
 };
 
 #endif // BITCOIN_PROTOCOL_H

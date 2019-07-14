@@ -71,6 +71,7 @@ BITCOIN_CORE_H = \
   arith_uint256.h \
   base58.h \
   bloom.h \
+  blockencodings.h \
   chain.h \
   chainparams.h \
   chainparamsbase.h \
@@ -169,6 +170,7 @@ libanimecoin_server_a_SOURCES = \
   addrman.cpp \
   alert.cpp \
   bloom.cpp \
+  blockencodings.cpp \
   chain.cpp \
   checkpoints.cpp \
   httprpc.cpp \

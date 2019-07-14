@@ -351,6 +351,16 @@ CNode* FindNode(const CService& addr)
     return nullptr;
 }
 
+//TODO: This is used in only one place in main, and should be removed
+CNode* FindNode(const NodeId nodeid)
+{
+    LOCK(cs_vNodes);
+    for (CNode* pnode : vNodes)
+        if (pnode->GetId() == nodeid)
+            return (pnode);
+    return nullptr;
+}
+
 CNode* ConnectNode(CAddress addrConnect, const char *pszDest)
 {
     if (pszDest == nullptr) {
