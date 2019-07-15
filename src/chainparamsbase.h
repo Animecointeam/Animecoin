@@ -10,7 +10,7 @@
 
 /**
  * CBaseChainParams defines the base parameters (shared between bitcoin-cli and bitcoind)
- * of a given instance of the Quark system.
+ * of a given instance of the Animecoin system.
  */
 class CBaseChainParams
 {
