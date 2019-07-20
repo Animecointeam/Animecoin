@@ -164,7 +164,7 @@ UniValue generate(const JSONRPCRequest& request)
             ++pblock->nNonce;
         }
         CValidationState state;
-        if (!ProcessNewBlock(state, Params(), nullptr, pblock, true, nullptr))
+        if (!ProcessNewBlock(state, Params(), nullptr, pblock, true, nullptr, g_connman.get()))
             throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
         ++nHeight;
         blockHashes.push_back(pblock->GetHash().GetHex());
@@ -448,7 +448,10 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     if (strMode != "template")
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid mode");
 
-    if (vNodes.empty())
+    if(!g_connman)
+        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+
+    if (g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0)
         throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Animecoin is not connected!");
 
     if (IsInitialBlockDownload())
@@ -667,7 +670,7 @@ UniValue submitblock(const JSONRPCRequest& request)
     CValidationState state;
     submitblock_StateCatcher sc(block.GetHash());
     RegisterValidationInterface(&sc);
-    bool fAccepted = ProcessNewBlock(state, Params(), nullptr, &block, true, nullptr);
+    bool fAccepted = ProcessNewBlock(state, Params(), nullptr, &block, true, nullptr, g_connman.get());
     UnregisterValidationInterface(&sc);
     if (fBlockPresent)
     {

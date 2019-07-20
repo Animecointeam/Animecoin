@@ -434,7 +434,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/support/lockedpool.h \
     src/compat/byteswap.h \
     src/compat/endian.h \
-    src/blockencodings.h
+    src/blockencodings.h \
+    src/addrdb.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
@@ -581,7 +582,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/rpc/rawtransaction.cpp \
     src/rpc/server.cpp \
     src/support/lockedpool.cpp \
-    src/blockencodings.cpp
+    src/blockencodings.cpp \
+    src/addrdb.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

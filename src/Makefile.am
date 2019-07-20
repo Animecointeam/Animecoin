@@ -66,6 +66,7 @@ endif
 .PHONY: FORCE
 # animecoin core #
 BITCOIN_CORE_H = \
+  addrdb.h \
   addrman.h \
   alert.h \
   arith_uint256.h \
@@ -167,6 +168,7 @@ libanimecoin_util_a-clientversion.$(OBJEXT): obj/build.h
 libanimecoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libanimecoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_server_a_SOURCES = \
+  addrdb.cpp \
   addrman.cpp \
   alert.cpp \
   bloom.cpp \

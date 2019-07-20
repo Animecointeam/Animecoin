@@ -333,7 +333,7 @@ static bool ProcessBlockFound(CBlock* pblock, const CChainParams& chainparams)
 
     // Process this block the same as if we had received it from another node
     CValidationState state;
-    if (!ProcessNewBlock(state, chainparams, nullptr, pblock, true, nullptr))
+    if (!ProcessNewBlock(state, chainparams, nullptr, pblock, true, nullptr, g_connman.get()))
         return error("AniMiner : ProcessNewBlock, block not accepted");
 
     return true;
@@ -364,8 +364,10 @@ void static BitcoinMiner(const CChainParams& chainparams)
                 do {
                     bool fvNodesEmpty;
                     {
-                        LOCK(cs_vNodes);
-                        fvNodesEmpty = vNodes.empty();
+                        if(!g_connman)
+                            fvNodesEmpty = true;
+                        else
+                            fvNodesEmpty = (g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0);
                     }
                     if (!fvNodesEmpty && !IsInitialBlockDownload())
                         break;
@@ -484,8 +486,10 @@ void static BitcoinMiner(const CChainParams& chainparams)
                 // Regtest mode doesn't require peers
                 bool nodeemp;
                 {
-                    LOCK(cs_vNodes);
-                    nodeemp = vNodes.empty();
+                    if(!g_connman)
+                        nodeemp = true;
+                    else
+                        nodeemp = (g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0);
                 }
                 if (nodeemp && chainparams.MiningRequiresPeers())
                     break;
