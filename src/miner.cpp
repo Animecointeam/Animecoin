@@ -333,7 +333,7 @@ static bool ProcessBlockFound(CBlock* pblock, const CChainParams& chainparams)
 
     // Process this block the same as if we had received it from another node
     CValidationState state;
-    if (!ProcessNewBlock(state, chainparams, nullptr, pblock, true, nullptr, g_connman.get()))
+    if (!ProcessNewBlock(state, chainparams, nullptr, pblock, true, nullptr))
         return error("AniMiner : ProcessNewBlock, block not accepted");
 
     return true;

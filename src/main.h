@@ -25,6 +25,7 @@
 #include "txmempool.h"
 #include "uint256.h"
 #include "undo.h"
+#include "validationinterface.h"
 
 #include <algorithm>
 #include <exception>
@@ -46,7 +47,6 @@ class CValidationInterface;
 class CValidationState;
 
 struct CBlockTemplate;
-struct CNodeStateStats;
 
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = true;
@@ -203,11 +203,6 @@ static const signed int MIN_BLOCKS_TO_KEEP = 5760;
 // For the roundness purposes, let's make it 200MB total.
 static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 200 * 1024 * 1024;
 
-/** Register with a network node to receive its signals */
-void RegisterNodeSignals(CNodeSignals& nodeSignals);
-/** Unregister a network node */
-void UnregisterNodeSignals(CNodeSignals& nodeSignals);
-
 /**
  * Process an incoming block. This only returns after the best known valid
  * block is made active. Note that it does not, however, guarantee that the
@@ -220,7 +215,7 @@ void UnregisterNodeSignals(CNodeSignals& nodeSignals);
  * @param[out]  dbp     The already known disk position of pblock, or NULL if not yet stored.
  * @return True if state.IsValid()
  */
-bool ProcessNewBlock(CValidationState& state, const CChainParams& chainparams, CNode* pfrom, const CBlock* pblock, bool fForceProcessing, const CDiskBlockPos* dbp, CConnman* connman);
+bool ProcessNewBlock(CValidationState& state, const CChainParams& chainparams, CNode* pfrom, const CBlock* pblock, bool fForceProcessing, const CDiskBlockPos* dbp);
 /** Check whether enough disk space is available for an incoming block */
 bool CheckDiskSpace(uint64_t nAdditionalBytes = 0);
 /** Open a block file (blk?????.dat) */
@@ -237,15 +232,6 @@ bool InitBlockIndex(const CChainParams& chainparams);
 bool LoadBlockIndex();
 /** Unload database information */
 void UnloadBlockIndex();
-/** Process protocol messages received from a given node */
-bool ProcessMessages(CNode* pfrom, CConnman& connman);
-/**
- * Send queued protocol messages to be sent to a give node.
- *
- * @param[in]   pto             The node which we are sending messages to.
- * @param[in]   connman         The connection manager for that node.
- */
-bool SendMessages(CNode* pto, CConnman& connman);
 /** Run an instance of the script checking thread */
 void ThreadScriptCheck();
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
@@ -255,7 +241,7 @@ std::string GetWarnings(const std::string &strFor);
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
 bool GetTransaction(const uint256 &hash, CTransaction &tx, const Consensus::Params& params, uint256 &hashBlock, bool fAllowSlow = false);
 /** Find the best known block, and make it the tip of the block chain */
-bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, const CBlock* pblock = nullptr, CConnman* connman = nullptr);
+bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, const CBlock* pblock = nullptr);
 CAmount GetBlockValue(int nHeight, const CAmount& nFees);
 
 /**
@@ -282,10 +268,6 @@ void UnlinkPrunedFiles(std::set<int>& setFilesToPrune);
 
 /** Create a new block index entry for a given block hash */
 CBlockIndex * InsertBlockIndex(uint256 hash);
-/** Get statistics from node state */
-bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
-/** Increase a node's misbehavior score. */
-void Misbehaving(NodeId nodeid, int howmuch);
 /** Flush all state, indexes and buffers to disk. */
 void FlushStateToDisk();
 /** Prune block files and flush state to disk. */
@@ -297,13 +279,6 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
 
 /** Convert CValidationState to a human-readable message for logging */
 std::string FormatStateMessage(const CValidationState &state);
-
-struct CNodeStateStats {
-    int nMisbehavior;
-    int nSyncHeight;
-    int nCommonHeight;
-    std::vector<int> vHeightInFlight;
-};
 
 /**
  * Count ECDSA signature operations the old-fashioned (pre-0.6) way
@@ -482,5 +457,46 @@ static const unsigned int REJECT_HIGHFEE = 0x100;
 static const unsigned int REJECT_ALREADY_KNOWN = 0x101;
 /** Transaction conflicts with a transaction already known */
 static const unsigned int REJECT_CONFLICT = 0x102;
+
+// The following things handle network-processing logic
+// (and should be moved to a separate file)
+
+/** Register with a network node to receive its signals */
+void RegisterNodeSignals(CNodeSignals& nodeSignals);
+/** Unregister a network node */
+void UnregisterNodeSignals(CNodeSignals& nodeSignals);
+
+class PeerLogicValidation : public CValidationInterface {
+private:
+    CConnman* connman;
+
+public:
+    PeerLogicValidation(CConnman* connmanIn) : connman(connmanIn) {}
+
+    virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload);
+    virtual void BlockChecked(const CBlock& block, const CValidationState& state);
+};
+
+struct CNodeStateStats {
+    int nMisbehavior;
+    int nSyncHeight;
+    int nCommonHeight;
+    std::vector<int> vHeightInFlight;
+};
+
+/** Get statistics from node state */
+bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
+/** Increase a node's misbehavior score. */
+void Misbehaving(NodeId nodeid, int howmuch);
+
+/** Process protocol messages received from a given node */
+bool ProcessMessages(CNode* pfrom, CConnman& connman);
+/**
+ * Send queued protocol messages to be sent to a give node.
+ *
+ * @param[in]   pto             The node which we are sending messages to.
+ * @param[in]   connman         The connection manager for that node.
+ */
+bool SendMessages(CNode* pto, CConnman& connman);
 
 #endif // BITCOIN_MAIN_H

@@ -71,6 +71,7 @@ static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
 static const char * const DEFAULT_WALLET_DAT = "wallet.dat";
 
 std::unique_ptr<CConnman> g_connman;
+std::unique_ptr<PeerLogicValidation> peerLogic;
 
 #if ENABLE_ZMQ
 static CZMQNotificationInterface* pzmqNotificationInterface = nullptr;
@@ -196,6 +197,8 @@ void Shutdown()
 #endif
     GenerateBitcoins(false, 0, Params());
     MapPort(false);
+    UnregisterValidationInterface(peerLogic.get());
+    peerLogic.reset();
     g_connman->Stop();
     g_connman.reset();
 
@@ -1138,6 +1141,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     g_connman = std::unique_ptr<CConnman>(new CConnman());
     CConnman& connman = *g_connman;
 
+    peerLogic.reset(new PeerLogicValidation(&connman));
+    RegisterValidationInterface(peerLogic.get());
     RegisterNodeSignals(GetNodeSignals());
 
     // sanitize comments per BIP-0014, format user agent and check total size
