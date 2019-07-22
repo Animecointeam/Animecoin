@@ -590,6 +590,10 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     UniValue result(UniValue::VOBJ);
     result.push_back(Pair("capabilities", aCaps));
     result.push_back(Pair("version", pblock->nVersion));
+
+    // Extra GBT compatibility for miners post getwork removal.
+    aMutable.push_back("version/force");
+
     result.push_back(Pair("previousblockhash", pblock->hashPrevBlock.GetHex()));
     result.push_back(Pair("transactions", transactions));
     result.push_back(Pair("coinbaseaux", aux));
