@@ -65,6 +65,7 @@ const static std::string NET_MESSAGE_COMMAND_OTHER = "*other*";
 //
 bool fDiscover = true;
 bool fListen = true;
+bool fRelayTxes = true;
 CCriticalSection cs_mapLocalHost;
 std::map<CNetAddr, LocalServiceInfo> mapLocalHost;
 static bool vfReachable[NET_MAX] = {};
@@ -462,7 +463,7 @@ void CNode::PushVersion()
     else
         LogPrint("net", "send version message: version %d, blocks=%d, us=%s, peer=%d\n", PROTOCOL_VERSION, nMyStartingHeight, addrMe.ToString(), id);
     PushMessage(NetMsgType::VERSION, PROTOCOL_VERSION, (uint64_t)nLocalServices, nTime, addrYou, addrMe,
-                nLocalHostNonce, strSubVersion, nMyStartingHeight, !GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY));
+                nLocalHostNonce, strSubVersion, nMyStartingHeight, fRelayTxes);
 }
 
 

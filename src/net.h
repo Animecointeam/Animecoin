@@ -456,7 +456,7 @@ CAddress GetLocalAddress(const CNetAddr *paddrPeer, ServiceFlags nLocalServices)
 
 extern bool fDiscover;
 extern bool fListen;
-// extern bool fRelayTxes;
+extern bool fRelayTxes;
 
 extern limitedmap<CInv, int64_t> mapAlreadyAskedFor;
 
