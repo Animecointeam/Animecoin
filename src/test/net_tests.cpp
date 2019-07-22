@@ -52,12 +52,16 @@ public:
         int nUBuckets = ADDRMAN_NEW_BUCKET_COUNT ^ (1 << 30);
         s << nUBuckets;
 
+        /*
         CService serv;
         Lookup("252.1.1.1", serv, 7777, false);
         CAddress addr = CAddress(serv, NODE_NONE);
         CNetAddr resolved;
         LookupHost("252.2.2.2", resolved, false);
         CAddrInfo info = CAddrInfo(addr, resolved);
+        */
+        CAddress addr = CAddress(CService("252.1.1.1", 7777), NODE_NONE);
+        CAddrInfo info = CAddrInfo(addr, CNetAddr("252.2.2.2"));
         s << info;
     }
 };

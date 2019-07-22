@@ -2039,6 +2039,7 @@ bool CConnman::Start(boost::thread_group& threadGroup, CScheduler& scheduler, st
         if (adb.Read(addrman))
             LogPrintf("Loaded %i addresses from peers.dat  %dms\n", addrman.size(), GetTimeMillis() - nStart);
         else {
+            addrman.Clear(); // Addrman can be in an inconsistent state after failure, reset it
             LogPrintf("Invalid or missing peers.dat; recreating\n");
             DumpAddresses();
         }
