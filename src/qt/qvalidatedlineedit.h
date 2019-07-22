@@ -18,6 +18,7 @@ public:
     explicit QValidatedLineEdit(QWidget *parent);
     void clear();
     void setCheckValidator(const QValidator *v);
+    bool isValid();
 
 protected:
     void focusInEvent(QFocusEvent *evt);
@@ -30,6 +31,9 @@ private:
 public slots:
     void setValid(bool valid);
     void setEnabled(bool enabled);
+
+signals:
+    void validationDidChange(QValidatedLineEdit *validatedLineEdit);
 
 private slots:
     void markValid();

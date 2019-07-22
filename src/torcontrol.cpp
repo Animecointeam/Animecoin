@@ -1,6 +1,11 @@
+// Copyright (c) 2015 The Bitcoin Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "torcontrol.h"
 #include "utilstrencodings.h"
 #include "net.h"
+#include "netbase.h"
 #include "util.h"
 #include "init.h" // Just for ShutdownRequested
 #include "crypto/hmac_sha256.h"
@@ -429,7 +434,7 @@ void TorController::add_onion_cb(TorControlConnection& conn, const TorControlRep
                 private_key = i->second;
         }
 
-        service = CService(service_id+".onion", GetListenPort());
+        service = LookupNumeric(std::string(service_id+".onion").c_str(), GetListenPort());
         LogPrintf("tor: Got service ID %s, advertizing service %s\n", service_id, service.ToString());
         if (WriteBinaryFile(GetPrivateKeyFile(), private_key)) {
             LogPrint("tor", "tor: Cached service private key to %s\n", GetPrivateKeyFile());
@@ -449,6 +454,16 @@ void TorController::auth_cb(TorControlConnection& conn, const TorControlReply& r
 {
     if (reply.code == 250) {
         LogPrint("tor", "tor: Authentication succesful\n");
+
+        // Now that we know Tor is running setup the proxy for onion addresses
+        // if -onion isn't set to something else.
+        if (GetArg("-onion", "") == "") {
+            CService resolved(LookupNumeric("127.0.0.1", 9050));
+            proxyType addrOnion = proxyType(resolved, true);
+            SetProxy(NET_TOR, addrOnion);
+            SetReachable(NET_TOR);
+        }
+
         // Finally - now create the service
         if (private_key.empty()) // No private key, generate one
             private_key = "NEW:BEST";

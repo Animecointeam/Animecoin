@@ -9,7 +9,6 @@
 #include "rpc/server.h"
 #include "init.h"
 #include "net.h"
-#include "netbase.h"
 #include "timedata.h"
 #include "util.h"
 #include "utilmoneystr.h"

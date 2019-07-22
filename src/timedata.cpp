@@ -4,12 +4,11 @@
 
 #include "timedata.h"
 
-#include "netbase.h"
+#include "netaddress.h"
 #include "sync.h"
 #include "ui_interface.h"
 #include "util.h"
 #include "utilstrencodings.h"
-
 
 using namespace std;
 

@@ -13,7 +13,7 @@
 #include "compat.h"
 #include "hash.h"
 #include "limitedmap.h"
-#include "netbase.h"
+#include "netaddress.h"
 #include "protocol.h"
 #include "random.h"
 #include "streams.h"

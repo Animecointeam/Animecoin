@@ -109,8 +109,9 @@ BITCOIN_CORE_H = \
   memusage.h \
   merkleblock.h \
   miner.h \
-  netbase.h \
   net.h \
+  netaddress.h \
+  netbase.h \
   noui.h \
   policy/fees.h \
   policy/policy.h \
@@ -301,6 +302,7 @@ libanimecoin_common_a_SOURCES = \
   core_write.cpp \
   key.cpp \
   keystore.cpp \
+  netaddress.cpp \
   netbase.cpp \
   pow.cpp \
   primitives/block.cpp \
