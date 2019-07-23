@@ -102,7 +102,7 @@ struct CDiskBlockPos
     bool IsNull() const { return (nFile == -1); }
 };
 
-enum BlockStatus {
+enum BlockStatus: uint32_t {
     //! Unused.
     BLOCK_VALID_UNKNOWN      =    0,
 

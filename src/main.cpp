@@ -444,9 +444,13 @@ void UpdateBlockAvailability(NodeId nodeid, const uint256 &hash) {
 
 void MaybeSetPeerAsAnnouncingHeaderAndIDs(const CNodeState* nodestate, CNode* pfrom, CConnman& connman) {
     if (nodestate->fProvidesHeaderAndIDs) {
-        for (const NodeId nodeid : lNodesAnnouncingHeaderAndIDs)
-            if (nodeid == pfrom->GetId())
+        for (std::list<NodeId>::iterator it = lNodesAnnouncingHeaderAndIDs.begin(); it != lNodesAnnouncingHeaderAndIDs.end(); it++) {
+            if (*it == pfrom->GetId()) {
+                lNodesAnnouncingHeaderAndIDs.erase(it);
+                lNodesAnnouncingHeaderAndIDs.push_back(pfrom->GetId());
                 return;
+            }
+        }
         bool fAnnounceUsingCMPCTBLOCK = false;
         uint64_t nCMPCTBLOCKVersion = 1;
         if (lNodesAnnouncingHeaderAndIDs.size() >= 3) {
@@ -4255,7 +4259,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                         // they wont have a useful mempool to match against a compact block,
                         // and we dont feel like constructing the object for them, so
                         // instead we respond with the full, non-compact block.
-                        if (mi->second->nHeight >= chainActive.Height() - 10) {
+                        if (CanDirectFetch(consensusParams) && mi->second->nHeight >= chainActive.Height() - MAX_CMPCTBLOCK_DEPTH) {
                             CBlockHeaderAndShortTxIDs cmpctblock(block);
                             pfrom->PushMessage(NetMsgType::CMPCTBLOCK, cmpctblock);
                         } else
@@ -4749,8 +4753,8 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             return true;
         }
 
-        if (it->second->nHeight < chainActive.Height() - 15) {
-            LogPrint("net", "Peer %d sent us a getblocktxn for a block > 15 deep", pfrom->id);
+        if (it->second->nHeight < chainActive.Height() - MAX_BLOCKTXN_DEPTH) {
+            LogPrint("net", "Peer %d sent us a getblocktxn for a block > %i deep", pfrom->id, MAX_BLOCKTXN_DEPTH);
             return true;
         }
 
@@ -5040,6 +5044,12 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                     return true;
                 }
 
+                if (!fAlreadyInFlight && mapBlocksInFlight.size() == 1 && pindex->pprev->IsValid(BLOCK_VALID_CHAIN)) {
+                    // We seem to be rather well-synced, so it appears pfrom was the first to provide us
+                    // with this block! Let's get them to announce using compact blocks in the future.
+                    MaybeSetPeerAsAnnouncingHeaderAndIDs(nodestate, pfrom, connman);
+                }
+
                 BlockTransactionsRequest req;
                 for (size_t i = 0; i < cmpctblock.BlockTxCount(); i++) {
                     if (!partialBlock.IsTxAvailable(i))
@@ -5084,29 +5094,35 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         BlockTransactions resp;
         vRecv >> resp;
 
-        LOCK(cs_main);
-
-        map<uint256, pair<NodeId, list<QueuedBlock>::iterator> >::iterator it = mapBlocksInFlight.find(resp.blockhash);
-        if (it == mapBlocksInFlight.end() || !it->second.second->partialBlock ||
-                it->second.first != pfrom->GetId()) {
-            LogPrint("net", "Peer %d sent us block transactions for block we weren't expecting\n", pfrom->id);
-            return true;
-        }
-
-        PartiallyDownloadedBlock& partialBlock = *it->second.second->partialBlock;
         CBlock block;
-        ReadStatus status = partialBlock.FillBlock(block, resp.txn);
-        if (status == READ_STATUS_INVALID) {
-            MarkBlockAsReceived(resp.blockhash); // Reset in-flight state in case of whitelist
-            Misbehaving(pfrom->GetId(), 100);
-            LogPrintf("Peer %d sent us invalid compact block/non-matching block transactions\n", pfrom->id);
-            return true;
-        } else if (status == READ_STATUS_FAILED) {
-            // Might have collided, fall back to getdata now :(
-            std::vector<CInv> invs;
-            invs.push_back(CInv(MSG_BLOCK, resp.blockhash));
-            pfrom->PushMessage(NetMsgType::GETDATA, invs);
-        } else {
+        bool fBlockRead = false;
+        {
+            LOCK(cs_main);
+
+            map<uint256, pair<NodeId, list<QueuedBlock>::iterator> >::iterator it = mapBlocksInFlight.find(resp.blockhash);
+            if (it == mapBlocksInFlight.end() || !it->second.second->partialBlock ||
+                    it->second.first != pfrom->GetId()) {
+                LogPrint("net", "Peer %d sent us block transactions for block we weren't expecting\n", pfrom->id);
+                return true;
+            }
+
+            PartiallyDownloadedBlock& partialBlock = *it->second.second->partialBlock;
+            ReadStatus status = partialBlock.FillBlock(block, resp.txn);
+            if (status == READ_STATUS_INVALID) {
+                MarkBlockAsReceived(resp.blockhash); // Reset in-flight state in case of whitelist
+                Misbehaving(pfrom->GetId(), 100);
+                LogPrintf("Peer %d sent us invalid compact block/non-matching block transactions\n", pfrom->id);
+                return true;
+            } else if (status == READ_STATUS_FAILED) {
+                // Might have collided, fall back to getdata now :(
+                std::vector<CInv> invs;
+                invs.push_back(CInv(MSG_BLOCK, resp.blockhash));
+                // invs.push_back(CInv(MSG_BLOCK | GetFetchFlags(pfrom, chainActive.Tip(), chainparams.GetConsensus()), resp.blockhash));
+                pfrom->PushMessage(NetMsgType::GETDATA, invs);
+            } else
+                fBlockRead = true;
+        } // Don't hold cs_main when we call into ProcessNewBlock
+        if (fBlockRead) {
             CValidationState state;
             ProcessNewBlock(state, chainparams, pfrom, &block, false, nullptr);
             int nDoS;
