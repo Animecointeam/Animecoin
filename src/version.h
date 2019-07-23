@@ -46,4 +46,7 @@ static const int FEEFILTER_VERSION = 70005;
 //! shord-id-based block download starts with this version
 static const int SHORT_IDS_BLOCKS_VERSION = 70005;
 
+//! not banning for invalid compact blocks starts with this version
+static const int INVALID_CB_NO_BAN_VERSION = 70005;
+
 #endif // BITCOIN_VERSION_H
