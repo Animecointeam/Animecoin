@@ -79,7 +79,14 @@ public:
 		Init(nTypeIn, nVersionIn);
 	}
 
-	void Init(int nTypeIn, int nVersionIn)
+    template <typename... Args>
+    CDataStream(int nTypeIn, int nVersionIn, Args&&... args)
+    {
+        Init(nTypeIn, nVersionIn);
+        ::SerializeMany(*this, nType, nVersion, std::forward<Args>(args)...);
+    }
+
+    void Init(int nTypeIn, int nVersionIn)
 	{
 		nReadPos = 0;
 		nType = nTypeIn;

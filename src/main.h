@@ -147,6 +147,9 @@ static const bool DEFAULT_FEEFILTER = true;
 /** Maximum number of headers to announce when relaying blocks with headers message.*/
 static const unsigned int MAX_BLOCKS_TO_ANNOUNCE = 160; // Experimental
 
+/** Maximum number of unconnecting headers announcements before DoS score */
+static const int MAX_UNCONNECTING_HEADERS = 10;
+
 static const bool DEFAULT_PEERBLOOMFILTERS = true;
 static const bool DEFAULT_ENFORCENODEBLOOM = false;
 

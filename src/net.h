@@ -124,7 +124,7 @@ public:
         unsigned int nSendBufferMaxSize = 0;
         unsigned int nReceiveFloodSize = 0;
     };
-    CConnman();
+    CConnman(uint64_t seed0, uint64_t seed1);
     ~CConnman();
     bool Start(boost::thread_group& threadGroup, CScheduler& scheduler, std::string& strNodeError, Options options);
     void Stop();
@@ -133,6 +133,33 @@ public:
     bool CheckIncomingNonce(uint64_t nonce);
 
     bool ForNode(NodeId id, std::function<bool(CNode* pnode)> func);
+
+    template <typename... Args>
+    void PushMessageWithVersionAndFlag(CNode* pnode, int nVersion, int flag, const std::string& sCommand, Args&&... args)
+    {
+        auto msg(BeginMessage(pnode, nVersion, flag, sCommand));
+        ::SerializeMany(msg, msg.nType, msg.nVersion, std::forward<Args>(args)...);
+        EndMessage(msg);
+        PushMessage(pnode, msg, sCommand);
+    }
+
+    template <typename... Args>
+    void PushMessageWithFlag(CNode* pnode, int flag, const std::string& sCommand, Args&&... args)
+    {
+        PushMessageWithVersionAndFlag(pnode, 0, flag, sCommand, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    void PushMessageWithVersion(CNode* pnode, int nVersion, const std::string& sCommand, Args&&... args)
+    {
+        PushMessageWithVersionAndFlag(pnode, nVersion, 0, sCommand, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    void PushMessage(CNode* pnode, const std::string& sCommand, Args&&... args)
+    {
+        PushMessageWithVersionAndFlag(pnode, 0, 0, sCommand, std::forward<Args>(args)...);
+    }
 
     template<typename Callable>
     bool ForEachNodeContinueIf(Callable&& func)
@@ -297,6 +324,8 @@ public:
     void SetBestHeight(int height);
     int GetBestHeight() const;
 
+    /** Get a unique deterministic randomizer. */
+    CSipHasher GetDeterministicRandomizer(uint64_t id);
 
 private:
     struct ListenSocket {
@@ -313,6 +342,8 @@ private:
     void AcceptConnection(const ListenSocket& hListenSocket);
     void ThreadSocketHandler();
     void ThreadDNSAddressSeed();
+
+    uint64_t CalculateKeyedNetGroup(const CAddress& ad);
 
     CNode* FindNode(const CNetAddr& ip);
     CNode* FindNode(const CSubNet& subNet);
@@ -338,6 +369,10 @@ private:
     void DumpBanlist();
 
     unsigned int GetReceiveFloodSize() const;
+
+    CDataStream BeginMessage(CNode* node, int nVersion, int flags, const std::string& sCommand);
+    void PushMessage(CNode* pnode, CDataStream& strm, const std::string& sCommand);
+    void EndMessage(CDataStream& strm);
 
     // Network stats
     void RecordBytesRecv(uint64_t bytes);
@@ -391,7 +426,11 @@ private:
     int nMaxFeeler;
     std::atomic<int> nBestHeight;
     CClientUIInterface* clientInterface;
+
+    /** SipHasher seeds for deterministic randomness */
+    const uint64_t nSeed0, nSeed1;
 };
+
 extern std::unique_ptr<CConnman> g_connman;
 void Discover(boost::thread_group& threadGroup);
 void MapPort(bool fUseUPnP);
@@ -419,7 +458,7 @@ struct CNodeSignals
 {
     boost::signals2::signal<bool (CNode*, CConnman&), CombinerAll> ProcessMessages;
     boost::signals2::signal<bool (CNode*, CConnman&), CombinerAll> SendMessages;
-    boost::signals2::signal<void (NodeId, const CNode*)> InitializeNode;
+    boost::signals2::signal<void (CNode*, CConnman&)> InitializeNode;
     boost::signals2::signal<void (NodeId, bool&)> FinalizeNode;
 };
 
@@ -541,15 +580,14 @@ public:
 /** Information about a peer */
 class CNode
 {
+    friend class CConnman;
 public:
     // socket
     ServiceFlags nServices;
     ServiceFlags nServicesExpected;
     SOCKET hSocket;
-    CDataStream ssSend;
     size_t nSendSize; // total size of all vSendMsg entries
     size_t nSendOffset; // offset inside the first vSendMsg already sent
-    uint64_t nOptimisticBytesWritten;
     uint64_t nSendBytes;
     std::deque<CSerializeData> vSendMsg;
     CCriticalSection cs_vSend;
@@ -577,7 +615,7 @@ public:
     bool fWhitelisted; // This peer can bypass DoS banning.
     bool fOneShot;
     bool fClient;
-    bool fInbound;
+    const bool fInbound;
     bool fNetworkNode;
     bool fSuccessfullyConnected;
     bool fDisconnect;
@@ -591,16 +629,13 @@ public:
     CCriticalSection cs_filter;
     CBloomFilter* pfilter;
     int nRefCount;
-    NodeId id;
+    const NodeId id;
 
     const uint64_t nKeyedNetGroup;
 protected:
 
     mapMsgCmdSize mapSendBytesPerMsgCmd;
     mapMsgCmdSize mapRecvBytesPerMsgCmd;
-
-    // Basic fuzz-testing
-    void Fuzz(int nChance); // modifies ssSend
 
 public:
     uint256 hashContinue;
@@ -658,18 +693,17 @@ public:
     CAmount lastSentFeeFilter;
     int64_t nextSendTimeFeeFilter;
 
-    CNode(NodeId id, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn, SOCKET hSocketIn, const CAddress &addrIn, const std::string &addrNameIn = "", bool fInboundIn = false);
+    CNode(NodeId id, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn, SOCKET hSocketIn, const CAddress &addrIn, uint64_t nKeyedNetGroupIn, uint64_t nLocalHostNonceIn, const std::string &addrNameIn = "", bool fInboundIn = false);
     ~CNode();
 
 private:
     CNode(const CNode&);
     void operator=(const CNode&);
 
-    static uint64_t CalculateKeyedNetGroup(const CAddress& ad);
-
-    uint64_t nLocalHostNonce;
-    ServiceFlags nLocalServices;
-    int nMyStartingHeight;
+    const uint64_t nLocalHostNonce;
+    const ServiceFlags nLocalServices;
+    const int nMyStartingHeight;
+    int nSendVersion;
 
 public:
 
@@ -679,6 +713,10 @@ public:
 
     uint64_t GetLocalNonce() const {
       return nLocalHostNonce;
+    }
+
+    int GetMyStartingHeight() const {
+      return nMyStartingHeight;
     }
 
     int GetRefCount()
@@ -705,6 +743,26 @@ public:
         nRecvVersion = nVersionIn;
         for (CNetMessage &msg : vRecvMsg)
             msg.SetVersion(nVersionIn);
+    }
+
+    void SetSendVersion(int nVersionIn)
+    {
+        // Send version may only be changed in the version message, and
+        // only one version message is allowed per session. We can therefore
+        // treat this value as const and even atomic as long as it's only used
+        // once the handshake is complete. Any attempt to set this twice is an
+        // error.
+        assert(nSendVersion == 0);
+        nSendVersion = nVersionIn;
+    }
+
+    int GetSendVersion() const
+    {
+        // The send version should always be explicitly set to
+        // INIT_PROTO_VERSION rather than using this value until the handshake
+        // is complete. See PushMessageWithVersion().
+        assert(nSendVersion != 0);
+        return nSendVersion;
     }
 
     CNode* AddRef()
@@ -767,176 +825,6 @@ public:
     }
 
     void AskFor(const CInv& inv);
-
-    // TODO: Document the postcondition of this function.  Is cs_vSend locked?
-    void BeginMessage(const char* pszCommand) EXCLUSIVE_LOCK_FUNCTION(cs_vSend);
-
-    // TODO: Document the precondition of this function.  Is cs_vSend locked?
-    void AbortMessage() UNLOCK_FUNCTION(cs_vSend);
-
-    // TODO: Document the precondition of this function.  Is cs_vSend locked?
-    void EndMessage(const char* pszCommand) UNLOCK_FUNCTION(cs_vSend);
-
-    void PushVersion();
-
-
-    void PushMessage(const char* pszCommand)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1>
-    void PushMessage(const char* pszCommand, const T1& a1)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3, typename T4>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3, const T4& a4)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3 << a4;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3, typename T4, typename T5>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3, const T4& a4, const T5& a5)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3 << a4 << a5;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3, const T4& a4, const T5& a5, const T6& a6)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3 << a4 << a5 << a6;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3, const T4& a4, const T5& a5, const T6& a6, const T7& a7)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3 << a4 << a5 << a6 << a7;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3, const T4& a4, const T5& a5, const T6& a6, const T7& a7, const T8& a8)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3 << a4 << a5 << a6 << a7 << a8;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
-
-    template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
-    void PushMessage(const char* pszCommand, const T1& a1, const T2& a2, const T3& a3, const T4& a4, const T5& a5, const T6& a6, const T7& a7, const T8& a8, const T9& a9)
-    {
-        try
-        {
-            BeginMessage(pszCommand);
-            ssSend << a1 << a2 << a3 << a4 << a5 << a6 << a7 << a8 << a9;
-            EndMessage(pszCommand);
-        }
-        catch (...)
-        {
-            AbortMessage();
-            throw;
-        }
-    }
 
     bool IsSubscribed(unsigned int nChannel);
     void Subscribe(unsigned int nChannel, unsigned int nHops=0);
