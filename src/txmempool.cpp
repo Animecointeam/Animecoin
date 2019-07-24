@@ -813,6 +813,10 @@ void CTxMemPool::queryHashes(vector<uint256>& vtxid)
     }
 }
 
+static TxMempoolInfo GetInfo(CTxMemPool::indexed_transaction_set::const_iterator it) {
+    return TxMempoolInfo{it->GetSharedTx(), it->GetTime(), CFeeRate(it->GetFee(), it->GetTxSize()), it->GetModifiedFee() - it->GetFee()};
+}
+
 std::vector<TxMempoolInfo> CTxMemPool::infoAll() const
 {
     LOCK(cs);
@@ -821,7 +825,7 @@ std::vector<TxMempoolInfo> CTxMemPool::infoAll() const
     std::vector<TxMempoolInfo> ret;
     ret.reserve(mapTx.size());
     for (auto it : iters) {
-        ret.push_back(TxMempoolInfo{it->GetSharedTx(), it->GetTime(), CFeeRate(it->GetFee(), it->GetTxSize())});
+        ret.push_back(GetInfo(it));
     }
 
     return ret;
@@ -842,7 +846,7 @@ TxMempoolInfo CTxMemPool::info(const uint256& hash) const
     indexed_transaction_set::const_iterator i = mapTx.find(hash);
     if (i == mapTx.end())
         return TxMempoolInfo();
-    return TxMempoolInfo{i->GetSharedTx(), i->GetTime(), CFeeRate(i->GetFee(), i->GetTxSize())};
+    return GetInfo(i);
 }
 
 CFeeRate CTxMemPool::estimateFee(int nBlocks) const

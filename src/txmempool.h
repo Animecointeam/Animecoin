@@ -294,6 +294,9 @@ struct TxMempoolInfo
 
     /** Feerate of the transaction. */
     CFeeRate feeRate;
+
+    /** The fee delta. */
+    int64_t nFeeDelta;
 };
 
 /** An inpoint - a combination of a transaction and an index n into its vin */
