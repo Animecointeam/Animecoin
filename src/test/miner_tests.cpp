@@ -203,9 +203,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
             txFirst.push_back(new CTransaction(pblock->vtx[0]));
         pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
         pblock->nNonce = blockinfo[i].nonce;
-        CValidationState state;
-        BOOST_CHECK(ProcessNewBlock(state, chainparams, NULL, pblock, true, nullptr, false));
-        BOOST_CHECK(state.IsValid());
+        BOOST_CHECK(ProcessNewBlock(chainparams, pblock, true, nullptr, nullptr));
         pblock->hashPrevBlock = pblock->GetHash();
     }
     delete pblocktemplate;

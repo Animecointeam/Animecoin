@@ -163,8 +163,7 @@ UniValue generate(const JSONRPCRequest& request)
             // target -- 1 in 2^(2^32). That ain't gonna happen.
             ++pblock->nNonce;
         }
-        CValidationState state;
-        if (!ProcessNewBlock(state, Params(), nullptr, pblock, true, nullptr, false))
+        if (!ProcessNewBlock(Params(), pblock, true, nullptr, nullptr))
             throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
         ++nHeight;
         blockHashes.push_back(pblock->GetHash().GetHex());
@@ -671,10 +670,9 @@ UniValue submitblock(const JSONRPCRequest& request)
         }
     }
 
-    CValidationState state;
     submitblock_StateCatcher sc(block.GetHash());
     RegisterValidationInterface(&sc);
-    bool fAccepted = ProcessNewBlock(state, Params(), nullptr, &block, true, nullptr, false);
+    bool fAccepted = ProcessNewBlock(Params(), &block, true, nullptr, nullptr);
     UnregisterValidationInterface(&sc);
     if (fBlockPresent)
     {
@@ -682,13 +680,9 @@ UniValue submitblock(const JSONRPCRequest& request)
             return "duplicate-inconclusive";
         return "duplicate";
     }
-    if (fAccepted)
-    {
-        if (!sc.found)
-            return "inconclusive";
-        state = sc.state;
-    }
-    return BIP22ValidationResult(state);
+    if (!sc.found)
+        return "inconclusive";
+    return BIP22ValidationResult(sc.state);
 }
 
 UniValue estimatefee(const JSONRPCRequest& request)
