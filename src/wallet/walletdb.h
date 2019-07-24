@@ -41,7 +41,7 @@ enum DBErrors
     DB_NEED_REWRITE
 };
 
-/** Access to the wallet database (wallet.dat) */
+/** Access to the wallet database */
 class CKeyMetadata
 {
 public:

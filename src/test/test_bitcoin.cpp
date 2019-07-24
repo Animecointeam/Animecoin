@@ -33,7 +33,6 @@
 std::unique_ptr<CConnman> g_connman;
 
 CClientUIInterface uiInterface; // Declared but not defined in ui_interface.h
-CWallet* pwalletMain;
 
 extern bool fPrintToConsole;
 extern void noui_connect();
