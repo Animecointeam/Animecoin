@@ -2058,6 +2058,8 @@ bool CConnman::Start(boost::thread_group& threadGroup, CScheduler& scheduler, st
         DumpBanlist();
     }
 
+    uiInterface.InitMessage(_("Starting network threads..."));
+
     fAddressesInitialized = true;
 
     if (semOutbound == nullptr) {
