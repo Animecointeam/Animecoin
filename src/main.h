@@ -24,7 +24,6 @@
 #include "tinyformat.h"
 #include "txmempool.h"
 #include "uint256.h"
-#include "undo.h"
 #include "validationinterface.h"
 
 #include <algorithm>
@@ -347,21 +346,6 @@ bool IsFinalTx(const CTransaction &tx, int nBlockHeight, int64_t nBlockTime);
  * See consensus/consensus.h for flag definitions.
  */
 bool CheckFinalTx(const CTransaction &tx, int flags = -1);
-
-/** Undo information for a CBlock */
-class CBlockUndo
-{
-public:
-    std::vector<CTxUndo> vtxundo; // for all but the coinbase
-
-    ADD_SERIALIZE_METHODS
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vtxundo);
-    }
-};
-
 
 /**
  * Closure representing one script verification
