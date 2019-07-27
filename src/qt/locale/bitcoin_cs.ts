@@ -23,7 +23,7 @@
     </message>
     <message>
         <location line="+57"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Block explorer&lt;/span&gt;: &lt;a href=&quot;https://explorer.animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/6qh4JMj&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/6qh4JMj&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;OpenSSL libraries (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) and cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;br/&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Block explorer&lt;/span&gt;: &lt;a href=&quot;https://explorer.animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/auXJpYa&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/auXJpYa&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;OpenSSL libraries (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) and cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;br/&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -41,7 +41,7 @@ Tohle je experimentální program.
 Tento produkt zahrnuje programy vyvinuté OpenSSL Projektem pro použití v OpenSSL Toolkitu (http://www.openssl.org/) a kryptografický program od Erika Younga (eay@cryptsoft.com) a program UPnP od Thomase Bernarda.</translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+62"/>
+        <location filename="../utilitydialog.cpp" line="+65"/>
         <source>Copyright</source>
         <translation>Copyright</translation>
     </message>
@@ -480,6 +480,19 @@ You only need to provide a address pubkey generated by a person you are trading 
     </message>
 </context>
 <context>
+    <name>BanTableModel</name>
+    <message>
+        <location filename="../bantablemodel.cpp" line="+89"/>
+        <source>IP/Netmask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Banned Until</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>BitcoinGUI</name>
     <message>
         <location filename="../bitcoingui.cpp" line="+309"/>
@@ -492,12 +505,12 @@ You only need to provide a address pubkey generated by a person you are trading 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+335"/>
+        <location line="+347"/>
         <source>Synchronizing with network...</source>
         <translation>Synchronizuji se se sítí...</translation>
     </message>
     <message>
-        <location line="-424"/>
+        <location line="-436"/>
         <source>&amp;Overview</source>
         <translation>&amp;Přehled</translation>
     </message>
@@ -664,8 +677,18 @@ You only need to provide a address pubkey generated by a person you are trading 
         <source>&amp;Command-line options</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+353"/>
+        <source>Indexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Processing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+355"/>
+        <location line="+18"/>
         <source>Processed %n blocks of transaction history.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -674,7 +697,7 @@ You only need to provide a address pubkey generated by a person you are trading 
         </translation>
     </message>
     <message>
-        <location line="-182"/>
+        <location line="-191"/>
         <source>Animecoin client</source>
         <translation type="unfinished"></translation>
     </message>
@@ -688,12 +711,11 @@ You only need to provide a address pubkey generated by a person you are trading 
         </translation>
     </message>
     <message>
-        <location line="+17"/>
         <source>Importing blocks from disk...</source>
-        <translation>Importuji bloky z disku...</translation>
+        <translation type="vanished">Importuji bloky z disku...</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+27"/>
         <source>Reindexing blocks on disk...</source>
         <translation>Vytvářím nový index bloků na disku...</translation>
     </message>
@@ -706,7 +728,7 @@ You only need to provide a address pubkey generated by a person you are trading 
         <translation type="vanished">Uprav nastavení Animeu</translation>
     </message>
     <message>
-        <location line="-360"/>
+        <location line="-376"/>
         <source>Backup wallet to another location</source>
         <translation>Zazálohuj peněženku na jiné místo</translation>
     </message>
@@ -741,12 +763,12 @@ You only need to provide a address pubkey generated by a person you are trading 
     </message>
     <message>
         <location line="-9"/>
-        <location line="+655"/>
+        <location line="+673"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-534"/>
         <source>&amp;Send</source>
         <translation>&amp;Pošli</translation>
     </message>
@@ -823,7 +845,7 @@ You only need to provide a address pubkey generated by a person you are trading 
         </translation>
     </message>
     <message>
-        <location line="+269"/>
+        <location line="+288"/>
         <source>No block source available...</source>
         <translation>Není dostupný žádný zdroj bloků...</translation>
     </message>
@@ -836,7 +858,7 @@ You only need to provide a address pubkey generated by a person you are trading 
         <translation type="vanished">Zpracováno %1 bloků transakční historie.</translation>
     </message>
     <message numerus="yes">
-        <location line="+34"/>
+        <location line="+33"/>
         <source>%n hour(s)</source>
         <translation>
             <numerusform>hodinu</numerusform>
@@ -971,7 +993,7 @@ Adresa: %4
         <translation type="vanished">Stala se fatální chyba. Anime nemůže bezpečně pokračovat v činnosti, a proto skončí.</translation>
     </message>
     <message>
-        <location filename="../bitcoin.cpp" line="+476"/>
+        <location filename="../bitcoin.cpp" line="+486"/>
         <source>A fatal error occurred. Animecoin can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -979,7 +1001,7 @@ Adresa: %4
 <context>
     <name>ClientModel</name>
     <message>
-        <location filename="../clientmodel.cpp" line="+140"/>
+        <location filename="../clientmodel.cpp" line="+143"/>
         <source>Network Alert</source>
         <translation>Upozornění sítě</translation>
     </message>
@@ -1012,7 +1034,7 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../coincontroldialog.cpp" line="+608"/>
+        <location filename="../coincontroldialog.cpp" line="+624"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1091,7 +1113,7 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../coincontroldialog.cpp" line="-564"/>
+        <location filename="../coincontroldialog.cpp" line="-576"/>
         <source>Copy address</source>
         <translation type="unfinished">Kopíruj adresu</translation>
     </message>
@@ -1212,7 +1234,7 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+161"/>
         <source>This label turns red, if the transaction size is greater than 1000 bytes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1248,7 +1270,7 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+33"/>
         <source>Can vary +/- %1 satoshi(s) per input.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1352,7 +1374,7 @@ Adresa: %4
 <context>
     <name>FreespaceChecker</name>
     <message>
-        <location filename="../intro.cpp" line="+68"/>
+        <location filename="../intro.cpp" line="+74"/>
         <source>A new data directory will be created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1441,12 +1463,12 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Command-line options</source>
         <translation type="unfinished">Argumenty z příkazové řádky</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Usage:</source>
         <translation type="unfinished">Užití:</translation>
     </message>
@@ -1456,32 +1478,32 @@ Adresa: %4
         <translation type="unfinished">možnosti příkazové řádky</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+41"/>
         <source>UI options</source>
         <translation type="unfinished">Možnosti UI</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Choose data directory on startup (default: 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Set language, for example &quot;de_DE&quot; (default: system locale)</source>
         <translation type="unfinished">Nastavit jazyk, například &quot;de_DE&quot; (výchozí: systémové nastavení)</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Start minimized</source>
         <translation type="unfinished">Nastartovat minimalizovaně</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Set SSL root certificates for payment request (default: -system-)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Show splash screen on startup (default: 1)</source>
         <translation type="unfinished">Zobrazit startovací obrazovku (výchozí: 1)</translation>
     </message>
@@ -1519,7 +1541,7 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../intro.cpp" line="+82"/>
+        <location filename="../intro.cpp" line="+86"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1695,11 +1717,49 @@ Adresa: %4
     </message>
     <message>
         <location line="+57"/>
+        <location line="+187"/>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+129"/>
+        <location line="-131"/>
+        <source>Used for reaching peers via:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <source>Shows, if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-36"/>
+        <source>IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Tor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+163"/>
         <source>The user interface language can be set here. This setting will take effect after restarting Animecoin.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1738,7 +1798,7 @@ Adresa: %4
         <translation>&amp;Obnovit nastavení</translation>
     </message>
     <message>
-        <location line="-317"/>
+        <location line="-504"/>
         <source>&amp;Network</source>
         <translation>&amp;Síť</translation>
     </message>
@@ -1761,6 +1821,7 @@ Adresa: %4
     </message>
     <message>
         <location line="+29"/>
+        <location line="+187"/>
         <source>Proxy &amp;IP:</source>
         <translation>&amp;IP adresa proxy:</translation>
     </message>
@@ -1769,12 +1830,14 @@ Adresa: %4
         <translation type="vanished">IP adresa proxy (např. 127.0.0.1)</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="-155"/>
+        <location line="+187"/>
         <source>&amp;Port:</source>
         <translation>Por&amp;t:</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="-162"/>
+        <location line="+187"/>
         <source>Port of the proxy (e.g. 9050)</source>
         <translation>Port proxy (např. 9050)</translation>
     </message>
@@ -1844,7 +1907,7 @@ Adresa: %4
         <translation type="vanished">Ukazo&amp;vat adresy ve výpisu transakcí</translation>
     </message>
     <message>
-        <location line="-297"/>
+        <location line="-484"/>
         <source>Whether to show coin control features or not.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1869,7 +1932,7 @@ Adresa: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+349"/>
+        <location line="+536"/>
         <source>&amp;OK</source>
         <translation>&amp;Budiž</translation>
     </message>
@@ -1883,33 +1946,33 @@ Adresa: %4
         <translation type="vanished">&amp;Uložit</translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="+76"/>
+        <location filename="../optionsdialog.cpp" line="+82"/>
         <source>default</source>
         <translation>výchozí</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+75"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+74"/>
         <source>Confirm options reset</source>
         <translation>Potvrzení obnovení nastavení</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>Client restart required to activate changes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-29"/>
+        <location line="-30"/>
         <source>Client will be shutdown, do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+34"/>
         <source>This change would require a client restart.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2057,7 +2120,7 @@ Adresa: %4
         <translation type="vanished">Celkem z transakcí, které ještě nejsou potvrzené a které se ještě nezapočítávají do celkového stavu účtu</translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="+131"/>
+        <location filename="../overviewpage.cpp" line="+130"/>
         <location line="+1"/>
         <source>out of sync</source>
         <translation>nesynchronizováno</translation>
@@ -2160,12 +2223,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utilitydialog.cpp" line="+43"/>
+        <location filename="../utilitydialog.cpp" line="+42"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>It is recommended to disconnect from the internet before printing paper wallets. Even though paper wallets are generated on your local computer, it is still possible to unknowingly have malware that transmits your screen to a remote location. It is also recommended to print to a local printer vs a network printer since that network traffic can be monitored. Some advanced printers also store copies of each printed document. Proceed with caution relative to the amount of value you plan to store on each address.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2279,8 +2342,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PaymentServer</name>
     <message>
-        <location filename="../paymentserver.cpp" line="+317"/>
-        <location line="+226"/>
+        <location filename="../paymentserver.cpp" line="+247"/>
+        <location line="+331"/>
         <location line="+34"/>
         <location line="+109"/>
         <location line="+14"/>
@@ -2289,20 +2352,26 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-400"/>
+        <location line="-505"/>
         <source>Cannot start anime: click-to-pay handler</source>
         <translation>Nemůžu spustit anime: obsluha click-to-pay</translation>
     </message>
     <message>
-        <location line="+104"/>
-        <location line="+14"/>
+        <location line="+83"/>
+        <location line="+5"/>
+        <location line="+13"/>
         <location line="+7"/>
         <source>URI handling</source>
         <translation type="unfinished">Zpracování URI</translation>
     </message>
     <message>
-        <location line="-20"/>
+        <location line="-24"/>
         <source>Payment request fetch URL is invalid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Cannot process payment request because BIP70 support was not compiled in.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2311,7 +2380,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-21"/>
+        <location line="-22"/>
         <source>Invalid payment address %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2321,29 +2390,29 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+191"/>
         <location line="+9"/>
-        <location line="+32"/>
+        <location line="+31"/>
         <source>Payment request rejected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-41"/>
+        <location line="-40"/>
         <source>Payment request network doesn&apos;t match client network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
-        <source>Payment request has expired.</source>
+        <source>Payment request expired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Payment request is not initialized.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2393,7 +2462,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+6"/>
         <source>Payment acknowledged</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2402,11 +2471,6 @@ p, li { white-space: pre-wrap; }
     <name>PeerTableModel</name>
     <message>
         <location filename="../peertablemodel.cpp" line="+118"/>
-        <source>Address/Hostname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
         <source>User Agent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2415,18 +2479,28 @@ p, li { white-space: pre-wrap; }
         <source>Ping Time</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+0"/>
+        <source>NodeId</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Node/Service</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../bitcoin.cpp" line="+79"/>
         <location line="+7"/>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-19"/>
+        <location line="-21"/>
         <source>Error: Specified data directory &quot;%1&quot; does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2436,12 +2510,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
+        <location line="+14"/>
+        <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+60"/>
         <source>Animecoin didn&apos;t yet exit safely...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2451,12 +2525,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Částka</translation>
     </message>
     <message>
-        <location filename="../guiutil.cpp" line="+109"/>
+        <location filename="../guiutil.cpp" line="+110"/>
         <source>Enter an Animecoin address (e.g. %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+714"/>
+        <location line="+728"/>
         <source>%1 d</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2472,21 +2546,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+2"/>
+        <location line="+44"/>
         <source>%1 s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>NETWORK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>UNKNOWN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="-10"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2589,7 +2654,9 @@ p, li { white-space: pre-wrap; }
         <location line="+23"/>
         <location line="+36"/>
         <location line="+23"/>
-        <location line="+465"/>
+        <location line="+36"/>
+        <location line="+23"/>
+        <location line="+534"/>
         <location line="+23"/>
         <location line="+23"/>
         <location line="+23"/>
@@ -2601,12 +2668,16 @@ p, li { white-space: pre-wrap; }
         <location line="+23"/>
         <location line="+23"/>
         <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <location line="+26"/>
         <location line="+23"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
     <message>
-        <location line="-967"/>
+        <location line="-1190"/>
         <source>Client version</source>
         <translation>Verze klienta</translation>
     </message>
@@ -2626,12 +2697,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
         <source>Using OpenSSL version</source>
-        <translation>Používaná verze OpenSSL</translation>
+        <translation type="vanished">Používaná verze OpenSSL</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+79"/>
         <source>Using BerkeleyDB version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2656,12 +2726,7 @@ p, li { white-space: pre-wrap; }
         <translation>Počet spojení</translation>
     </message>
     <message>
-        <location line="+108"/>
-        <source>Open the Animecoin debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+99"/>
+        <location line="+267"/>
         <source>&amp;Network Traffic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2677,28 +2742,40 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+64"/>
+        <location line="+552"/>
         <source>Received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="-472"/>
+        <location line="+449"/>
         <source>Sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-408"/>
         <source>&amp;Peers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
-        <location filename="../rpcconsole.cpp" line="+236"/>
-        <location line="+327"/>
+        <location line="+50"/>
+        <source>Banned peers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
+        <location filename="../rpcconsole.cpp" line="+370"/>
+        <location line="+601"/>
         <source>Select a peer to view detailed information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
+        <source>Whitelisted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
         <source>Direction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2708,27 +2785,68 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+69"/>
+        <source>Starting Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+23"/>
+        <source>Synced Headers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Synced Blocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+184"/>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ping Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Time Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1157"/>
+        <location line="+855"/>
         <source>User Agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-633"/>
+        <source>Memory Pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Current number of transactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+23"/>
+        <source>Memory usage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Open the Bitcoin Core debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+578"/>
         <source>Services</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Starting Height</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Sync Height</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
+        <location line="+92"/>
         <source>Ban Score</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2748,22 +2866,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Bytes Sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Bytes Received</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
+        <location line="+69"/>
         <source>Ping Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../rpcconsole.cpp" line="-165"/>
+        <location filename="../rpcconsole.cpp" line="-342"/>
         <source>In:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2777,7 +2885,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">V testnetu</translation>
     </message>
     <message>
-        <location filename="../forms/rpcconsole.ui" line="-771"/>
+        <location filename="../forms/rpcconsole.ui" line="-945"/>
         <source>Block chain</source>
         <translation>Řetězec bloků</translation>
     </message>
@@ -2796,7 +2904,7 @@ p, li { white-space: pre-wrap; }
         <translation>Čas posledního bloku</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+110"/>
         <source>&amp;Open</source>
         <translation>&amp;Otevřít</translation>
     </message>
@@ -2813,12 +2921,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">&amp;Zobrazit</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+26"/>
         <source>&amp;Console</source>
         <translation>&amp;Konzole</translation>
     </message>
     <message>
-        <location line="-217"/>
+        <location line="-277"/>
         <source>Build date</source>
         <translation>Datum kompilace</translation>
     </message>
@@ -2831,7 +2939,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Jádro Animeu</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="+241"/>
         <source>Debug log file</source>
         <translation>Soubor s ladicími záznamy</translation>
     </message>
@@ -2840,7 +2948,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Otevři soubor s ladicími záznamy Animeu z aktuálního datového adresáře. U velkých logů to může pár vteřin zabrat.</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+85"/>
         <source>Clear console</source>
         <translation>Vyčistit konzoli</translation>
     </message>
@@ -2849,7 +2957,45 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Vítej v Animeové RPC konzoli.</translation>
     </message>
     <message>
-        <location filename="../rpcconsole.cpp" line="-35"/>
+        <location filename="../rpcconsole.cpp" line="-172"/>
+        <source>&amp;Disconnect Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Ban Node for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-3"/>
+        <source>1 &amp;hour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>1 &amp;day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>1 &amp;week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>1 &amp;year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>&amp;Unban Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
         <source>Welcome to the Animecoin RPC console.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2864,7 +3010,7 @@ p, li { white-space: pre-wrap; }
         <translation>Napsáním &lt;b&gt;help&lt;/b&gt; si vypíšeš přehled dostupných příkazů.</translation>
     </message>
     <message>
-        <location line="+134"/>
+        <location line="+143"/>
         <source>%1 B</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2884,7 +3030,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+88"/>
+        <source>(node id: %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>via %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2895,7 +3046,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+9"/>
         <source>Inbound</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2905,14 +3056,19 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Unknown</source>
+        <location line="+2"/>
+        <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+1"/>
-        <source>Fetching...</source>
+        <location line="+0"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+6"/>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3012,7 +3168,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../receivecoinsdialog.cpp" line="+41"/>
+        <location filename="../receivecoinsdialog.cpp" line="+42"/>
         <source>Copy label</source>
         <translation type="unfinished">Kopíruj její označení</translation>
     </message>
@@ -3103,7 +3259,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RecentRequestsTableModel</name>
     <message>
-        <location filename="../recentrequeststablemodel.cpp" line="+28"/>
+        <location filename="../recentrequeststablemodel.cpp" line="+27"/>
         <source>Date</source>
         <translation type="unfinished">Datum</translation>
     </message>
@@ -3142,7 +3298,7 @@ p, li { white-space: pre-wrap; }
     <name>SendCoinsDialog</name>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="+14"/>
-        <location filename="../sendcoinsdialog.cpp" line="+533"/>
+        <location filename="../sendcoinsdialog.cpp" line="+547"/>
         <source>Send Coins</source>
         <translation>Pošli mince</translation>
     </message>
@@ -3351,7 +3507,7 @@ p, li { white-space: pre-wrap; }
         <translation>P&amp;ošli</translation>
     </message>
     <message>
-        <location filename="../sendcoinsdialog.cpp" line="-477"/>
+        <location filename="../sendcoinsdialog.cpp" line="-487"/>
         <source>Copy quantity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3386,25 +3542,49 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+246"/>
+        <location line="+251"/>
         <source>Total Amount %1&lt;span style=&apos;font-size:10pt;font-weight:normal;&apos;&gt;&lt;br /&gt;(=%2)&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-245"/>
+        <location line="+218"/>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Payment request expired.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <source>Pay only the required fee of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+25"/>
+        <source>Estimated to begin confirmation within %n block(s).</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="-586"/>
         <source>Copy change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+172"/>
+        <location line="+204"/>
         <location line="+5"/>
-        <location line="+5"/>
+        <location line="+6"/>
         <location line="+4"/>
         <source>%1 to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+7"/>
         <source>Are you sure you want to send?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3419,7 +3599,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+207"/>
+        <location line="+208"/>
         <source>Transaction creation failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3429,22 +3609,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>A fee higher than %1 is considered an insanely high fee.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+87"/>
-        <source>Pay only the minimum fee of %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Estimated to begin confirmation within %1 block(s).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+107"/>
+        <location line="+228"/>
         <source>Warning: Invalid Animecoin address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3453,7 +3618,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; pro %2 (%3)</translation>
     </message>
     <message>
-        <location line="-429"/>
+        <location line="-438"/>
         <source>Confirm send coins</source>
         <translation>Potvrď odeslání mincí</translation>
     </message>
@@ -3466,7 +3631,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished"> a </translation>
     </message>
     <message>
-        <location line="+190"/>
+        <location line="+191"/>
         <source>The recipient address is not valid, please recheck.</source>
         <translation>Adresa příjemce je neplatná, překontroluj ji prosím.</translation>
     </message>
@@ -3499,7 +3664,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Chyba: Transakce byla odmítnuta. Tohle může nastat, pokud nějaké mince z tvé peněženky už jednou byly utraceny, například pokud používáš kopii souboru wallet.dat a mince byly utraceny v druhé kopii, ale nebyly označeny jako utracené v této.</translation>
     </message>
     <message>
-        <location line="+247"/>
+        <location line="+254"/>
         <source>(no label)</source>
         <translation type="unfinished">(bez označení)</translation>
     </message>
@@ -3517,13 +3682,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../forms/sendcoinsentry.ui" line="+131"/>
-        <location line="+521"/>
+        <location line="+535"/>
         <location line="+536"/>
         <source>A&amp;mount:</source>
         <translation>Čás&amp;tka:</translation>
     </message>
     <message>
-        <location line="-1152"/>
+        <location line="-1166"/>
         <source>Pay &amp;To:</source>
         <translation>&amp;Komu:</translation>
     </message>
@@ -3532,7 +3697,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Adresa příjemce (např. Qi1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)</translation>
     </message>
     <message>
-        <location filename="../sendcoinsentry.cpp" line="+30"/>
+        <location filename="../sendcoinsentry.cpp" line="+34"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation>Zadej označení této adresy; obojí se ti pak uloží do adresáře</translation>
     </message>
@@ -3577,18 +3742,28 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+7"/>
-        <location line="+524"/>
+        <location line="+538"/>
         <location line="+536"/>
         <source>Remove this entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1031"/>
+        <location line="-1045"/>
         <source>Enter a label for this address to add it to the list of used addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+25"/>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Message:</source>
         <translation type="unfinished">Zpráva:</translation>
     </message>
@@ -3858,7 +4033,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Vývojáři Animeu</translation>
     </message>
     <message>
-        <location filename="../splashscreen.cpp" line="+35"/>
+        <location filename="../splashscreen.cpp" line="+40"/>
         <source>Animecoin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3868,7 +4043,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../networkstyle.cpp" line="+19"/>
+        <location filename="../networkstyle.cpp" line="+18"/>
         <source>[testnet]</source>
         <translation>[testnet]</translation>
     </message>
@@ -3884,19 +4059,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TransactionDesc</name>
     <message>
-        <location filename="../transactiondesc.cpp" line="+34"/>
+        <location filename="../transactiondesc.cpp" line="+39"/>
         <source>Open until %1</source>
         <translation>Otřevřeno dokud %1</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>conflicted</source>
-        <translation type="unfinished"></translation>
+        <location line="+8"/>
+        <source>%1/offline</source>
+        <translation>%1/offline</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>%1/offline</source>
-        <translation>%1/offline</translation>
+        <source>0/unconfirmed, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>in memory pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>not in memory pool</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3972,12 +4157,12 @@ p, li { white-space: pre-wrap; }
         <location line="+12"/>
         <location line="+53"/>
         <location line="+26"/>
-        <location line="+53"/>
+        <location line="+55"/>
         <source>Credit</source>
         <translation>Příjem</translation>
     </message>
     <message numerus="yes">
-        <location line="-142"/>
+        <location line="-144"/>
         <source>matures in %n more block(s)</source>
         <translation>
             <numerusform>dozraje po jednom bloku</numerusform>
@@ -3993,12 +4178,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+59"/>
         <location line="+25"/>
-        <location line="+53"/>
+        <location line="+55"/>
         <source>Debit</source>
         <translation>Výdaj</translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="-70"/>
         <source>Total debit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4035,12 +4220,12 @@ p, li { white-space: pre-wrap; }
         <translation>ID transakce</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Merchant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4089,12 +4274,12 @@ p, li { white-space: pre-wrap; }
         <translation>false</translation>
     </message>
     <message>
-        <location line="-242"/>
+        <location line="-244"/>
         <source>, has not been successfully broadcast yet</source>
         <translation>, ještě nebylo rozesláno</translation>
     </message>
     <message numerus="yes">
-        <location line="-36"/>
+        <location line="-38"/>
         <source>Open for %n more block(s)</source>
         <translation>
             <numerusform>Otevřeno pro 1 další blok</numerusform>
@@ -4103,7 +4288,12 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+8"/>
+        <source>conflicted with a transaction with %1 confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>unknown</source>
         <translation>neznámo</translation>
     </message>
@@ -4492,7 +4682,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+276"/>
+        <location filename="../walletmodel.cpp" line="+295"/>
         <source>Send Coins</source>
         <translation>Pošli mince</translation>
     </message>
@@ -4555,7 +4745,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Verze Animeu</translation>
     </message>
     <message>
-        <location filename="../bitcoinstrings.cpp" line="+349"/>
+        <location filename="../bitcoinstrings.cpp" line="+284"/>
         <source>Usage:</source>
         <translation>Užití:</translation>
     </message>
@@ -4564,19 +4754,189 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Poslat příkaz pro -server nebo animed</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-62"/>
         <source>List commands</source>
         <translation>Výpis příkazů</translation>
     </message>
     <message>
-        <location line="-20"/>
+        <location line="-14"/>
         <source>Get help for a command</source>
         <translation>Získat nápovědu pro příkaz</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="-196"/>
+        <source>Accept relayed transactions received from whitelisted peers even when not relaying transactions (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Cannot obtain a lock on data directory %s. Bitcoin Core is probably already running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Could not locate RPC credentials. No authentication cookie could be found, and no rpcpassword is set in the configuration file (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Do not keep transactions in the mempool longer than &lt;n&gt; hours (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Force relay of transactions from whitelisted peers even they violate local relay policy (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Maximum total fees (in %s) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode disables wallet support and is incompatible with -txindex. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tell other nodes to filter invs to us by our mempool min fee (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Tries to keep outbound traffic under the given target (in MiB per 24h), 0 = no limit (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. This option can be specified multiple times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>(default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Chain selection options:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Error: -maxmempool must be at least %d MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Error: A fatal internal error occured, see debug.log for details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Loading banlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Minimum bytes per sigop in transactions we relay and mine (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Options:</source>
         <translation>Možnosti:</translation>
+    </message>
+    <message>
+        <location line="+49"/>
+        <source>Use the test chain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>ZeroMQ notification options:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Specify configuration file (default: animecoin.conf)</source>
@@ -4587,7 +4947,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">PID soubor (výchozí: animecoind.pid)</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="-27"/>
         <source>Specify data directory</source>
         <translation>Adresář pro data</translation>
     </message>
@@ -4604,12 +4964,32 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Povolit nejvýše &lt;n&gt; připojení k uzlům (výchozí: 125)</translation>
     </message>
     <message>
-        <location line="-107"/>
+        <location line="-87"/>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
         <translation>Připojit se k uzlu, získat adresy jeho protějšků a odpojit se</translation>
     </message>
     <message>
-        <location line="+110"/>
+        <location line="+61"/>
+        <source>Pruning blockstore...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Rebuild chain state from the currently indexed blocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
         <source>Specify your own public address</source>
         <translation>Specifikuj svou veřejnou adresu</translation>
     </message>
@@ -4626,23 +5006,8 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Při nastavování naslouchacího RPC portu %i pro IPv4 nastala chyba: %s</translation>
     </message>
     <message>
-        <location line="-300"/>
-        <source>Cannot obtain a lock on data directory %s. Animecoin is probably already running.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="-219"/>
         <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4650,7 +5015,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Čekat na JSON RPC spojení na &lt;portu&gt; (výchozí: 8332 nebo testnet: 18332)</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+49"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4660,22 +5025,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>To use animecoind, or the -server option to animecoin-qt, you must set an rpcpassword in the configuration file:
-%s
-It is recommended you use the following random password:
-rpcuser=animecoinrpc
-rpcpassword=%s
-(you do not need to remember this password)
-The username and password MUST NOT be the same.
-If the file does not exist, create it with owner-readable-only file permissions.
-It is also recommended to set alertnotify so you are notified of problems;
-for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@foo.com
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
+        <location line="+20"/>
         <source>Unable to bind to %s on this computer. Animecoin is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4690,18 +5040,13 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+16"/>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>Akceptovat příkazy z příkazové řádky a přes JSON-RPC</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+52"/>
         <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Importing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4710,72 +5055,46 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>Invalid -onion address: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+27"/>
         <source>RPC server options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Randomly drop 1 of every &lt;n&gt; network messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Randomly fuzz 1 of every &lt;n&gt; network messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Běžet na pozadí jako démon a akceptovat příkazy</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+8"/>
         <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Set maximum block size in bytes (default: %d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Show all debugging options (usage: --help -help-debug)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Specify wallet file (within data directory)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>This is intended for regression testing tools and app development.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
         <source>Use the test network</source>
-        <translation>Použít testovací síť (testnet)</translation>
+        <translation type="vanished">Použít testovací síť (testnet)</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+25"/>
         <source>Wait for RPC server to start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+3"/>
         <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4785,17 +5104,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>You need to rebuild the database using -reindex to change -txindex</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Zapping all transactions from wallet...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>on startup</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4815,7 +5124,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Animecoin Alert&quot; admin@fo
         <translation type="unfinished">verze</translation>
     </message>
     <message>
-        <location line="-173"/>
+        <location line="-140"/>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
         <translation>Přijímat spojení zvenčí (výchozí: 1, pokud není zadáno -proxy nebo -connect)</translation>
     </message>
@@ -4848,7 +5157,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Při nastavování naslouchacího RPC portu %u pro IPv6 nastala chyba, vracím se k IPv4: %s</translation>
     </message>
     <message>
-        <location line="-175"/>
+        <location line="-140"/>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Poslouchat na zadané adrese. Pro zápis IPv6 adresy použij notaci [adresa]:port</translation>
     </message>
@@ -4869,9 +5178,8 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Spustit příkaz po přijetí relevantního hlášení (%s se v příkazu nahradí za zprávu)</translation>
     </message>
     <message>
-        <location line="+43"/>
         <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
-        <translation>Spustit příkaz, když se objeví transakce týkající se peněženky (%s se v příkazu nahradí za TxID)</translation>
+        <translation type="vanished">Spustit příkaz, když se objeví transakce týkající se peněženky (%s se v příkazu nahradí za TxID)</translation>
     </message>
     <message>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
@@ -4882,14 +5190,13 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Nastavit maximální velikost prioritních/nízkopoplatkových transakcí v bajtech (výchozí: 27000)</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+93"/>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>Tohle je testovací verze – používej ji jen na vlastní riziko, ale rozhodně ji nepoužívej k těžbě nebo pro obchodní aplikace</translation>
     </message>
     <message>
-        <location line="+29"/>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
-        <translation>Upozornění: -paytxfee je nastaveno velmi vysoko! Toto je transakční poplatek, který zaplatíš za každou poslanou transakci.</translation>
+        <translation type="vanished">Upozornění: -paytxfee je nastaveno velmi vysoko! Toto je transakční poplatek, který zaplatíš za každou poslanou transakci.</translation>
     </message>
     <message>
         <source>Warning: Displayed transactions may not be correct! You may need to upgrade, or other nodes may need to upgrade.</source>
@@ -4900,37 +5207,29 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Upozornění: Zkontroluj, že máš v počítači správně nastavený datum a čas! Pokud jsou nastaveny špatně, Anime nebude fungovat správně.</translation>
     </message>
     <message>
-        <location line="+15"/>
         <source>Warning: error reading wallet.dat! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation>Upozornění: nastala chyba při čtení souboru wallet.dat! Všechny klíče se přečetly správně, ale data o transakcích nebo záznamy v adresáři mohou chybět či být nesprávné.</translation>
+        <translation type="vanished">Upozornění: nastala chyba při čtení souboru wallet.dat! Všechny klíče se přečetly správně, ale data o transakcích nebo záznamy v adresáři mohou chybět či být nesprávné.</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Warning: wallet.dat corrupt, data salvaged! Original wallet.dat saved as wallet.{timestamp}.bak in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
-        <translation>Upozornění: soubor wallet.dat je poškozený, data jsou však zachráněna! Původní soubor wallet.dat je uložený jako wallet.{timestamp}.bak v %s. Pokud je stav tvého účtu nebo transakce nesprávné, zřejmě bys měl obnovit zálohu.</translation>
+        <translation type="vanished">Upozornění: soubor wallet.dat je poškozený, data jsou však zachráněna! Původní soubor wallet.dat je uložený jako wallet.{timestamp}.bak v %s. Pokud je stav tvého účtu nebo transakce nesprávné, zřejmě bys měl obnovit zálohu.</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>(default: 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+45"/>
         <source>&lt;category&gt; can be:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>Attempt to recover private keys from a corrupt wallet.dat</source>
-        <translation>Pokusit se zachránit soukromé klíče z poškozeného souboru wallet.dat</translation>
+        <translation type="vanished">Pokusit se zachránit soukromé klíče z poškozeného souboru wallet.dat</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+15"/>
         <source>Block creation options:</source>
         <translation>Možnosti vytvoření bloku:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+6"/>
         <source>Connect only to the specified node(s)</source>
         <translation>Připojit se pouze k zadanému uzlu (příp. zadaným uzlům)</translation>
     </message>
@@ -4945,7 +5244,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Bylo zjištěno poškození databáze bloků</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>Debugging/Testing options:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4954,24 +5253,18 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Zjistit vlastní IP adresu (výchozí: 1, pokud naslouchá a není zadáno -externalip)</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Do not load the wallet and disable wallet RPC calls</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Do you want to rebuild the block database now?</source>
         <translation>Chceš přestavět databázi bloků hned teď?</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+6"/>
         <source>Error initializing block database</source>
         <translation>Chyba při zakládání databáze bloků</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Error initializing wallet database environment %s!</source>
-        <translation>Chyba při vytváření databázového prostředí %s pro peněženku!</translation>
+        <translation type="vanished">Chyba při vytváření databázového prostředí %s pro peněženku!</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4979,17 +5272,12 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Chyba při načítání databáze bloků</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Error loading wallet.dat: Wallet requires newer version of Animecoin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+1"/>
         <source>Error opening block database</source>
         <translation>Chyba při otevírání databáze bloků</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Error: Disk space is low!</source>
         <translation>Problém: Na disku je málo místa!</translation>
     </message>
@@ -5067,31 +5355,29 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="obsolete">Čekat na spojení na &lt;portu&gt; (výchozí: 8333 nebo testnet: 18333) {8373 ?} {18373)?}</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+29"/>
         <source>Not enough file descriptors available.</source>
         <translation>Je nedostatek deskriptorů souborů.</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>Rebuild block chain index from current blk000??.dat files</source>
-        <translation>Znovu vytvořit index řetězce bloků z aktuálních blk000??.dat souborů</translation>
+        <translation type="vanished">Znovu vytvořit index řetězce bloků z aktuálních blk000??.dat souborů</translation>
     </message>
     <message>
         <source>Set the number of threads to service RPC calls (default: 4)</source>
         <translation type="vanished">Nastavení počtu vláken pro servisní RPC volání (výchozí: 4)</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+53"/>
         <source>Verifying blocks...</source>
         <translation>Ověřuji bloky...</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Verifying wallet...</source>
-        <translation>Kontroluji peněženku...</translation>
+        <translation type="vanished">Kontroluji peněženku...</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-77"/>
         <source>Imports blocks from external blk000??.dat file</source>
         <translation>Importovat bloky z externího souboru blk000??.dat</translation>
     </message>
@@ -5109,14 +5395,13 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Neplatná -tor adresa: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
         <source>Invalid amount for -minrelaytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
         <translation>Neplatná částka pro -minrelaytxfee=&lt;částka&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Invalid amount for -mintxfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation>Neplatná částka pro -mintxfee=&lt;částka&gt;: &apos;%s&apos;</translation>
+        <translation type="vanished">Neplatná částka pro -mintxfee=&lt;částka&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Maintain a full transaction index (default: 0)</source>
@@ -5159,7 +5444,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Zvol verzi socks proxy (4-5, výchozí: 5)</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+38"/>
         <source>Send trace/debug info to console instead of debug.log file</source>
         <translation>Posílat stopovací/ladicí informace do konzole místo do souboru debug.log</translation>
     </message>
@@ -5176,14 +5461,13 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Nastavit minimální velikost bloku v bajtech (výchozí: 0)</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+9"/>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
         <translation>Při spuštění klienta zmenšit soubor debug.log (výchozí: 1, pokud není zadáno -debug)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Signing transaction failed</source>
-        <translation>Podepisování transakce selhalo</translation>
+        <translation type="vanished">Podepisování transakce selhalo</translation>
     </message>
     <message>
         <source>Specify connection timeout in milliseconds (default: 5000)</source>
@@ -5194,55 +5478,36 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Systémová chyba: </translation>
     </message>
     <message>
-        <location line="+15"/>
         <source>Transaction amount too small</source>
-        <translation>Částka v transakci je příliš malá</translation>
+        <translation type="vanished">Částka v transakci je příliš malá</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Transaction amounts must be positive</source>
-        <translation>Částky v transakci musí být kladné</translation>
+        <translation type="vanished">Částky v transakci musí být kladné</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Transaction too large</source>
-        <translation>Transace je příliš velká</translation>
+        <translation type="vanished">Transace je příliš velká</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 0)</source>
         <translation type="vanished">Použít UPnP k namapování naslouchacího portu (výchozí: 0)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
-        <translation>Použít UPnP k namapování naslouchacího portu (výchozí: 1, pokud naslouchá)</translation>
+        <translation type="vanished">Použít UPnP k namapování naslouchacího portu (výchozí: 1, pokud naslouchá)</translation>
     </message>
     <message>
         <source>Use proxy to reach tor hidden services (default: same as -proxy)</source>
         <translation type="vanished">Použít proxy k připojení ke skryté služby (výchozí: stejné jako -proxy)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+22"/>
         <source>Username for JSON-RPC connections</source>
         <translation>Uživatelské jméno pro JSON-RPC spojení</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Wallet %s resides outside data directory %s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Wallet needed to be rewritten: restart Animecoin to complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Wallet options:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Warning</source>
         <translation>Upozornění</translation>
     </message>
@@ -5256,12 +5521,11 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Je třeba přestavět databázi použitím -reindex, aby bylo možné změnit -txindex</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>wallet.dat corrupt, salvage failed</source>
-        <translation>Soubor wallet.dat je poškozen, jeho záchrana se nezdařila</translation>
+        <translation type="vanished">Soubor wallet.dat je poškozen, jeho záchrana se nezdařila</translation>
     </message>
     <message>
-        <location line="-83"/>
+        <location line="-53"/>
         <source>Password for JSON-RPC connections</source>
         <translation>Heslo pro JSON-RPC spojení</translation>
     </message>
@@ -5274,28 +5538,25 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Posílat příkazy uzlu běžícím na &lt;ip&gt; (výchozí: 127.0.0.1)</translation>
     </message>
     <message>
-        <location line="-220"/>
+        <location line="-184"/>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
         <translation>Spustit příkaz, když se změní nejlepší blok (%s se v příkazu nahradí hashem bloku)</translation>
     </message>
     <message>
-        <location line="+280"/>
         <source>Upgrade wallet to latest format</source>
-        <translation>Převést peněženku na nejnovější formát</translation>
+        <translation type="vanished">Převést peněženku na nejnovější formát</translation>
     </message>
     <message>
         <source>Set key pool size to &lt;n&gt; (default: 100)</source>
         <translation type="vanished">Nastavit zásobník klíčů na velikost &lt;n&gt; (výchozí: 100)</translation>
     </message>
     <message>
-        <location line="-46"/>
         <source>Rescan the block chain for missing wallet transactions</source>
-        <translation>Přeskenovat řetězec bloků na chybějící transakce tvé pěněženky</translation>
+        <translation type="vanished">Přeskenovat řetězec bloků na chybějící transakce tvé pěněženky</translation>
     </message>
     <message>
-        <location line="+48"/>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
-        <translation>Použít OpenSSL (https) pro JSON-RPC spojení</translation>
+        <translation type="vanished">Použít OpenSSL (https) pro JSON-RPC spojení</translation>
     </message>
     <message>
         <source>Server certificate file (default: server.cert)</source>
@@ -5310,7 +5571,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Akceptovatelné šifry (výchozí: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="+220"/>
         <source>This help message</source>
         <translation>Tato nápověda</translation>
     </message>
@@ -5323,19 +5584,18 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Připojit se přes socks proxy</translation>
     </message>
     <message>
-        <location line="-132"/>
+        <location line="-108"/>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
         <translation>Povolit DNS dotazy pro -addnode (přidání uzlu), -seednode a -connect (připojení)</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+60"/>
         <source>Loading addresses...</source>
         <translation>Načítám adresy...</translation>
     </message>
     <message>
-        <location line="-36"/>
         <source>Error loading wallet.dat: Wallet corrupted</source>
-        <translation>Chyba při načítání wallet.dat: peněženka je poškozená</translation>
+        <translation type="vanished">Chyba při načítání wallet.dat: peněženka je poškozená</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet requires newer version of Anime</source>
@@ -5346,42 +5606,16 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Soubor s peněženkou potřeboval přepsat: restartuj Anime, aby se operace dokončila</translation>
     </message>
     <message>
-        <location line="-1"/>
         <source>Error loading wallet.dat</source>
-        <translation>Chyba při načítání wallet.dat</translation>
+        <translation type="vanished">Chyba při načítání wallet.dat</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="-9"/>
         <source>Invalid -proxy address: &apos;%s&apos;</source>
         <translation>Neplatná -proxy adresa: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <source>Run a thread to flush wallet periodically (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Send transactions as zero-fee transactions if possible (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Server certificate file (default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Server private key (default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+44"/>
         <source>Set minimum block size in bytes (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5391,12 +5625,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>Specify configuration file (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5411,37 +5640,22 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Stop running after importing blocks from disk (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>This is experimental software.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Transaction too large for fee policy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Unable to bind to %s on this computer (bind returned error %s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
         <translation>V -onlynet byla uvedena neznámá síť: &apos;%s&apos;</translation>
     </message>
@@ -5450,7 +5664,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">V -socks byla požadována neznámá verze proxy: %i</translation>
     </message>
     <message>
-        <location line="-132"/>
+        <location line="-109"/>
         <source>Cannot resolve -bind address: &apos;%s&apos;</source>
         <translation>Nemohu přeložit -bind adresu: &apos;%s&apos;</translation>
     </message>
@@ -5460,26 +5674,24 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Nemohu přeložit -externalip adresu: &apos;%s&apos;</translation>
     </message>
     <message>
-        <location line="+53"/>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation>Neplatná částka pro -paytxfee=&lt;částka&gt;: &apos;%s&apos;</translation>
+        <translation type="vanished">Neplatná částka pro -paytxfee=&lt;částka&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Invalid amount</source>
         <translation type="vanished">Neplatná částka</translation>
     </message>
     <message>
-        <location line="-7"/>
         <source>Insufficient funds</source>
-        <translation>Nedostatek prostředků</translation>
+        <translation type="vanished">Nedostatek prostředků</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+54"/>
         <source>Loading block index...</source>
         <translation>Načítám index bloků...</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-67"/>
         <source>Add a node to connect to and attempt to keep the connection open</source>
         <translation>Přidat uzel, ke kterému se připojit a snažit se spojení udržet</translation>
     </message>
@@ -5492,32 +5704,20 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="vanished">Poplatek za kB, který se přidá ke každé odeslané transakci</translation>
     </message>
     <message>
-        <location line="+78"/>
         <source>Loading wallet...</source>
-        <translation>Načítám peněženku...</translation>
+        <translation type="vanished">Načítám peněženku...</translation>
     </message>
     <message>
-        <location line="-65"/>
         <source>Cannot downgrade wallet</source>
-        <translation>Nemohu převést peněženku do staršího formátu</translation>
+        <translation type="vanished">Nemohu převést peněženku do staršího formátu</translation>
     </message>
     <message>
-        <location line="-201"/>
-        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="-146"/>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>An error occurred while setting up the RPC address %s port %u for listening: %s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5527,18 +5727,8 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:%u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+10"/>
         <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5552,12 +5742,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly. This is intended for regression testing tools and app development.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
+        <location line="+5"/>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5567,38 +5752,8 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Fees (in ANI/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Fees (in ANI/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+15"/>
         <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5612,12 +5767,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Maximum total fees to use in a single wallet transaction, setting too low may abort large transactions (default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5632,57 +5782,32 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Prune configured below the minimum of %d MB.  Please use a higher number.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode disables wallet support and is incompatible with -txindex.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
+        <location line="+23"/>
         <source>Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+10"/>
         <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit &lt;https://www.openssl.org/&gt; and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+14"/>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Quark Core will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Warning: Reverting this setting requires re-downloading the entire blockchain.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
+        <location line="+9"/>
         <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5692,33 +5817,13 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+3"/>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>(default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>(default: 0 = disable pruning blocks,</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>&gt;%u = target size in MiB to use for block files)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+9"/>
         <source>Accept public REST requests (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Acceptable ciphers (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5762,22 +5867,16 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Can&apos;t run with a wallet in prune mode.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Cannot resolve -whitebind address: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Cannot write default address</source>
-        <translation>Nemohu napsat výchozí adresu</translation>
+        <translation type="vanished">Nemohu napsat výchozí adresu</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Commands:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5798,11 +5897,6 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+2"/>
-        <source>Could not parse -rpcbind value %s as network address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Create hex-encoded animecoin transaction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5822,17 +5916,12 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Disable safemode, override a real safe mode event (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>Error reading from database, shutting down.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5843,16 +5932,6 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+2"/>
-        <source>Fee (in ANI/kB) to add to transactions you send (default: %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Force safe mode (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Generate coins (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5862,7 +5941,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>Include IP addresses in debug output (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5873,16 +5952,6 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+4"/>
-        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
         <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5892,12 +5961,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5927,7 +5991,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5938,11 +6002,6 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+2"/>
-        <source>Only accept block chain matching built-in checkpoints (default: %u)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5962,17 +6021,12 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>RPC support for HTTP persistent connections (default: %d)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Receive and display P2P network alerts (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Register Commands:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5987,17 +6041,11 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Rescanning...</source>
-        <translation>Přeskenovávám...</translation>
+        <translation type="vanished">Přeskenovávám...</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>See signrawtransaction docs for format of sighash flags, JSON objects.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6017,7 +6065,7 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
         <source>Set TX lock time to N</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6027,32 +6075,57 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>Set register NAME to given JSON-STRING</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+9"/>
         <source>Start Animecoin Daemon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
+        <source>Starting network threads...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>This command requires JSON registers:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+4"/>
+        <source>Timeout during HTTP requests (default: %d)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Tor control port password (default: empty)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Update hex-encoded animecoin transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
         <source>Use UPnP to map the listening port (default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-116"/>
+        <location line="-94"/>
         <source>Done loading</source>
         <translation>Načítání dokončeno</translation>
     </message>
@@ -6066,11 +6139,10 @@ například: alertnotify=echo %%s | mail -s &quot;Anime Alert&quot; admin@foo.co
         <translation>Chyba</translation>
     </message>
     <message>
-        <location line="-61"/>
         <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
 %s
 If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>Musíš nastavit rpcpassword=&lt;heslo&gt; v konfiguračním souboru:
+        <translation type="vanished">Musíš nastavit rpcpassword=&lt;heslo&gt; v konfiguračním souboru:
 %s
 Pokud konfigurační soubor ještě neexistuje, vytvoř ho tak, aby ho mohl číst pouze vlastník.</translation>
     </message>
