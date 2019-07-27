@@ -436,7 +436,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/compat/endian.h \
     src/blockencodings.h \
     src/addrdb.h \
-    src/netaddress.h
+    src/netaddress.h \
+    src/netmessagemaker.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
