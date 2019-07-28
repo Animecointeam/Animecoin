@@ -226,6 +226,8 @@ static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 200 * 1024 * 1024;
  * Note that we guarantee that either the proof-of-work is valid on pblock, or
  * (and possibly also) BlockChecked will have been called.
  *
+ * Call without cs_main held.
+ *
  * @param[in]   pblock  The block we want to process.
  * @param[in]   fForceProcessing Process this block even if unrequested; used for non-network block sources and whitelisted peers.
  * @param[out]  dbp     The already known disk position of pblock, or NULL if not yet stored.
@@ -233,6 +235,19 @@ static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 200 * 1024 * 1024;
  * @return True if state.IsValid()
  */
 bool ProcessNewBlock(const CChainParams& chainparams, const CBlock* pblock, bool fForceProcessing, const CDiskBlockPos* dbp, bool* fNewBlock);
+
+/**
+ * Process incoming block headers.
+ *
+ * Call without cs_main held.
+ *
+ * @param[in]  block The block headers themselves
+ * @param[out] state This may be set to an Error state if any error occurred processing them
+ * @param[in]  chainparams The params for the chain we want to connect to
+ * @param[out] ppindex If set, the pointer will be set to point to the last new block index object for the given headers
+ */
+bool ProcessNewBlockHeaders(const std::vector<CBlockHeader>& block, CValidationState& state, const CChainParams& chainparams, CBlockIndex** ppindex=NULL);
+
 /** Check whether enough disk space is available for an incoming block */
 bool CheckDiskSpace(uint64_t nAdditionalBytes = 0);
 /** Open a block file (blk?????.dat) */
@@ -409,8 +424,6 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
 
 /** Check a block is completely valid from start to finish (only works on top of our current best block, with cs_main held) */
 bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams, const CBlock& block, CBlockIndex* pindexPrev, bool fCheckPOW = true, bool fCheckMerkleRoot = true);
-
-//bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, CBlockIndex **ppindex= nullptr);
 
 /** RAII wrapper for VerifyDB: Verify consistency of the block and coin databases */
 class CVerifyDB {
