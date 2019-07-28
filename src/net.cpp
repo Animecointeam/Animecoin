@@ -74,7 +74,6 @@ CCriticalSection cs_mapLocalHost;
 std::map<CNetAddr, LocalServiceInfo> mapLocalHost;
 static bool vfReachable[NET_MAX] = {};
 static bool vfLimited[NET_MAX] = {};
-static CNode* pnodeLocalHost = nullptr;
 std::string strSubVersion;
 
 limitedmap<CInv, int64_t> mapAlreadyAskedFor(MAX_INV_SZ);
@@ -818,7 +817,7 @@ struct NodeEvictionCandidate
     int64_t nMinPingUsecTime;
     int64_t nLastBlockTime;
     int64_t nLastTXTime;
-    bool fNetworkNode;
+    bool fRelevantServices;
     bool fRelayTxes;
     bool fBloomFilter;
     CAddress addr;
@@ -843,7 +842,7 @@ static bool CompareNodeBlockTime(const NodeEvictionCandidate &a, const NodeEvict
 {
     // There is a fall-through here because it is common for a node to have many peers which have not yet relayed a block.
     if (a.nLastBlockTime != b.nLastBlockTime) return a.nLastBlockTime < b.nLastBlockTime;
-    if (a.fNetworkNode != b.fNetworkNode) return b.fNetworkNode;
+    if (a.fRelevantServices != b.fRelevantServices) return b.fRelevantServices;
     return a.nTimeConnected > b.nTimeConnected;
 }
 
@@ -870,7 +869,8 @@ bool CConnman::AttemptToEvictConnection()
             if (node->fDisconnect)
                 continue;
             NodeEvictionCandidate candidate = {node->id, node->nTimeConnected, node->nMinPingUsecTime,
-                                               node->nLastBlockTime, node->nLastTXTime, node->fNetworkNode,
+                                               node->nLastBlockTime, node->nLastTXTime,
+                                               (node->nServices & nRelevantServices) == nRelevantServices,
                                                node->fRelayTxes, node->pfilter != nullptr, node->addr, node->nKeyedNetGroup};
             vEvictionCandidates.push_back(candidate);
         }
@@ -1044,8 +1044,7 @@ void CConnman::ThreadSocketHandler()
                     pnode->CloseSocketDisconnect();
 
                     // hold in disconnected pool until all refs are released
-                    if (pnode->fNetworkNode || pnode->fInbound)
-                        pnode->Release();
+                    pnode->Release();
                     vNodesDisconnected.push_back(pnode);
                 }
             }
@@ -1757,7 +1756,6 @@ bool CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
         return false;
     if (grantOutbound)
         grantOutbound->MoveTo(pnode->grantOutbound);
-    pnode->fNetworkNode = true;
     if (fOneShot)
         pnode->fOneShot = true;
     if (fFeeler)
@@ -2067,17 +2065,6 @@ bool CConnman::Start(boost::thread_group& threadGroup, CScheduler& scheduler, st
         semOutbound = new CSemaphore(std::min((nMaxOutbound + nMaxFeeler), nMaxConnections));
     }
 
-    if (pnodeLocalHost == nullptr) {
-        CNetAddr local;
-        LookupHost("127.0.0.1", local, false);
-
-        NodeId id = GetNewNodeId();
-        uint64_t nonce = GetDeterministicRandomizer(RANDOMIZER_ID_LOCALHOSTNONCE).Write(id).Finalize();
-
-        pnodeLocalHost = new CNode(id, nLocalServices, GetBestHeight(), INVALID_SOCKET, CAddress(CService(local, 0), nLocalServices), 0, nonce);
-        GetNodeSignals().InitializeNode(pnodeLocalHost, *this);
-    }
-
     //
     // Start threads
     //
@@ -2153,9 +2140,6 @@ void CConnman::Stop()
     vhListenSocket.clear();
     delete semOutbound;
     semOutbound = nullptr;
-    if(pnodeLocalHost)
-        DeleteNode(pnodeLocalHost);
-    pnodeLocalHost = nullptr;
 }
 
 void CConnman::DeleteNode(CNode* pnode)
@@ -2460,7 +2444,6 @@ CNode::CNode(NodeId idIn, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn
     fOneShot = false;
     fClient = false; // set by version message
     fFeeler = false;
-    fNetworkNode = false;
     fSuccessfullyConnected = false;
     fDisconnect = false;
     nRefCount = 0;
