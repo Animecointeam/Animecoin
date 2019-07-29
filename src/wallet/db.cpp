@@ -23,10 +23,6 @@
 
 using namespace std;
 
-
-unsigned int nWalletDBUpdated;
-
-
 //
 // CDB
 //

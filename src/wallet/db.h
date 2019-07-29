@@ -28,8 +28,6 @@ class COutPoint;
 
 struct CBlockLocator;
 
-extern unsigned int nWalletDBUpdated;
-
 void ThreadFlushWalletDB(const std::string& strWalletFile);
 
 
