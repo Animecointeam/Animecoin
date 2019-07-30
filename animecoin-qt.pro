@@ -586,7 +586,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/support/lockedpool.cpp \
     src/blockencodings.cpp \
     src/addrdb.cpp \
-    src/netaddress.cpp
+    src/netaddress.cpp \
+    src/ui_interface.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

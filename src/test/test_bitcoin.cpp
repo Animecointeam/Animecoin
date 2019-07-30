@@ -33,8 +33,6 @@
 std::unique_ptr<CConnman> g_connman;
 FastRandomContext insecure_rand_ctx(true);
 
-CClientUIInterface uiInterface; // Declared but not defined in ui_interface.h
-
 extern bool fPrintToConsole;
 extern void noui_connect();
 
