@@ -177,6 +177,4 @@ private:
     bool WriteAccountingEntry(const uint64_t nAccEntryNum, const CAccountingEntry& acentry);
 };
 
-bool BackupWallet(const CWallet& wallet, const std::string& strDest);
-
 #endif // BITCOIN_WALLETDB_H

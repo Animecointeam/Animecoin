@@ -664,39 +664,6 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
     return (double)nAmount / (double)COIN;
 }
 
-
-CAmount GetAccountBalance(CWalletDB& walletdb, const string& strAccount, int nMinDepth, const isminefilter& filter)
-{
-    CAmount nBalance = 0;
-
-    // Tally wallet transactions
-    for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
-    {
-        const CWalletTx& wtx = (*it).second;
-        if (!CheckFinalTx(wtx) || wtx.GetBlocksToMaturity() > 0 || wtx.GetDepthInMainChain() < 0)
-            continue;
-
-        CAmount nReceived, nSent, nFee;
-        wtx.GetAccountAmounts(strAccount, nReceived, nSent, nFee, filter);
-
-        if (nReceived != 0 && wtx.GetDepthInMainChain() >= nMinDepth)
-            nBalance += nReceived;
-        nBalance -= nSent + nFee;
-    }
-
-    // Tally internal accounting entries
-    nBalance += walletdb.GetAccountCreditDebit(strAccount);
-
-    return nBalance;
-}
-
-CAmount GetAccountBalance(const string& strAccount, int nMinDepth, const isminefilter& filter)
-{
-    CWalletDB walletdb(pwalletMain->strWalletFile);
-    return GetAccountBalance(walletdb, strAccount, nMinDepth, filter);
-}
-
-
 UniValue getbalance(const JSONRPCRequest& request)
 {
     if (!EnsureWalletIsAvailable(request.fHelp))
@@ -771,7 +738,7 @@ UniValue getbalance(const JSONRPCRequest& request)
 
     string strAccount = AccountFromValue(request.params[0]);
 
-    CAmount nBalance = GetAccountBalance(strAccount, nMinDepth, filter);
+    CAmount nBalance = pwalletMain->GetAccountBalance(strAccount, nMinDepth, filter);
 
     return ValueFromAmount(nBalance);
 }
@@ -920,7 +887,7 @@ UniValue sendfrom(const JSONRPCRequest& request)
     EnsureWalletIsUnlocked();
 
     // Check funds
-    CAmount nBalance = GetAccountBalance(strAccount, nMinDepth, ISMINE_SPENDABLE);
+    CAmount nBalance = pwalletMain->GetAccountBalance(strAccount, nMinDepth, ISMINE_SPENDABLE);
     if (nAmount > nBalance)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
 
@@ -1025,7 +992,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     EnsureWalletIsUnlocked();
 
     // Check funds
-    CAmount nBalance = GetAccountBalance(strAccount, nMinDepth, ISMINE_SPENDABLE);
+    CAmount nBalance = pwalletMain->GetAccountBalance(strAccount, nMinDepth, ISMINE_SPENDABLE);
     if (totalAmount > nBalance)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
 
@@ -1819,7 +1786,7 @@ UniValue backupwallet(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     string strDest = request.params[0].get_str();
-    if (!BackupWallet(*pwalletMain, strDest))
+    if (!pwalletMain->BackupWallet(strDest))
         throw JSONRPCError(RPC_WALLET_ERROR, "Error: Wallet backup failed!");
 
     return NullUniValue;

@@ -355,6 +355,8 @@ public:
     std::set< std::set<CTxDestination> > GetAddressGroupings();
     std::map<CTxDestination, CAmount> GetAddressBalances();
 
+    CAmount GetAccountBalance(const std::string& strAccount, int nMinDepth, const isminefilter& filter);
+    CAmount GetAccountBalance(CWalletDB& walletdb, const std::string& strAccount, int nMinDepth, const isminefilter& filter);
     std::set<CTxDestination> GetAccountAddresses(const std::string& strAccount) const;
 
     isminetype IsMine(const CTxIn& txin) const;
@@ -469,6 +471,8 @@ public:
 
     /* Wallets parameter interaction */
     static bool ParameterInteraction();
+
+    bool BackupWallet(const std::string& strDest);
 
     /* Set the hd chain model (chain child index counters) */
     bool SetHDChain(const CHDChain& chain, bool memonly);
