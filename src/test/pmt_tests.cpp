@@ -1,5 +1,5 @@
-// Copyright (c) 2012-2013 The Bitcoin Core developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Copyright (c) 2012-2015 The Bitcoin Core developers
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "consensus/merkle.h"
@@ -9,6 +9,7 @@
 #include "uint256.h"
 #include "arith_uint256.h"
 #include "version.h"
+#include "test_random.h"
 #include "test/test_bitcoin.h"
 
 #include <vector>
@@ -22,8 +23,8 @@ class CPartialMerkleTreeTester : public CPartialMerkleTree
 public:
     // flip one bit in one of the hashes - this should break the authentication
     void Damage() {
-        unsigned int n = rand() % vHash.size();
-        int bit = rand() % 256;
+        unsigned int n = insecure_rand() % vHash.size();
+        int bit = insecure_rand() % 256;
         *(vHash[n].begin() + (bit>>3)) ^= 1<<(bit&7);
     }
 };
@@ -32,16 +33,17 @@ BOOST_FIXTURE_TEST_SUITE(pmt_tests, BasicTestingSetup)
 
 BOOST_AUTO_TEST_CASE(pmt_test1)
 {
+    seed_insecure_rand(false);
     static const unsigned int nTxCounts[] = {1, 4, 7, 17, 56, 100, 127, 256, 312, 513, 1000, 4095};
 
-    for (int n = 0; n < 12; n++) {
-        unsigned int nTx = nTxCounts[n];
+    for (int i = 0; i < 12; i++) {
+        unsigned int nTx = nTxCounts[i];
 
         // build a block with some dummy transactions
         CBlock block;
         for (unsigned int j=0; j<nTx; j++) {
             CMutableTransaction tx;
-            tx.nLockTime = rand(); // actual transaction data doesn't matter; just make the nLockTime's unique
+            tx.nLockTime = j; // actual transaction data doesn't matter; just make the nLockTime's unique
             block.vtx.push_back(CTransaction(tx));
         }
 
@@ -62,7 +64,7 @@ BOOST_AUTO_TEST_CASE(pmt_test1)
             std::vector<bool> vMatch(nTx, false);
             std::vector<uint256> vMatchTxid1;
             for (unsigned int j=0; j<nTx; j++) {
-                bool fInclude = (rand() & ((1 << (att/2)) - 1)) == 0;
+                bool fInclude = (insecure_rand() & ((1 << (att/2)) - 1)) == 0;
                 vMatch[j] = fInclude;
                 if (fInclude)
                     vMatchTxid1.push_back(vTxid[j]);
@@ -87,7 +89,7 @@ BOOST_AUTO_TEST_CASE(pmt_test1)
             std::vector<uint256> vMatchTxid2;
             std::vector<unsigned int> vIndex;
             uint256 merkleRoot2 = pmt2.ExtractMatches(vMatchTxid2, vIndex);
-            
+
             // check that it has the same merkle root as the original, and a valid one
             BOOST_CHECK(merkleRoot1 == merkleRoot2);
             BOOST_CHECK(!merkleRoot2.IsNull());
@@ -120,7 +122,6 @@ BOOST_AUTO_TEST_CASE(pmt_malleability)
     std::vector<bool> vMatch = {false, false, false, false, false, false, false, false, false, true, true, false};
 
     CPartialMerkleTree tree(vTxid, vMatch);
-    std::vector<uint256> vTxid2;
     std::vector<unsigned int> vIndex;
     BOOST_CHECK(tree.ExtractMatches(vTxid, vIndex).IsNull());
 }
