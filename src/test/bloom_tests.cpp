@@ -22,7 +22,6 @@
 #include <boost/tuple/tuple.hpp>
 
 using namespace std;
-using namespace boost::tuples;
 
 BOOST_FIXTURE_TEST_SUITE(bloom_tests, BasicTestingSetup)
 

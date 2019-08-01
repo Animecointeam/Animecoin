@@ -403,7 +403,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/arith_uint256.h \
     src/wallet/db.h \
     src/wallet/wallet.h \
-    src/wallet/wallet_ismine.h \
     src/wallet/walletdb.h \
     src/consensus/consensus.h \
     src/consensus/validation.h \
@@ -437,7 +436,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/blockencodings.h \
     src/addrdb.h \
     src/netaddress.h \
-    src/netmessagemaker.h
+    src/netmessagemaker.h \
+    src/script/ismine.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
@@ -560,7 +560,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/wallet/rpcdump.cpp \
     src/wallet/rpcwallet.cpp \
     src/wallet/wallet.cpp \
-    src/wallet/wallet_ismine.cpp \
     src/wallet/walletdb.cpp \
     src/policy/fees.cpp \
     src/txmempool.cpp \
@@ -587,7 +586,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/blockencodings.cpp \
     src/addrdb.cpp \
     src/netaddress.cpp \
-    src/ui_interface.cpp
+    src/ui_interface.cpp \
+    src/script/ismine.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

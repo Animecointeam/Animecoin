@@ -130,6 +130,7 @@ BITCOIN_CORE_H = \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
+  script/ismine.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -151,7 +152,6 @@ BITCOIN_CORE_H = \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
   wallet/wallet.h \
-  wallet/wallet_ismine.h \
   compat/byteswap.h \
   compat/endian.h \
   compat/sanity.h\
@@ -195,6 +195,7 @@ libanimecoin_server_a_SOURCES = \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
   rpc/server.cpp \
+  script/ismine.cpp \
   script/sigcache.cpp \
   timedata.cpp \
   torcontrol.cpp \
@@ -223,7 +224,6 @@ libanimecoin_wallet_a_SOURCES = \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
-  wallet/wallet_ismine.cpp \
   wallet/walletdb.cpp \
   $(BITCOIN_CORE_H)
 
