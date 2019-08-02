@@ -51,6 +51,7 @@
         <file alias="info">res/icons/info.png</file>
         <file alias="paper_wallet">res/icons/paper_wallet.png</file>
         <file alias="print">res/icons/print.png</file>
+        <file alias="transaction_abandoned">res/icons/transaction_abandoned.png</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>
