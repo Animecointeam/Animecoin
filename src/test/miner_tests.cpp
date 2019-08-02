@@ -396,8 +396,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     TestPackageSelection(chainparams, scriptPubKey, txFirst);
 
-    for (CTransaction *tx : txFirst)
-        delete tx;
+    for (CTransaction *_tx : txFirst)
+        delete _tx;
 
     fCheckpointsEnabled = true;
 */
