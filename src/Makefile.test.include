@@ -33,7 +33,6 @@ RAW_TEST_FILES = test/data/alertTests.raw
 
 GENERATED_TEST_FILES = $(JSON_TEST_FILES:.json=.json.h) $(RAW_TEST_FILES:.raw=.raw.h)
 
-#  Add test/cuckoocache_tests.cpp after rng update.
 BITCOIN_TESTS =\
   test/bignum.h \
   test/addrman_tests.cpp \
@@ -49,6 +48,7 @@ BITCOIN_TESTS =\
   test/coins_tests.cpp \
   test/compress_tests.cpp \
   test/crypto_tests.cpp \
+  test/cuckoocache_tests.cpp \
   test/DoS_tests.cpp \
   test/getarg_tests.cpp \
   test/hash_tests.cpp \
