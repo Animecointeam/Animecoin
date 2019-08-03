@@ -30,7 +30,7 @@ public:
 class CAddrManUncorrupted : public CAddrManSerializationMock
 {
 public:
-    void Serialize(CDataStream& s, int nType, int nVersionDummy) const
+    void Serialize(CDataStream& s, int nType, int nVersionDummy) const override
     {
         CAddrMan::Serialize(s, nType, nVersionDummy);
     }
@@ -39,7 +39,7 @@ public:
 class CAddrManCorrupted : public CAddrManSerializationMock
 {
 public:
-    void Serialize(CDataStream& s, int nType, int nVersionDummy) const
+    void Serialize(CDataStream& s, int nType, int nVersionDummy) const override
     {
         // Produces corrupt output that claims addrman has 20 addrs when it only has one addr.
         unsigned char nVersion = 1;
