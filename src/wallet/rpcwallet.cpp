@@ -9,6 +9,7 @@
 #include "rpc/server.h"
 #include "init.h"
 #include "net.h"
+#include "policy/rbf.h"
 #include "timedata.h"
 #include "util.h"
 #include "utilmoneystr.h"
@@ -69,6 +70,23 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
     entry.push_back(Pair("walletconflicts", conflicts));
     entry.push_back(Pair("time", wtx.GetTxTime()));
     entry.push_back(Pair("timereceived", (int64_t)wtx.nTimeReceived));
+
+    // Add opt-in RBF status
+    std::string rbfStatus = "no";
+    if (confirms <= 0) {
+        LOCK(mempool.cs);
+        if (!mempool.exists(hash)) {
+            if (SignalsOptInRBF(wtx)) {
+                rbfStatus = "yes";
+            } else {
+                rbfStatus = "unknown";
+            }
+        } else if (IsRBFOptIn(*mempool.mapTx.find(hash), mempool)) {
+            rbfStatus = "yes";
+        }
+    }
+    entry.push_back(Pair("bip125-replaceable", rbfStatus));
+
     for (const std::pair<std::string,std::string>& item : wtx.mapValue)
         entry.push_back(Pair(item.first, item.second));
 }
@@ -1349,6 +1367,8 @@ UniValue listtransactions(const JSONRPCRequest& request)
                 "    \"otheraccount\": \"accountname\",  (string) For the 'move' category of transactions, the account the funds came \n"
                 "                                          from (for receiving funds, positive amounts), or went to (for sending funds,\n"
                 "                                          negative amounts).\n"
+                "    \"bip125-replaceable\": \"yes|no|unknown\"  (string) Whether this transaction could be replaced due to BIP125 (replace-by-fee);\n"
+                "                                                     may be unknown for unconfirmed transactions not in the mempool\n"
                 "  }\n"
                 "]\n"
 
@@ -1618,6 +1638,8 @@ UniValue gettransaction(const JSONRPCRequest& request)
                 "  \"txid\" : \"transactionid\",   (string) The transaction id.\n"
                 "  \"time\" : ttt,            (numeric) The transaction time in seconds since epoch (1 Jan 1970 GMT)\n"
                 "  \"timereceived\" : ttt,    (numeric) The time received in seconds since epoch (1 Jan 1970 GMT)\n"
+                "  \"bip125-replaceable\": \"yes|no|unknown\"  (string) Whether this transaction could be replaced due to BIP125 (replace-by-fee);\n"
+                "                                                   may be unknown for unconfirmed transactions not in the mempool\n"
                 "  \"details\" : [\n"
                 "    {\n"
                 "      \"account\" : \"accountname\",  (string) The account name involved in the transaction, can be \"\" for the default account.\n"

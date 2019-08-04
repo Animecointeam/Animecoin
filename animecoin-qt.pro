@@ -437,7 +437,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/addrdb.h \
     src/netaddress.h \
     src/netmessagemaker.h \
-    src/script/ismine.h
+    src/script/ismine.h \
+    src/policy/rbf.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/crypto/aes.cpp \
@@ -587,7 +588,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/addrdb.cpp \
     src/netaddress.cpp \
     src/ui_interface.cpp \
-    src/script/ismine.cpp
+    src/script/ismine.cpp \
+    src/policy/rbf.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc

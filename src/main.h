@@ -143,6 +143,8 @@ static const bool DEFAULT_TXINDEX = false;
 static const unsigned int DEFAULT_BANSCORE_THRESHOLD = 100;
 
 static const bool DEFAULT_TESTSAFEMODE = false;
+/** Default for -permitrbf */
+static const bool DEFAULT_PERMIT_REPLACEMENT = true;
 
 /** Default for using fee filter */
 static const bool DEFAULT_FEEFILTER = true;
@@ -187,6 +189,7 @@ extern CAmount maxTxFee;
 extern bool fAlerts;
 /** If the tip is older than this (in seconds), the node is considered to be in initial block download. */
 extern int64_t nMaxTipAge;
+extern bool fPermitReplacement;
 
 /** Best header we've seen so far (used for getheaders queries' starting points). */
 extern CBlockIndex *pindexBestHeader;
