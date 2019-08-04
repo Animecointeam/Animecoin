@@ -19,8 +19,6 @@
 
 #include <univalue.h>
 
-using namespace std;
-
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
@@ -75,9 +73,9 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
         entry.push_back(Pair(item.first, item.second));
 }
 
-string AccountFromValue(const UniValue& value)
+std::string AccountFromValue(const UniValue& value)
 {
-    string strAccount = value.get_str();
+    std::string strAccount = value.get_str();
     if (strAccount == "*")
         throw JSONRPCError(RPC_WALLET_INVALID_ACCOUNT_NAME, "Invalid account name");
     return strAccount;
@@ -89,7 +87,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getnewaddress ( \"account\" )\n"
                 "\nReturns a new Animecoin address for receiving payments.\n"
                 "If 'account' is specified (recommended), it is added to the address book \n"
@@ -108,7 +106,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     // Parse the account first so we don't generate a key if there's an error
-    string strAccount;
+    std::string strAccount;
     if (request.params.size() > 0)
         strAccount = AccountFromValue(request.params[0]);
 
@@ -127,7 +125,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
 }
 
 
-CBitcoinAddress GetAccountAddress(string strAccount, bool bForceNew=false)
+CBitcoinAddress GetAccountAddress(std::string strAccount, bool bForceNew=false)
 {
     CPubKey pubKey;
     if (!pwalletMain->GetAccountPubkey(pubKey, strAccount, bForceNew)) {
@@ -143,7 +141,7 @@ UniValue getaccountaddress(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getaccountaddress \"account\"\n"
                 "\nReturns the current Animecoin address for receiving payments to this account.\n"
                 "\nArguments:\n"
@@ -160,7 +158,7 @@ UniValue getaccountaddress(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     // Parse the account first so we don't generate a key if there's an error
-    string strAccount = AccountFromValue(request.params[0]);
+    std::string strAccount = AccountFromValue(request.params[0]);
 
     UniValue ret(UniValue::VSTR);
 
@@ -175,7 +173,7 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 1)
-        throw runtime_error(
+        throw std::runtime_error(
             "getrawchangeaddress\n"
             "\nReturns a new Animecoin address, for receiving change.\n"
             "This is for use with raw transactions, NOT normal use.\n"
@@ -210,7 +208,7 @@ UniValue setaccount(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "setaccount \"animecoinaddress\" \"account\"\n"
                 "\nSets the account associated with the given address.\n"
                 "\nArguments:\n"
@@ -227,7 +225,7 @@ UniValue setaccount(const JSONRPCRequest& request)
     if (!address.IsValid())
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Animecoin address");
 
-    string strAccount;
+    std::string strAccount;
     if (request.params.size() > 1)
         strAccount = AccountFromValue(request.params[1]);
 
@@ -237,7 +235,7 @@ UniValue setaccount(const JSONRPCRequest& request)
         // Detect when changing the account of an address that is the 'unused current key' of another account:
         if (pwalletMain->mapAddressBook.count(address.Get()))
         {
-            string strOldAccount = pwalletMain->mapAddressBook[address.Get()].name;
+            std::string strOldAccount = pwalletMain->mapAddressBook[address.Get()].name;
             if (address == GetAccountAddress(strOldAccount))
                 GetAccountAddress(strOldAccount, true);
         }
@@ -256,7 +254,7 @@ UniValue getaccount(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getaccount \"animecoinaddress\"\n"
                 "\nReturns the account associated with the given address.\n"
                 "\nArguments:\n"
@@ -274,8 +272,8 @@ UniValue getaccount(const JSONRPCRequest& request)
     if (!address.IsValid())
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Animecoin address");
 
-    string strAccount;
-    map<CTxDestination, CAddressBookData>::iterator mi = pwalletMain->mapAddressBook.find(address.Get());
+    std::string strAccount;
+    std::map<CTxDestination, CAddressBookData>::iterator mi = pwalletMain->mapAddressBook.find(address.Get());
     if (mi != pwalletMain->mapAddressBook.end() && !(*mi).second.name.empty())
         strAccount = (*mi).second.name;
     return strAccount;
@@ -288,7 +286,7 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getaddressesbyaccount \"account\"\n"
                 "\nReturns the list of addresses for the given account.\n"
                 "\nArguments:\n"
@@ -305,14 +303,14 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    string strAccount = AccountFromValue(request.params[0]);
+    std::string strAccount = AccountFromValue(request.params[0]);
 
     // Find all addresses that have the given account
     UniValue ret(UniValue::VARR);
     for (const std::pair<CBitcoinAddress, CAddressBookData>& item : pwalletMain->mapAddressBook)
     {
         const CBitcoinAddress& address = item.first;
-        const string& strName = item.second.name;
+        const std::string& strName = item.second.name;
         if (strName == strAccount)
             ret.push_back(address.ToString());
     }
@@ -321,20 +319,14 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
 
 static void SendMoney(const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew)
 {
+    CAmount curBalance = pwalletMain->GetBalance();
+
     // Check amount
     if (nValue <= 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid amount");
 
-    if (nValue > pwalletMain->GetBalance())
+    if (nValue > curBalance)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
-
-    string strError;
-    if (pwalletMain->IsLocked())
-    {
-        strError = "Error: Wallet locked, unable to create transaction!";
-        LogPrintf("SendMoney() : %s", strError);
-        throw JSONRPCError(RPC_WALLET_ERROR, strError);
-    }
 
     if (pwalletMain->GetBroadcastTransactions() && !g_connman)
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
@@ -345,12 +337,13 @@ static void SendMoney(const CTxDestination &address, CAmount nValue, bool fSubtr
     // Create and send the transaction
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
-    vector<CRecipient> vecSend;
+    std::string strError;
+    std::vector<CRecipient> vecSend;
     int nChangePosRet = -1;
     CRecipient recipient = {scriptPubKey, nValue, fSubtractFeeFromAmount};
     vecSend.push_back(recipient);
     if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strError)) {
-        if (!fSubtractFeeFromAmount && nValue + nFeeRequired > pwalletMain->GetBalance())
+        if (!fSubtractFeeFromAmount && nValue + nFeeRequired > curBalance)
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
@@ -364,7 +357,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
-        throw runtime_error(
+        throw std::runtime_error(
                 "sendtoaddress \"animecoinaddress\" amount ( \"comment\" \"comment-to\" subtractfeefromamount )\n"
                 "\nSend an amount to a given address. The amount is a real and is rounded to the nearest 0.00000001\n"
                 + HelpRequiringPassphrase() +
@@ -422,7 +415,7 @@ UniValue listaddressgroupings(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp)
-        throw runtime_error(
+        throw std::runtime_error(
             "listaddressgroupings\n"
             "\nLists groups of addresses which have had their common ownership\n"
             "made public by common use as inputs or as the resulting change\n"
@@ -447,8 +440,8 @@ UniValue listaddressgroupings(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     UniValue jsonGroupings(UniValue::VARR);
-    map<CTxDestination, CAmount> balances = pwalletMain->GetAddressBalances();
-    for (set<CTxDestination> grouping : pwalletMain->GetAddressGroupings())
+    std::map<CTxDestination, CAmount> balances = pwalletMain->GetAddressBalances();
+    for (std::set<CTxDestination> grouping : pwalletMain->GetAddressGroupings())
     {
         UniValue jsonGrouping(UniValue::VARR);
         for (CTxDestination address : grouping)
@@ -473,7 +466,7 @@ UniValue signmessage(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "signmessage \"animecoinaddress\" \"message\"\n"
                 "\nSign a message with the private key of an address"
                 + HelpRequiringPassphrase() + "\n"
@@ -497,8 +490,8 @@ UniValue signmessage(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked();
 
-    string strAddress = request.params[0].get_str();
-    string strMessage = request.params[1].get_str();
+    std::string strAddress = request.params[0].get_str();
+    std::string strMessage = request.params[1].get_str();
 
     CBitcoinAddress addr(strAddress);
     if (!addr.IsValid())
@@ -516,7 +509,7 @@ UniValue signmessage(const JSONRPCRequest& request)
     ss << strMessageMagic;
     ss << strMessage;
 
-    vector<unsigned char> vchSig;
+    std::vector<unsigned char> vchSig;
     if (!key.SignCompact(ss.GetHash(), vchSig))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Sign failed");
 
@@ -529,7 +522,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getreceivedbyaddress \"animecoinaddress\" ( minconf )\n"
                 "\nReturns the total amount received by the given animecoinaddress in transactions with at least minconf confirmations.\n"
                 "\nArguments:\n"
@@ -565,7 +558,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
 
     // Tally
     CAmount nAmount = 0;
-    for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
         if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
@@ -587,7 +580,7 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getreceivedbyaccount \"account\" ( minconf )\n"
                 "\nReturns the total amount received by addresses with <account> in transactions with at least [minconf] confirmations.\n"
                 "\nArguments:\n"
@@ -614,12 +607,12 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
         nMinDepth = request.params[1].get_int();
 
     // Get the set of pub keys assigned to account
-    string strAccount = AccountFromValue(request.params[0]);
-    set<CTxDestination> setAddress = pwalletMain->GetAccountAddresses(strAccount);
+    std::string strAccount = AccountFromValue(request.params[0]);
+    std::set<CTxDestination> setAddress = pwalletMain->GetAccountAddresses(strAccount);
 
     // Tally
     CAmount nAmount = 0;
-    for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
         if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
@@ -643,7 +636,7 @@ UniValue getbalance(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 3)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getbalance ( \"account\" minconf includeWatchonly )\n"
                 "\nIf account is not specified, returns the server's total available balance.\n"
                 "If account is specified, returns the balance in the account.\n"
@@ -686,16 +679,16 @@ UniValue getbalance(const JSONRPCRequest& request)
         // (GetBalance() sums up all unspent TxOuts)
         // getbalance and "getbalance * 1 true" should return the same number
         CAmount nBalance = 0;
-        for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+        for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
         {
             const CWalletTx& wtx = (*it).second;
             if (!CheckFinalTx(wtx) || wtx.GetBlocksToMaturity() > 0 || wtx.GetDepthInMainChain() < 0)
                 continue;
 
             CAmount allFee;
-            string strSentAccount;
-            list<COutputEntry> listReceived;
-            list<COutputEntry> listSent;
+            std::string strSentAccount;
+            std::list<COutputEntry> listReceived;
+            std::list<COutputEntry> listSent;
             wtx.GetAmounts(listReceived, listSent, allFee, strSentAccount, filter);
             if (wtx.GetDepthInMainChain() >= nMinDepth)
             {
@@ -709,7 +702,7 @@ UniValue getbalance(const JSONRPCRequest& request)
         return  ValueFromAmount(nBalance);
     }
 
-    string strAccount = AccountFromValue(request.params[0]);
+    std::string strAccount = AccountFromValue(request.params[0]);
 
     CAmount nBalance = pwalletMain->GetAccountBalance(strAccount, nMinDepth, filter);
 
@@ -722,7 +715,7 @@ UniValue getunconfirmedbalance(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 0)
-        throw runtime_error(
+        throw std::runtime_error(
                 "getunconfirmedbalance\n"
                 "Returns the server's total unconfirmed balance\n");
 
@@ -738,7 +731,7 @@ UniValue movecmd(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 5)
-        throw runtime_error(
+        throw std::runtime_error(
                 "move \"fromaccount\" \"toaccount\" amount ( minconf \"comment\" )\n"
                 "\nMove a specified amount from one account in your wallet to another.\n"
                 "\nArguments:\n"
@@ -760,15 +753,15 @@ UniValue movecmd(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    string strFrom = AccountFromValue(request.params[0]);
-    string strTo = AccountFromValue(request.params[1]);
+    std::string strFrom = AccountFromValue(request.params[0]);
+    std::string strTo = AccountFromValue(request.params[1]);
     CAmount nAmount = AmountFromValue(request.params[2]);
     if (nAmount <= 0)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
     if (request.params.size() > 3)
         // unused parameter, used to be nMinDepth, keep type-checking it though
         (void)request.params[3].get_int();
-    string strComment;
+    std::string strComment;
     if (request.params.size() > 4)
         strComment = request.params[4].get_str();
 
@@ -785,7 +778,7 @@ UniValue sendfrom(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 6)
-        throw runtime_error(
+        throw std::runtime_error(
                 "sendfrom \"fromaccount\" \"toanimecoinaddress\" amount ( minconf \"comment\" \"comment-to\" )\n"
                 "\nSent an amount from an account to an animecoin address.\n"
                 "The amount is a real and is rounded to the nearest 0.00000001."
@@ -813,7 +806,7 @@ UniValue sendfrom(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    string strAccount = AccountFromValue(request.params[0]);
+    std::string strAccount = AccountFromValue(request.params[0]);
     CBitcoinAddress address(request.params[1].get_str());
     if (!address.IsValid())
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Animecoin address");
@@ -850,7 +843,7 @@ UniValue sendmany(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
-        throw runtime_error(
+        throw std::runtime_error(
                 "sendmany \"fromaccount\" {\"address\":amount,...} ( minconf \"comment\" {\"address\":true,...} )\n"
                 "\nSend multiple times. Amounts are double-precision floating point numbers."
                 + HelpRequiringPassphrase() + "\n"
@@ -890,7 +883,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     if (pwalletMain->GetBroadcastTransactions() && !g_connman)
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 
-    string strAccount = AccountFromValue(request.params[0]);
+    std::string strAccount = AccountFromValue(request.params[0]);
     UniValue sendTo = request.params[1].get_obj();
     int nMinDepth = 1;
     if (request.params.size() > 2)
@@ -905,19 +898,19 @@ UniValue sendmany(const JSONRPCRequest& request)
     if (request.params.size() > 4)
         subtractFeeFromAmount = request.params[4].get_obj();
 
-    set<CBitcoinAddress> setAddress;
-    vector<CRecipient> vecSend;
+    std::set<CBitcoinAddress> setAddress;
+    std::vector<CRecipient> vecSend;
 
     CAmount totalAmount = 0;
-    vector<string> keys = sendTo.getKeys();
-    for (const string& name_ : keys)
+    std::vector<std::string> keys = sendTo.getKeys();
+    for (const std::string& name_ : keys)
     {
         CBitcoinAddress address(name_);
         if (!address.IsValid())
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid Animecoin address: ")+name_);
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Animecoin address: ")+name_);
 
         if (setAddress.count(address))
-            throw JSONRPCError(RPC_INVALID_PARAMETER, string("Invalid parameter, duplicated address: ")+name_);
+            throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+name_);
         setAddress.insert(address);
 
         CScript scriptPubKey = GetScriptForDestination(address.Get());
@@ -947,7 +940,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     CReserveKey keyChange(pwalletMain);
     CAmount nFeeRequired = 0;
     int nChangePosRet = -1;
-    string strFailReason;
+    std::string strFailReason;
     bool fCreated = pwalletMain->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, nChangePosRet, strFailReason);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
@@ -967,7 +960,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
     {
-        string msg = "addmultisigaddress nrequired [\"key\",...] ( \"account\" )\n"
+        std::string msg = "addmultisigaddress nrequired [\"key\",...] ( \"account\" )\n"
             "\nAdd a nrequired-to-sign multisignature address to the wallet.\n"
             "Each key is an Animecoin address or hex-encoded public key.\n"
             "If 'account' is specified, assign address to that account.\n"
@@ -990,12 +983,12 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
             "\nAs json rpc call\n"
             + HelpExampleRpc("addmultisigaddress", "2, \"[\\\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\\\",\\\"Ad9gq1rYvKDiFWCQPnrXVBCZEhwmQYXNks\\\"]\"")
         ;
-        throw runtime_error(msg);
+        throw std::runtime_error(msg);
     }
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    string strAccount;
+    std::string strAccount;
     if (request.params.size() > 2)
         strAccount = AccountFromValue(request.params[2]);
 
@@ -1013,7 +1006,7 @@ struct tallyitem
 {
     CAmount nAmount;
     int nConf;
-    vector<uint256> txids;
+    std::vector<uint256> txids;
     bool fIsWatchonly;
     tallyitem()
     {
@@ -1041,8 +1034,8 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
             filter = filter | ISMINE_WATCH_ONLY;
 
     // Tally
-    map<CBitcoinAddress, tallyitem> mapTally;
-    for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    std::map<CBitcoinAddress, tallyitem> mapTally;
+    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
 
@@ -1065,7 +1058,7 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
 
             tallyitem& item = mapTally[address];
             item.nAmount += txout.nValue;
-            item.nConf = min(item.nConf, nDepth);
+            item.nConf = std::min(item.nConf, nDepth);
             item.txids.push_back(wtx.GetHash());
             if (mine & ISMINE_WATCH_ONLY)
                 item.fIsWatchonly = true;
@@ -1074,12 +1067,12 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
 
     // Reply
     UniValue ret(UniValue::VARR);
-    map<string, tallyitem> mapAccountTally;
+    std::map<std::string, tallyitem> mapAccountTally;
     for (const std::pair<CBitcoinAddress, CAddressBookData>& item : pwalletMain->mapAddressBook)
     {
         const CBitcoinAddress& address = item.first;
-        const string& strAccount = item.second.name;
-        map<CBitcoinAddress, tallyitem>::iterator it = mapTally.find(address);
+        const std::string& strAccount = item.second.name;
+        std::map<CBitcoinAddress, tallyitem>::iterator it = mapTally.find(address);
         if (it == mapTally.end() && !fIncludeEmpty)
             continue;
 
@@ -1097,7 +1090,7 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
         {
             tallyitem& item = mapAccountTally[strAccount];
             item.nAmount += nAmount;
-            item.nConf = min(item.nConf, nConf);
+            item.nConf = std::min(item.nConf, nConf);
             item.fIsWatchonly = fIsWatchonly;
         }
         else
@@ -1124,7 +1117,7 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
 
     if (fByAccounts)
     {
-        for (map<string, tallyitem>::iterator it = mapAccountTally.begin(); it != mapAccountTally.end(); ++it)
+        for (std::map<std::string, tallyitem>::iterator it = mapAccountTally.begin(); it != mapAccountTally.end(); ++it)
         {
             CAmount nAmount = (*it).second.nAmount;
             int nConf = (*it).second.nConf;
@@ -1147,7 +1140,7 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 3)
-        throw runtime_error(
+        throw std::runtime_error(
                 "listreceivedbyaddress ( minconf includeempty includeWatchonly)\n"
                 "\nList balances by receiving address.\n"
                 "\nArguments:\n"
@@ -1184,7 +1177,7 @@ UniValue listreceivedbyaccount(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 3)
-        throw runtime_error(
+        throw std::runtime_error(
                 "listreceivedbyaccount ( minconf includeempty includeWatchonly)\n"
                 "\nList balances by account.\n"
                 "\nArguments:\n"
@@ -1221,16 +1214,16 @@ static void MaybePushAddress(UniValue & entry, const CTxDestination &dest)
         entry.push_back(Pair("address", addr.ToString()));
 }
 
-void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDepth, bool fLong, UniValue& ret, const isminefilter& filter)
+void ListTransactions(const CWalletTx& wtx, const std::string& strAccount, int nMinDepth, bool fLong, UniValue& ret, const isminefilter& filter)
 {
     CAmount nFee;
-    string strSentAccount;
-    list<COutputEntry> listReceived;
-    list<COutputEntry> listSent;
+    std::string strSentAccount;
+    std::list<COutputEntry> listReceived;
+    std::list<COutputEntry> listSent;
 
     wtx.GetAmounts(listReceived, listSent, nFee, strSentAccount, filter);
 
-    bool fAllAccounts = (strAccount == string("*"));
+    bool fAllAccounts = (strAccount == std::string("*"));
     bool involvesWatchonly = wtx.IsFromMe(ISMINE_WATCH_ONLY);
 
     // Sent
@@ -1258,7 +1251,7 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
     {
         for (const COutputEntry& r : listReceived)
         {
-            string account;
+            std::string account;
             if (pwalletMain->mapAddressBook.count(r.destination))
                 account = pwalletMain->mapAddressBook[r.destination].name;
             if (fAllAccounts || (account == strAccount))
@@ -1291,9 +1284,9 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
     }
 }
 
-void AcentryToJSON(const CAccountingEntry& acentry, const string& strAccount, UniValue& ret)
+void AcentryToJSON(const CAccountingEntry& acentry, const std::string& strAccount, UniValue& ret)
 {
-    bool fAllAccounts = (strAccount == string("*"));
+    bool fAllAccounts = (strAccount == std::string("*"));
 
     if (fAllAccounts || acentry.strAccount == strAccount)
     {
@@ -1314,7 +1307,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 4)
-        throw runtime_error(
+        throw std::runtime_error(
                 "listtransactions ( \"account\" count from includeWatchonly)\n"
                 "\nReturns up to 'count' most recent transactions skipping the first 'from' transactions for account 'account'.\n"
                 "\nArguments:\n"
@@ -1372,7 +1365,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    string strAccount = "*";
+    std::string strAccount = "*";
     if (request.params.size() > 0)
         strAccount = request.params[0].get_str();
     int nCount = 10;
@@ -1414,11 +1407,11 @@ UniValue listtransactions(const JSONRPCRequest& request)
     if ((nFrom + nCount) > (int)ret.size())
         nCount = ret.size() - nFrom;
 
-    vector<UniValue> arrTmp = ret.getValues();
+    std::vector<UniValue> arrTmp = ret.getValues();
 
-    vector<UniValue>::iterator first = arrTmp.begin();
+    std::vector<UniValue>::iterator first = arrTmp.begin();
     std::advance(first, nFrom);
-    vector<UniValue>::iterator last = arrTmp.begin();
+    std::vector<UniValue>::iterator last = arrTmp.begin();
     std::advance(last, nFrom+nCount);
 
     if (last != arrTmp.end()) arrTmp.erase(last, arrTmp.end());
@@ -1439,7 +1432,7 @@ UniValue listaccounts(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "listaccounts ( minconf includeWatchonly)\n"
                 "\nReturns Object that has account names as keys, account balances as values.\n"
                 "\nArguments:\n"
@@ -1471,19 +1464,19 @@ UniValue listaccounts(const JSONRPCRequest& request)
         if(request.params[1].get_bool())
             includeWatchonly = includeWatchonly | ISMINE_WATCH_ONLY;
 
-    map<string, CAmount> mapAccountBalances;
+    std::map<std::string, CAmount> mapAccountBalances;
     for (const std::pair<CTxDestination, CAddressBookData>& entry : pwalletMain->mapAddressBook) {
         if (IsMine(*pwalletMain, entry.first) & includeWatchonly) // This address belongs to me
             mapAccountBalances[entry.second.name] = 0;
     }
 
-    for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
         CAmount nFee;
-        string strSentAccount;
-        list<COutputEntry> listReceived;
-        list<COutputEntry> listSent;
+        std::string strSentAccount;
+        std::list<COutputEntry> listReceived;
+        std::list<COutputEntry> listSent;
         int nDepth = wtx.GetDepthInMainChain();
         if (wtx.GetBlocksToMaturity() > 0 || nDepth < 0)
             continue;
@@ -1501,12 +1494,12 @@ UniValue listaccounts(const JSONRPCRequest& request)
         }
     }
 
-    const list<CAccountingEntry> & acentries = pwalletMain->laccentries;
+    const std::list<CAccountingEntry> & acentries = pwalletMain->laccentries;
     for (const CAccountingEntry& entry : acentries)
         mapAccountBalances[entry.strAccount] += entry.nCreditDebit;
 
     UniValue ret(UniValue::VOBJ);
-    for (const std::pair<string, CAmount>& accountBalance : mapAccountBalances) {
+    for (const std::pair<std::string, CAmount>& accountBalance : mapAccountBalances) {
         ret.push_back(Pair(accountBalance.first, ValueFromAmount(accountBalance.second)));
     }
     return ret;
@@ -1518,7 +1511,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp)
-        throw runtime_error(
+        throw std::runtime_error(
                 "listsinceblock ( \"blockhash\" target-confirmations includeWatchonly)\n"
                 "\nGet all transactions in blocks since block [blockhash], or all transactions if omitted\n"
                 "\nArguments:\n"
@@ -1585,7 +1578,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
 
     UniValue transactions(UniValue::VARR);
 
-    for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); it++)
+    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); it++)
     {
         CWalletTx tx = (*it).second;
 
@@ -1609,7 +1602,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "gettransaction \"txid\" ( includeWatchonly )\n"
                 "\nGet detailed information about in-wallet transaction <txid>\n"
                 "\nArguments:\n"
@@ -1674,7 +1667,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     ListTransactions(wtx, "*", 0, false, details, filter);
     entry.push_back(Pair("details", details));
 
-    string strHex = EncodeHexTx(static_cast<CTransaction>(wtx));
+    std::string strHex = EncodeHexTx(static_cast<CTransaction>(wtx));
     entry.push_back(Pair("hex", strHex));
 
     return entry;
@@ -1686,7 +1679,7 @@ UniValue abandontransaction(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 1)
-        throw runtime_error(
+        throw std::runtime_error(
             "abandontransaction \"txid\"\n"
             "\nMark in-wallet transaction <txid> as abandoned\n"
             "This will mark this transaction and all its in-wallet descendants as abandoned which will allow\n"
@@ -1720,7 +1713,7 @@ UniValue backupwallet(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "backupwallet \"destination\"\n"
                 "\nSafely copies current wallet file to destination, which can be a directory or a path with filename.\n"
                 "\nArguments:\n"
@@ -1732,7 +1725,7 @@ UniValue backupwallet(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    string strDest = request.params[0].get_str();
+    std::string strDest = request.params[0].get_str();
     if (!pwalletMain->BackupWallet(strDest))
         throw JSONRPCError(RPC_WALLET_ERROR, "Error: Wallet backup failed!");
 
@@ -1746,7 +1739,7 @@ UniValue keypoolrefill(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "keypoolrefill ( newsize )\n"
                 "\nFills the keypool."
                 + HelpRequiringPassphrase() + "\n"
@@ -1790,7 +1783,7 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (pwalletMain->IsCrypted() && (request.fHelp || request.params.size() != 2))
-        throw runtime_error(
+        throw std::runtime_error(
                 "walletpassphrase \"passphrase\" timeout\n"
                 "\nStores the wallet decryption key in memory for 'timeout' seconds.\n"
                 "This is needed prior to performing transactions related to private keys such as sending animecoins\n"
@@ -1829,7 +1822,7 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_WALLET_PASSPHRASE_INCORRECT, "Error: The wallet passphrase entered was incorrect.");
     }
     else
-        throw runtime_error(
+        throw std::runtime_error(
             "walletpassphrase <passphrase> <timeout>\n"
             "Stores the wallet decryption key in memory for <timeout> seconds.");
 
@@ -1850,7 +1843,7 @@ UniValue walletpassphrasechange(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (pwalletMain->IsCrypted() && (request.fHelp || request.params.size() != 2))
-        throw runtime_error(
+        throw std::runtime_error(
                 "walletpassphrasechange \"oldpassphrase\" \"newpassphrase\"\n"
                 "\nChanges the wallet passphrase from 'oldpassphrase' to 'newpassphrase'.\n"
                 "\nArguments:\n"
@@ -1879,7 +1872,7 @@ UniValue walletpassphrasechange(const JSONRPCRequest& request)
     strNewWalletPass = request.params[1].get_str().c_str();
 
     if (strOldWalletPass.length() < 1 || strNewWalletPass.length() < 1)
-        throw runtime_error(
+        throw std::runtime_error(
             "walletpassphrasechange <oldpassphrase> <newpassphrase>\n"
             "Changes the wallet passphrase from <oldpassphrase> to <newpassphrase>.");
 
@@ -1896,7 +1889,7 @@ UniValue walletlock(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (pwalletMain->IsCrypted() && (request.fHelp || request.params.size() != 0))
-        throw runtime_error(
+        throw std::runtime_error(
             "walletlock\n"
             "\nRemoves the wallet encryption key from memory, locking the wallet.\n"
             "After calling this method, you will need to call walletpassphrase again\n"
@@ -1935,7 +1928,7 @@ UniValue encryptwallet(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (!pwalletMain->IsCrypted() && (request.fHelp || request.params.size() != 1))
-        throw runtime_error(
+        throw std::runtime_error(
                 "encryptwallet \"passphrase\"\n"
                 "\nEncrypts the wallet with 'passphrase'. This is for first time encryption.\n"
                 "After this, any calls that interact with private keys such as sending or signing \n"
@@ -1972,7 +1965,7 @@ UniValue encryptwallet(const JSONRPCRequest& request)
     strWalletPass = request.params[0].get_str().c_str();
 
     if (strWalletPass.length() < 1)
-        throw runtime_error(
+        throw std::runtime_error(
             "encryptwallet <passphrase>\n"
             "Encrypts the wallet with <passphrase>.");
 
@@ -1992,7 +1985,7 @@ UniValue lockunspent(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                 "lockunspent unlock [{\"txid\":\"txid\",\"vout\":n},...]\n"
                 "\nUpdates list of temporarily unspendable outputs.\n"
                 "Temporarily lock (unlock=false) or unlock (unlock=true) specified transaction outputs.\n"
@@ -2051,7 +2044,7 @@ UniValue lockunspent(const JSONRPCRequest& request)
 
         RPCTypeCheckObj(o, {{"txid", UniValue::VSTR}, {"vout", UniValue::VNUM}});
 
-        string txid = find_value(o, "txid").get_str();
+        std::string txid = find_value(o, "txid").get_str();
         if (!IsHex(txid))
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected hex txid");
 
@@ -2076,7 +2069,7 @@ UniValue listlockunspent(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 0)
-        throw runtime_error(
+        throw std::runtime_error(
             "listlockunspent\n"
             "\nReturns list of temporarily unspendable outputs.\n"
             "See the lockunspent call to lock and unlock transactions for spending.\n"
@@ -2103,7 +2096,7 @@ UniValue listlockunspent(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    vector<COutPoint> vOutpts;
+    std::vector<COutPoint> vOutpts;
     pwalletMain->ListLockedCoins(vOutpts);
 
     UniValue ret(UniValue::VARR);
@@ -2125,7 +2118,7 @@ UniValue settxfee(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 1)
-        throw runtime_error(
+        throw std::runtime_error(
                 "settxfee amount\n"
                 "\nSet the transaction fee per kB.\n"
                 "\nArguments:\n"
@@ -2152,7 +2145,7 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 0)
-        throw runtime_error(
+        throw std::runtime_error(
             "getwalletinfo\n"
             "Returns an object containing various wallet state info.\n"
             "\nResult:\n"
@@ -2194,7 +2187,7 @@ UniValue resendwallettransactions(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() != 0)
-        throw runtime_error(
+        throw std::runtime_error(
             "resendwallettransactions\n"
             "Immediately re-broadcast unconfirmed wallet transactions to all peers.\n"
             "Intended only for testing; the wallet code periodically re-broadcasts\n"
@@ -2222,7 +2215,7 @@ UniValue listunspent(const JSONRPCRequest& request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() > 3)
-        throw runtime_error(
+        throw std::runtime_error(
                 "listunspent ( minconf maxconf  [\"address\",...] )\n"
                 "\nReturns array of unspent transaction outputs\n"
             "with between minconf and maxconf (inclusive) confirmations.\n"
@@ -2267,22 +2260,22 @@ UniValue listunspent(const JSONRPCRequest& request)
     if (request.params.size() > 1)
         nMaxDepth = request.params[1].get_int();
 
-    set<CBitcoinAddress> setAddress;
+    std::set<CBitcoinAddress> setAddress;
     if (request.params.size() > 2) {
         UniValue inputs = request.params[2].get_array();
         for (unsigned int idx = 0; idx < inputs.size(); idx++) {
             const UniValue& input = inputs[idx];
             CBitcoinAddress address(input.get_str());
             if (!address.IsValid())
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid Animecoin address: ")+input.get_str());
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Animecoin address: ")+input.get_str());
             if (setAddress.count(address))
-                throw JSONRPCError(RPC_INVALID_PARAMETER, string("Invalid parameter, duplicated address: ")+input.get_str());
+                throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+input.get_str());
            setAddress.insert(address);
         }
     }
 
     UniValue results(UniValue::VARR);
-    vector<COutput> vecOutputs;
+    std::vector<COutput> vecOutputs;
     assert(pwalletMain != nullptr);
     LOCK2(cs_main, pwalletMain->cs_wallet);
     pwalletMain->AvailableCoins(vecOutputs, false);
@@ -2335,7 +2328,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
         return NullUniValue;
 
    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
+        throw std::runtime_error(
                             "fundrawtransaction \"hexstring\" includeWatching\n"
                             "\nAdd inputs to a transaction until it has enough in value to meet its out value.\n"
                             "This will not modify existing inputs, and will add one change output to the outputs.\n"
@@ -2379,7 +2372,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
 
     CMutableTransaction tx(origTx);
     CAmount nFee;
-    string strFailReason;
+    std::string strFailReason;
     int nChangePos = -1;
     if(!pwalletMain->FundTransaction(tx, nFee, nChangePos, strFailReason, includeWatching))
         throw JSONRPCError(RPC_INTERNAL_ERROR, strFailReason);
