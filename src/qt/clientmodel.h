@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QDateTime>
 
+#include <atomic>
+
 class AddressTableModel;
 class BanTableModel;
 class OptionsModel;
@@ -51,6 +53,8 @@ public:
     //! Return number of connections, default is in- and outbound (total)
     int getNumConnections(unsigned int flags = CONNECTIONS_ALL) const;
     int getNumBlocks() const;
+    int getHeaderTipHeight() const;
+    int64_t getHeaderTipTime() const;
 
     //! Return number of transactions in the mempool
     long getMempoolSize() const;
@@ -65,7 +69,7 @@ public:
 
     //! Return true if core is doing initial block download
     bool inInitialBlockDownload() const;
-    //! Return true if core is importing blocks
+    //! Returns enum BlockSource of the current importing/syncing state
     enum BlockSource getBlockSource() const;
     //! Return warnings to be displayed in status bar
     QString getStatusBarWarnings() const;
@@ -76,6 +80,10 @@ public:
     bool isReleaseVersion() const;
     QString clientName() const;
     QString formatClientStartupTime() const;
+
+    // caches for the best header
+    mutable std::atomic<int> cachedBestHeaderHeight;
+    mutable std::atomic<int64_t> cachedBestHeaderTime;
 
 private:
     OptionsModel *optionsModel;

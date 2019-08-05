@@ -8,6 +8,9 @@
 /* Milliseconds between model updates */
 static const int MODEL_UPDATE_DELAY = 250;
 
+//! The required delta of headers to the estimated number of available headers until we show the IBD progress
+static const int REQ_HEADER_HEIGHT_DELTA_SYNC = 24;
+
 /* AskPassphraseDialog -- Maximum passphrase length */
 static const int MAX_PASSPHRASE_SIZE = 1024;
 

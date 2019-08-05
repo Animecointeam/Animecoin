@@ -654,6 +654,16 @@ void BitcoinGUI::setNumConnections(int count)
     labelConnectionsIcon->setPixmap(QIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
     labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Animecoin network", "", count));
 }
+
+void BitcoinGUI::updateHeadersSyncProgressLabel()
+{
+    int64_t headersTipTime = clientModel->getHeaderTipTime();
+    int headersTipHeight = clientModel->getHeaderTipHeight();
+    int estHeadersLeft = (GetTime() - headersTipTime)/600;
+    if (estHeadersLeft > REQ_HEADER_HEIGHT_DELTA_SYNC)
+        progressBarLabel->setText(tr("Syncing Headers (%1%)...").arg(QString::number(100.0 / (headersTipHeight+estHeadersLeft)*headersTipHeight, 'f', 1)));
+}
+
 void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool header)
 {
     if(!clientModel)
@@ -667,9 +677,11 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     switch (blockSource) {
         case BLOCK_SOURCE_NETWORK:
             if (header) {
+                updateHeadersSyncProgressLabel();
                 return;
             }
         progressBarLabel->setText(tr("Synchronizing with network..."));
+        updateHeadersSyncProgressLabel();
             break;
         case BLOCK_SOURCE_DISK:
             if (header) {
@@ -685,8 +697,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
             if (header) {
                 return;
             }
-            // Case: not Importing, not Reindexing and no network connection
-            progressBarLabel->setText(tr("No block source available..."));
+            progressBarLabel->setText(tr("Connecting to peers..."));
             break;
     }
 
@@ -711,30 +722,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     }
     else
     {
-        // Represent time from last generated block in human readable text
-        QString timeBehindText;
-        const int HOUR_IN_SECONDS = 60*60;
-        const int DAY_IN_SECONDS = 24*60*60;
-        const int WEEK_IN_SECONDS = 7*24*60*60;
-        const int YEAR_IN_SECONDS = 31556952; // Average length of year in Gregorian calendar
-        if(secs < 2*DAY_IN_SECONDS)
-        {
-            timeBehindText = tr("%n hour(s)","",secs/HOUR_IN_SECONDS);
-        }
-        else if(secs < 2*WEEK_IN_SECONDS)
-        {
-            timeBehindText = tr("%n day(s)","",secs/DAY_IN_SECONDS);
-        }
-        else if(secs < YEAR_IN_SECONDS)
-        {
-            timeBehindText = tr("%n week(s)","",secs/WEEK_IN_SECONDS);
-        }
-        else
-        {
-            int years = secs / YEAR_IN_SECONDS;
-            int remainder = secs % YEAR_IN_SECONDS;
-            timeBehindText = tr("%1 and %2").arg(tr("%n year(s)", "", years)).arg(tr("%n week(s)","", remainder/WEEK_IN_SECONDS));
-        }
+        QString timeBehindText = GUIUtil::formateNiceTimeOffset(secs);
 
         progressBarLabel->setVisible(true);
         progressBar->setFormat(tr("%1 behind").arg(timeBehindText));
