@@ -78,7 +78,8 @@ private:
     WalletFrame *walletFrame;
 
     UnitDisplayStatusBarControl *unitDisplayControl;
-    QLabel *labelEncryptionIcon;
+    QLabel *labelWalletEncryptionIcon;
+    QLabel *labelWalletHDStatusIcon;
     QLabel *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
@@ -161,6 +162,12 @@ public slots:
        @see WalletModel::EncryptionStatus
     */
     void setEncryptionStatus(int status);
+
+    /** Set the hd-enabled status as shown in the UI.
+     @param[in] status            current hd enabled status
+     @see WalletModel::EncryptionStatus
+     */
+    void setHDStatus(int hdEnabled);
 
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
