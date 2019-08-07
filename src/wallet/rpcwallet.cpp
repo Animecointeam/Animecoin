@@ -2064,7 +2064,11 @@ UniValue lockunspent(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected object");
         const UniValue& o = output.get_obj();
 
-        RPCTypeCheckObj(o, {{"txid", UniValue::VSTR}, {"vout", UniValue::VNUM}});
+        RPCTypeCheckObj(o,
+            {
+                {"txid", UniValueType(UniValue::VSTR)},
+                {"vout", UniValueType(UniValue::VNUM)},
+            });
 
         std::string txid = find_value(o, "txid").get_str();
         if (!IsHex(txid))
@@ -2355,7 +2359,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
 
    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-                            "fundrawtransaction \"hexstring\" includeWatching\n"
+               "fundrawtransaction \"hexstring\" ( options )\n"
                             "\nAdd inputs to a transaction until it has enough in value to meet its out value.\n"
                             "This will not modify existing inputs, and will add one change output to the outputs.\n"
                             "Note that inputs which were signed may need to be resigned after completion since in/outputs have been added.\n"
@@ -2365,12 +2369,20 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "in the wallet using importaddress or addmultisigaddress (to calculate fees).\n"
                             "Only pay-to-pubkey, multisig, and P2SH versions thereof are currently supported for watch-only\n"
                             "\nArguments:\n"
-                            "1. \"hexstring\"     (string, required) The hex string of the raw transaction\n"
-                            "2. includeWatching (boolean, optional, default false) Also select inputs which are watch only\n"
+                            "1. \"hexstring\"           (string, required) The hex string of the raw transaction\n"
+                            "2. options               (object, optional)\n"
+                            "   {\n"
+                            "     \"changeAddress\"     (string, optional, default pool address) The bitcoin address to receive the change\n"
+                            "     \"changePosition\"    (numeric, optional, default random) The index of the change output\n"
+                            "     \"includeWatching\"   (boolean, optional, default false) Also select inputs which are watch only\n"
+                            "     \"lockUnspents\"      (boolean, optional, default false) Lock selected unspent outputs\n"
+                            "     \"feeRate\"           (numeric, optional, default not set: makes wallet determine the fee) Set a specific feerate (" + CURRENCY_UNIT + " per KB)\n"
+                            "   }\n"
+                            "                         for backward compatibility: passing in a true instzead of an object will result in {\"includeWatching\":true}\n"
                             "\nResult:\n"
                             "{\n"
                             "  \"hex\":       \"value\", (string)  The resulting raw transaction (hex-encoded string)\n"
-                            "  \"fee\":       n,         (numeric) The fee added to the transaction\n"
+                            "  \"fee\":       n,         (numeric) Fee in " + CURRENCY_UNIT + " the resulting transaction pays\n"
                             "  \"changepos\": n          (numeric) The position of the added change output, or -1\n"
                             "}\n"
                             "\"hex\"             \n"
@@ -2385,28 +2397,80 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             + HelpExampleCli("sendrawtransaction", "\"signedtransactionhex\"")
                             );
 
-    RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VBOOL});
+   RPCTypeCheck(request.params, {UniValue::VSTR});
+
+   CTxDestination changeAddress = CNoDestination();
+   int changePosition = -1;
+   bool includeWatching = false;
+   bool lockUnspents = false;
+   CFeeRate feeRate = CFeeRate(0);
+   bool overrideEstimatedFeerate = false;
+
+   if (request.params.size() > 1) {
+     if (request.params[1].type() == UniValue::VBOOL) {
+       // backward compatibility bool only fallback
+       includeWatching = request.params[1].get_bool();
+     }
+     else {
+         RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VOBJ});
+
+       UniValue options = request.params[1];
+
+       RPCTypeCheckObj(options,
+           {
+               {"changeAddress", UniValueType(UniValue::VSTR)},
+               {"changePosition", UniValueType(UniValue::VNUM)},
+               {"includeWatching", UniValueType(UniValue::VBOOL)},
+               {"lockUnspents", UniValueType(UniValue::VBOOL)},
+               {"feeRate", UniValueType()}, // will be checked below
+           },
+           true, true);
+
+       if (options.exists("changeAddress")) {
+           CBitcoinAddress address(options["changeAddress"].get_str());
+
+           if (!address.IsValid())
+               throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid bitcoin address");
+
+           changeAddress = address.Get();
+       }
+
+       if (options.exists("changePosition"))
+           changePosition = options["changePosition"].get_int();
+
+       if (options.exists("includeWatching"))
+           includeWatching = options["includeWatching"].get_bool();
+
+       if (options.exists("lockUnspents"))
+           lockUnspents = options["lockUnspents"].get_bool();
+
+       if (options.exists("feeRate"))
+       {
+           feeRate = CFeeRate(AmountFromValue(options["feeRate"]));
+           overrideEstimatedFeerate = true;
+       }
+     }
+   }
 
     // parse hex string from parameter
     CTransaction origTx;
     if (!DecodeHexTx(origTx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
-    bool includeWatching = false;
-    if (request.params.size() > 1)
-        includeWatching = request.params[1].get_bool();
+    if (changePosition != -1 && (changePosition < 0 || changePosition > origTx.vout.size()))
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "changePosition out of bounds");
 
     CMutableTransaction tx(origTx);
-    CAmount nFee;
+    CAmount nFeeOut;
     std::string strFailReason;
-    int nChangePos = -1;
-    if(!pwalletMain->FundTransaction(tx, nFee, nChangePos, strFailReason, includeWatching))
+
+    if(!pwalletMain->FundTransaction(tx, nFeeOut, overrideEstimatedFeerate, feeRate, changePosition, strFailReason, includeWatching, lockUnspents, changeAddress))
         throw JSONRPCError(RPC_INTERNAL_ERROR, strFailReason);
 
     UniValue result(UniValue::VOBJ);
     result.push_back(Pair("hex", EncodeHexTx(tx)));
-    result.push_back(Pair("changepos", nChangePos));
-    result.push_back(Pair("fee", ValueFromAmount(nFee)));
+    result.push_back(Pair("changepos", changePosition));
+    result.push_back(Pair("fee", ValueFromAmount(nFeeOut)));
 
     return result;
 }

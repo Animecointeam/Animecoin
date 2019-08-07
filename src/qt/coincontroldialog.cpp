@@ -801,7 +801,7 @@ void CoinControlDialog::updateView()
             }
 
             // set checkbox
-            if (coinControl->IsSelected(txhash, out.i))
+            if (coinControl->IsSelected(COutPoint(txhash, out.i)))
                 itemOutput->setCheckState(COLUMN_CHECKBOX, Qt::Checked);
         }
 
