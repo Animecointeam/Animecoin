@@ -2239,6 +2239,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
             AvailableCoins(vAvailableCoins, true, coinControl);
 
             nFeeRet = 0;
+            // Start with no fee and loop until there is enough fee
             while (true)
             {
                 nChangePosInOut = nChangePosRequest;
