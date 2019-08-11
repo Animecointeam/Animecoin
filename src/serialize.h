@@ -11,6 +11,7 @@
 #include <ios>
 #include <limits>
 #include <map>
+#include <memory>
 #include <set>
 #include <stdint.h>
 #include <string>
@@ -22,6 +23,20 @@
 #include "prevector.h"
 
 static const unsigned int MAX_SIZE = 0x02000000;
+
+/**
+ * Dummy data type to identify deserializing constructors.
+ *
+ * By convention, a constructor of a type T with signature
+ *
+ *   template <typename Stream> T::T(deserialize_type, Stream& s)
+ *
+ * is a deserializing constructor, which builds the type by
+ * deserializing it from s. If T contains const fields, this
+ * is likely the only way to do so.
+ */
+struct deserialize_type {};
+constexpr deserialize_type deserialize {};
 
 /**
  * Used to bypass the rule against non-const reference to temporary
@@ -564,7 +579,17 @@ template<typename K, typename Pred, typename A> unsigned int GetSerializeSize(co
 template<typename Stream, typename K, typename Pred, typename A> void Serialize(Stream& os, const std::set<K, Pred, A>& m, int nType, int nVersion);
 template<typename Stream, typename K, typename Pred, typename A> void Unserialize(Stream& is, std::set<K, Pred, A>& m, int nType, int nVersion);
 
+/**
+ * shared_ptr
+ */
+template<typename Stream, typename T> void Serialize(Stream& os, const std::shared_ptr<const T>& p, int nType, int nVersion);
+template<typename Stream, typename T> void Unserialize(Stream& os, std::shared_ptr<const T>& p, int nType, int nVersion);
 
+/**
+ * unique_ptr
+ */
+template<typename Stream, typename T> void Serialize(Stream& os, const std::unique_ptr<const T>& p, int nType, int nVersion);
+template<typename Stream, typename T> void Unserialize(Stream& os, std::unique_ptr<const T>& p, int nType, int nVersion);
 
 
 
@@ -891,6 +916,38 @@ void Unserialize(Stream& is, std::set<K, Pred, A>& m, int nType, int nVersion)
         Unserialize(is, key, nType, nVersion);
         it = m.insert(it, key);
     }
+}
+
+/**
+ * unique_ptr
+ */
+template<typename Stream, typename T> void
+Serialize(Stream& os, const std::unique_ptr<const T>& p, int nType, int nVersion)
+{
+    Serialize(os, *p, nType, nVersion);
+}
+
+template<typename Stream, typename T>
+void Unserialize(Stream& is, std::unique_ptr<const T>& p, int nType, int nVersion)
+{
+    p.reset(new T(deserialize, is));
+}
+
+
+
+/**
+ * shared_ptr
+ */
+template<typename Stream, typename T> void
+Serialize(Stream& os, const std::shared_ptr<const T>& p, int nType, int nVersion)
+{
+    Serialize(os, *p, nType, nVersion);
+}
+
+template<typename Stream, typename T>
+void Unserialize(Stream& is, std::shared_ptr<const T>& p, int nType, int nVersion)
+{
+    p = std::make_shared<const T>(deserialize, is);
 }
 
 

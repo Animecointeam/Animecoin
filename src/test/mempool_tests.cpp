@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(MempoolRemoveTest)
 
 
     CTxMemPool testPool(CFeeRate(0));
-    std::vector<std::shared_ptr<const CTransaction>> removed;
+    std::vector<CTransactionRef> removed;
 
     // Nothing in pool, remove should do nothing:
     testPool.removeRecursive(txParent, &removed);
@@ -409,8 +409,8 @@ BOOST_AUTO_TEST_CASE(MempoolAncestorIndexingTest)
     CheckSort<ancestor_score>(pool, sortedOrder);
 
     /* after tx6 is mined, tx7 should move up in the sort */
-    std::vector<CTransaction> vtx;
-    vtx.push_back(tx6);
+    std::vector<CTransactionRef> vtx;
+    vtx.push_back(MakeTransactionRef(tx6));
     pool.removeForBlock(vtx, 1, nullptr, false);
 
     sortedOrder.erase(sortedOrder.begin()+1);
@@ -544,7 +544,7 @@ BOOST_AUTO_TEST_CASE(MempoolSizeLimitTest)
     pool.addUnchecked(tx5.GetHash(), entry.Fee(1000LL).FromTx(tx5, &pool));
     pool.addUnchecked(tx7.GetHash(), entry.Fee(9000LL).FromTx(tx7, &pool));
 
-    std::vector<CTransaction> vtx;
+    std::vector<CTransactionRef> vtx;
     std::vector<std::shared_ptr<const CTransaction>> conflicts;
     SetMockTime(42);
     SetMockTime(42 + CTxMemPool::ROLLING_FEE_HALFLIFE);
