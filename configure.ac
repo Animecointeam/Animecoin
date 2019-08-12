@@ -52,6 +52,8 @@ case $host in
 esac
 dnl Require C++11 compiler (no GNU extensions)
 AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
+dnl Check if -latomic is required for <std::atomic>
+CHECK_ATOMIC
 dnl Libtool init checks.
 LT_INIT([pic-only])
 
@@ -169,6 +171,9 @@ AC_ARG_ENABLE([debug],
     [enable_debug=$enableval],
     [enable_debug=no])
 
+AC_LANG_PUSH([C++])
+AX_CHECK_COMPILE_FLAG([-Werror],[CXXFLAG_WERROR="-Werror"],[CXXFLAG_WERROR=""])
+
 if test "x$enable_debug" = xyes; then
     if test "x$GCC" = xyes; then
         CFLAGS="-g3 -Og -DDEBUG"
@@ -179,11 +184,20 @@ if test "x$enable_debug" = xyes; then
     fi
 fi
 
-## TODO: Remove these hard-coded paths and flags. They are here for the sake of
-##       compatibility with the legacy buildsystem.
-##
 if test "x$CXXFLAGS_overridden" = "xno"; then
-  CXXFLAGS="$CXXFLAGS -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wno-deprecated-copy"
+  AX_CHECK_COMPILE_FLAG([-Wall],[CXXFLAGS="$CXXFLAGS -Wall"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wextra],[CXXFLAGS="$CXXFLAGS -Wextra"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wformat],[CXXFLAGS="$CXXFLAGS -Wformat"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wformat-security],[CXXFLAGS="$CXXFLAGS -Wformat-security"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wshadow],[CXXFLAGS="$CXXFLAGS -Wshadow"],,[[$CXXFLAG_WERROR]])
+
+  ## Some compilers (gcc) ignore unknown -Wno-* options, but warn about all
+  ## unknown options if any other warning is produced. Test the -Wfoo case, and
+  ## set the -Wno-foo case if it works.
+  AX_CHECK_COMPILE_FLAG([-Wunused-parameter],[CXXFLAGS="$CXXFLAGS -Wno-unused-parameter"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wself-assign],[CXXFLAGS="$CXXFLAGS -Wno-self-assign"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wunused-local-typedef],[CXXFLAGS="$CXXFLAGS -Wno-unused-local-typedef"],,[[$CXXFLAG_WERROR]])
+  AX_CHECK_COMPILE_FLAG([-Wdeprecated-register],[CXXFLAGS="$CXXFLAGS -Wno-deprecated-register"],,[[$CXXFLAG_WERROR]])
 fi
 CPPFLAGS="$CPPFLAGS -DBOOST_SPIRIT_THREADSAFE -DBOOST_ASIO_ENABLE_OLD_SERVICES -DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS"
 
@@ -204,8 +218,6 @@ AC_ARG_WITH([daemon],
   [build animecoind daemon (default=yes)])],
   [build_bitcoind=$withval],
   [build_bitcoind=yes])
-
-AC_LANG_PUSH([C++])
 
 use_pkgconfig=yes
 case $host in
