@@ -140,6 +140,7 @@ BITCOIN_CORE_H = \
   support/lockedpool.h \
   sync.h \
   threadsafety.h \
+  threadinterrupt.h \
   timedata.h \
   torcontrol.h \
   txdb.h \
@@ -334,6 +335,7 @@ libanimecoin_util_a_SOURCES = \
   support/cleanse.cpp \
   support/lockedpool.cpp \
   sync.cpp \
+  threadinterrupt.cpp \
   util.cpp \
   utilstrencodings.cpp \
   utilmoneystr.cpp \

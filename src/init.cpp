@@ -163,6 +163,8 @@ void Interrupt(boost::thread_group& threadGroup)
     InterruptRPC();
     InterruptREST();
     InterruptTorControl();
+    if (g_connman)
+        g_connman->Interrupt();
     threadGroup.interrupt_all();
 }
 
@@ -193,7 +195,6 @@ void Shutdown()
     MapPort(false);
     UnregisterValidationInterface(peerLogic.get());
     peerLogic.reset();
-    g_connman->Stop();
     g_connman.reset();
 
     StopTorControl();
@@ -1481,7 +1482,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     connOptions.nMaxOutboundTimeframe = nMaxOutboundTimeframe;
     connOptions.nMaxOutboundLimit = nMaxOutboundLimit;
 
-    if(!connman.Start(threadGroup, scheduler, strNodeError, connOptions))
+    if (!connman.Start(scheduler, strNodeError, connOptions))
         return InitError(strNodeError);
 
     // Generate coins in the background

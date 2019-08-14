@@ -290,6 +290,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/compat.h \
     src/rpc/register.h \
     src/sync.h \
+    src/threadinterrupt.h \
     src/util.h \
     src/hash.h \
     src/uint256.h \
@@ -457,6 +458,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
     src/alert.cpp \
     src/sync.cpp \
+    src/threadinterrupt.cpp \
     src/util.cpp \
     src/hash.cpp \
     src/netbase.cpp \
