@@ -80,9 +80,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixPaint.setFont(QFont(font, 33*fontFactor));
     QFontMetrics fm = pixPaint.fontMetrics();
     int titleTextWidth  = fm.width(titleText);
-    if(titleTextWidth > 160) {
-        // strange font rendering, Arial probably not found
-        fontFactor = 0.75;
+    if(titleTextWidth > 133) {
+        fontFactor = fontFactor * 133 / titleTextWidth;
     }
 
     pixPaint.setFont(QFont(font, 33*fontFactor));
