@@ -1,7 +1,8 @@
 
+object
 unitester
+test_json
+no_nul
 
-*.log
 *.trs
-
-.libs
+*.log

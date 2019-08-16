@@ -19,7 +19,7 @@ LIBBITCOIN_UTIL=libanimecoin_util.a
 LIBBITCOIN_CRYPTO=crypto/libanimecoin_crypto.a
 LIBBITCOINQT=qt/libanimecoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
-LIBUNIVALUE=univalue/lib/libunivalue.la
+LIBUNIVALUE=univalue/libunivalue.la
 
 if ENABLE_ZMQ
 LIBBITCOIN_ZMQ=libanimecoin_zmq.a
