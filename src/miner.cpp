@@ -611,7 +611,7 @@ static bool ProcessBlockFound(CBlock* pblock, const CChainParams& chainparams)
 
     // Process this block the same as if we had received it from another node
     std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
-    if (!ProcessNewBlock(chainparams, shared_pblock, true, nullptr, nullptr))
+    if (!ProcessNewBlock(chainparams, shared_pblock, true, nullptr))
         return error("AniMiner : ProcessNewBlock, block not accepted");
 
     return true;
