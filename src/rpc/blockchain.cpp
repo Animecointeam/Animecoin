@@ -1234,11 +1234,11 @@ UniValue invalidateblock(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
 
         CBlockIndex* pblockindex = mapBlockIndex[hash];
-        InvalidateBlock(state, Params().GetConsensus(), pblockindex);
+        InvalidateBlock(state, Params(), pblockindex);
     }
 
     if (state.IsValid()) {
-        ActivateBestChain(state, Params(), nullptr);
+        ActivateBestChain(state, Params());
     }
 
     if (!state.IsValid()) {
@@ -1277,7 +1277,7 @@ UniValue reconsiderblock(const JSONRPCRequest& request)
     }
 
     if (state.IsValid()) {
-        ActivateBestChain(state, Params(), nullptr);
+        ActivateBestChain(state, Params());
     }
 
     if (!state.IsValid()) {

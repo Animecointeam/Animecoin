@@ -163,7 +163,8 @@ UniValue generate(const JSONRPCRequest& request)
             // target -- 1 in 2^(2^32). That ain't gonna happen.
             ++pblock->nNonce;
         }
-        if (!ProcessNewBlock(Params(), pblock, true, nullptr, nullptr))
+        std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
+        if (!ProcessNewBlock(Params(), shared_pblock, true, nullptr, nullptr))
             throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
         ++nHeight;
         blockHashes.push_back(pblock->GetHash().GetHex());
@@ -650,7 +651,8 @@ UniValue submitblock(const JSONRPCRequest& request)
                 + HelpExampleRpc("submitblock", "\"mydata\"")
             );
 
-    CBlock block;
+    std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
+    CBlock& block = *blockptr;
     if (!DecodeHexBlk(block, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
 
@@ -672,7 +674,7 @@ UniValue submitblock(const JSONRPCRequest& request)
 
     submitblock_StateCatcher sc(block.GetHash());
     RegisterValidationInterface(&sc);
-    bool fAccepted = ProcessNewBlock(Params(), &block, true, nullptr, nullptr);
+    bool fAccepted = ProcessNewBlock(Params(), blockptr, true, nullptr, nullptr);
     UnregisterValidationInterface(&sc);
     if (fBlockPresent)
     {

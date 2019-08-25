@@ -610,7 +610,8 @@ static bool ProcessBlockFound(CBlock* pblock, const CChainParams& chainparams)
     GetMainSignals().BlockFound(pblock->GetHash());
 
     // Process this block the same as if we had received it from another node
-    if (!ProcessNewBlock(chainparams, pblock, true, nullptr, nullptr))
+    std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
+    if (!ProcessNewBlock(chainparams, shared_pblock, true, nullptr, nullptr))
         return error("AniMiner : ProcessNewBlock, block not accepted");
 
     return true;
