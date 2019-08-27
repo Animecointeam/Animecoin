@@ -585,14 +585,13 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         aMutable.push_back("time");
         aMutable.push_back("transactions");
         aMutable.push_back("prevblock");
+        // Extra GBT compatibility for miners post getwork removal.
+        aMutable.push_back("version/force");
     }
 
     UniValue result(UniValue::VOBJ);
     result.pushKV("capabilities", aCaps);
     result.pushKV("version", pblock->nVersion);
-
-    // Extra GBT compatibility for miners post getwork removal.
-    aMutable.push_back("version/force");
 
     result.pushKV("previousblockhash", pblock->hashPrevBlock.GetHex());
     result.pushKV("transactions", transactions);
