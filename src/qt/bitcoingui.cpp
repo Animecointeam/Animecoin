@@ -67,6 +67,7 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :
     unitDisplayControl(0),
     labelWalletEncryptionIcon(0),
     labelWalletHDStatusIcon(0),
+    labelWalletSPVStatusIcon(0),
     labelConnectionsIcon(0),
     labelBlocksIcon(0),
     progressBarLabel(0),
@@ -174,6 +175,7 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :
     unitDisplayControl = new UnitDisplayStatusBarControl();
     labelWalletEncryptionIcon = new QLabel();
     labelWalletHDStatusIcon = new QLabel();
+    labelWalletSPVStatusIcon = new QLabel(); //new GUIUtil::ClickableLabel();
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
     if(enableWallet)
@@ -183,6 +185,8 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :
         frameBlocksLayout->addStretch();
         frameBlocksLayout->addWidget(labelWalletEncryptionIcon);
         frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
+        frameBlocksLayout->addWidget(labelWalletSPVStatusIcon);
+        connect(labelWalletSPVStatusIcon, SIGNAL(clicked(QPoint)), this, SLOT(toggleSPVMode()));
     }
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelConnectionsIcon);
@@ -434,6 +438,17 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
         // Show progress dialog
         connect(clientModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
 
+        // Show auxiliary block request (SPV) progress
+        connect(clientModel, SIGNAL(auxiliaryBlockRequestProgressChanged(QDateTime,int,int,int)), this, SLOT(setAuxiliaryBlockRequestProgress(QDateTime,int,int,int)));
+
+        // If we already have a auxiliary block request, update the progress immediately
+        int64_t created;
+        size_t requestedBlocks, loadedBlocks, processedBlocks;
+        if (clientModel->hasAuxiliaryBlockRequest(&created, &requestedBlocks, &loadedBlocks, &processedBlocks))
+        {
+            setAuxiliaryBlockRequestProgress(QDateTime::fromTime_t(created), requestedBlocks, loadedBlocks, processedBlocks);
+        }
+
         rpcConsole->setClientModel(clientModel);
 #ifdef ENABLE_WALLET
         if(walletFrame)
@@ -671,11 +686,14 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
 {
     if(!clientModel)
         return;
+    if (clientModel->hasAuxiliaryBlockRequest())
+        return;
 
     // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbelled text)
     statusBar()->clearMessage();
 
     // Acquire current block source
+    bool headerSyncInProgress = false;
     enum BlockSource blockSource = clientModel->getBlockSource();
     switch (blockSource) {
         case BLOCK_SOURCE_NETWORK:
@@ -760,6 +778,41 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     labelBlocksIcon->setToolTip(tooltip);
     progressBarLabel->setToolTip(tooltip);
     progressBar->setToolTip(tooltip);
+}
+
+void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestesBlocks, int loadedBlocks, int processedBlocks)
+{
+    // at this stage, always display the progress bar and it's label
+    progressBar->setVisible(true);
+    progressBarLabel->setVisible(true);
+
+    // if we are not yet connected to some peers, show different text
+    if (clientModel->getNumConnections() == 0)
+    {
+        progressBarLabel->setText(tr("Connecting to peers..."));
+        return;
+    }
+
+    QString tooltip = tr("Scanning %1 blocks...").arg(QString::number(requestesBlocks));
+    tooltip += QString("<br>");
+    tooltip += tr("%1 blocks loaded.").arg(QString::number(loadedBlocks));
+    tooltip += QString("<br>");
+    tooltip += tr("%1 blocks processed.").arg(QString::number(processedBlocks));
+    tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
+
+    double nABRprogress = 1.0/requestesBlocks*loadedBlocks;
+    progressBar->setFormat(tr("behind"));
+    progressBar->setMaximum(1000000000);
+    progressBar->setValue(nABRprogress  * 1000000000.0 + 0.5);
+    progressBarLabel->setText("Download & scanning blocks (SPV)...");
+    progressBar->setToolTip(tooltip);
+    progressBarLabel->setToolTip(tooltip);
+    if (nABRprogress == 1)
+    {
+        // don't show progress if request has been completed
+        progressBar->setVisible(false);
+        progressBarLabel->setVisible(false);
+    }
 }
 
 void BitcoinGUI::message(const QString &title, const QString &message, unsigned int style, bool *ret)
@@ -924,6 +977,12 @@ void BitcoinGUI::setHDStatus(int hdEnabled)
     labelWalletHDStatusIcon->setEnabled(hdEnabled);
 }
 
+void BitcoinGUI::setSPVStatus(int spvEnabled)
+{
+    labelWalletSPVStatusIcon->setPixmap(QIcon(spvEnabled ? ":/icons/spv_enabled" : ":/icons/spv_disabled").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+    labelWalletSPVStatusIcon->setToolTip(spvEnabled ? tr("Simple Payment Verification is <b>enabled</b>") : tr("Simple Payment Verification is <b>disabled</b>"));
+}
+
 void BitcoinGUI::setEncryptionStatus(int status)
 {
     switch(status)
@@ -951,6 +1010,12 @@ void BitcoinGUI::setEncryptionStatus(int status)
         encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported
         break;
     }
+}
+
+void BitcoinGUI::toggleSPVMode()
+{
+    if (walletFrame)
+        walletFrame->setSPVMode(!walletFrame->getSPVMode());
 }
 #endif // ENABLE_WALLET
 

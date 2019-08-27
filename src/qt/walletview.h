@@ -115,6 +115,13 @@ public slots:
     /** Show progress dialog e.g. for rescan */
     void showProgress(const QString &title, int nProgress);
 
+    /** setter and getter of the wallet's spv mode */
+    void setSPVMode(bool state);
+    bool getSPVMode();
+
+    /** Update the GUI to reflect the new SPV status */
+    void updateSPVStatus();
+
 signals:
     /** Signal that we want to show the main window */
     void showNormalIfMinimized();
@@ -124,6 +131,8 @@ signals:
     void encryptionStatusChanged(int status);
     /** HD-Enabled status of wallet changed (only possible during startup) */
     void hdEnabledStatusChanged(int hdEnabled);
+    /** SPV-Enabled status of wallet changed*/
+    void spvEnabledStatusChanged(int spvEnabled);
     /** Notify that a new transaction appeared */
     void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address);
 };

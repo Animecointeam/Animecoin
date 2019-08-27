@@ -51,6 +51,7 @@ void EnsureWalletIsUnlocked()
 void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
 {
     int confirms = wtx.GetDepthInMainChain();
+    entry.pushKV("validated", wtx.fValidated);
     entry.pushKV("confirmations", confirms);
     if (wtx.IsCoinBase())
         entry.pushKV("generated", true);
@@ -579,7 +580,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
+        if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated)) // *wtx.tx
             continue;
 
         for (const CTxOut& txout : wtx.vout)
@@ -633,7 +634,7 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
+        if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated))
             continue;
 
         for (const CTxOut& txout : wtx.vout)
@@ -700,7 +701,7 @@ UniValue getbalance(const JSONRPCRequest& request)
         for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
         {
             const CWalletTx& wtx = (*it).second;
-            if (!CheckFinalTx(wtx) || wtx.GetBlocksToMaturity() > 0 || wtx.GetDepthInMainChain() < 0)
+            if (!CheckFinalTx(wtx, -1, !wtx.fValidated) || wtx.GetBlocksToMaturity() > 0 || wtx.GetDepthInMainChain() < 0)
                 continue;
 
             CAmount allFee;
@@ -1057,7 +1058,7 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
     {
         const CWalletTx& wtx = (*it).second;
 
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx))
+        if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated))
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
@@ -2212,7 +2213,14 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
             "  \"keypoolsize\": xxxx,          (numeric) how many new keys are pre-generated\n"
             "  \"unlocked_until\": ttt,        (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked\n"
             "  \"paytxfee\": x.xxxx,           (numeric) the transaction fee configuration, set in " + CURRENCY_UNIT + "/kB\n"
-            "  \"hdmasterkeyid\": \"<hash160>\" (string) the Hash160 of the HD master pubkey\n"
+            "  \"hdmasterkeyid\": \"<hash160>\", (string) the Hash160 of the HD master pubkey\n"
+            "  \"spv_bestblock_height\": x,    (numeric) the height of the latest SPV scanned block\n"
+            "  \"spv_bestblock_hash\": x,      (string) the hash of the latest SPV scanned block\n"
+            "  \"spv_headerschain_height\": x, (numeric) the height of the wallets headers-chain tip\n"
+            "  \"spv_scan_started\": ttt,      (numeric) Timestamp of the last started SPV blocks scan\n"
+            "  \"spv_blocks_requested\": x,    (numeric) the amount of requested blocks in the current scan\n"
+            "  \"spv_blocks_loaded\": x,       (numeric) the amount of loaded blocks in the current scan\n"
+            "  \"spv_blocks_processed\": x,    (numeric) the amount of processed blocks in the current scan\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getwalletinfo", "")
@@ -2235,6 +2243,16 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
     CKeyID masterKeyID = pwalletMain->GetHDChain().masterKeyID;
     if (!masterKeyID.IsNull())
         obj.pushKV("hdmasterkeyid", masterKeyID.GetHex());
+    obj.pushKV("spv_enabled", (int)(pwalletMain->IsSPVEnabled()));
+    obj.pushKV("spv_bestblock_height", (int)(pwalletMain->pNVSBestBlock ? pwalletMain->pNVSBestBlock->nHeight : 0));
+    obj.pushKV("spv_bestblock_hash", (pwalletMain->pNVSBestBlock ? pwalletMain->pNVSBestBlock->GetBlockHash().GetHex() : ""));
+    obj.pushKV("spv_headerschain_height", (int)(pwalletMain->pNVSLastKnownBestHeader ? pwalletMain->pNVSLastKnownBestHeader->nHeight : 0));
+    std::shared_ptr<CAuxiliaryBlockRequest> blockRequest = CAuxiliaryBlockRequest::GetCurrentRequest();
+    obj.pushKV("spv_scan_started", (!blockRequest ? 0 : UniValue(blockRequest->created)));
+    obj.pushKV("spv_blocks_requested", (int64_t)(!blockRequest ? 0 : blockRequest->vBlocksToDownload.size()));
+    obj.pushKV("spv_blocks_loaded", (int)(!blockRequest ? 0 : blockRequest->amountOfBlocksLoaded()));
+    obj.pushKV("spv_blocks_processed", (!blockRequest ? 0 : (int64_t)blockRequest->processedUpToSize));
+
     return obj;
 }
 
@@ -2501,6 +2519,32 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
     return result;
 }
 
+UniValue setspv(const JSONRPCRequest& request)
+{
+    if (!EnsureWalletIsAvailable(request.fHelp))
+        return NullUniValue;
+
+    if (request.fHelp || request.params.size() > 1)
+        throw std::runtime_error(
+                            "setspv (true|false)\n"
+                            "\nEnabled or disabled full block SPV mode.\n"
+                            "\nArguments:\n"
+                            "1. state             (boolean, optional) enables or disables the spv mode\n"
+                            "\nResult:\n"
+                            "   status: <true|false> (\"true\" if the spv mode is enabled)\n"
+                            "\nExamples:\n"
+                            + HelpExampleCli("setspv", "\"true\"")
+                            + HelpExampleRpc("setspv", "\"true\"")
+                            );
+
+    if (request.params.size() == 1)
+        pwalletMain->setSPVEnabled(request.params[0].get_bool());
+
+    UniValue ret(UniValue::VOBJ);
+    ret.pushKV("status", UniValue(pwalletMain->IsSPVEnabled()));
+    return ret;
+}
+
 extern UniValue dumpprivkey(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue importprivkey(const JSONRPCRequest& request);
 extern UniValue importaddress(const JSONRPCRequest& request);
@@ -2560,6 +2604,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   true  },
     { "wallet",             "walletpassphrase",         &walletpassphrase,         true  },
     { "wallet",             "removeprunedfunds",        &removeprunedfunds,        true  },
+    { "wallet",             "setspv",                   &setspv,                   true  }, //   {"state"} },
 };
 
 void RegisterWalletRPCCommands(CRPCTable &t)

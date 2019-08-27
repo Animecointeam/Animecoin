@@ -68,6 +68,7 @@ endif
 BITCOIN_CORE_H = \
   addrdb.h \
   addrman.h \
+  auxiliaryblockrequest.h \
   alert.h \
   arith_uint256.h \
   base58.h \
@@ -176,6 +177,7 @@ libanimecoin_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
   alert.cpp \
+  auxiliaryblockrequest.cpp \
   bloom.cpp \
   blockencodings.cpp \
   chain.cpp \

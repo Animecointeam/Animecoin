@@ -184,8 +184,10 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     status.countsForBalance = wtx.IsTrusted() && !(wtx.GetBlocksToMaturity() > 0);
     status.depth = wtx.GetDepthInMainChain();
     status.cur_num_blocks = chainActive.Height();
+    status.cur_num_blocks_headers_chain = headersChainActive.Height();
 
-    if (!CheckFinalTx(wtx))
+    status.fValidated = wtx.fValidated;
+    if (!CheckFinalTx(wtx, -1, !status.fValidated))
     {
         if (wtx.nLockTime < LOCKTIME_THRESHOLD)
         {
@@ -254,7 +256,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
 bool TransactionRecord::statusUpdateNeeded()
 {
     AssertLockHeld(cs_main);
-    return status.cur_num_blocks != chainActive.Height();
+    return (status.cur_num_blocks != chainActive.Height() || status.cur_num_blocks_headers_chain != headersChainActive.Height());
 }
 
 QString TransactionRecord::getTxID() const

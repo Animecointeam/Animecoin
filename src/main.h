@@ -11,6 +11,7 @@
 #endif
 
 #include "amount.h"
+#include "auxiliaryblockrequest.h"
 #include "chain.h"
 #include "chainparams.h"
 #include "coins.h"
@@ -236,7 +237,7 @@ static const signed int MIN_DISK_SPACE_FOR_BLOCK_FILES = 200 * 1024 * 1024;
  * @param[out]  fNewBlock A boolean which is set to indicate if the block was first received via this call
  * @return True if state.IsValid()
  */
-bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<const CBlock> pblock, bool fForceProcessing, bool* fNewBlock);
+bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<const CBlock> pblock, bool fForceProcessing, bool* fNewBlock, std::shared_ptr<CAuxiliaryBlockRequest> blockRequest = nullptr);
 
 /**
  * Process incoming block headers.
@@ -248,7 +249,7 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
  * @param[in]  chainparams The params for the chain we want to connect to
  * @param[out] ppindex If set, the pointer will be set to point to the last new block index object for the given headers
  */
-bool ProcessNewBlockHeaders(const std::vector<CBlockHeader>& block, CValidationState& state, const CChainParams& chainparams, CBlockIndex** ppindex=NULL);
+bool ProcessNewBlockHeaders(const std::vector<CBlockHeader>& block, CValidationState& state, const CChainParams& chainparams, const CBlockIndex** ppindex=nullptr);
 
 /** Check whether enough disk space is available for an incoming block */
 bool CheckDiskSpace(uint64_t nAdditionalBytes = 0);
@@ -375,7 +376,7 @@ bool IsFinalTx(const CTransaction &tx, int nBlockHeight, int64_t nBlockTime);
  *
  * See consensus/consensus.h for flag definitions.
  */
-bool CheckFinalTx(const CTransaction &tx, int flags = -1);
+bool CheckFinalTx(const CTransaction &tx, int flags = -1, bool calcHeightFromHeaders = false);
 
 /**
  * Closure representing one script verification
@@ -464,6 +465,9 @@ bool ReconsiderBlock(CValidationState& state, CBlockIndex *pindex);
 /** The currently-connected chain of blocks (protected by cs_main). */
 extern CChain chainActive;
 
+/** The currently-connected chain of PoW validated headers (protected by cs_main). */
+extern CChain headersChainActive;
+
 /** Global variable that points to the active CCoinsView (protected by cs_main) */
 extern CCoinsViewCache *pcoinsTip;
 
@@ -510,6 +514,13 @@ void RegisterNodeSignals(CNodeSignals& nodeSignals);
 /** Unregister a network node */
 void UnregisterNodeSignals(CNodeSignals& nodeSignals);
 
+/** if disabled, blocks will not be requested automatically, usefull for non-validation mode */
+static const bool DEFAULT_AUTOMATIC_BLOCK_REQUESTS = true;
+extern std::atomic<bool> fAutoRequestBlocks;
+
+static const bool DEFAULT_FETCH_BLOCKS_WHILE_FETCH_HEADERS = true;
+extern std::atomic<bool> fFetchBlocksWhileFetchingHeaders;
+
 class PeerLogicValidation : public CValidationInterface {
 private:
     CConnman* connman;
@@ -517,7 +528,7 @@ private:
 public:
     PeerLogicValidation(CConnman* connmanIn);
 
-    virtual void SyncTransaction(const CTransaction& tx, const CBlockIndex* pindex, int nPosInBlock);
+    virtual void SyncTransaction(const CTransaction& tx, const CBlockIndex* pindex, int nPosInBlock, bool validated);
     virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload);
     virtual void BlockChecked(const CBlock& block, const CValidationState& state);
 };

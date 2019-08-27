@@ -85,6 +85,8 @@ public:
     mutable std::atomic<int> cachedBestHeaderHeight;
     mutable std::atomic<int64_t> cachedBestHeaderTime;
 
+    bool hasAuxiliaryBlockRequest(int64_t* createdRet = nullptr, size_t* requestedBlocksRet = nullptr, size_t* loadedBlocksRet = nullptr, size_t* processedBlocksRet = nullptr);
+
 private:
     OptionsModel *optionsModel;
     PeerTableModel *peerTableModel;
@@ -107,6 +109,8 @@ signals:
 
     // Show progress dialog e.g. for verifychain
     void showProgress(const QString &title, int nProgress);
+
+    void auxiliaryBlockRequestProgressChanged(const QDateTime& created, int blocksRequested, int blocksLoaded, int blocksProcessed);
 
 public slots:
     void updateTimer();

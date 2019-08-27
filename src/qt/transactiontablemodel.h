@@ -95,6 +95,7 @@ private:
     QVariant txStatusDecoration(const TransactionRecord *wtx) const;
     QVariant txWatchonlyDecoration(const TransactionRecord *wtx) const;
     QVariant txAddressDecoration(const TransactionRecord *wtx) const;
+    QVariant typeDecoration(const TransactionRecord *wtx) const;
 
 public slots:
     /* New transaction, or transaction changed status */

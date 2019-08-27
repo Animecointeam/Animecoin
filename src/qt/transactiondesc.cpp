@@ -31,7 +31,7 @@ using namespace std;
 QString TransactionDesc::FormatTxStatus(const CWalletTx& wtx)
 {
     AssertLockHeld(cs_main);
-    if (!CheckFinalTx(wtx))
+    if (!CheckFinalTx(wtx, -1 , !wtx.fValidated))
     {
         if (wtx.nLockTime < LOCKTIME_THRESHOLD)
             return tr("Open for %n more block(s)", "", wtx.nLockTime - chainActive.Height());
@@ -78,6 +78,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
     }
     strHTML += "<br>";
 
+    strHTML += "<b>" + tr("SPV only") + ":</b> " + (!rec->status.fValidated ? "yes" : "no") + "<br>";
     strHTML += "<b>" + tr("Date") + ":</b> " + (nTime ? GUIUtil::dateTimeStr(nTime) : "") + "<br>";
 
     //

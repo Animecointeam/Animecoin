@@ -80,6 +80,7 @@ private:
     UnitDisplayStatusBarControl *unitDisplayControl;
     QLabel *labelWalletEncryptionIcon;
     QLabel *labelWalletHDStatusIcon;
+    QLabel *labelWalletSPVStatusIcon;
     QLabel *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
@@ -146,6 +147,8 @@ public slots:
     void setNumConnections(int count);
     /** Set number of blocks and last block date shown in the UI */
     void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
+    /** Set the auxiliary block request progress in the UI */
+    void setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestesBlocks, int loadedBlocks, int processedBlocks);
 
     /** Notify the user of an event from the core network or transaction handling code.
        @param[in] title     the message box / notification title
@@ -168,6 +171,12 @@ public slots:
      @see WalletModel::EncryptionStatus
      */
     void setHDStatus(int hdEnabled);
+
+    /** Set the spv-enabled status as shown in the UI.
+     @param[in] status            current spv enabled status
+     */
+    void setSPVStatus(int spvEnabled);
+    void toggleSPVMode();
 
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
