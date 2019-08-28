@@ -580,7 +580,7 @@ void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vector<con
     // Make sure pindexBestKnownBlock is up to date, we'll need it.
     ProcessBlockAvailability(nodeid);
 
-    // if there is an open CAuxiliaryBlockRequest (out-of-band/specific block donwload), privileg it
+    // if there is an open CAuxiliaryBlockRequest (out-of-band/specific block download), prioritize it
     if (blockRequest && !blockRequest->isCancelled()) {
         // fill in next blocks to download, pass in a filter function to check mapBlocksInFlight
         blockRequest->fillInNextBlocks(vBlocks, count, [state](const CBlockIndex *pIndexCheck) -> bool {
@@ -593,7 +593,7 @@ void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vector<con
             return (mapBlocksInFlight.count(pIndexCheck->GetBlockHash()) == 0);
         });
 
-        // if we haven't completed the individual CAuxiliaryBlockRequest, we wont continue with "normal" IBD
+        // if we haven't completed the individual CAuxiliaryBlockRequest, we won't continue with "normal" IBD
         return;
     }
 
@@ -2727,9 +2727,8 @@ static void NotifyHeaderTip() {
     CBlockIndex* pindexHeader = nullptr;
     {
         LOCK(cs_main);
-        if (!setBlockIndexCandidates.empty()) {
-            pindexHeader = *setBlockIndexCandidates.rbegin();
-        }
+        pindexHeader = pindexBestHeader;
+
         if (pindexHeader != pindexHeaderOld) {
             fNotify = true;
             fInitialBlockDownload = IsInitialBlockDownload();

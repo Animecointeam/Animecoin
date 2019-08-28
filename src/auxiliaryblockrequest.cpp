@@ -32,7 +32,7 @@ void CAuxiliaryBlockRequest::NotifyUI()
 
 void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<const CBlock> pblock, CBlockIndex *pindex)
 {
-    // don't process anything if the request was cancled
+    // don't process anything if the request was cancelled
     if (this->fCancelled)
         return;
 
@@ -120,7 +120,7 @@ void CAuxiliaryBlockRequest::fillInNextBlocks(std::vector<const CBlockIndex*>& v
     }
 
     //try to process already available blocks through the signal
-    this->processWithPossibleBlock(NULL, NULL);
+    this->processWithPossibleBlock(nullptr, nullptr);
 }
 
 size_t CAuxiliaryBlockRequest::amountOfBlocksLoaded()
