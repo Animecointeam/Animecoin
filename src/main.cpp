@@ -3306,7 +3306,7 @@ bool ProcessNewBlockHeaders(const std::vector<CBlockHeader>& headers, CValidatio
     NotifyHeaderTip();
     {
         LOCK(cs_main);
-        if (::ChainstateActive().IsInitialBlockDownload() && ppindex && *ppindex) {
+        if (IsInitialBlockDownload() && ppindex && *ppindex) {
             LogPrintf("Synchronizing blockheaders, height: %d (~%.2f%%)\n", (*ppindex)->nHeight, 100.0/((*ppindex)->nHeight+(GetAdjustedTime() - (*ppindex)->GetBlockTime()) / Params().GetConsensus().nPowTargetSpacing) * (*ppindex)->nHeight);
         }
     }
@@ -4949,8 +4949,28 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                     // fell back to inv we probably have a reorg which we should get the headers for first,
                     // we now only provide a getheaders response here. When we receive the headers, we will
                     // then ask for the blocks we need.
-                    connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexBestHeader), inv.hash));
-                    LogPrint("net", "getheaders (%d) %s to peer=%d\n", pindexBestHeader->nHeight, inv.hash.ToString(), pfrom->id);
+                    // connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexBestHeader), inv.hash));
+                    if (chainparams.DelayGetHeadersTime() != 0 && pindexBestHeader->GetBlockTime() < GetAdjustedTime() - chainparams.DelayGetHeadersTime()) {
+                        // We are pretty far from being completely synced at the moment. If we would initiate a new
+                        // chain of GETHEADERS/HEADERS now, we may end up downloading the full chain from multiple
+                        // peers at the same time, slowing down the initial sync. At the same time, we don't know
+                        // if the peer we got this INV from may have a chain we don't know about yet, so we HAVE TO
+                        // send a GETHEADERS message at some point in time. This is delayed to later in SendMessages
+                        // when the headers chain has catched up enough.
+                        LogPrint("net", "delaying getheaders (%d) %s to peer=%d\n", pindexBestHeader->nHeight, inv.hash.ToString(), pfrom->id);
+                        pfrom->PushBlockHashFromINV(inv.hash);
+                    } else {
+                        // First request the headers preceding the announced block. In the normal fully-synced
+                        // case where a new block is announced that succeeds the current tip (no reorganization),
+                        // there are no such headers.
+                        // Secondly, and only when we are close to being synced, we request the announced block directly,
+                        // to avoid an extra round-trip. Note that we must *first* ask for the headers, so by the
+                        // time the block arrives, the header chain leading up to it is already validated. Not
+                        // doing this will result in the received block being rejected as an orphan in case it is
+                        // not a direct successor.
+                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexBestHeader), inv.hash));
+                        LogPrint("net", "getheaders (%d) %s to peer=%d\n", pindexBestHeader->nHeight, inv.hash.ToString(), pfrom->id);
+                    }
                 }
             }
             else
@@ -5493,11 +5513,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             ReadCompactSize(vRecv); // ignore tx count; assume it is 0.
         }
 
-        if (nCount == 0) {
-            // Nothing interesting. Stop asking this peers for more headers.
-            return true;
-        }
-
         const CBlockIndex *pindexLast = nullptr;
         {
         LOCK(cs_main);
@@ -5569,6 +5584,20 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             // from there instead.
             LogPrint("net", "more getheaders (%d) to end to peer=%d (startheight:%d)\n", pindexLast->nHeight, pfrom->id, pfrom->nStartingHeight);
             connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexLast), uint256()));
+        } else {
+            if (chainparams.DelayGetHeadersTime() != 0 && pindexBestHeader->GetBlockTime() < GetAdjustedTime() - chainparams.DelayGetHeadersTime()) {
+                // peer has sent us a HEADERS message below maximum size and we are still quite far from being fully
+                // synced, this means we probably got a bad peer for initial sync and need to continue with another one.
+                // By disconnecting we force to start a new iteration of initial headers sync in SendMessages
+                // TODO should we handle whitelisted peers here as we do in headers sync timeout handling?
+                pfrom->fDisconnect = true;
+                return error("detected bad peer for initial headers sync, disconnecting %d", pfrom->id);
+            }
+
+            if (nCount == 0) {
+                // Nothing interesting. Stop asking this peers for more headers.
+                return true;
+            }
         }
 
         bool fCanDirectFetch = CanDirectFetch(chainparams.GetConsensus());
@@ -6050,7 +6079,8 @@ public:
 
 bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interruptMsgProc)
 {
-    const Consensus::Params& consensusParams = Params().GetConsensus();
+    const CChainParams chainParams = Params();
+    const Consensus::Params& consensusParams = chainParams.GetConsensus();
     {
         // Don't send anything until we get their version message
         if (pto->nVersion == 0 || pto->fDisconnect)
@@ -6160,6 +6190,17 @@ bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interruptMsg
                 LogPrint("net", "initial getheaders (%d) to peer=%d (startheight:%d)\n", pindexStart->nHeight, pto->id, pto->nStartingHeight);
                 connman.PushMessage(pto, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexStart), uint256()));
             }
+        }
+
+        if (chainParams.DelayGetHeadersTime() != 0 && pindexBestHeader->GetBlockTime() >= GetAdjustedTime() - chainParams.DelayGetHeadersTime()) {
+            // Headers chain has catched up enough so we can send out GETHEADER messages which were initially meant to
+            // be sent directly after INV was received
+            LOCK(pto->cs_inventory);
+            for (const uint256 &hash : pto->vBlockHashesFromINV) {
+                LogPrint("net", "process delayed getheaders (%d) to peer=%d\n", pindexBestHeader->nHeight, pto->id);
+                connman.PushMessage(pto, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexBestHeader), hash));
+            }
+            pto->vBlockHashesFromINV.clear();
         }
 
         // Resend wallet transactions that haven't gotten in a block yet
@@ -6448,7 +6489,7 @@ bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interruptMsg
         //
         vector<CInv> vGetData;
         if (!pto->fClient && (fFetch || !IsInitialBlockDownload()) && state.nBlocksInFlight < MAX_BLOCKS_IN_TRANSIT_PER_PEER
-                && (fFetchBlocksWhileFetchingHeaders || (headersChainActive.Tip() && headersChainActive.Tip()->GetBlockTime() > GetAdjustedTime()-600*24))
+                && (fFetchBlocksWhileFetchingHeaders || (headersChainActive.Tip() && headersChainActive.Tip()->GetBlockTime() > GetAdjustedTime()-3600*24))
            ){
             vector<const CBlockIndex*> vToDownload;
             NodeId staller = -1;

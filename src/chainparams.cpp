@@ -95,6 +95,7 @@ public:
         pchMessageStart[3] = 0x4d;
         vAlertPubKey = ParseHex("04e8ee751a975ba7e5488267b6754e9e4249214db28d74af916d34aefdd8817c1a5d57aba2cc3ce23052ff8c8bf7028819bc966ce19e1a603b73b3e0edea902ab0");
         nDefaultPort = 1212;
+        nDelayGetHeadersTime = 24 * 60 * 60;
         nMinerThreads = 0;
         nPruneAfterHeight = 100000;
 
@@ -170,6 +171,7 @@ public:
         pchMessageStart[3] = 0x41;
         vAlertPubKey = ParseHex("04229162767c4193324ab7f78b87c8b2d539d30ecefcb2749e3afdcb54cea8c32f0b59f2b67bf97045ed0c03b1f28e01787b4ee918c5f0b50819a058cd4c6ce40e"); // Updated.
         nDefaultPort = 11212; // Contradictory.
+        nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
         nMinerThreads = 0;
 
@@ -237,6 +239,7 @@ public:
         genesis.nNonce = 907185573;
         consensus.hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
+        nDelayGetHeadersTime = 0;
         //assert(hashGenesisBlock == uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
         nPruneAfterHeight = 1000;
 
