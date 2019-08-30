@@ -1404,13 +1404,17 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // if pruning, unset the service bit and perform the initial blockstore prune
     // after any wallet rescanning has taken place.
-    if (fPruneMode||GetBoolArg("-spv", DEFAULT_USE_SPV)) {
-        LogPrintf("Unsetting NODE_NETWORK for light client mode\n");
+    if (fPruneMode) {
+        LogPrintf("Unsetting NODE_NETWORK on prune mode\n");
         nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
         if (!fReindex) {
             uiInterface.InitMessage(_("Pruning blockstore..."));
             PruneAndFlush();
         }
+    }
+    if (GetBoolArg("-spv", DEFAULT_USE_SPV)) {
+        LogPrintf("Unsetting NODE_NETWORK on SPV mode\n");
+        nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
     }
 
     // ********************************************************* Step 10: import blocks

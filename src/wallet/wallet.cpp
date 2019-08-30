@@ -42,7 +42,7 @@ bool fSendFreeTransactions = DEFAULT_SEND_FREE_TRANSACTIONS;
 const char * DEFAULT_WALLET_DAT = "wallet.dat";
 const uint32_t BIP32_HARDENED_KEY_LIMIT = 0x80000000;
 
-const static size_t nMaxBlocksPerAuxiliaryRequest = 144*100; //max request 100 days of blocks per request
+const static size_t nMaxBlocksPerAuxiliaryRequest = 2880*100; //max request 100 days of blocks per request
 
 /**
  * Fees smaller than this (in satoshi) are considered zero fee (for transaction creation)
@@ -3598,8 +3598,8 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
     if (CAuxiliaryBlockRequest::GetCurrentRequest() && !CAuxiliaryBlockRequest::GetCurrentRequest()->isCompleted())
         return;
 
-    CBlockIndex *pIndex = NULL;
-    CBlockIndex *chainActiveTip = NULL;
+    CBlockIndex *pIndex = nullptr;
+    CBlockIndex *chainActiveTip = nullptr;
     int64_t oldest_key = std::numeric_limits<int64_t>::max();;
     int nonValidationScanUpToHeight = 0;
     {
@@ -3626,7 +3626,7 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
     if (!pIndex)
         return;
 
-    std::vector<const CBlockIndex*> blocksToDownload;
+    std::deque<const CBlockIndex*> blocksToDownload;
     do {
         if (pIndex == chainActiveTip)
             break;
@@ -3670,7 +3670,7 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
             }
         }
 
-        // try to download more blocks if this on has been completed
+        // try to download more blocks if this request has been completed
         if (cb_AuxiliaryBlockRequest->isCompleted())
             RequestSPVScan();
 

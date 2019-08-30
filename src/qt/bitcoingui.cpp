@@ -801,7 +801,7 @@ void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, in
     tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
 
     double nABRprogress = 1.0/requestesBlocks*loadedBlocks;
-    progressBar->setFormat(tr("behind"));
+    progressBar->setFormat(tr("Catching up..."));
     progressBar->setMaximum(1000000000);
     progressBar->setValue(nABRprogress  * 1000000000.0 + 0.5);
     progressBarLabel->setText("Download & scanning blocks (SPV)...");

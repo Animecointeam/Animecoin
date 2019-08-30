@@ -1356,7 +1356,7 @@ UniValue requestblocks(const JSONRPCRequest& request)
         if (!hash_Uarray.isArray())
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Second parameter must be an array");
 
-        std::vector<const CBlockIndex*> blocksToDownload;
+        std::deque<const CBlockIndex*> blocksToDownload;
         {
             LOCK(cs_main); //mapBlockIndex
             for (UniValue strHashU : hash_Uarray.getValues())

@@ -15,7 +15,7 @@ static const unsigned int MAX_BLOCK_TO_PROCESS_PER_ITERATION = 5;
 
 std::shared_ptr<CAuxiliaryBlockRequest> currentBlockRequest; //thread-safe pointer (CAuxiliaryBlockRequest, the object, is also lock-free)
 
-CAuxiliaryBlockRequest::CAuxiliaryBlockRequest(std::vector<const CBlockIndex*> vBlocksToDownloadIn, int64_t createdIn, bool passThroughSignalsIn, const std::function<bool(std::shared_ptr<CAuxiliaryBlockRequest>, const CBlockIndex *pindex)> progressCallbackIn) : vBlocksToDownload(vBlocksToDownloadIn), created(createdIn), passThroughSignals(passThroughSignalsIn), progressCallback(progressCallbackIn)
+CAuxiliaryBlockRequest::CAuxiliaryBlockRequest(std::deque<const CBlockIndex*> vBlocksToDownloadIn, int64_t createdIn, bool passThroughSignalsIn, const std::function<bool(std::shared_ptr<CAuxiliaryBlockRequest>, const CBlockIndex *pindex)> progressCallbackIn) : vBlocksToDownload(vBlocksToDownloadIn), created(createdIn), passThroughSignals(passThroughSignalsIn), progressCallback(progressCallbackIn)
 {
     fCancelled = false;
     requestedUpToSize = 0;
