@@ -3622,7 +3622,7 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         std::map<CKeyID, int64_t> mapKeyBirth;
         GetKeyBirthTimes(mapKeyBirth);
         for (const auto& it : mapKeyBirth) {
-            if (it.second < oldest_key)
+            if ((it.second < oldest_key) && (it.second > 1))
                 oldest_key = it.second;
         }
     }
@@ -3632,6 +3632,8 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         oldest_key = optional_timestamp;
         nonValidationScanUpToHeight = 0;
     }
+
+    LogPrintf ("Oldest key timestamp: %i. \n", oldest_key);
 
     // find header
     if (!pIndex)
