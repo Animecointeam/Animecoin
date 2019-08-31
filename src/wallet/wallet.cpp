@@ -1141,12 +1141,12 @@ void CWallet::UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pi
         const CBlockIndex *pindexFork = headersChainActive.FindFork(pNVSLastKnownBestHeader);
         if (headersChainActive.Tip() && headersChainActive.Tip() != pindexFork)
         {
-            pNVSLastKnownBestHeader = const_cast<CBlockIndex *>(pindexFork);
+            pNVSLastKnownBestHeader = pindexFork;
             if (pNVSBestBlock && pNVSBestBlock->nHeight >= pNVSLastKnownBestHeader->nHeight)
-                pNVSBestBlock = const_cast<CBlockIndex *>(pindexFork);
+                pNVSBestBlock = pindexFork;
         }
     }
-    pNVSLastKnownBestHeader = const_cast<CBlockIndex *>(pindexNew);
+    pNVSLastKnownBestHeader = pindexNew;
 
     if (spvEnabled)
         RequestSPVScan();
@@ -3671,7 +3671,7 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         if (pindex && (!pNVSBestBlock || pindex->nHeight > pNVSBestBlock->nHeight))
         {
             // set non validation best block, write when flushing normally
-            pNVSBestBlock = const_cast<CBlockIndex *>(pindex);
+            pNVSBestBlock = pindex;
         }
 
         // try to download more blocks if this request has been completed

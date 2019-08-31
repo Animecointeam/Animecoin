@@ -251,9 +251,9 @@ public:
     int64_t nTimeFirstKey;
 
     //! last known best header, required to check for forks
-    CBlockIndex *pNVSLastKnownBestHeader;
+    const CBlockIndex *pNVSLastKnownBestHeader;
     //! wallet did non-validation scan up to this block
-    CBlockIndex *pNVSBestBlock;
+    const CBlockIndex *pNVSBestBlock;
 
     const CWalletTx* GetWalletTx(const uint256& hash) const;
 
