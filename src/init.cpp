@@ -1412,7 +1412,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             PruneAndFlush();
         }
     }
-    if (GetBoolArg("-spv", DEFAULT_USE_SPV)) {
+    if (!fAutoRequestBlocks)
+    {
         LogPrintf("Unsetting NODE_NETWORK on SPV mode\n");
         nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
     }

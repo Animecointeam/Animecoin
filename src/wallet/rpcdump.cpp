@@ -110,8 +110,8 @@ UniValue importprivkey(const JSONRPCRequest& request)
     if (request.params.size() > 2)
         fRescan = request.params[2].get_bool();
 
-    if (fRescan && fPruneMode)
-        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in pruned mode");
+    if (fRescan && (fPruneMode || !fAutoRequestBlocks))
+        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in light client mode");
 
     CBitcoinSecret vchSecret;
     bool fGood = vchSecret.SetString(strSecret);
@@ -216,8 +216,8 @@ UniValue importaddress(const JSONRPCRequest& request)
     if (request.params.size() > 2)
         fRescan = request.params[2].get_bool();
 
-    if (fRescan && fPruneMode)
-        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in pruned mode");
+    if (fRescan && (fPruneMode || !fAutoRequestBlocks))
+        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in light client mode");
 
     // Whether to import a p2sh version, too
     bool fP2SH = false;
@@ -381,8 +381,8 @@ UniValue importpubkey(const JSONRPCRequest& request)
     if (request.params.size() > 2)
         fRescan = request.params[2].get_bool();
 
-    if (fRescan && fPruneMode)
-        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in pruned mode");
+    if (fRescan && (fPruneMode || !fAutoRequestBlocks))
+        throw JSONRPCError(RPC_WALLET_ERROR, "Rescan is disabled in light client mode");
 
     if (!IsHex(request.params[0].get_str()))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Pubkey must be a hex string");
