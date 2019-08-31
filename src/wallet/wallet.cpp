@@ -345,6 +345,17 @@ void CWallet::SetBestChain(const CBlockLocator& loc)
     walletdb.WriteBestBlock(loc);
 }
 
+void CWallet::SetBestNVSChain()
+{
+    CBlockLocator locator = headersChainActive.GetLocator(pNVSBestBlock);
+
+    if (!locator.IsNull())
+    {
+        CWalletDB walletdb(strWalletFile);
+        walletdb.WriteNonValidationBestBlock(locator);
+    }
+}
+
 bool CWallet::SetMinVersion(enum WalletFeature nVersion, CWalletDB* pwalletdbIn, bool fExplicit)
 {
     LOCK(cs_wallet); // nWalletVersion
@@ -3610,9 +3621,9 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         pIndex = headersChainActive.Tip();
         std::map<CKeyID, int64_t> mapKeyBirth;
         GetKeyBirthTimes(mapKeyBirth);
-        for (std::map<CKeyID, int64_t>::const_iterator it = mapKeyBirth.begin(); it != mapKeyBirth.end(); it++) {
-            if ((*it).second < oldest_key)
-                oldest_key = (*it).second;
+        for (const auto& it : mapKeyBirth) {
+            if (it.second < oldest_key)
+                oldest_key = it.second;
         }
     }
 
@@ -3644,7 +3655,7 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
 
         // ensure we only request up to nMaxBlocksPerAuxiliaryRequest
         if (blocksToDownload.size() > nMaxBlocksPerAuxiliaryRequest)
-            blocksToDownload.erase(blocksToDownload.begin());
+            blocksToDownload.pop_front();
         pIndex = pIndex->pprev;
     } while (pIndex->pprev);
 
@@ -3659,15 +3670,8 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         LOCK2(cs_main, cs_wallet);
         if (pindex && (!pNVSBestBlock || pindex->nHeight > pNVSBestBlock->nHeight))
         {
-            // write non validation best block
+            // set non validation best block, write when flushing normally
             pNVSBestBlock = const_cast<CBlockIndex *>(pindex);
-            CBlockLocator locator = headersChainActive.GetLocator(pNVSBestBlock);
-
-            if (!locator.IsNull())
-            {
-                CWalletDB walletdb(strWalletFile);
-                walletdb.WriteNonValidationBestBlock(locator);
-            }
         }
 
         // try to download more blocks if this request has been completed

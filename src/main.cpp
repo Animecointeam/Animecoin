@@ -2395,6 +2395,7 @@ bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode) {
         // Update best block in wallet (so we can detect restored wallets).
         GetMainSignals().SetBestChain(chainActive.GetLocator());
         nLastSetChain = nNow;
+        GetMainSignals().SetBestNVSChain();
     }
     } catch (const std::runtime_error& e) {
         return AbortNode(state, std::string("System error while flushing: ") + e.what());
@@ -3326,16 +3327,18 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
     if (!AcceptBlockHeader(block, state, chainparams, &pindex))
         return false;
 
+    bool fAlreadyHave = pindex->nStatus & BLOCK_HAVE_DATA;
+
     // don't validate the block if we fetch it with a auxiliary CAuxiliaryBlockRequest
     if (onlyHeaderCheck) {
         LogPrint("net", "Accept specific block %s (%d)\n", pindex->GetBlockHash().ToString(), pindex->nHeight);
+        if (fAlreadyHave) return true;
     }
     else
     {
         // Try to process all requested blocks that we don't have, but only
         // process an unrequested block if it's new and has enough work to
         // advance our tip, and isn't too many blocks ahead.
-        bool fAlreadyHave = pindex->nStatus & BLOCK_HAVE_DATA;
         bool fHasMoreWork = (chainActive.Tip() ? pindex->nChainWork > chainActive.Tip()->nChainWork : true);
         // Blocks that are too out-of-order needlessly limit the effectiveness of
         // pruning, because pruning will not delete block files that contain any

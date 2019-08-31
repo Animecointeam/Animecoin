@@ -66,7 +66,7 @@ void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<cons
         this->processedUpToSize++;
 
         // log some info
-        LogPrint("net", "BlockRequest: proccessed up to %ld of total requested %ld blocks\n", this->processedUpToSize, this->vBlocksToDownload.size());
+        LogPrintf("BlockRequest: proccessed up to %ld of total requested %ld blocks\n", this->processedUpToSize, this->vBlocksToDownload.size());
 
         NotifyUI();
 
