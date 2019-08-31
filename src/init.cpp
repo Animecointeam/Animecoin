@@ -844,12 +844,12 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // also see: InitParameterInteraction()
 
     // if using block pruning, then disable txindex
-    if (GetArg("-prune", 0)) {
+    if (GetArg("-prune", 0)||!GetBoolArg("-autorequestblocks", DEFAULT_AUTOMATIC_BLOCK_REQUESTS)) {
         if (GetBoolArg("-txindex", DEFAULT_TXINDEX))
-            return InitError(_("Prune mode is incompatible with -txindex."));
+            return InitError(_("Light client mode is incompatible with -txindex."));
 #ifdef ENABLE_WALLET
         if (GetBoolArg("-rescan", false)) {
-            return InitError(_("Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again."));
+            return InitError(_("Rescans are not possible in light mode. You will need to use -reindex which will download the whole blockchain again."));
         }
 #endif
     }
