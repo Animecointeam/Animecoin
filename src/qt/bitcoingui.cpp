@@ -780,38 +780,57 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     progressBar->setToolTip(tooltip);
 }
 
-void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestesBlocks, int loadedBlocks, int processedBlocks)
+void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestedBlocks, int loadedBlocks, int processedBlocks)
 {
-    // at this stage, always display the progress bar and it's label
-    progressBar->setVisible(true);
-    progressBarLabel->setVisible(true);
+    double nABRprogress = 1.0/requestedBlocks*processedBlocks;
 
-    // if we are not yet connected to some peers, show different text
-    if (clientModel->getNumConnections() == 0)
-    {
-        progressBarLabel->setText(tr("Connecting to peers..."));
-        return;
-    }
-
-    QString tooltip = tr("Scanning %1 blocks...").arg(QString::number(requestesBlocks));
-    tooltip += QString("<br>");
-    tooltip += tr("%1 blocks loaded.").arg(QString::number(loadedBlocks));
-    tooltip += QString("<br>");
-    tooltip += tr("%1 blocks processed.").arg(QString::number(processedBlocks));
-    tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
-
-    double nABRprogress = 1.0/requestesBlocks*loadedBlocks;
-    progressBar->setFormat(tr("Catching up..."));
-    progressBar->setMaximum(1000000000);
-    progressBar->setValue(nABRprogress  * 1000000000.0 + 0.5);
-    progressBarLabel->setText("Download & scanning blocks (SPV)...");
-    progressBar->setToolTip(tooltip);
-    progressBarLabel->setToolTip(tooltip);
     if (nABRprogress == 1)
     {
-        // don't show progress if request has been completed
-        progressBar->setVisible(false);
-        progressBarLabel->setVisible(false);
+    // don't show progress if request has been completed
+    labelBlocksIcon->setPixmap(QIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+
+#ifdef ENABLE_WALLET
+    if(walletFrame)
+        walletFrame->showOutOfSyncWarning(false);
+#endif // ENABLE_WALLET
+
+    progressBar->setVisible(false);
+    progressBarLabel->setVisible(false);
+    }
+    else
+    {
+        if (requestedBlocks > 1)
+        {
+            // at this stage, always display the progress bar and its label
+            progressBar->setVisible(true);
+            progressBarLabel->setVisible(true);
+
+            // if we are not yet connected to some peers, show different text
+            if (clientModel->getNumConnections() == 0)
+            {
+                progressBarLabel->setText(tr("Connecting to peers..."));
+                return;
+            }
+
+            QString tooltip = tr("Scanning %1 blocks...").arg(QString::number(requestedBlocks));
+            tooltip += QString("<br>");
+            tooltip += tr("%1 blocks loaded.").arg(QString::number(loadedBlocks));
+            tooltip += QString("<br>");
+            tooltip += tr("%1 blocks processed.").arg(QString::number(processedBlocks));
+            tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
+
+            progressBar->setFormat(tr("Catching up..."));
+            progressBar->setMaximum(1000000000);
+            progressBar->setValue(nABRprogress  * 1000000000.0 + 0.5);
+            progressBarLabel->setText("Download & scanning blocks (SPV)...");
+            progressBar->setToolTip(tooltip);
+            progressBarLabel->setToolTip(tooltip);
+
+            labelBlocksIcon->setPixmap(QIcon(QString(
+                                             ":/movies/spinner-%1").arg(spinnerFrame, 3, 10, QChar('0')))
+                                   .pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+            spinnerFrame = (spinnerFrame + 1) % SPINNER_FRAMES;
+        }
     }
 }
 

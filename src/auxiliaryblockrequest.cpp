@@ -11,7 +11,7 @@
 
 #include <exception>
 
-static const unsigned int MAX_BLOCK_TO_PROCESS_PER_ITERATION = 5;
+static const unsigned int MAX_BLOCK_TO_PROCESS_PER_ITERATION = 100;
 
 std::shared_ptr<CAuxiliaryBlockRequest> currentBlockRequest; //thread-safe pointer (CAuxiliaryBlockRequest, the object, is also lock-free)
 

@@ -3651,8 +3651,6 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         nonValidationScanUpToHeight = 0;
     }
 
-    LogPrintf ("Oldest key timestamp: %i. \n", oldest_key);
-
     // find header
     if (!pIndex)
         return;
