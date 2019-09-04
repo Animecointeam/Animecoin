@@ -156,6 +156,28 @@ void OptionsModel::Init(bool resetSettings)
         }
     }
 
+    // Sync modes
+    if (!settings.contains("nSyncMode"))
+        settings.setValue("nSyncMode", 0);
+    if (!settings.contains("blockStorage"))
+        settings.setValue("blockStorage", 200);
+    if (settings.value ("nSyncMode") == "Pruned")
+    {
+        if (!SoftSetArg("-spv", "0"))
+            addOverriddenOption("-spv"); // Don't prune if user passed spv manually.
+        else if (!SoftSetArg("-prune", settings.value("blockStorage").toString().toStdString()))
+            addOverriddenOption("-prune");
+    }
+    else if ((settings.value ("nSyncMode") == "Lightweight") || (settings.value ("nSyncMode") == "Hybrid"))
+    {
+            if (!SoftSetArg("-spv", "1"))
+                addOverriddenOption("-spv");
+    }
+    else if (!SoftSetArg("-spv", "0"))
+                addOverriddenOption("-spv");
+    if (settings.value ("nSyncMode") == "Lightweight")
+        if (!SoftSetArg("-autorequestblocks", "0"))
+            addOverriddenOption("-autorequestblocks");
 }
 
 void OptionsModel::Reset()
@@ -244,6 +266,13 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("fListen");
         case MiningIntensity:
             return settings.value("nMiningIntensity");
+
+        //
+        case SyncMode:
+            return settings.value("nSyncMode");
+        case BlockStorage:
+            return settings.value("blockStorage");
+
         default:
             return QVariant();
         }
@@ -392,6 +421,19 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 settings.setValue("nMiningIntensity", value.toInt());
                 setRestartRequired(true);
             }
+            break;
+        case SyncMode:
+            if (settings.value("nSyncMode") != value) {
+                settings.setValue("nSyncMode", value);
+                setRestartRequired(true);
+            }
+            break;
+        case BlockStorage:
+            if (settings.value("blockStorage") != value.toInt()) {
+                settings.setValue("blockStorage", value.toInt());
+                setRestartRequired(true);
+            }
+            break;
         default:
             break;
         }

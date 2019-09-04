@@ -134,6 +134,15 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     connect(ui->proxyIpTor, SIGNAL(validationDidChange(QValidatedLineEdit *)), this, SLOT(updateProxyValidationState()));
     connect(ui->proxyPort, SIGNAL(textChanged(const QString&)), this, SLOT(updateProxyValidationState()));
     connect(ui->proxyPortTor, SIGNAL(textChanged(const QString&)), this, SLOT(updateProxyValidationState()));
+
+    /* Sync mode tab */
+    ui->blockStorage->setEnabled (false);
+
+    ui->syncMode->addItem("Full", 0);
+    ui->syncMode->addItem("Pruned", 1);
+    ui->syncMode->addItem("Lightweight", 2);
+    ui->syncMode->addItem("Hybrid", 3);
+    ui->syncMode->setCurrentIndex(0);
 }
 
 OptionsDialog::~OptionsDialog()
@@ -178,6 +187,12 @@ void OptionsDialog::setModel(OptionsModel *model)
     /* Display */
     connect(ui->lang, SIGNAL(valueChanged()), this, SLOT(showRestartWarning()));
     connect(ui->thirdPartyTxUrls, SIGNAL(textChanged(const QString &)), this, SLOT(showRestartWarning()));
+    /* Sync */
+    connect(ui->blockStorage, SIGNAL(valueChanged(int)), this, SLOT(showRestartWarning()));
+    connect(ui->syncMode, QOverload<int>::of(&QComboBox::currentIndexChanged), [this](const int index) {
+        ui->blockStorage->setEnabled (index==1);
+    });
+
 }
 
 void OptionsDialog::setMapper()
@@ -216,6 +231,12 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->lang, OptionsModel::Language);
     mapper->addMapping(ui->unit, OptionsModel::DisplayUnit);
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
+
+    /* Sync */
+    mapper->addMapping(ui->syncMode, OptionsModel::SyncMode);
+    mapper->addMapping(ui->blockStorage, OptionsModel::BlockStorage);
+    if (ui->syncMode->currentIndex()==1)
+        ui->blockStorage->setEnabled (true);
 }
 
 void OptionsDialog::setOkButtonState(bool fState)
