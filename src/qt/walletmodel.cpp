@@ -716,7 +716,11 @@ bool WalletModel::spvEnabled() const
 
 void WalletModel::setSpvEnabled(bool state)
 {
-    wallet->setSPVEnabled(state);
+    if (!fPruneMode&&fAutoRequestBlocks)
+    {
+        wallet->setSPVEnabled(state);
+        fFetchBlocksWhileFetchingHeaders = !state;
+    }
 }
 
 void WalletModel::updateSPVMode(bool fSPVModeEnabled)

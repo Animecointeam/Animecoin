@@ -81,7 +81,7 @@ private:
     QLabel *labelWalletEncryptionIcon;
     QLabel *labelWalletHDStatusIcon;
     QLabel *labelWalletSPVStatusIcon;
-    QLabel *labelConnectionsIcon;
+    QLabel *connectionsControl;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
     QProgressBar *progressBar;
@@ -138,6 +138,9 @@ private:
 
     void updateHeadersSyncProgressLabel();
 
+    /** Update UI with latest network info from model. */
+    void updateNetworkState();
+
 signals:
     /** Signal raised when a URI was entered or dragged to the GUI */
     void receivedURI(const QString &uri);
@@ -145,6 +148,8 @@ signals:
 public slots:
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
+    /** Set network state shown in the UI */
+    void setNetworkActive(bool networkActive);
     /** Set number of blocks and last block date shown in the UI */
     void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
     /** Set the auxiliary block request progress in the UI */
@@ -228,6 +233,9 @@ private slots:
 
     /** Show progress dialog e.g. for verifychain */
     void showProgress(const QString &title, int nProgress);
+
+    /** Toggle networking */
+    void toggleNetworkActive();
 };
 
 class UnitDisplayStatusBarControl : public QLabel

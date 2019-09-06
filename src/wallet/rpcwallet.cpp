@@ -2538,7 +2538,10 @@ UniValue setspv(const JSONRPCRequest& request)
                             );
 
     if (request.params.size() == 1)
+    {
         pwalletMain->setSPVEnabled(request.params[0].get_bool());
+        fFetchBlocksWhileFetchingHeaders = !request.params[0].get_bool();
+    }
 
     UniValue ret(UniValue::VOBJ);
     ret.pushKV("status", UniValue(pwalletMain->IsSPVEnabled()));

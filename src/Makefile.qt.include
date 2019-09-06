@@ -234,6 +234,7 @@ RES_ICONS = \
   qt/res/icons/key.png \
   qt/res/icons/lock_closed.png \
   qt/res/icons/lock_open.png \
+  qt/res/icons/network_disabled.png \
   qt/res/icons/overview.png \
   qt/res/icons/paper_wallet.png \
   qt/res/icons/print.png \

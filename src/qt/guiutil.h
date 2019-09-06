@@ -9,11 +9,13 @@
 
 #include <QEvent>
 #include <QHeaderView>
+#include <QLabel>
 #include <QMessageBox>
 #include <QObject>
 #include <QProgressBar>
 #include <QString>
 #include <QTableView>
+#include <QLabel>
 
 #include <boost/filesystem.hpp>
 
@@ -215,6 +217,19 @@ class ProgressBar : public QProgressBar
 #else
 typedef QProgressBar ProgressBar;
 #endif
+
+class ClickableLabel : public QLabel
+{
+    Q_OBJECT
+
+signals:
+    /** Emitted when the label is clicked. The relative mouse coordinates of the click are
+     * passed to the signal.
+     */
+    void clicked(const QPoint& point);
+protected:
+    void mousePressEvent(QMouseEvent *event);
+};
 
 } // namespace GUIUtil
 
