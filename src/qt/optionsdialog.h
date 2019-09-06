@@ -55,6 +55,7 @@ private slots:
     void updateProxyValidationState();
     /* query the networks, for which the default proxy is used */
     void updateDefaultProxyNets();
+    void updateModeInfo(const int index);
 
 signals:
     void proxyIpChecks(QValidatedLineEdit *pUiProxyIp, int nProxyPort);

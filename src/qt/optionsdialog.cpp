@@ -171,6 +171,10 @@ void OptionsDialog::setModel(OptionsModel *model)
         mapper->toFirst();
 
         updateDefaultProxyNets();
+
+        if (ui->syncMode->currentIndex() == 1)
+            ui->blockStorage->setEnabled (true);
+        updateModeInfo (ui->syncMode->currentIndex());
     }
 
     /* warn when one of the following settings changes by user action (placed here so init via mapper doesn't trigger them) */
@@ -191,6 +195,7 @@ void OptionsDialog::setModel(OptionsModel *model)
     connect(ui->blockStorage, SIGNAL(valueChanged(int)), this, SLOT(showRestartWarning()));
     connect(ui->syncMode, QOverload<int>::of(&QComboBox::currentIndexChanged), [this](const int index) {
         ui->blockStorage->setEnabled (index==1);
+        updateModeInfo (index);
     });
 
 }
@@ -235,8 +240,6 @@ void OptionsDialog::setMapper()
     /* Sync */
     mapper->addMapping(ui->syncMode, OptionsModel::SyncMode);
     mapper->addMapping(ui->blockStorage, OptionsModel::BlockStorage);
-    if (ui->syncMode->currentIndex()==1)
-        ui->blockStorage->setEnabled (true);
 }
 
 void OptionsDialog::setOkButtonState(bool fState)
@@ -333,6 +336,25 @@ void OptionsDialog::updateDefaultProxyNets()
     strProxy = proxy.proxy.ToStringIP() + ":" + proxy.proxy.ToStringPort();
     strDefaultProxyGUI = ui->proxyIp->text() + ":" + ui->proxyPort->text();
     (strProxy == strDefaultProxyGUI.toStdString()) ? ui->proxyReachTor->setChecked(true) : ui->proxyReachTor->setChecked(false);
+}
+
+void OptionsDialog::updateModeInfo(const int index)
+{
+    switch (index)
+    {
+        case 0:
+            ui->modeInfo->setText (tr("A complete local copy of the blockchain will be downloaded. This is the default mode."));
+            break;
+        case 1:
+            ui->modeInfo->setText (tr("A complete local copy of the blockchain will be downloaded, but older blocks will be removed from disk. You may designate the amount of disk space for those. Note that about 1GiB of block headers is still required to be stored as well. Switching from this mode will require reindex."));
+            break;
+        case 2:
+            ui->modeInfo->setText (tr("A complete set of block headers (about 1GiB) will be downloaded. Only the blocks that are younger than your wallet will be requested. This is very close to light client without sacrificing any decentralization or security."));
+            break;
+        case 3:
+            ui->modeInfo->setText (tr("Block headers will be downloaded first, then the full blockchain will be downloaded regardless. Once a complete set of headers (about 1GiB) and any blocks that are younger than your wallet are downloaded, your wallet will be ready to send and receive funds without waiting for the rest of the blocks."));
+            break;
+    }
 }
 
 ProxyAddressValidator::ProxyAddressValidator(QObject *parent) :
