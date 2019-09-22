@@ -267,6 +267,10 @@ crypto_libanimecoin_crypto_a_SOURCES = \
   crypto/sph_jh.h \
   crypto/sph_skein.h
 
+if EXPERIMENTAL_ASM
+crypto_libanimecoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
+endif
+
 # consensus: shared between all executables that validate any consensus rules.
 libanimecoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)

@@ -4,7 +4,7 @@ macx:TARGET = "Animecoin-Qt"
 VERSION = 0.10.0
 INCLUDEPATH += src src/qt
 QT += network printsupport
-DEFINES += QT_GUI BOOST_THREAD_USE_LIB HAVE_WORKING_BOOST_SLEEP_FOR
+DEFINES += QT_GUI BOOST_THREAD_USE_LIB HAVE_WORKING_BOOST_SLEEP_FOR EXPERIMENTAL_ASM
 DEFINES += ENABLE_WALLET
 CONFIG += no_include_pwd
 CONFIG += thread
@@ -447,6 +447,7 @@ SOURCES += src/qt/bitcoin.cpp \
     #src/crypto/ctaes/bench.c \
     src/crypto/ctaes/ctaes.c \
     #src/crypto/ctaes/test.c \
+    src/crypto/sha256_sse4.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
