@@ -2,8 +2,6 @@ ACLOCAL_AMFLAGS = -I build-aux/m4
 SUBDIRS = src
 .PHONY: deploy FORCE
 
-GZIP_ENV="-9n"
-
 BITCOIND_BIN=$(top_builddir)/src/animecoind$(EXEEXT)
 BITCOIN_QT_BIN=$(top_builddir)/src/qt/animecoin-qt$(EXEEXT)
 BITCOIN_CLI_BIN=$(top_builddir)/src/animecoin-cli$(EXEEXT)
