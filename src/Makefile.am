@@ -381,6 +381,7 @@ animecoind_LDADD = \
   $(LIBBITCOIN_CONSENSUS) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
+  $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
@@ -448,15 +449,13 @@ CTAES_DIST += crypto/ctaes/ctaes.h
 CTAES_DIST += crypto/ctaes/README.md
 CTAES_DIST += crypto/ctaes/test.c
 
-CLEANFILES = leveldb/libleveldb.a leveldb/libmemenv.a *.gcda *.gcno
-CLEANFILES += $(EXTRA_LIBRARIES)
+CLEANFILES = $(EXTRA_LIBRARIES)
 
 DISTCLEANFILES = obj/build.h
 
-EXTRA_DIST = leveldb $(CTAES_DIST)
+EXTRA_DIST = $(CTAES_DIST)
 
 clean-local:
-	-$(MAKE) -C leveldb clean
 	-$(MAKE) -C secp256k1 clean
 	-$(MAKE) -C univalue clean
 	rm -f leveldb/*/*.gcno leveldb/helpers/memenv/*.gcno
