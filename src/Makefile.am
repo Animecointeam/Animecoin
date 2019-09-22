@@ -1,3 +1,7 @@
+# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 DIST_SUBDIRS = secp256k1 univalue
 
 AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
@@ -39,6 +43,10 @@ endif
 if ENABLE_AVX2
 LIBBITCOIN_CRYPTO_AVX2 = crypto/libanimecoin_crypto_avx2.a
 LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_AVX2)
+endif
+if ENABLE_SHANI
+LIBBITCOIN_CRYPTO_SHANI = crypto/libanimecoin_crypto_shani.a
+LIBBITCOIN_CRYPTO += $(LIBBITCOIN_CRYPTO_SHANI)
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -292,6 +300,12 @@ crypto_libanimecoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
 crypto_libanimecoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
 crypto_libanimecoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
 crypto_libanimecoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
+
+crypto_libanimecoin_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libanimecoin_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libanimecoin_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
+crypto_libanimecoin_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
+crypto_libanimecoin_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
 libanimecoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)

@@ -448,6 +448,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/crypto/ctaes/ctaes.c \
     #src/crypto/ctaes/test.c \
     src/crypto/sha256_avx2.cpp \
+    src/crypto/sha256_shani.cpp \
     src/crypto/sha256_sse4.cpp \
     src/crypto/sha256_sse41.cpp \
     src/qt/bitcoingui.cpp \
