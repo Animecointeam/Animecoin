@@ -17,6 +17,8 @@ LIBBITCOIN_CONSENSUS=libanimecoin_consensus.a
 LIBBITCOIN_CLI=libanimecoin_cli.a
 LIBBITCOIN_UTIL=libanimecoin_util.a
 LIBBITCOIN_CRYPTO=crypto/libanimecoin_crypto.a
+LIBBITCOIN_CRYPTO_SSE41=crypto/libanimecoin_crypto_sse41.a
+LIBBITCOIN_CRYPTO_AVX2=crypto/libanimecoin_crypto_avx2.a
 LIBBITCOINQT=qt/libanimecoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 LIBUNIVALUE=univalue/libunivalue.la
@@ -42,6 +44,8 @@ $(LIBUNIVALUE): $(wildcard univalue/lib/*) $(wildcard univalue/include/*)
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
 $(LIBBITCOIN_CRYPTO) \
+$(LIBBITCOIN_CRYPTO_SSE41) \
+$(LIBBITCOIN_CRYPTO_AVX2) \
 $(LIBBITCOIN_UTIL) \
 $(LIBBITCOIN_COMMON) \
 $(LIBBITCOIN_CONSENSUS) \
@@ -210,7 +214,7 @@ libanimecoin_server_a_SOURCES = \
 
 if ENABLE_ZMQ
 libanimecoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES)
-libbitcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libanimecoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
@@ -270,6 +274,22 @@ crypto_libanimecoin_crypto_a_SOURCES = \
 if EXPERIMENTAL_ASM
 crypto_libanimecoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
 endif
+
+crypto_libanimecoin_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libanimecoin_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
+if ENABLE_SSE41
+crypto_libanimecoin_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
+crypto_libanimecoin_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
+endif
+crypto_libanimecoin_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
+
+crypto_libanimecoin_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libanimecoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
+if ENABLE_AVX2
+crypto_libanimecoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
+crypto_libanimecoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
+endif
+crypto_libanimecoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
 libanimecoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
@@ -380,6 +400,8 @@ animecoind_LDADD = \
   $(LIBBITCOIN_ZMQ) \
   $(LIBBITCOIN_CONSENSUS) \
   $(LIBBITCOIN_CRYPTO) \
+  $(LIBBITCOIN_CRYPTO_SSE41) \
+  $(LIBBITCOIN_CRYPTO_AVX2) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
@@ -402,6 +424,8 @@ animecoin_cli_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \
+  $(LIBBITCOIN_CRYPTO_SSE41) \
+  $(LIBBITCOIN_CRYPTO_AVX2) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
   $(CRYPTO_LIBS) \
@@ -420,6 +444,8 @@ animecoin_tx_LDADD = \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CONSENSUS) \
   $(LIBBITCOIN_CRYPTO) \
+  $(LIBBITCOIN_CRYPTO_SSE41) \
+  $(LIBBITCOIN_CRYPTO_AVX2) \
   $(LIBSECP256K1) \
   $(BOOST_LIBS) \
   $(CRYPTO_LIBS) \

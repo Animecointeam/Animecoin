@@ -447,7 +447,9 @@ SOURCES += src/qt/bitcoin.cpp \
     #src/crypto/ctaes/bench.c \
     src/crypto/ctaes/ctaes.c \
     #src/crypto/ctaes/test.c \
+    src/crypto/sha256_avx2.cpp \
     src/crypto/sha256_sse4.cpp \
+    src/crypto/sha256_sse41.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
