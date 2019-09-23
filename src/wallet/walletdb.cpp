@@ -498,7 +498,6 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             CKeyPool keypool;
             ssValue >> keypool;
             pwallet->LoadKeyPool(nIndex, keypool);
-
         }
         else if (strType == "version")
         {
