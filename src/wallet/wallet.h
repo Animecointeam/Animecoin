@@ -41,7 +41,7 @@ extern unsigned int nTxConfirmTarget;
 extern bool bSpendZeroConfChange;
 extern bool fSendFreeTransactions;
 
-static const unsigned int DEFAULT_KEYPOOL_SIZE = 100;
+static const unsigned int DEFAULT_KEYPOOL_SIZE = 1000;
 //! -paytxfee default
 static const CAmount DEFAULT_TRANSACTION_FEE = 0;
 //! -fallbackfee default
@@ -192,7 +192,10 @@ private:
     CHDChain hdChain;
 
     /* HD derive new child key (on internal or external chain) */
-    void DeriveNewChildKey(CKeyMetadata& metadata, CKey& secret, bool internal = false);
+    void DeriveNewChildKey(CWalletDB &walletdb, CKeyMetadata& metadata, CKey& secret, bool internal = false);
+
+    std::set<int64_t> setInternalKeyPool;
+    std::set<int64_t> setExternalKeyPool;
 
 public:
     /*
@@ -207,7 +210,22 @@ public:
     bool fFileBacked;
     std::string strWalletFile;
 
-    std::set<int64_t> setKeyPool;
+    void LoadKeyPool(int nIndex, const CKeyPool &keypool)
+    {
+        if (keypool.fInternal) {
+            setInternalKeyPool.insert(nIndex);
+        } else {
+            setExternalKeyPool.insert(nIndex);
+        }
+
+        // If no metadata exists yet, create a default with the pool key's
+        // creation time. Note that this may be overwritten by actually
+        // stored metadata for that key later, which is fine.
+        CKeyID keyid = keypool.vchPubKey.GetID();
+        if (mapKeyMetadata.count(keyid) == 0)
+            mapKeyMetadata[keyid] = CKeyMetadata(keypool.nTime);
+    }
+
     std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
 
     typedef std::map<unsigned int, CMasterKey> MasterKeyMap;
@@ -294,9 +312,10 @@ public:
      * keystore implementation
      * Generate a new key
      */
-    CPubKey GenerateNewKey(bool internal = false);
+    CPubKey GenerateNewKey(CWalletDB& walletdb, bool internal = false);
     //! Adds a key to the store, and saves it to disk.
     bool AddKeyPubKey(const CKey& key, const CPubKey &pubkey);
+    bool AddKeyPubKeyWithDB(CWalletDB &walletdb,const CKey& key, const CPubKey &pubkey);
     //! Adds a key to the store, without saving it to disk (used by LoadWallet)
     bool LoadKey(const CKey& key, const CPubKey &pubkey) { return CCryptoKeyStore::AddKeyPubKey(key, pubkey); }
     //! Load metadata (used by LoadWallet)
@@ -390,9 +409,9 @@ public:
     bool NewKeyPool();
     size_t KeypoolCountExternalKeys();
     bool TopUpKeyPool(unsigned int kpSize = 0);
-    void ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, bool internal);
+    void ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, bool fRequestedInternal);
     void KeepKey(int64_t nIndex);
-    void ReturnKey(int64_t nIndex);
+    void ReturnKey(int64_t nIndex, bool fInternal);
     bool GetKeyFromPool(CPubKey &key, bool internal = false);
     int64_t GetOldestKeyPoolTime();
     void GetAllReserveKeys(std::set<CKeyID>& setAddress) const;
@@ -447,8 +466,8 @@ public:
 
     unsigned int GetKeyPoolSize()
     {
-        AssertLockHeld(cs_wallet); // setKeyPool
-        return setKeyPool.size();
+        AssertLockHeld(cs_wallet); // set{Ex,In}ternalKeyPool
+        return setInternalKeyPool.size() + setExternalKeyPool.size();
     }
 
     bool SetDefaultKey(const CPubKey &vchPubKey);
@@ -543,11 +562,13 @@ protected:
     CWallet* pwallet;
     int64_t nIndex;
     CPubKey vchPubKey;
+    bool fInternal;
 public:
     CReserveKey(CWallet* pwalletIn)
     {
         nIndex = -1;
         pwallet = pwalletIn;
+        fInternal = false;
     }
 
     ~CReserveKey()
