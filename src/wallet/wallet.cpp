@@ -37,6 +37,8 @@ unsigned int nTxConfirmTarget = DEFAULT_TX_CONFIRM_TARGET;
 bool bSpendZeroConfChange = DEFAULT_SPEND_ZEROCONF_CHANGE;
 bool fSendFreeTransactions = DEFAULT_SEND_FREE_TRANSACTIONS;
 
+bool fWalletRbf = DEFAULT_WALLET_RBF;
+
 const char * DEFAULT_WALLET_DAT = "wallet.dat";
 const uint32_t BIP32_HARDENED_KEY_LIMIT = 0x80000000;
 
@@ -2249,7 +2251,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
     unsigned int nSubtractFeeFromAmount = 0;
-    for (const CRecipient& recipient : vecSend)
+    for (const auto& recipient : vecSend)
     {
         if (nValue < 0 || recipient.nAmount < 0)
         {
@@ -2271,7 +2273,30 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
     wtxNew.BindWallet(this);
     CMutableTransaction txNew;
 
+    // Discourage fee sniping.
+    //
+    // However because of a off-by-one-error in previous versions we need to
+    // neuter it by setting nLockTime to at least one less than nBestHeight.
+    // Secondly currently propagation of transactions created for block heights
+    // corresponding to blocks that were just mined may be iffy - transactions
+    // aren't re-accepted into the mempool - we additionally neuter the code by
+    // going ten blocks back. Doesn't yet do anything for sniping, but does act
+    // to shake out wallet bugs like not showing nLockTime'd transactions at
+    // all.
+    txNew.nLockTime = std::max(0, chainActive.Height() - 10);
+
+    // Secondly occasionally randomly pick a nLockTime even further back, so
+    // that transactions that are delayed after signing for whatever reason,
+    // e.g. high-latency mix networks and some CoinJoin implementations, have
+    // better privacy.
+    if (GetRandInt(10) == 0)
+        txNew.nLockTime = std::max(0, (int)txNew.nLockTime - GetRandInt(100));
+
+    assert(txNew.nLockTime <= (unsigned int)chainActive.Height());
+    assert(txNew.nLockTime < LOCKTIME_THRESHOLD);
+
     {
+        set<pair<const CWalletTx*,unsigned int> > setCoins;
         LOCK2(cs_main, cs_wallet);
         {
             std::vector<COutput> vAvailableCoins;
@@ -2293,7 +2318,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
 
                 double dPriority = 0;
                 // vouts to the payees
-                for (const CRecipient& recipient : vecSend)
+                for (const auto& recipient : vecSend)
                 {
                     CTxOut txout(recipient.nAmount, recipient.scriptPubKey);
 
@@ -2325,14 +2350,14 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 }
 
                 // Choose coins to use
-                set<pair<const CWalletTx*,unsigned int> > setCoins;
                 CAmount nValueIn = 0;
+                setCoins.clear();
                 if (!SelectCoins(vAvailableCoins, nValueToSelect, setCoins, nValueIn, coinControl))
                 {
                     strFailReason = _("Insufficient funds");
                     return false;
                 }
-                for (std::pair<const CWalletTx*, unsigned int> pcoin : setCoins)
+                for (const auto& pcoin : setCoins)
                 {
                     CAmount nCredit = pcoin.first->vout[pcoin.second].nValue;
                     //The coin age after the next block (depth+1) is used instead of the current,
@@ -2430,23 +2455,26 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                     reservekey.ReturnKey();
 
                 // Fill vin
-                for (const std::pair<const CWalletTx*, unsigned int>& coin : setCoins)
-                    txNew.vin.push_back(CTxIn(coin.first->GetHash(),coin.second));
-
-                // Sign
+                //
+                // Note how the sequence number is set to non-maxint so that
+                // the nLockTime set above actually works.
+                //
+                // BIP125 defines opt-in RBF as any nSequence < maxint-1, so
+                // we use the highest possible value in that range (maxint-2)
+                // to avoid conflicting with other possible uses of nSequence,
+                // and in the spirit of "smallest posible change from prior
+                // behavior."
+                for (const auto& coin : setCoins)
+                    txNew.vin.push_back(CTxIn(coin.first->GetHash(),coin.second,CScript(),
+                                              std::numeric_limits<unsigned int>::max() - (fWalletRbf ? 2 : 1)));
+                // Fill in dummy signatures for fee calculation.
                 int nIn = 0;
-                CTransaction txNewConst(txNew);
-                for (const std::pair<const CWalletTx*, unsigned int>& coin : setCoins)
+                for (const auto& coin : setCoins)
                 {
-                    bool signSuccess;
                     const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
                     CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
-                    if (sign)
-                        signSuccess = ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, SIGHASH_ALL), scriptPubKey, scriptSigRes);
-                    else
-                        signSuccess = ProduceSignature(DummySignatureCreator(this), scriptPubKey, scriptSigRes);
 
-                    if (!signSuccess)
+                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, scriptSigRes))
                     {
                         strFailReason = _("Signing transaction failed");
                         return false;
@@ -2456,22 +2484,14 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
 
                 unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
 
-                // Remove scriptSigs if we used dummy signatures for fee calculation
-                if (!sign) {
-                    for (CTxIn& vin : txNew.vin)
-                        vin.scriptSig = CScript();
-                }
+                CTransaction txNewConst(txNew);
+                dPriority = txNewConst.ComputePriority(dPriority, nBytes);
 
-                // Embed the constructed transaction data in wtxNew.
-                *static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);
-
-                // Limit size
-                if (nBytes >= MAX_STANDARD_TX_SIZE) // if ((nBytes + 4000 >= MAX_STANDARD_TX_SIZE) || (wtxNew.vin.size() >= 160)) Anime: Added safety margin 4000 bytes and 160 transactions
-                {
-                    strFailReason = _("Transaction too large");
-                    return false;
+                // Remove scriptSigs to eliminate the fee calculation dummy signatures
+                for (auto& vin : txNew.vin) {
+                    vin.scriptSig = CScript();
+                    // vin.scriptWitness.SetNull();
                 }
-                dPriority = wtxNew.ComputePriority(dPriority, nBytes);
 
                 // Allow to override the default confirmation target over the CoinControl instance
                 int currentConfirmationTarget = nTxConfirmTarget;
@@ -2510,6 +2530,38 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 nFeeRet = nFeeNeeded;
                 continue;
             }
+        }
+
+        if (sign)
+        {
+            CTransaction txNewConst(txNew);
+            int nIn = 0;
+            for (const auto& coin : setCoins)
+            {
+                const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
+                CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
+
+                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, SIGHASH_ALL), scriptPubKey, scriptSigRes))
+                {
+                    strFailReason = _("Signing transaction failed");
+                    return false;
+                // } else {
+                //    UpdateTransaction(txNew, nIn, scriptSigRes);
+                }
+
+                nIn++;
+            }
+        }
+
+        // Embed the constructed transaction data in wtxNew.
+         *static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);
+
+        // Limit size
+        unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
+        if (nBytes >= MAX_STANDARD_TX_SIZE)
+        {
+            strFailReason = _("Transaction too large");
+            return false;
         }
     }
     return true;
@@ -3392,6 +3444,7 @@ std::string CWallet::GetWalletHelpString(bool showDebug)
     strUsage += HelpMessageOpt("-spendzeroconfchange", strprintf(_("Spend unconfirmed change when sending transactions (default: %u)"), DEFAULT_SPEND_ZEROCONF_CHANGE));
     strUsage += HelpMessageOpt("-txconfirmtarget=<n>", strprintf(_("If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)"), DEFAULT_TX_CONFIRM_TARGET));
     strUsage += HelpMessageOpt("-usehd", _("Use hierarchical deterministic key generation (HD) after bip32. Only has effect during wallet creation/first start") + " " + strprintf(_("(default: %u)"), DEFAULT_USE_HD_WALLET));
+    strUsage += HelpMessageOpt("-walletrbf", strprintf(_("Send transactions with full-RBF opt-in enabled (default: %u)"), DEFAULT_WALLET_RBF));
     strUsage += HelpMessageOpt("-upgradewallet", _("Upgrade wallet to latest format on startup"));
     strUsage += HelpMessageOpt("-wallet=<file>", _("Specify wallet file (within data directory)") + " " + strprintf(_("(default: %s)"), DEFAULT_WALLET_DAT));
     strUsage += HelpMessageOpt("-walletbroadcast", _("Make the wallet broadcast transactions") + " " + strprintf(_("(default: %u)"), DEFAULT_WALLETBROADCAST));
@@ -3647,6 +3700,7 @@ bool CWallet::ParameterInteraction()
     nTxConfirmTarget = GetArg("-txconfirmtarget", DEFAULT_TX_CONFIRM_TARGET);
     bSpendZeroConfChange = GetBoolArg("-spendzeroconfchange", DEFAULT_SPEND_ZEROCONF_CHANGE);
     fSendFreeTransactions = GetBoolArg("-sendfreetransactions", DEFAULT_SEND_FREE_TRANSACTIONS);
+    fWalletRbf = GetBoolArg("-walletrbf", DEFAULT_WALLET_RBF);
 
     return true;
 }
