@@ -50,6 +50,7 @@ Features to be removed in 0.10
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
 - RPC over SSL will be removed (implemented, was never good). Use tunneling instead.
+- Qt4 support will be removed, years since EOL (in progress).
 
 0.9.2 release notes
 ---------------------

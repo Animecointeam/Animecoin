@@ -39,7 +39,7 @@ void HandleError(const leveldb::Status& status);
  */
 const std::vector<unsigned char>& GetObfuscateKey(const CDBWrapper &w);
 
-};
+}
 /** Batch of changes queued to be written to a CDBWrapper */
 class CDBBatch
 {
@@ -49,38 +49,41 @@ private:
     const CDBWrapper &parent;
     leveldb::WriteBatch batch;
 
+    CDataStream ssKey;
+    CDataStream ssValue;
+
 public:
     /**
      * @param[in] _parent   CDBWrapper that this batch is to be submitted to
      */
-    CDBBatch(const CDBWrapper &_parent) : parent(_parent) { }
+    CDBBatch(const CDBWrapper &_parent) : parent(_parent), ssKey(SER_DISK, CLIENT_VERSION), ssValue(SER_DISK, CLIENT_VERSION) { }
 
     template <typename K, typename V>
     void Write(const K& key, const V& value)
     {
-        CDataStream ssKey(SER_DISK, CLIENT_VERSION);
         ssKey.reserve(ssKey.GetSerializeSize(key));
         ssKey << key;
         leveldb::Slice slKey(&ssKey[0], ssKey.size());
 
-        CDataStream ssValue(SER_DISK, CLIENT_VERSION);
         ssValue.reserve(ssValue.GetSerializeSize(value));
         ssValue << value;
         ssValue.Xor(dbwrapper_private::GetObfuscateKey(parent));
         leveldb::Slice slValue(&ssValue[0], ssValue.size());
 
         batch.Put(slKey, slValue);
+        ssKey.clear();
+        ssValue.clear();
     }
 
     template <typename K>
     void Erase(const K& key)
     {
-        CDataStream ssKey(SER_DISK, CLIENT_VERSION);
         ssKey.reserve(ssKey.GetSerializeSize(key));
         ssKey << key;
         leveldb::Slice slKey(&ssKey[0], ssKey.size());
 
         batch.Delete(slKey);
+        ssKey.clear();
     }
 };
 
