@@ -795,6 +795,7 @@ public:
             ReadOrderPos(nOrderPos, mapValue);
 
             nTimeSmart = mapValue.count("timesmart") ? (unsigned int)atoi64(mapValue["timesmart"]) : 0;
+            fValidated = (mapValue.count("validated") && mapValue["validated"] == "yes") ? true : false;
         }
 
         mapValue.erase("fromaccount");

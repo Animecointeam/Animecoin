@@ -5,6 +5,10 @@
 
 #include "wallet/wallet.h"
 
+#if !defined(HAVE_CONFIG_H)
+#define PACKAGE_NAME "Animecoin"
+#endif
+
 #include "auxiliaryblockrequest.h"
 #include "base58.h"
 #include "checkpoints.h"
