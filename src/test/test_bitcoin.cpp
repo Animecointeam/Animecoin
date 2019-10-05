@@ -2,8 +2,6 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#define BOOST_TEST_MODULE Bitcoin Test Suite
-
 #include "test_bitcoin.h"
 
 #include "chainparams.h"
@@ -23,10 +21,8 @@
 #include "util.h"
 
 #include <boost/filesystem.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/thread.hpp>
 
-std::unique_ptr<CConnman> g_connman;
 FastRandomContext insecure_rand_ctx(true);
 
 extern bool fPrintToConsole;
@@ -58,17 +54,20 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     // instead of unit tests, but for now we need these here.
     RegisterAllCoreRPCCommands(tableRPC);
         ClearDatadirCache();
-        pathTemp = GetTempPath() / strprintf("test_bitcoin_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
+        pathTemp = GetTempPath() / strprintf("test_animecoin_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
         boost::filesystem::create_directories(pathTemp);
         mapArgs["-datadir"] = pathTemp.string();
         pblocktree = new CBlockTreeDB(1 << 20, true);
         pcoinsdbview = new CCoinsViewDB(1 << 23, true);
         pcoinsTip = new CCoinsViewCache(pcoinsdbview);
-        InitBlockIndex(chainparams);
+        if (!InitBlockIndex(chainparams)) {
+            throw std::runtime_error("InitBlockIndex failed.");
+        }
         {
             CValidationState state;
-            bool ok = ActivateBestChain(state, chainparams);
-            BOOST_CHECK(ok);
+            if (!ActivateBestChain(state, chainparams)) {
+                throw std::runtime_error("ActivateBestChain failed.");
+            }
         }
         nScriptCheckThreads = 3;
         for (int i=0; i < nScriptCheckThreads-1; i++)
@@ -149,19 +148,4 @@ CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(const CTransaction &txn, CTxMemPo
 
     return CTxMemPoolEntry(txn, nFee, nTime, dPriority, nHeight,
                            hasNoDependencies, inChainValue, spendsCoinbase, sigOpCount);
-}
-
-void Shutdown(void* parg)
-{
-  exit(0);
-}
-
-void StartShutdown()
-{
-  exit(0);
-}
-
-bool ShutdownRequested()
-{
-  return false;
 }

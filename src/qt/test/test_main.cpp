@@ -7,7 +7,6 @@
 #endif
 
 #include "chainparams.h"
-#include "key.h"
 #include "rpcnestedtests.h"
 #include "util.h"
 #include "uritests.h"
@@ -16,20 +15,27 @@
 #ifdef ENABLE_BIP70
 #include "paymentservertests.h"
 #endif // ENABLE_BIP70
+#include "wallettests.h"
 #endif // ENABLE_WALLET
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QObject>
 #include <QTest>
 
 #include <openssl/ssl.h>
 
-#if defined(QT_STATICPLUGIN) && QT_VERSION < 0x050000
+#if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
-Q_IMPORT_PLUGIN(qcncodecs)
-Q_IMPORT_PLUGIN(qjpcodecs)
-Q_IMPORT_PLUGIN(qtwcodecs)
-Q_IMPORT_PLUGIN(qkrcodecs)
+#if defined(QT_QPA_PLATFORM_MINIMAL)
+Q_IMPORT_PLUGIN(QMinimalIntegrationPlugin);
+#endif
+#if defined(QT_QPA_PLATFORM_XCB)
+Q_IMPORT_PLUGIN(QXcbIntegrationPlugin);
+#elif defined(QT_QPA_PLATFORM_WINDOWS)
+Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin);
+#elif defined(QT_QPA_PLATFORM_COCOA)
+Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
+#endif
 #endif
 
 extern void noui_connect();
@@ -37,7 +43,6 @@ extern void noui_connect();
 // This is all you need to run all the tests
 int main(int argc, char *argv[])
 {
-    ECC_Start();
     SetupEnvironment();
     SetupNetworking();
     SelectParams(CBaseChainParams::MAIN);
@@ -45,26 +50,40 @@ int main(int argc, char *argv[])
 
     bool fInvalid = false;
 
+    // Prefer the "minimal" platform for the test instead of the normal default
+    // platform ("xcb", "windows", or "cocoa") so tests can't unintentially
+    // interfere with any background GUIs and don't require extra resources.
+    setenv("QT_QPA_PLATFORM", "minimal", 0);
+
     // Don't remove this, it's needed to access
-    // QCoreApplication:: in the tests
-    QCoreApplication app(argc, argv);
-    app.setApplicationName("Bitcoin-Qt-test");
+    // QApplication:: and QCoreApplication:: in the tests
+    QApplication app(argc, argv);
+    app.setApplicationName("Animecoin-Qt-test");
 
     SSL_library_init();
 
     URITests test1;
-    if (QTest::qExec(&test1) != 0)
+    if (QTest::qExec(&test1) != 0) {
         fInvalid = true;
+    }
 #if defined(ENABLE_WALLET) && defined(ENABLE_BIP70)
     PaymentServerTests test2;
-    if (QTest::qExec(&test2) != 0)
+    if (QTest::qExec(&test2) != 0) {
         fInvalid = true;
+    }
 #endif
 
     RPCNestedTests test3;
-    if (QTest::qExec(&test3) != 0)
+    if (QTest::qExec(&test3) != 0) {
         fInvalid = true;
+	}
 
-    ECC_Stop();
+#ifdef ENABLE_WALLET
+//    WalletTests test5;
+//    if (QTest::qExec(&test5) != 0) {
+//        fInvalid = true;
+//    }
+#endif
+
     return fInvalid;
 }
