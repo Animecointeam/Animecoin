@@ -18,6 +18,7 @@
 #include "util.h"
 #include "validationinterface.h"
 
+#include <memory>
 #include <stdint.h>
 
 #include <boost/shared_ptr.hpp>
@@ -508,7 +509,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     // Update block
     static CBlockIndex* pindexPrev;
     static int64_t nStart;
-    static CBlockTemplate* pblocktemplate;
+    static std::unique_ptr<CBlockTemplate> pblocktemplate;
     if (pindexPrev != chainActive.Tip() ||
         (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 5))
     {
@@ -521,11 +522,6 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         nStart = GetTime();
 
         // Create new block
-        if(pblocktemplate)
-        {
-            delete pblocktemplate;
-            pblocktemplate = nullptr;
-        }
         CScript scriptDummy = CScript() << OP_TRUE;
         pblocktemplate = BlockAssembler(Params()).CreateNewBlock(scriptDummy);
         if (!pblocktemplate)

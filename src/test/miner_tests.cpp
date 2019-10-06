@@ -18,6 +18,8 @@
 
 #include "test/test_bitcoin.h"
 
+#include <memory>
+
 #include <boost/test/unit_test.hpp>
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, TestingSetup)
@@ -91,7 +93,7 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     uint256 hashHighFeeTx = tx.GetHash();
     mempool.addUnchecked(hashHighFeeTx, entry.Fee(50000).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
 
-    CBlockTemplate *pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
     BOOST_CHECK(pblocktemplate->block.vtx[1]->GetHash() == hashParentTx);
     BOOST_CHECK(pblocktemplate->block.vtx[2]->GetHash() == hashHighFeeTx);
     BOOST_CHECK(pblocktemplate->block.vtx[3]->GetHash() == hashMediumFeeTx);
@@ -169,7 +171,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 /*
     const CChainParams& chainparams = Params(CBaseChainParams::MAIN);
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
-    CBlockTemplate *pblocktemplate;
+    std::unique_ptr<CBlockTemplate> pblocktemplate;
     CMutableTransaction tx,tx2;
     CScript script;
     uint256 hash;
@@ -207,11 +209,9 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         BOOST_CHECK(ProcessNewBlock(chainparams, shared_pblock, true, nullptr));
         pblock->hashPrevBlock = pblock->GetHash();
     }
-    delete pblocktemplate;
 
     // Just to make sure we can still make simple blocks
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
 
     // block sigops > limit: 1000 CHECKMULTISIG + 1
     tx.vin.resize(1);
@@ -245,7 +245,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         tx.vin[0].prevout.hash = hash;
     }
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
     mempool.clear();
 
     // block size > limit
@@ -266,7 +265,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         tx.vin[0].prevout.hash = hash;
     }
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
     mempool.clear();
 
     // orphan in mempool, template creation fails
@@ -290,7 +288,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(400000000LL).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
     mempool.clear();
 
     // coinbase in mempool, template creation fails
@@ -317,7 +314,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vin[0].scriptSig = CScript() << std::vector<unsigned char>(script.begin(), script.end());
     tx.vout[0].nValue -= 1000000;
     hash = tx.GetHash();
-    mempool.addUnchecked(hash, entry.Fee(1000000).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
+    mempool.addUnchecked(hash, entry.Fee(1000000).Timede(GetTime()).SpendsCoinbase(false).FromTx(tx));
     BOOST_CHECK_THROW(BlockAssembler(chainparams).CreateNewBlock(scriptPubKey), std::runtime_error);
     mempool.clear();
 
@@ -338,10 +335,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     int nHeight = chainActive.Height();
     chainActive.Tip()->nHeight = 209999;
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
     chainActive.Tip()->nHeight = 210000;
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
     chainActive.Tip()->nHeight = nHeight;
 
     // non-final txs in mempool
@@ -376,7 +371,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     // Neither tx should have make it into the template.
     BOOST_CHECK_EQUAL(pblocktemplate->block.vtx.size(), 1);
-    delete pblocktemplate;
 
     // However if we advance height and time by one, both will.
     chainActive.Tip()->nHeight++;
@@ -389,7 +383,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
     BOOST_CHECK_EQUAL(pblocktemplate->block.vtx.size(), 2);
-    delete pblocktemplate;
 
     chainActive.Tip()->nHeight--;
     SetMockTime(0);
