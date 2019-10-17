@@ -277,7 +277,7 @@ public:
      * unordered_map will behave unpredictably if the custom hasher returns a
      * uint64_t, resulting in failures when syncing the chain (#4634).
      */
-    size_t operator()(const uint256& txid) const {
+    size_t operator()(const uint256& txid) const noexcept {
         return SipHashUint256(k0, k1, txid);
     }
 };
