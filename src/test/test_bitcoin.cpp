@@ -9,6 +9,7 @@
 #include "chainparams.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
+#include "crypto/sha256.h"
 #include "key.h"
 #include "main.h"
 #include "miner.h"
@@ -36,6 +37,7 @@ extern void noui_connect();
 
 BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
 {
+        SHA256AutoDetect();
         RandomInit();
         ECC_Start();
         SetupEnvironment();
