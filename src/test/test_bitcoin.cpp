@@ -26,6 +26,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/thread.hpp>
 
+bool fUseFastIndex;
 std::unique_ptr<CConnman> g_connman;
 FastRandomContext insecure_rand_ctx(true);
 

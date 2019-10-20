@@ -60,6 +60,7 @@
 using namespace std;
 
 bool fFeeEstimatesInitialized = false;
+bool fUseFastIndex;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_DISABLE_SAFEMODE = false;
@@ -842,6 +843,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     const CChainParams& chainparams = Params();
 
     // also see: InitParameterInteraction()
+
+    // whether to recalculate block hashes on startup or not
+    fUseFastIndex = GetBoolArg("-fastindex", true);
 
     // if using block pruning, then disable txindex
     if (GetArg("-prune", 0)||!GetBoolArg("-autorequestblocks", DEFAULT_AUTOMATIC_BLOCK_REQUESTS)) {

@@ -187,8 +187,9 @@ bool CBlockTreeDB::LoadBlockIndexGuts(std::function<CBlockIndex*(const uint256&)
         if (pcursor->GetKey(key) && key.first == 'b') {
             CDiskBlockIndex diskindex;
             if (pcursor->GetValue(diskindex)) {
+                uint256 blockHash = diskindex.GetBlockHash();
                 // Construct block index object
-                CBlockIndex* pindexNew = insertBlockIndex(diskindex.GetBlockHash());
+                CBlockIndex* pindexNew = insertBlockIndex(blockHash);
                 pindexNew->pprev          = insertBlockIndex(diskindex.hashPrev);
                 pindexNew->nHeight        = diskindex.nHeight;
                 pindexNew->nFile          = diskindex.nFile;
