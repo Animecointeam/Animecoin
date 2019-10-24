@@ -192,6 +192,9 @@ extern bool fAlerts;
 extern int64_t nMaxTipAge;
 extern bool fPermitReplacement;
 
+/** Block hash whose ancestors we will assume to have valid scripts without checking them. */
+extern uint256 hashAssumeValid;
+
 /** Best header we've seen so far (used for getheaders queries' starting points). */
 extern CBlockIndex *pindexBestHeader;
 
