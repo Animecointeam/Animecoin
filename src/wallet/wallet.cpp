@@ -3656,8 +3656,12 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
 
     CBlockIndex *pIndex = nullptr;
     CBlockIndex *chainActiveTip = nullptr;
-    int64_t oldest_key = std::numeric_limits<int64_t>::max();;
+    int64_t oldest_key = std::numeric_limits<int64_t>::max();
     int nonValidationScanUpToHeight = 0;
+
+    if (fReindex)
+        return;
+
     {
         LOCK2(cs_main, cs_wallet);
         if (pNVSBestBlock)
