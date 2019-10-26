@@ -18,8 +18,8 @@ const QDateTime TransactionFilterProxy::MAX_DATE = QDateTime::fromTime_t(0xFFFFF
 
 TransactionFilterProxy::TransactionFilterProxy(QObject *parent) :
     QSortFilterProxyModel(parent),
-    dateFrom(MIN_DATE),
-    dateTo(MAX_DATE),
+    dateFrom(MIN_DATE.toTime_t()),
+    dateTo(MAX_DATE.toTime_t()),
     addrPrefix(),
     typeFilter(ALL_TYPES),
     watchOnlyFilter(WatchOnlyFilter_All),
@@ -34,7 +34,7 @@ bool TransactionFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 
     int type = index.data(TransactionTableModel::TypeRole).toInt();
-    QDateTime datetime = index.data(TransactionTableModel::DateRole).toDateTime();
+    qint64 datetime = index.data(TransactionTableModel::DateRoleInt).toLongLong();
     bool involvesWatchAddress = index.data(TransactionTableModel::WatchonlyRole).toBool();
     QString address = index.data(TransactionTableModel::AddressRole).toString();
     QString label = index.data(TransactionTableModel::LabelRole).toString();
@@ -61,8 +61,8 @@ bool TransactionFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 
 void TransactionFilterProxy::setDateRange(const QDateTime &from, const QDateTime &to)
 {
-    this->dateFrom = from;
-    this->dateTo = to;
+    this->dateFrom = from.toTime_t();
+    this->dateTo = to.toTime_t();
     invalidateFilter();
 }
 

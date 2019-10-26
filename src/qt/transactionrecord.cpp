@@ -58,13 +58,13 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 {
                     // Received by Bitcoin Address
                     sub.type = TransactionRecord::RecvWithAddress;
-                    sub.address = CBitcoinAddress(address).ToString();
+                    sub.strAddress = CBitcoinAddress(address).ToString();
                 }
                 else
                 {
                     // Received by IP connection (deprecated features), or a multisignature or other non-simple transaction
                     sub.type = TransactionRecord::RecvFromOther;
-                    sub.address = mapValue["from"];
+                    sub.strAddress = mapValue["from"];
                 }
                 if (wtx.IsCoinBase())
                 {
@@ -72,6 +72,8 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     sub.type = TransactionRecord::Generated;
                 }
 
+                sub.address.SetString(sub.strAddress);
+                sub.txDest = sub.address.Get();
                 parts.append(sub);
             }
         }
@@ -130,13 +132,13 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 {
                     // Sent to Bitcoin Address
                     sub.type = TransactionRecord::SendToAddress;
-                    sub.address = CBitcoinAddress(address).ToString();
+                    sub.strAddress = CBitcoinAddress(address).ToString();
                 }
                 else
                 {
                     // Sent to IP, or other non-address transaction like OP_EVAL
                     sub.type = TransactionRecord::SendToOther;
-                    sub.address = mapValue["to"];
+                    sub.strAddress = mapValue["to"];
                 }
 
                 CAmount nValue = txout.nValue;
@@ -147,6 +149,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     nTxFee = 0;
                 }
                 sub.debit = -nValue;
+
+                sub.address.SetString(sub.strAddress);
+                sub.txDest = sub.address.Get();
 
                 parts.append(sub);
             }
@@ -187,6 +192,14 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     status.cur_num_blocks_headers_chain = headersChainActive.Height();
 
     status.fValidated = wtx.fValidated;
+
+    auto addrBookIt = wtx.GetWallet()->mapAddressBook.find(this->txDest);
+    if (addrBookIt == wtx.GetWallet()->mapAddressBook.end()) {
+        status.label = "";
+    } else {
+        status.label = QString::fromStdString(addrBookIt->second.name);
+    }
+
     if (!CheckFinalTx(wtx, -1, !status.fValidated))
     {
         if (wtx.nLockTime < LOCKTIME_THRESHOLD)
@@ -224,6 +237,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
         {
             status.status = TransactionStatus::Confirmed;
         }
+        status.needsUpdate = false;
     }
     else
     {
@@ -256,7 +270,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
 bool TransactionRecord::statusUpdateNeeded()
 {
     AssertLockHeld(cs_main);
-    return (status.cur_num_blocks != chainActive.Height() || status.cur_num_blocks_headers_chain != headersChainActive.Height());
+    return (status.cur_num_blocks != chainActive.Height()  || status.cur_num_blocks_headers_chain != headersChainActive.Height() || status.needsUpdate);
 }
 
 QString TransactionRecord::getTxID() const

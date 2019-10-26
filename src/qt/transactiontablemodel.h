@@ -43,6 +43,8 @@ public:
         TypeRole = Qt::UserRole,
         /** Date and time this transaction was created */
         DateRole,
+        /** Date and time this transaction was created in MSec since epoch */
+        DateRoleInt,
         /** Watch-only boolean */
         WatchonlyRole,
         /** Watch-only icon */
@@ -100,6 +102,8 @@ private:
 public slots:
     /* New transaction, or transaction changed status */
     void updateTransaction(const QString &hash, int status, bool showTransaction);
+    void updateAddressBook(const QString &address, const QString &label,
+                           bool isMine, const QString &purpose, int status);
     void updateConfirmations();
     void updateDisplayUnit();
     /** Updates the column title to "Amount (DisplayUnit)" and emits headerDataChanged() signal for table headers to react. */
