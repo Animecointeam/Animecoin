@@ -443,14 +443,14 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
         connect(clientModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
 
         // Show auxiliary block request (SPV) progress
-        connect(clientModel, SIGNAL(auxiliaryBlockRequestProgressChanged(QDateTime,int,int,int)), this, SLOT(setAuxiliaryBlockRequestProgress(QDateTime,int,int,int)));
+        connect(clientModel, SIGNAL(auxiliaryBlockRequestProgressChanged(QDateTime,int,int)), this, SLOT(setAuxiliaryBlockRequestProgress(QDateTime,int,int)));
 
         // If we already have a auxiliary block request, update the progress immediately
         int64_t created;
-        size_t requestedBlocks, loadedBlocks, processedBlocks;
-        if (clientModel->hasAuxiliaryBlockRequest(&created, &requestedBlocks, &loadedBlocks, &processedBlocks))
+        size_t requestedBlocks, /*loadedBlocks,*/ processedBlocks;
+        if (clientModel->hasAuxiliaryBlockRequest(&created, &requestedBlocks, /*&loadedBlocks,*/ &processedBlocks))
         {
-            setAuxiliaryBlockRequestProgress(QDateTime::fromTime_t(created), requestedBlocks, loadedBlocks, processedBlocks);
+            setAuxiliaryBlockRequestProgress(QDateTime::fromTime_t(created), requestedBlocks, /*loadedBlocks,*/ processedBlocks);
         }
 
         rpcConsole->setClientModel(clientModel);
@@ -714,7 +714,6 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     statusBar()->clearMessage();
 
     // Acquire current block source
-    bool headerSyncInProgress = false;
     enum BlockSource blockSource = clientModel->getBlockSource();
     switch (blockSource) {
         case BLOCK_SOURCE_NETWORK:
@@ -801,7 +800,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     progressBar->setToolTip(tooltip);
 }
 
-void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestedBlocks, int loadedBlocks, int processedBlocks)
+void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestedBlocks, /*int loadedBlocks,*/ int processedBlocks)
 {
     double nABRprogress = 1.0/requestedBlocks*processedBlocks;
 
@@ -809,6 +808,7 @@ void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, in
     {
     // don't show progress if request has been completed
     labelBlocksIcon->setPixmap(QIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+    labelBlocksIcon->setToolTip(QString(tr("Up to date (SPV)")));
 
 #ifdef ENABLE_WALLET
     if(walletFrame)
@@ -835,15 +835,15 @@ void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, in
 
             QString tooltip = tr("Scanning %1 blocks...").arg(QString::number(requestedBlocks));
             tooltip += QString("<br>");
-            tooltip += tr("%1 blocks loaded.").arg(QString::number(loadedBlocks));
-            tooltip += QString("<br>");
+            // tooltip += tr("%1 blocks loaded.").arg(QString::number(loadedBlocks));
+            // tooltip += QString("<br>");
             tooltip += tr("%1 blocks processed.").arg(QString::number(processedBlocks));
             tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
 
             progressBar->setFormat(tr("Catching up..."));
             progressBar->setMaximum(1000000000);
             progressBar->setValue(nABRprogress  * 1000000000.0 + 0.5);
-            progressBarLabel->setText("Download & scanning blocks (SPV)...");
+            progressBarLabel->setText("Downloading & scanning blocks (SPV)...");
             progressBar->setToolTip(tooltip);
             progressBarLabel->setToolTip(tooltip);
 

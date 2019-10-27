@@ -27,7 +27,7 @@ CAuxiliaryBlockRequest::CAuxiliaryBlockRequest(std::deque<const CBlockIndex*> vB
 void CAuxiliaryBlockRequest::NotifyUI()
 {
     // Notify UI
-    uiInterface.NotifyAuxiliaryBlockRequestProgress(this->created, this->vBlocksToDownload.size(), this->amountOfBlocksLoaded(), this->processedUpToSize);
+    uiInterface.NotifyAuxiliaryBlockRequestProgress(this->created, this->vBlocksToDownload.size() /*, this->amountOfBlocksLoaded()*/, this->processedUpToSize);
 }
 
 void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<const CBlock> pblock, CBlockIndex *pindex)

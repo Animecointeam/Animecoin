@@ -3659,9 +3659,6 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
     int64_t oldest_key = std::numeric_limits<int64_t>::max();
     int nonValidationScanUpToHeight = 0;
 
-    if (fReindex)
-        return;
-
     {
         LOCK2(cs_main, cs_wallet);
         if (pNVSBestBlock)
@@ -3669,11 +3666,23 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         chainActiveTip = chainActive.Tip();
         pIndex = headersChainActive.Tip();
         std::map<CTxDestination, int64_t> mapKeyBirth;
-        GetKeyBirthTimes(mapKeyBirth);
+        if (IsInitialBlockDownload ())
+        {
+            mapKeyBirth.clear();
+            // get birth times for keys with metadata
+            for (const auto& entry : mapKeyMetadata) {
+                if (entry.second.nCreateTime) {
+                    mapKeyBirth[entry.first] = entry.second.nCreateTime;
+                }
+            }
+        }
+        else
+            GetKeyBirthTimes(mapKeyBirth);
         for (const auto& it : mapKeyBirth) {
             if ((it.second < oldest_key) && (it.second > 1)) // Old watchonly keys are imported without timestamp.
-                oldest_key = it.second;
+            oldest_key = it.second;
         }
+        LogPrintf("Oldest key: %u\n", oldest_key);
     }
 
     if (optional_timestamp > 0)
@@ -3703,8 +3712,8 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
         blocksToDownload.push_back(pIndex);
 
         // ensure we only request up to nMaxBlocksPerAuxiliaryRequest
-        if (blocksToDownload.size() > nMaxBlocksPerAuxiliaryRequest)
-            blocksToDownload.pop_front();
+        //if (blocksToDownload.size() > nMaxBlocksPerAuxiliaryRequest)
+        //    blocksToDownload.pop_front();
         pIndex = pIndex->pprev;
     } while (pIndex->pprev);
 

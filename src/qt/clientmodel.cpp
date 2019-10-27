@@ -28,6 +28,7 @@ class CBlockIndex;
 static const int64_t nClientStartupTime = GetTime();
 static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
+static int64_t nLastSPVUpdateNotification = 0;
 
 ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
     QObject(parent),
@@ -268,7 +269,7 @@ void ClientModel::updateBanlist()
     banTableModel->refresh();
 }
 
-bool ClientModel::hasAuxiliaryBlockRequest(int64_t* createdRet, size_t* requestedBlocksRet, size_t* loadedBlocksRet, size_t* processedBlocksRet)
+bool ClientModel::hasAuxiliaryBlockRequest(int64_t* createdRet, size_t* requestedBlocksRet/*, size_t* loadedBlocksRet*/, size_t* processedBlocksRet)
 {
     std::shared_ptr<CAuxiliaryBlockRequest> blockRequest = CAuxiliaryBlockRequest::GetCurrentRequest();
     if (!blockRequest)
@@ -278,8 +279,10 @@ bool ClientModel::hasAuxiliaryBlockRequest(int64_t* createdRet, size_t* requeste
         *createdRet = blockRequest->created;
     if (requestedBlocksRet)
         *requestedBlocksRet = blockRequest->vBlocksToDownload.size();
+    /*
     if (loadedBlocksRet)
         *loadedBlocksRet = blockRequest->amountOfBlocksLoaded();
+    */
     if (processedBlocksRet)
         *processedBlocksRet = blockRequest->processedUpToSize;
     return true;
@@ -346,13 +349,20 @@ static void BannedListChanged(ClientModel *clientmodel)
     QMetaObject::invokeMethod(clientmodel, "updateBanlist", Qt::QueuedConnection);
 }
 
-static void AuxiliaryBlockRequestProgressUpdate(ClientModel *clientmodel, int64_t created, size_t blocksRequested, size_t blocksLoaded, size_t blocksProcessed)
-{
-    QMetaObject::invokeMethod(clientmodel, "auxiliaryBlockRequestProgressChanged", Qt::QueuedConnection,
+static void AuxiliaryBlockRequestProgressUpdate(ClientModel *clientmodel, int64_t created, size_t blocksRequested, /*size_t blocksLoaded,*/ size_t blocksProcessed)
+{  
+    int64_t now = GetTimeMillis();
+
+    int64_t& nLastUpdateNotification = nLastSPVUpdateNotification;
+
+    if ((blocksRequested == blocksProcessed) || (now - nLastUpdateNotification > MODEL_UPDATE_DELAY)) {
+        QMetaObject::invokeMethod(clientmodel, "auxiliaryBlockRequestProgressChanged", Qt::QueuedConnection,
                               Q_ARG(QDateTime, QDateTime::fromTime_t(created)),
                               Q_ARG(int, (int)blocksRequested),
-                              Q_ARG(int, (int)blocksLoaded),
+                              //Q_ARG(int, (int)blocksLoaded),
                               Q_ARG(int, (int)blocksProcessed));
+    nLastUpdateNotification = now;
+    }
 }
 
 void ClientModel::subscribeToCoreSignals()
@@ -365,7 +375,7 @@ void ClientModel::subscribeToCoreSignals()
     uiInterface.BannedListChanged.connect(boost::bind(BannedListChanged, this));
     uiInterface.NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
     uiInterface.NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
-    uiInterface.NotifyAuxiliaryBlockRequestProgress.connect(boost::bind(AuxiliaryBlockRequestProgressUpdate, this, _1, _2, _3, _4));
+    uiInterface.NotifyAuxiliaryBlockRequestProgress.connect(boost::bind(AuxiliaryBlockRequestProgressUpdate, this, _1, _2, _3));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -378,5 +388,5 @@ void ClientModel::unsubscribeFromCoreSignals()
     uiInterface.BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
     uiInterface.NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
     uiInterface.NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
-    uiInterface.NotifyAuxiliaryBlockRequestProgress.disconnect(boost::bind(AuxiliaryBlockRequestProgressUpdate, this, _1, _2, _3, _4));
+    uiInterface.NotifyAuxiliaryBlockRequestProgress.disconnect(boost::bind(AuxiliaryBlockRequestProgressUpdate, this, _1, _2, _3));
 }
