@@ -11,7 +11,7 @@
 
 #include <exception>
 
-static const unsigned int MAX_BLOCK_TO_PROCESS_PER_ITERATION = 100;
+static const unsigned int MAX_BLOCK_TO_PROCESS_PER_ITERATION = 2000;
 
 std::shared_ptr<CAuxiliaryBlockRequest> currentBlockRequest; //thread-safe pointer (CAuxiliaryBlockRequest, the object, is also lock-free)
 
@@ -35,6 +35,8 @@ void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<cons
     // don't process anything if the request was cancelled
     if (this->fCancelled)
         return;
+
+    unsigned int startingHeight = this->processedUpToSize;
 
     for (unsigned int i = this->processedUpToSize; i < this->vBlocksToDownload.size() ; i++) {
         const CBlockIndex *pindexRequest = this->vBlocksToDownload[i];
@@ -78,7 +80,7 @@ void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<cons
         if (currentBlockRequest == shared_from_this() && isCompleted())
             currentBlockRequest = nullptr;
 
-        if (i-this->processedUpToSize >= MAX_BLOCK_TO_PROCESS_PER_ITERATION)
+        if (i-startingHeight >= MAX_BLOCK_TO_PROCESS_PER_ITERATION)
             break;
     }
 }
@@ -104,23 +106,6 @@ void CAuxiliaryBlockRequest::setAsCurrentRequest()
         currentBlockRequest->fCancelled = true;
 
     currentBlockRequest = shared_from_this();
-}
-
-void CAuxiliaryBlockRequest::fillInNextBlocks(std::vector<const CBlockIndex*>& vBlocks, unsigned int count, std::function<bool(const CBlockIndex*)> filterBlocksCallback)
-{
-    for (unsigned int i = this->processedUpToSize; i < this->vBlocksToDownload.size() ; i++) {
-        const CBlockIndex *pindex = this->vBlocksToDownload[i];
-        if ( filterBlocksCallback(pindex) && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
-            // the block was accepted by the filter, add it to the download queue
-            vBlocks.push_back(pindex);
-            if (vBlocks.size() == count) {
-                break;
-            }
-        }
-    }
-
-    //try to process already available blocks through the signal
-    this->processWithPossibleBlock(nullptr, nullptr);
 }
 
 size_t CAuxiliaryBlockRequest::amountOfBlocksLoaded()

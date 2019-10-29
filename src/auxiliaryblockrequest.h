@@ -38,10 +38,6 @@ public:
     /** Set as the current block request, invalidate/cancle the current one */
     void setAsCurrentRequest();
 
-    /** Fill next available, not already requested blocks into vBlocks
-        allow to provide a function to check if block is already in flight somewhere */
-    void fillInNextBlocks(std::vector<const CBlockIndex*>& vBlocks, unsigned int count, std::function<bool(const CBlockIndex*)> filterBlocksCallback);
-
     /** returns the amount of already loaded/local-stored blocks from this blockrequest */
     size_t amountOfBlocksLoaded();
 

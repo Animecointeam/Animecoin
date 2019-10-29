@@ -609,15 +609,26 @@ void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vector<con
     // if there is an open CAuxiliaryBlockRequest (out-of-band/specific block download), prioritize it
     if (blockRequest && !blockRequest->isCancelled()) {
         // fill in next blocks to download, pass in a filter function to check mapBlocksInFlight
-        blockRequest->fillInNextBlocks(vBlocks, count, [state](const CBlockIndex *pIndexCheck) -> bool {
-            // make sure the remote node has this block
-            // we have already verified the chainWork through the headers-sync
-            // lets just compare heights
-            // missing blocks will lead to a time-out/missbehave and re-request (from different peer) (TODO: check)
-            if (state->pindexBestKnownBlock == nullptr || state->pindexBestKnownBlock->nHeight < pIndexCheck->nHeight)
-                return false;
-            return (mapBlocksInFlight.count(pIndexCheck->GetBlockHash()) == 0);
-        });
+
+        for (unsigned int i = blockRequest->processedUpToSize; i < blockRequest->vBlocksToDownload.size() ; i++) {
+            const CBlockIndex *pindex = blockRequest->vBlocksToDownload[i];
+            if ( // make sure the remote node has this block
+                 // we have already verified the chainWork through the headers-sync
+                 // lets just compare heights
+                 // missing blocks will lead to a time-out/misbehave and re-request (from different peer) (TODO: check)
+                 !(state->pindexBestKnownBlock == nullptr || state->pindexBestKnownBlock->nHeight < pindex->nHeight)
+                 && (mapBlocksInFlight.count(pindex->GetBlockHash()) == 0)
+                 && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
+                // the block was accepted by the filter, add it to the download queue
+                vBlocks.push_back(pindex);
+                if (vBlocks.size() == count) {
+                    break;
+                }
+            }
+        }
+
+        //try to process already available blocks through the signal
+        blockRequest->processWithPossibleBlock(nullptr, nullptr);
 
         // if we haven't completed the individual CAuxiliaryBlockRequest, we won't continue with "normal" IBD
         return;
