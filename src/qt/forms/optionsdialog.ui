@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>552</width>
-    <height>432</height>
+    <width>550</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -616,6 +616,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2_Display">
          <item>
           <widget class="QLabel" name="unitLabel">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>&amp;Unit to show amounts in:</string>
            </property>
@@ -629,6 +632,9 @@
          </item>
          <item>
           <widget class="QValueComboBox" name="unit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="toolTip">
             <string>Choose the default subdivision unit to show in the interface and when sending coins.</string>
            </property>

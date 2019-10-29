@@ -1162,6 +1162,7 @@ UnitDisplayStatusBarControl::UnitDisplayStatusBarControl() :
     optionsModel(0),
     menu(0)
 {
+    this->setVisible (false);
     createContextMenu();
     setToolTip(tr("Unit to show amounts in. Click to select another unit."));
 }

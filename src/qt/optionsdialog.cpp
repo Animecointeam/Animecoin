@@ -111,6 +111,8 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #endif
 
     ui->unit->setModel(new BitcoinUnits(this));
+    ui->unit->setVisible (false);
+    ui->unitLabel->setVisible (false);
 
     /* Mining tab */
     ui->comboMiningProcLimit->setEnabled(true);
