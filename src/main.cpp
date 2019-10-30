@@ -2434,7 +2434,7 @@ bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode) {
     }
 
     // Flush best chain related state. This can only be done if the blocks / block index write was also done.
-    if (fDoFullFlush) {
+    if (fDoFullFlush && !pcoinsTip->GetBestBlock().IsNull()) {
         // Typical CCoins structures on disk are around 128 bytes in size.
         // Pushing a new one to the database can cause it to be written
         // twice (once in the log, and once in the tables). This is already
