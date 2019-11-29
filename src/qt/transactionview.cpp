@@ -29,7 +29,6 @@
 #include <QMenu>
 #include <QPoint>
 #include <QScrollBar>
-#include <QSignalMapper>
 #include <QTableView>
 #include <QUrl>
 #include <QVBoxLayout>
@@ -153,11 +152,6 @@ TransactionView::TransactionView(QWidget *parent) :
     contextMenu->addAction(abandonAction);
     contextMenu->addAction(editLabelAction);
 
-    mapperThirdPartyTxUrls = new QSignalMapper(this);
-
-    // Connect actions
-    connect(mapperThirdPartyTxUrls, SIGNAL(mapped(QString)), this, SLOT(openThirdPartyTxUrl(QString)));
-
     connect(dateWidget, SIGNAL(activated(int)), this, SLOT(chooseDate(int)));
     connect(typeWidget, SIGNAL(activated(int)), this, SLOT(chooseType(int)));
     connect(watchOnlyWidget, SIGNAL(activated(int)), this, SLOT(chooseWatchonly(int)));
@@ -212,15 +206,15 @@ void TransactionView::setModel(WalletModel *model)
             QStringList listUrls = model->getOptionsModel()->getThirdPartyTxUrls().split("|", QString::SkipEmptyParts);
             for (int i = 0; i < listUrls.size(); ++i)
             {
-                QString host = QUrl(listUrls[i].trimmed(), QUrl::StrictMode).host();
+                QString url = listUrls[i].trimmed();
+                QString host = QUrl(url, QUrl::StrictMode).host();
                 if (!host.isEmpty())
                 {
                     QAction *thirdPartyTxUrlAction = new QAction(host, this); // use host as menu item label
                     if (i == 0)
                         contextMenu->addSeparator();
                     contextMenu->addAction(thirdPartyTxUrlAction);
-                    connect(thirdPartyTxUrlAction, SIGNAL(triggered()), mapperThirdPartyTxUrls, SLOT(map()));
-                    mapperThirdPartyTxUrls->setMapping(thirdPartyTxUrlAction, listUrls[i].trimmed());
+                    connect(thirdPartyTxUrlAction, &QAction::triggered, [this, url] { openThirdPartyTxUrl(url); });
                 }
             }
         }

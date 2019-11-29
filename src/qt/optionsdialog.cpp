@@ -37,7 +37,6 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     mapper(0)
 {
     ui->setupUi(this);
-    GUIUtil::restoreWindowGeometry("nOptionsDialogWindow", this->size(), this);
 
     /* Main elements init */
     ui->databaseCache->setMinimum(nMinDbCache);
@@ -149,7 +148,6 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 
 OptionsDialog::~OptionsDialog()
 {
-    GUIUtil::saveWindowGeometry("nOptionsDialogWindow", this);
     delete ui;
 }
 
