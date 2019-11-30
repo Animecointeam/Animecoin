@@ -51,10 +51,10 @@
 #include <QFileDialog>
 #include <QFont>
 #include <QLineEdit>
+#include <QMouseEvent>
 #include <QSettings>
 #include <QTextDocument> // for Qt::mightBeRichText
 #include <QThread>
-#include <QMouseEvent>
 
 #if QT_VERSION < 0x050000
 #include <QUrl>

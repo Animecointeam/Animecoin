@@ -235,7 +235,6 @@ protected:
  * In Qt 5.11 the QFontMetrics::horizontalAdvance() was introduced.
  */
 int TextWidth(const QFontMetrics& fm, const QString& text);
-
 } // namespace GUIUtil
 
 #endif // BITCOIN_QT_GUIUTIL_H
