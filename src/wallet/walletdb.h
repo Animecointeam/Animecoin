@@ -122,6 +122,9 @@ public:
     {
     }
 
+    CWalletDB(const CWalletDB&) = delete;
+    CWalletDB& operator=(const CWalletDB&) = delete;
+
     bool WriteName(const std::string& strAddress, const std::string& strName);
     bool EraseName(const std::string& strAddress);
 
@@ -182,8 +185,8 @@ public:
     static unsigned int GetUpdateCounter();
 
 private:
-    CWalletDB(const CWalletDB&);
-    void operator=(const CWalletDB&);
+    // CWalletDB(const CWalletDB&);
+    // void operator=(const CWalletDB&);
 };
 
 #endif // BITCOIN_WALLETDB_H

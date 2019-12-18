@@ -111,12 +111,11 @@ protected:
     ~CDB() { Close(); }
 
 public:
+    CDB(const CDB&) = delete;
+    CDB& operator=(const CDB&) = delete;
+
     void Flush();
     void Close();
-
-private:
-    CDB(const CDB&);
-    void operator=(const CDB&);
 
 protected:
     template <typename K, typename T>
