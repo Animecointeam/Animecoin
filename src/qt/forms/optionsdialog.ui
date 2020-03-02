@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>440</height>
+    <width>548</width>
+    <height>428</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,7 +67,7 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_2_Main">
-		   <property name="orientation">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
@@ -616,6 +616,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2_Display">
          <item>
           <widget class="QLabel" name="unitLabel">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>&amp;Unit to show amounts in:</string>
            </property>
@@ -629,6 +632,9 @@
          </item>
          <item>
           <widget class="QValueComboBox" name="unit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="toolTip">
             <string>Choose the default subdivision unit to show in the interface and when sending coins.</string>
            </property>
@@ -675,7 +681,88 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabNode">
+      <attribute name="title">
+       <string>Node Settings</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Sync mode</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="4" column="4">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>96</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Choose the sync mode:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Space for block storage:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="syncMode"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="blockStorage">
+            <property name="accelerated">
+             <bool>true</bool>
+            </property>
+            <property name="suffix">
+             <string> MiB</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>65536</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QLabel" name="modeInfo">
+            <property name="maximumSize">
+             <size>
+              <width>500</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="QFrame" name="frame">
@@ -721,11 +808,11 @@
        </widget>
       </item>
      </layout>
-     </widget>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_Buttons">
-          <item>
+     <item>
       <widget class="QPushButton" name="resetButton">
        <property name="toolTip">
         <string>Reset all client options to default.</string>
@@ -812,7 +899,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -822,12 +909,12 @@
    <extends>QLineEdit</extends>
    <header>qvalidatedlineedit.h</header>
   </customwidget>
-   <customwidget>
+  <customwidget>
    <class>QValueComboBox</class>
    <extends>QComboBox</extends>
    <header>qvaluecombobox.h</header>
   </customwidget>
-  </customwidgets>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

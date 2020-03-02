@@ -9,11 +9,13 @@
 
 #include <QEvent>
 #include <QHeaderView>
+#include <QLabel>
 #include <QMessageBox>
 #include <QObject>
 #include <QProgressBar>
 #include <QString>
 #include <QTableView>
+#include <QLabel>
 
 #include <boost/filesystem.hpp>
 
@@ -177,11 +179,6 @@ namespace GUIUtil
 bool GetStartOnSystemStartup();
 bool SetStartOnSystemStartup(bool fAutoStart);
 
-/** Save window size and position */
-void saveWindowGeometry(const QString& strSetting, QWidget *parent);
-/** Restore window size and position */
-void restoreWindowGeometry(const QString& strSetting, const QSize &defaultSizeIn, QWidget *parent);
-
 /* Convert QString to OS specific boost path through UTF-8 */
 boost::filesystem::path qstringToBoostPath(const QString &path);
 
@@ -216,6 +213,28 @@ class ProgressBar : public QProgressBar
 typedef QProgressBar ProgressBar;
 #endif
 
+qreal calculateIdealFontSize(int width, const QString& text, QFont font, qreal minPointSize = 4, qreal startPointSize = 14);
+
+class ClickableLabel : public QLabel
+{
+    Q_OBJECT
+
+signals:
+    /** Emitted when the label is clicked. The relative mouse coordinates of the click are
+     * passed to the signal.
+     */
+    void clicked(const QPoint& point);
+protected:
+    void mousePressEvent(QMouseEvent *event);
+};
+
+/**
+ * Returns the distance in pixels appropriate for drawing a subsequent character after text.
+ *
+ * In Qt 5.12 and before the QFontMetrics::width() is used and it is deprecated since Qt 13.0.
+ * In Qt 5.11 the QFontMetrics::horizontalAdvance() was introduced.
+ */
+int TextWidth(const QFontMetrics& fm, const QString& text);
 } // namespace GUIUtil
 
 #endif // BITCOIN_QT_GUIUTIL_H

@@ -234,6 +234,7 @@ RES_ICONS = \
   qt/res/icons/key.png \
   qt/res/icons/lock_closed.png \
   qt/res/icons/lock_open.png \
+  qt/res/icons/network_disabled.png \
   qt/res/icons/overview.png \
   qt/res/icons/paper_wallet.png \
   qt/res/icons/print.png \
@@ -242,6 +243,8 @@ RES_ICONS = \
   qt/res/icons/receive.png \
   qt/res/icons/remove.png \
   qt/res/icons/send.png \
+  qt/res/icons/spv_disabled.png \
+  qt/res/icons/spv_enabled.png \
   qt/res/icons/synced.png \
   qt/res/icons/transaction0.png \
   qt/res/icons/transaction2.png \
@@ -250,10 +253,7 @@ RES_ICONS = \
   qt/res/icons/tx_inout.png \
   qt/res/icons/tx_input.png \
   qt/res/icons/tx_output.png \
-  qt/res/icons/tx_mined.png \
-  qt/res/icons/unit_btc.png \
-  qt/res/icons/unit_mbtc.png \
-  qt/res/icons/unit_ubtc.png
+  qt/res/icons/tx_mined.png
 
 BITCOIN_QT_CPP = \
   qt/bantablemodel.cpp \

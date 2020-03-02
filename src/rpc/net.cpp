@@ -391,6 +391,7 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
             "  \"localrelay\": true|false,              (bool) true if transaction relay is requested from peers\n"
             "  \"timeoffset\": xxxxx,                   (numeric) the time offset\n"
             "  \"connections\": xxxxx,                  (numeric) the number of connections\n"
+            "  \"networkactive\": true|false,           (bool) whether p2p networking is enabled\n"
             "  \"networks\": [                          (array) information per network\n"
             "  {\n"
             "    \"name\": \"xxx\",                     (string) network (ipv4, ipv6 or onion)\n"
@@ -427,8 +428,10 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
         obj.pushKV("localservices", strprintf("%016x", g_connman->GetLocalServices()));
     obj.pushKV("localrelay",     fRelayTxes);
     obj.pushKV("timeoffset",    GetTimeOffset());
-    if(g_connman)
+    if (g_connman) {
+        obj.pushKV("networkactive", g_connman->GetNetworkActive());
         obj.pushKV("connections",   (int)g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL));
+    }
     obj.pushKV("networks",      GetNetworksInfo());
     obj.pushKV("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK()));
     UniValue localAddresses(UniValue::VARR);
@@ -599,6 +602,24 @@ UniValue makekeypair(const JSONRPCRequest& request)
     return result;
 }
 
+UniValue setnetworkactive(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1) {
+        throw runtime_error(
+            "setnetworkactive true|false\n"
+            "Disable/enable all p2p network activity."
+        );
+    }
+
+    if (!g_connman) {
+        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+    }
+
+    g_connman->SetNetworkActive(request.params[0].get_bool());
+
+    return g_connman->GetNetworkActive();
+}
+
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         okSafeMode
   //  --------------------- ------------------------  -----------------------  ----------
@@ -613,6 +634,7 @@ static const CRPCCommand commands[] =
     { "network",            "setban",                 &setban,                 true  },
     { "network",            "listbanned",             &listbanned,             true  },
     { "network",            "clearbanned",            &clearbanned,            true  },
+    { "network",            "setnetworkactive",       &setnetworkactive,       true, },
     { "util",               "makekeypair",            &makekeypair,            true  },
 };
 

@@ -81,6 +81,10 @@ public slots:
     void usedSendingAddresses();
     /** Show used receiving addresses */
     void usedReceivingAddresses();
+    /** Set the current wallets SPV mode */
+    void setSPVMode(bool state);
+    /** Get the current wallets SPV mode */
+    bool getSPVMode();
 };
 
 #endif // BITCOIN_QT_WALLETFRAME_H

@@ -6,6 +6,7 @@
 
 #include "bitcoinunits.h"
 #include "guiconstants.h"
+#include "guiutil.h"
 #include "qvaluecombobox.h"
 
 #include <QApplication>
@@ -99,7 +100,8 @@ public:
 
             const QFontMetrics fm(fontMetrics());
             int h = lineEdit()->minimumSizeHint().height();
-            int w = fm.width(BitcoinUnits::format(BitcoinUnits::ANI, BitcoinUnits::maxMoney(), false, BitcoinUnits::separatorAlways));
+            int w = GUIUtil::TextWidth(fm, BitcoinUnits::format(BitcoinUnits::ANI, BitcoinUnits::maxMoney(), false, BitcoinUnits::separatorAlways));
+
             w += 2; // cursor blinking space
 
             QStyleOptionSpinBox opt;

@@ -77,6 +77,7 @@ public:
     bool SkipProofOfWorkCheck() const { return fSkipProofOfWorkCheck; }
     /** Make standard checks */
     bool RequireStandard() const { return fRequireStandard; }
+    int64_t DelayGetHeadersTime() const { return nDelayGetHeadersTime; }
     int64_t PruneAfterHeight() const { return nPruneAfterHeight; }
     /** Make miner stop after a block is found. In RPC, don't return until nGenProcLimit blocks are generated */
     bool MineBlocksOnDemand() const { return fMineBlocksOnDemand; }
@@ -97,6 +98,7 @@ protected:
     //! Raw pub key bytes for the broadcast alert signing key.
     std::vector<unsigned char> vAlertPubKey;
     int nDefaultPort;
+    int64_t nDelayGetHeadersTime;
     int nMinerThreads;
     uint64_t nPruneAfterHeight;
     std::vector<CDNSSeedData> vSeeds;

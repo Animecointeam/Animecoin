@@ -84,6 +84,13 @@ public:
         consensus.nPowTargetTimespan = 10 * 240; // 40 minutes
         consensus.nPowTargetSpacing = 30; // 30 seconds
         consensus.fPowAllowMinDifficultyBlocks = false;
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("00000000000000000000000000000000000000000000000000967cc8c2dc36f9");
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x000000001c81edc9edbb1ebc1e4970b1f21131ddd9357878809a3cede21acc31"); // 5000000
+
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
@@ -95,6 +102,7 @@ public:
         pchMessageStart[3] = 0x4d;
         vAlertPubKey = ParseHex("04e8ee751a975ba7e5488267b6754e9e4249214db28d74af916d34aefdd8817c1a5d57aba2cc3ce23052ff8c8bf7028819bc966ce19e1a603b73b3e0edea902ab0");
         nDefaultPort = 1212;
+        nDelayGetHeadersTime = 24 * 60 * 60;
         nMinerThreads = 0;
         nPruneAfterHeight = 100000;
 
@@ -164,12 +172,17 @@ public:
         consensus.nMajorityRejectBlockOutdated = 75;
         consensus.nMajorityWindow = 100;
         consensus.fPowAllowMinDifficultyBlocks = true;
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00");
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c");
         pchMessageStart[0] = 0x4d; //Updated for Animecoin
         pchMessageStart[1] = 0x49;
         pchMessageStart[2] = 0x4e;
         pchMessageStart[3] = 0x41;
         vAlertPubKey = ParseHex("04229162767c4193324ab7f78b87c8b2d539d30ecefcb2749e3afdcb54cea8c32f0b59f2b67bf97045ed0c03b1f28e01787b4ee918c5f0b50819a058cd4c6ce40e"); // Updated.
         nDefaultPort = 11212; // Contradictory.
+        nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
         nMinerThreads = 0;
 
@@ -227,6 +240,10 @@ public:
         consensus.nPowTargetSpacing = 30; // 30 seconds
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00");
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x00");
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;
@@ -237,6 +254,7 @@ public:
         genesis.nNonce = 907185573;
         consensus.hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
+        nDelayGetHeadersTime = 0;
         //assert(hashGenesisBlock == uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c"));
         nPruneAfterHeight = 1000;
 

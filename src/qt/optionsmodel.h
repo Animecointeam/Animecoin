@@ -46,6 +46,8 @@ public:
         SpendZeroConfChange,    // bool
         Listen,                 // bool
         MiningIntensity,        // int
+        SyncMode,               // int
+        BlockStorage,           // int
         OptionIDRowCount,
     };
 

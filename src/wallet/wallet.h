@@ -63,6 +63,8 @@ static const bool DEFAULT_WALLETBROADCAST = true;
 //! if set, all keys will be derived by using BIP32
 static const bool DEFAULT_USE_HD_WALLET = true;
 
+//! if set, the wallet does a full-block spv sync before continue validating the chain
+static const bool DEFAULT_USE_SPV = false;
 extern const char * DEFAULT_WALLET_DAT;
 
 class CAccountingEntry;
@@ -167,11 +169,25 @@ private:
     /* Mark a transaction (and its in-wallet descendants) as conflicting with a particular block. */
     void MarkConflicted(const uint256& hashBlock, const uint256& hashTx);
 
-
     void SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator>);
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
+
+    std::atomic<bool> spvEnabled;
+
+    int64_t nTimeFirstKey;
+
+    /**
+     * Private version of AddWatchOnly method which does not accept a
+     * timestamp, and which will reset the wallet's nTimeFirstKey value to 1 if
+     * the watch key did not previously have a timestamp associated with it.
+     * Because this is an inherited virtual method, it is accessible despite
+     * being marked private, but it is marked private anyway to encourage use
+     * of the other AddWatchOnly which accepts a timestamp and sets
+     * nTimeFirstKey more intelligently for more efficient rescans.
+     */
+    bool AddWatchOnly(const CScript& dest) override;
 
 public:
     /*
@@ -187,7 +203,10 @@ public:
     std::string strWalletFile;
 
     std::set<int64_t> setKeyPool;
-    std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
+
+    // Map from Key ID (for regular keys) or Script ID (for watch-only keys) to
+    // key metadata.
+    std::map<CTxDestination, CKeyMetadata> mapKeyMetadata;
 
     typedef std::map<unsigned int, CMasterKey> MasterKeyMap;
     MasterKeyMap mapMasterKeys;
@@ -224,6 +243,9 @@ public:
         nLastResend = 0;
         nTimeFirstKey = 0;
         fBroadcastTransactions = false;
+        pNVSLastKnownBestHeader = nullptr;
+        pNVSBestBlock = nullptr;
+        spvEnabled = false;
     }
 
     std::map<uint256, CWalletTx> mapWallet;
@@ -242,7 +264,10 @@ public:
 
     std::set<COutPoint> setLockedCoins;
 
-    int64_t nTimeFirstKey;
+    //! last known best header, required to check for forks
+    const CBlockIndex *pNVSLastKnownBestHeader;
+    //! wallet did non-validation scan up to this block
+    const CBlockIndex *pNVSBestBlock;
 
     const CWalletTx* GetWalletTx(const uint256& hash) const;
 
@@ -279,9 +304,10 @@ public:
     //! Adds a key to the store, without saving it to disk (used by LoadWallet)
     bool LoadKey(const CKey& key, const CPubKey &pubkey) { return CCryptoKeyStore::AddKeyPubKey(key, pubkey); }
     //! Load metadata (used by LoadWallet)
-    bool LoadKeyMetadata(const CPubKey &pubkey, const CKeyMetadata &metadata);
+    bool LoadKeyMetadata(const CTxDestination& pubKey, const CKeyMetadata &metadata);
 
     bool LoadMinVersion(int nVersion) { AssertLockHeld(cs_wallet); nWalletVersion = nVersion; nWalletMaxVersion = std::max(nWalletMaxVersion, nVersion); return true; }
+    void UpdateTimeFirstKey(int64_t nCreateTime);
 
     //! Adds an encrypted key to the store, and saves it to disk.
     bool AddCryptedKey(const CPubKey &vchPubKey, const std::vector<unsigned char> &vchCryptedSecret);
@@ -300,7 +326,7 @@ public:
     bool GetDestData(const CTxDestination &dest, const std::string &key, std::string *value) const;
 
     //! Adds a watch-only address to the store, and saves it to disk.
-    bool AddWatchOnly(const CScript &dest);
+    bool AddWatchOnly(const CScript& dest, int64_t nCreateTime);
     bool RemoveWatchOnly(const CScript &dest);
     //! Adds a watch-only address to the store, without saving it to disk (used by LoadWallet)
     bool LoadWatchOnly(const CScript &dest);
@@ -309,7 +335,8 @@ public:
     bool ChangeWalletPassphrase(const SecureString& strOldWalletPassphrase, const SecureString& strNewWalletPassphrase);
     bool EncryptWallet(const SecureString& strWalletPassphrase);
 
-    void GetKeyBirthTimes(std::map<CKeyID, int64_t> &mapKeyBirth) const;
+    void GetKeyBirthTimes(std::map<CTxDestination, int64_t> &mapKeyBirth) const;
+    unsigned int ComputeTimeSmart(const CWalletTx& wtx) const;
 
     /**
      * Increment the next transaction order id
@@ -323,8 +350,10 @@ public:
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose=true);
     bool LoadToWallet(const CWalletTx& wtxIn);
-    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock);
-    bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate);
+    bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate, bool fValidated);
+    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock, bool validated);
+    void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew);
+    void GetNonMempoolTransaction(const uint256 &hash, CTransactionRef &txsp);
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
     void ReacceptWalletTransactions();
     void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman);
@@ -395,6 +424,7 @@ public:
     CAmount GetCredit(const CTransaction& tx, const isminefilter& filter) const;
     CAmount GetChange(const CTransaction& tx) const;
     void SetBestChain(const CBlockLocator& loc);
+    void SetBestNVSChain();
 
     DBErrors LoadWallet(bool& fFirstRunRet);
     DBErrors ZapWalletTx(std::vector<CWalletTx>& vWtx);
@@ -471,6 +501,9 @@ public:
     /** Watch-only address added */
     boost::signals2::signal<void (bool fHaveWatchOnly)> NotifyWatchonlyChanged;
 
+    /** SPV Mode changed */
+    boost::signals2::signal<void (bool fSPVEnabled)> NotifySPVModeChanged;
+
     /** Inquire whether this wallet broadcasts transactions. */
     bool GetBroadcastTransactions() const { return fBroadcastTransactions; }
     /** Set whether this wallet broadcasts transactions. */
@@ -494,6 +527,10 @@ public:
 
     /* Wallets parameter interaction */
     static bool ParameterInteraction();
+
+    void RequestSPVScan(int64_t optional_timestamp = 0);
+    void setSPVEnabled(bool status);
+    bool IsSPVEnabled();
 
     bool BackupWallet(const std::string& strDest);
 
@@ -581,6 +618,7 @@ public:
      * compatibility.
      */
     int nIndex;
+    bool fValidated;
 
     CMerkleTx()
     {
@@ -643,6 +681,15 @@ public:
     std::vector<std::pair<std::string, std::string> > vOrderForm;
     unsigned int fTimeReceivedIsTxTime;
     unsigned int nTimeReceived; //! time received by this node
+    /**
+     * Stable timestamp that never changes, and reflects the order a transaction
+     * was added to the wallet. Timestamp is based on the block time for a
+     * transaction added as part of a block, or else the time when the
+     * transaction was received if it wasn't part of a block, with the timestamp
+     * adjusted in both cases so timestamp order matches the order transactions
+     * were added to the wallet. More details can be found in
+     * CWallet::ComputeTimeSmart().
+     */
     unsigned int nTimeSmart;
     char fFromMe;
     std::string strFromAccount;
@@ -717,6 +764,7 @@ public:
         nImmatureWatchCreditCached = 0;
         nChangeCached = 0;
         nOrderPos = -1;
+        fValidated = false;
     }
 
     ADD_SERIALIZE_METHODS
@@ -735,6 +783,9 @@ public:
 
             if (nTimeSmart)
                 mapValue["timesmart"] = strprintf("%u", nTimeSmart);
+
+            if (fValidated)
+                mapValue["validated"] = "yes";
         }
 
         READWRITE(*(CMerkleTx*)this);
@@ -754,6 +805,7 @@ public:
             ReadOrderPos(nOrderPos, mapValue);
 
             nTimeSmart = mapValue.count("timesmart") ? (unsigned int)atoi64(mapValue["timesmart"]) : 0;
+            fValidated = (mapValue.count("validated") && mapValue["validated"] == "yes") ? true : false;
         }
 
         mapValue.erase("fromaccount");
@@ -761,6 +813,7 @@ public:
         mapValue.erase("spent");
         mapValue.erase("n");
         mapValue.erase("timesmart");
+        mapValue.erase("validated");
     }
 
     //! make sure balances are recalculated
@@ -768,6 +821,7 @@ public:
     {
         fCreditCached = false;
         fAvailableCreditCached = false;
+        fImmatureCreditCached = false;
         fWatchDebitCached = false;
         fWatchCreditCached = false;
         fAvailableWatchCreditCached = false;
@@ -780,6 +834,11 @@ public:
     {
         pwallet = pwalletIn;
         MarkDirty();
+    }
+
+    const CWallet* GetWallet() const
+    {
+        return pwallet;
     }
 
     //! filter decides which addresses will count towards the debit
