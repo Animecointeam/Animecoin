@@ -170,11 +170,11 @@ void OptionsModel::Init(bool resetSettings)
     }
     else if ((settings.value ("nSyncMode") == "Lightweight") || (settings.value ("nSyncMode") == "Hybrid"))
     {
-            if (!SoftSetArg("-spv", "1"))
-                addOverriddenOption("-spv");
+        if (!SoftSetArg("-spv", "1"))
+            addOverriddenOption("-spv");
     }
     else if (!SoftSetArg("-spv", "0"))
-                addOverriddenOption("-spv");
+        addOverriddenOption("-spv");
     if (settings.value ("nSyncMode") == "Lightweight")
         if (!SoftSetArg("-autorequestblocks", "0"))
             addOverriddenOption("-autorequestblocks");

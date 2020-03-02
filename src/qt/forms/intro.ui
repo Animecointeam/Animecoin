@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>674</width>
-    <height>363</height>
+    <width>672</width>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,6 +60,19 @@
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="spvMode">
+     <property name="text">
+      <string> SPV mode. Uncheck if you run services that require a full blockchain copy.</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="tristate">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
