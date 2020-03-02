@@ -71,6 +71,10 @@ public:
     bool inInitialBlockDownload() const;
     //! Returns enum BlockSource of the current importing/syncing state
     enum BlockSource getBlockSource() const;
+    //! Return true if network activity in core is enabled
+    bool getNetworkActive() const;
+    //! Toggle network activity state in core
+    void setNetworkActive(bool active);
     //! Return warnings to be displayed in status bar
     QString getStatusBarWarnings() const;
 
@@ -84,6 +88,8 @@ public:
     // caches for the best header
     mutable std::atomic<int> cachedBestHeaderHeight;
     mutable std::atomic<int64_t> cachedBestHeaderTime;
+
+    bool hasAuxiliaryBlockRequest(int64_t* createdRet = nullptr, size_t* requestedBlocksRet = nullptr, /*size_t* loadedBlocksRet = nullptr,*/ size_t* processedBlocksRet = nullptr);
 
 private:
     OptionsModel *optionsModel;
@@ -99,6 +105,7 @@ signals:
     void numConnectionsChanged(int count);
     void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, bool header);
     void mempoolSizeChanged(long count, size_t mempoolSizeInBytes);
+    void networkActiveChanged(bool networkActive);
     void alertsChanged(const QString &warnings);
     void bytesChanged(quint64 totalBytesIn, quint64 totalBytesOut);
 
@@ -108,9 +115,12 @@ signals:
     // Show progress dialog e.g. for verifychain
     void showProgress(const QString &title, int nProgress);
 
+    void auxiliaryBlockRequestProgressChanged(const QDateTime& created, int blocksRequested, /*int blocksLoaded,*/ int blocksProcessed);
+
 public slots:
     void updateTimer();
     void updateNumConnections(int numConnections);
+    void updateNetworkActive(bool networkActive);
     void updateAlert(const QString &hash, int status);
     void updateBanlist();
 };

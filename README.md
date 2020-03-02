@@ -39,9 +39,9 @@ The wallet format has also been updated. Downgrading will automatically perform 
 
 Features in progress but not necessarily finalized before 0.10 release
 ---------------------
-- Lightweight nodes (running a wallet in pruned mode is possible now).
+- Lightweight nodes (running wallet in SPV mode is possible now, pruned mode is available as well, more options upcoming).
 - BIP-0009/0068/0112/0113 aggregation (will not be activated before BIP-0065 fork).
-- Animecoin-specific optimizations (it's got a huge amount of block headers while the disk space usage is moderate, lots of small inputs from generated transactions etc).
+- Animecoin-specific optimizations (wallet startup time reduced significantly by caching the block hashes on disk; transaction table updating is faster now, with more improvements coming).
 - Minimize third-party dependencies.
 
 Features to be removed in 0.10
@@ -50,6 +50,7 @@ Features to be removed in 0.10
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
 - RPC over SSL will be removed (implemented, was never good). Use tunneling instead.
+- Qt4 support will be removed, years since EOL (in progress).
 
 0.9.2 release notes
 ---------------------

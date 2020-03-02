@@ -246,6 +246,8 @@ public:
     bool abandonTransaction(uint256 hash) const;
 
     bool hdEnabled() const;
+    bool spvEnabled() const;
+    void setSpvEnabled(bool state);
 
     int getDefaultConfirmTarget() const;
 
@@ -271,6 +273,7 @@ private:
     CAmount cachedWatchImmatureBalance;
     EncryptionStatus cachedEncryptionStatus;
     int cachedNumBlocks;
+    int cachedNumBlocksHeadersChain;
 
     QTimer *pollTimer;
 
@@ -303,6 +306,9 @@ signals:
     // Watch-only address added
     void notifyWatchonlyChanged(bool fHaveWatchonly);
 
+    // SPV status of wallet changed
+    void spvEnabledStatusChanged(int status);
+
 public slots:
     /* Wallet status might have changed */
     void updateStatus();
@@ -314,6 +320,8 @@ public slots:
     void updateWatchOnlyFlag(bool fHaveWatchonly);
     /* Current, immature or unconfirmed balance might have changed - emit 'balanceChanged' if so */
     void pollBalanceChanged();
+    /* Update the SPV Mode */
+    void updateSPVMode(bool state);
 };
 
 #endif // BITCOIN_QT_WALLETMODEL_H

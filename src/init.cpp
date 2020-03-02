@@ -60,6 +60,7 @@
 using namespace std;
 
 bool fFeeEstimatesInitialized = false;
+bool fUseFastIndex;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_DISABLE_SAFEMODE = false;
@@ -316,8 +317,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-blocknotify=<cmd>", _("Execute command when the best block changes (%s in cmd is replaced by block hash)"));
     if (showDebug)
         strUsage += HelpMessageOpt("-blocksonly", strprintf(_("Whether to operate in a blocks only mode (default: %u)"), DEFAULT_BLOCKSONLY));
-    strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), 5760));
-    strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), 3));
+    strUsage +=HelpMessageOpt("-assumevalid=<hex>", strprintf(_("If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)"), Params(CBaseChainParams::MAIN).GetConsensus().defaultAssumeValid.GetHex(), Params(CBaseChainParams::TESTNET).GetConsensus().defaultAssumeValid.GetHex()));
     strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), BITCOIN_CONF_FILENAME));
        if (mode == HMM_BITCOIND)
        {
@@ -332,6 +332,9 @@ std::string HelpMessage(HelpMessageMode mode)
    strUsage += HelpMessageOpt("-maxorphantx=<n>", strprintf(_("Keep at most <n> unconnectable transactions in memory (default: %u)"), DEFAULT_MAX_ORPHAN_TRANSACTIONS));
    strUsage += HelpMessageOpt("-maxmempool=<n>", strprintf(_("Keep the transaction memory pool below <n> megabytes (default: %u)"), DEFAULT_MAX_MEMPOOL_SIZE));
    strUsage += HelpMessageOpt("-mempoolexpiry=<n>", strprintf(_("Do not keep transactions in the mempool longer than <n> hours (default: %u)"), DEFAULT_MEMPOOL_EXPIRY));
+   if (showDebug) {
+       strUsage += HelpMessageOpt("-minimumchainwork=<hex>", strprintf("Minimum work assumed to exist on a valid chain in hex (default: %s, testnet: %s)",  Params(CBaseChainParams::MAIN).GetConsensus().nMinimumChainWork.GetHex(), Params(CBaseChainParams::TESTNET).GetConsensus().nMinimumChainWork.GetHex()));
+   }
    strUsage += HelpMessageOpt("-par=<n>", strprintf(_("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)"),
            -(int)std::thread::hardware_concurrency(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS));
 #ifndef WIN32
@@ -408,6 +411,8 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageGroup(_("Debugging/Testing options:"));
     if (showDebug)
     {
+        strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), 5760));
+        strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), 3));
         strUsage += HelpMessageOpt("-checkpoints", strprintf("Disable expensive verification for known chain history (default: %u)", DEFAULT_CHECKPOINTS_ENABLED));
         strUsage += HelpMessageOpt("-disablesafemode", strprintf("Disable safemode, override a real safe mode event (default: %u)", DEFAULT_DISABLE_SAFEMODE));
         strUsage += HelpMessageOpt("-testsafemode", strprintf("Force safe mode (default: %u)", DEFAULT_TESTSAFEMODE));
@@ -418,6 +423,7 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-limitancestorsize=<n>", strprintf("Do not accept transactions whose size with all in-mempool ancestors exceeds <n> kilobytes (default: %u)", DEFAULT_ANCESTOR_SIZE_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantcount=<n>", strprintf("Do not accept transactions if any ancestor would have <n> or more in-mempool descendants (default: %u)", DEFAULT_DESCENDANT_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantsize=<n>", strprintf("Do not accept transactions if any ancestor would have more than <n> kilobytes of in-mempool descendants (default: %u).", DEFAULT_DESCENDANT_SIZE_LIMIT));
+        strUsage += HelpMessageOpt("-autorequestblocks", strprintf("Automatic block request, if disabled, blocks will not be requested in IBD/sync-up (default: %u)", DEFAULT_AUTOMATIC_BLOCK_REQUESTS));
     }
     string debugCategories = "addrman, alert, bench, cmpctblock, coindb, db, http, libevent, lock, mempool, mempoolrej, net, proxy, prune, rand, reindex, rpc, selectcoins, tor, zmq"; // Don't translate these and qt below
 
@@ -842,13 +848,16 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // also see: InitParameterInteraction()
 
+    // whether to recalculate block hashes on startup or not
+    fUseFastIndex = GetBoolArg("-fastindex", true);
+
     // if using block pruning, then disable txindex
-    if (GetArg("-prune", 0)) {
+    if (GetArg("-prune", 0)||!GetBoolArg("-autorequestblocks", DEFAULT_AUTOMATIC_BLOCK_REQUESTS)) {
         if (GetBoolArg("-txindex", DEFAULT_TXINDEX))
-            return InitError(_("Prune mode is incompatible with -txindex."));
+            return InitError(_("Light client mode is incompatible with -txindex."));
 #ifdef ENABLE_WALLET
         if (GetBoolArg("-rescan", false)) {
-            return InitError(_("Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again."));
+            return InitError(_("Rescans are not possible in light mode. You will need to use -reindex which will download the whole blockchain again."));
         }
 #endif
     }
@@ -899,6 +908,26 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
     fCheckBlockIndex = GetBoolArg("-checkblockindex", chainparams.DefaultConsistencyChecks());
     fCheckpointsEnabled = GetBoolArg("-checkpoints", DEFAULT_CHECKPOINTS_ENABLED);
+    fAutoRequestBlocks = GetBoolArg("-autorequestblocks", DEFAULT_AUTOMATIC_BLOCK_REQUESTS);
+    hashAssumeValid = uint256S(GetArg("-assumevalid", chainparams.GetConsensus().defaultAssumeValid.GetHex()));
+    if (!hashAssumeValid.IsNull())
+        LogPrintf("Assuming ancestors of block %s have valid signatures.\n", hashAssumeValid.GetHex());
+    else
+        LogPrintf("Validating signatures for all blocks.\n");
+
+    if (mapArgs.count("-minimumchainwork")) {
+        const std::string minChainWorkStr = GetArg("-minimumchainwork", "");
+        if (!IsHexNumber(minChainWorkStr)) {
+            return InitError(strprintf("Invalid non-hex (%s) minimum chain work value specified", minChainWorkStr));
+        }
+        nMinimumChainWork = UintToArith256(uint256S(minChainWorkStr));
+    } else {
+        nMinimumChainWork = UintToArith256(chainparams.GetConsensus().nMinimumChainWork);
+    }
+    LogPrintf("Setting nMinimumChainWork=%s\n", nMinimumChainWork.GetHex());
+    if (nMinimumChainWork < UintToArith256(chainparams.GetConsensus().nMinimumChainWork)) {
+        LogPrintf("Warning: nMinimumChainWork set below default value of %s\n", chainparams.GetConsensus().nMinimumChainWork.GetHex());
+    }
 
     // -mempoollimit limits
     int64_t nMempoolSizeLimit = GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
@@ -984,6 +1013,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
 
     // Initialize elliptic curve code
+    std::string sha256_algo = SHA256AutoDetect();
+    LogPrintf("Using the '%s' SHA256 implementation\n", sha256_algo);
     RandomInit();
     ECC_Start();
     globalVerifyHandle.reset(new ECCVerifyHandle());
@@ -1410,6 +1441,11 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             PruneAndFlush();
         }
     }
+    if (!fAutoRequestBlocks)
+    {
+        LogPrintf("Unsetting NODE_NETWORK on SPV mode\n");
+        nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
+    }
 
     // ********************************************************* Step 10: import blocks
 
@@ -1439,10 +1475,16 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // Wait for genesis block to be processed
     {
         boost::unique_lock<boost::mutex> lock(cs_GenesisWait);
-        while (!fHaveGenesis) {
-            condvar_GenesisWait.wait(lock);
+        // We previously could hang here if StartShutdown() is called prior to
+        // ThreadImport getting started, so instead we just wait on a timer to
+        // check ShutdownRequested() regularly.
+        while (!fHaveGenesis && !ShutdownRequested()) {
+            condvar_GenesisWait.wait_for(lock, boost::chrono::milliseconds(500));
         }
         uiInterface.NotifyBlockTip.disconnect(BlockNotifyGenesisWait);
+    }
+    if (ShutdownRequested()) {
+        return false;
     }
 
     // ********************************************************* Step 11: start node

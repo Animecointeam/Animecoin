@@ -28,6 +28,7 @@ class CBlockIndex;
 static const int64_t nClientStartupTime = GetTime();
 static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
+static int64_t nLastSPVUpdateNotification = 0;
 
 ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
     QObject(parent),
@@ -159,6 +160,11 @@ void ClientModel::updateNumConnections(int numConnections)
     emit numConnectionsChanged(numConnections);
 }
 
+void ClientModel::updateNetworkActive(bool networkActive)
+{
+    emit networkActiveChanged(networkActive);
+}
+
 void ClientModel::updateAlert(const QString &hash, int status)
 {
     // Show error message notification for new alert
@@ -191,6 +197,21 @@ enum BlockSource ClientModel::getBlockSource() const
         return BLOCK_SOURCE_NETWORK;
 
     return BLOCK_SOURCE_NONE;
+}
+
+void ClientModel::setNetworkActive(bool active)
+{
+    if (g_connman) {
+         g_connman->SetNetworkActive(active);
+    }
+}
+
+bool ClientModel::getNetworkActive() const
+{
+    if (g_connman) {
+        return g_connman->GetNetworkActive();
+    }
+    return false;
 }
 
 QString ClientModel::getStatusBarWarnings() const
@@ -248,6 +269,25 @@ void ClientModel::updateBanlist()
     banTableModel->refresh();
 }
 
+bool ClientModel::hasAuxiliaryBlockRequest(int64_t* createdRet, size_t* requestedBlocksRet/*, size_t* loadedBlocksRet*/, size_t* processedBlocksRet)
+{
+    std::shared_ptr<CAuxiliaryBlockRequest> blockRequest = CAuxiliaryBlockRequest::GetCurrentRequest();
+    if (!blockRequest)
+        return false;
+
+    if (createdRet)
+        *createdRet = blockRequest->created;
+    if (requestedBlocksRet)
+        *requestedBlocksRet = blockRequest->vBlocksToDownload.size();
+    /*
+    if (loadedBlocksRet)
+        *loadedBlocksRet = blockRequest->amountOfBlocksLoaded();
+    */
+    if (processedBlocksRet)
+        *processedBlocksRet = blockRequest->processedUpToSize;
+    return true;
+}
+
 // Handlers for core signals
 static void ShowProgress(ClientModel *clientmodel, const std::string &title, int nProgress)
 {
@@ -262,6 +302,12 @@ static void NotifyNumConnectionsChanged(ClientModel *clientmodel, int newNumConn
     // Too noisy: qDebug() << "NotifyNumConnectionsChanged : " + QString::number(newNumConnections);
     QMetaObject::invokeMethod(clientmodel, "updateNumConnections", Qt::QueuedConnection,
                               Q_ARG(int, newNumConnections));
+}
+
+static void NotifyNetworkActiveChanged(ClientModel *clientmodel, bool networkActive)
+{
+    QMetaObject::invokeMethod(clientmodel, "updateNetworkActive", Qt::QueuedConnection,
+                              Q_ARG(bool, networkActive));
 }
 
 static void NotifyAlertChanged(ClientModel *clientmodel, const uint256 &hash, ChangeType status)
@@ -290,9 +336,9 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CB
     }
 
     // if we are in-sync, update the UI regardless of last update time
-    if (fHeader || !initialSync || now - nLastUpdateNotification > MODEL_UPDATE_DELAY) {
+    if (!initialSync || now - nLastUpdateNotification > MODEL_UPDATE_DELAY) {
         //pass a async signal to the UI thread
-        Q_EMIT clientmodel->numBlocksChanged(pIndex->nHeight, QDateTime::fromTime_t(pIndex->GetBlockTime()), clientmodel->getVerificationProgress(pIndex), fHeader);
+        emit clientmodel->numBlocksChanged(pIndex->nHeight, QDateTime::fromTime_t(pIndex->GetBlockTime()), clientmodel->getVerificationProgress(pIndex), fHeader);
         nLastUpdateNotification = now;
     }
 }
@@ -303,15 +349,33 @@ static void BannedListChanged(ClientModel *clientmodel)
     QMetaObject::invokeMethod(clientmodel, "updateBanlist", Qt::QueuedConnection);
 }
 
+static void AuxiliaryBlockRequestProgressUpdate(ClientModel *clientmodel, int64_t created, size_t blocksRequested, /*size_t blocksLoaded,*/ size_t blocksProcessed)
+{  
+    int64_t now = GetTimeMillis();
+
+    int64_t& nLastUpdateNotification = nLastSPVUpdateNotification;
+
+    if ((blocksRequested == blocksProcessed) || (now - nLastUpdateNotification > MODEL_UPDATE_DELAY)) {
+        QMetaObject::invokeMethod(clientmodel, "auxiliaryBlockRequestProgressChanged", Qt::QueuedConnection,
+                              Q_ARG(QDateTime, QDateTime::fromTime_t(created)),
+                              Q_ARG(int, (int)blocksRequested),
+                              //Q_ARG(int, (int)blocksLoaded),
+                              Q_ARG(int, (int)blocksProcessed));
+    nLastUpdateNotification = now;
+    }
+}
+
 void ClientModel::subscribeToCoreSignals()
 {
     // Connect signals to client
     uiInterface.ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
     uiInterface.NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
+    uiInterface.NotifyNetworkActiveChanged.connect(boost::bind(NotifyNetworkActiveChanged, this, _1));
     uiInterface.NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this, _1, _2));
     uiInterface.BannedListChanged.connect(boost::bind(BannedListChanged, this));
     uiInterface.NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
     uiInterface.NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    uiInterface.NotifyAuxiliaryBlockRequestProgress.connect(boost::bind(AuxiliaryBlockRequestProgressUpdate, this, _1, _2, _3));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -319,8 +383,10 @@ void ClientModel::unsubscribeFromCoreSignals()
     // Disconnect signals from client
     uiInterface.ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
     uiInterface.NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
+    uiInterface.NotifyNetworkActiveChanged.disconnect(boost::bind(NotifyNetworkActiveChanged, this, _1));
     uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this, _1, _2));
     uiInterface.BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
     uiInterface.NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
     uiInterface.NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    uiInterface.NotifyAuxiliaryBlockRequestProgress.disconnect(boost::bind(AuxiliaryBlockRequestProgressUpdate, this, _1, _2, _3));
 }

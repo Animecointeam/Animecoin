@@ -6,6 +6,7 @@
 #define BITCOIN_QT_TRANSACTIONRECORD_H
 
 #include "amount.h"
+#include "base58.h"
 #include "uint256.h"
 
 #include <QList>
@@ -21,7 +22,7 @@ class TransactionStatus
 public:
     TransactionStatus():
         countsForBalance(false), sortKey(""),
-        matures_in(0), status(Offline), depth(0), open_for(0), cur_num_blocks(-1)
+        matures_in(0), status(Offline), depth(0), open_for(0), cur_num_blocks(-1), needsUpdate(false)
     { }
 
     enum Status {
@@ -44,6 +45,8 @@ public:
     bool countsForBalance;
     /// Sorting key based on status
     std::string sortKey;
+    /// Label
+    QString label;
 
     /** @name Generated (mined) transactions
        @{*/
@@ -61,6 +64,14 @@ public:
 
     /** Current number of blocks (to know whether cached status is still valid) */
     int cur_num_blocks;
+
+    /** Current number of blocks based on the headers chain */
+    int cur_num_blocks_headers_chain;
+
+    /** true if transaction has been validated (false == spv) */
+    bool fValidated;
+
+    bool needsUpdate;
 };
 
 /** UI model for a transaction. A core transaction can be represented by multiple UI transactions if it has
@@ -84,22 +95,28 @@ public:
     static const int RecommendedNumConfirmations = 6;
 
     TransactionRecord():
-            hash(), time(0), type(Other), address(""), debit(0), credit(0), idx(0)
+        hash(), time(0), type(Other), strAddress(""), debit(0), credit(0), idx(0)
     {
+        address = CBitcoinAddress(strAddress);
+        txDest = address.Get();
     }
 
     TransactionRecord(uint256 hash, qint64 time):
-            hash(hash), time(time), type(Other), address(""), debit(0),
+        hash(hash), time(time), type(Other), strAddress(""), debit(0),
             credit(0), idx(0)
     {
+        address = CBitcoinAddress(strAddress);
+        txDest = address.Get();
     }
 
     TransactionRecord(uint256 hash, qint64 time,
-                Type type, const std::string &address,
+                      Type _type, const std::string &_strAddress,
                       const CAmount& debit, const CAmount& credit):
-            hash(hash), time(time), type(type), address(address), debit(debit), credit(credit),
+        hash(hash), time(time), type(_type), strAddress(_strAddress), debit(debit), credit(credit),
             idx(0)
     {
+        address = CBitcoinAddress(strAddress);
+        txDest = address.Get();
     }
 
     /** Decompose CWallet transaction to model transaction records.
@@ -112,7 +129,10 @@ public:
     uint256 hash;
     qint64 time;
     Type type;
-    std::string address;
+    std::string strAddress;
+    CBitcoinAddress address;
+    CTxDestination txDest;
+
     CAmount debit;
     CAmount credit;
     /**@}*/

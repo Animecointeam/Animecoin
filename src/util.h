@@ -182,6 +182,8 @@ bool SoftSetArg(const std::string& strArg, const std::string& strValue);
  */
 bool SoftSetBoolArg(const std::string& strArg, bool fValue);
 
+// Forces an arg setting. TODO: refactor args system.
+void ForceSetArg(const std::string& strArg, const std::string& strValue);
 
 /**
  * Format a string to be used as group of options in help messages

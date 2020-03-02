@@ -31,7 +31,7 @@ using namespace std;
 QString TransactionDesc::FormatTxStatus(const CWalletTx& wtx)
 {
     AssertLockHeld(cs_main);
-    if (!CheckFinalTx(wtx))
+    if (!CheckFinalTx(wtx, -1 , !wtx.fValidated))
     {
         if (wtx.nLockTime < LOCKTIME_THRESHOLD)
             return tr("Open for %n more block(s)", "", wtx.nLockTime - chainActive.Height());
@@ -78,6 +78,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
     }
     strHTML += "<br>";
 
+    strHTML += "<b>" + tr("SPV only") + ":</b> " + (!rec->status.fValidated ? "yes" : "no") + "<br>";
     strHTML += "<b>" + tr("Date") + ":</b> " + (nTime ? GUIUtil::dateTimeStr(nTime) : "") + "<br>";
 
     //
@@ -98,14 +99,14 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
         if (nNet > 0)
         {
             // Credit
-            if (CBitcoinAddress(rec->address).IsValid())
+            if (rec->address.IsValid())
             {
-                CTxDestination address = CBitcoinAddress(rec->address).Get();
+                CTxDestination address = rec->txDest;
                 if (wallet->mapAddressBook.count(address))
                 {
                     strHTML += "<b>" + tr("From") + ":</b> " + tr("unknown") + "<br>";
                     strHTML += "<b>" + tr("To") + ":</b> ";
-                    strHTML += GUIUtil::HtmlEscape(rec->address);
+                    strHTML += GUIUtil::HtmlEscape(rec->strAddress);
                     QString addressOwned = (::IsMine(*wallet, address) == ISMINE_SPENDABLE) ? tr("own address") : tr("watch-only");
                     if (!wallet->mapAddressBook[address].name.empty())
                         strHTML += " (" + addressOwned + ", " + tr("label") + ": " + GUIUtil::HtmlEscape(wallet->mapAddressBook[address].name) + ")";

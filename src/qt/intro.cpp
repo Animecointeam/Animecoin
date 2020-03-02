@@ -197,7 +197,15 @@ void Intro::pickDataDirectory()
 			}
 		}
 
-		settings.setValue("strDataDir", dataDir);
+        // Additional preferences:
+        if (intro.ui->spvMode->isChecked())
+        {
+            settings.setValue("nSyncMode", "Lightweight");
+            ForceSetArg("-spv", "1");
+            ForceSetArg("-autorequestblocks", "0");
+        }
+
+        settings.setValue("strDataDir", dataDir);
 	}
 	/* Only override -datadir if different from the default, to make it possible to
      * override -datadir in the animecoin.conf file in the default data directory

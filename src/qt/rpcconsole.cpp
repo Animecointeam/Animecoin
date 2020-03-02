@@ -26,8 +26,9 @@
 #include <QKeyEvent>
 #include <QMenu>
 #include <QScrollBar>
-#include <QSignalMapper>
 #include <QThread>
+#include <QScreen>
+#include <QSettings>
 #include <QTime>
 #include <QTimer>
 #include <QStringList>
@@ -336,7 +337,11 @@ RPCConsole::RPCConsole(QWidget *parent) :
     banTableContextMenu(0)
 {
     ui->setupUi(this);
-    GUIUtil::restoreWindowGeometry("nRPCConsoleWindow", this->size(), this);
+    QSettings settings;
+    if (!restoreGeometry(settings.value("RPCConsoleWindowGeometry").toByteArray())) {
+        // Restore failed (perhaps missing setting), center the window
+        move(QGuiApplication::primaryScreen()->availableGeometry().center() - frameGeometry().center());
+    }
 
 #ifndef Q_OS_MAC
     ui->openDebugLogfileButton->setIcon(QIcon(":/icons/export"));
@@ -370,7 +375,8 @@ RPCConsole::RPCConsole(QWidget *parent) :
 
 RPCConsole::~RPCConsole()
 {
-    GUIUtil::saveWindowGeometry("nRPCConsoleWindow", this);
+    QSettings settings;
+    settings.setValue("RPCConsoleWindowGeometry", saveGeometry());
     RPCUnregisterTimerInterface(rpcTimerInterface);
     delete rpcTimerInterface;
     delete ui;
@@ -433,6 +439,9 @@ void RPCConsole::setClientModel(ClientModel *model)
         setNumBlocks(model->getNumBlocks(), model->getLastBlockDate(), model->getVerificationProgress(nullptr), false);
         connect(model, SIGNAL(numBlocksChanged(int,QDateTime,double,bool)), this, SLOT(setNumBlocks(int,QDateTime,double,bool)));
 
+        updateNetworkState();
+        connect(model, SIGNAL(networkActiveChanged(bool)), this, SLOT(setNetworkActive(bool)));
+
         updateTrafficStats(model->getTotalBytesRecv(), model->getTotalBytesSent());
         connect(model, SIGNAL(bytesChanged(quint64,quint64)), this, SLOT(updateTrafficStats(quint64, quint64)));
 
@@ -465,19 +474,10 @@ void RPCConsole::setClientModel(ClientModel *model)
         peersTableContextMenu->addAction(banAction7d);
         peersTableContextMenu->addAction(banAction365d);
 
-        // Add a signal mapping to allow dynamic context menu arguments.
-        // We need to use int (instead of int64_t), because signal mapper only supports
-        // int or objects, which is okay because max bantime (1 year) is < int_max.
-        QSignalMapper* signalMapper = new QSignalMapper(this);
-        signalMapper->setMapping(banAction1h, 60*60);
-        signalMapper->setMapping(banAction24h, 60*60*24);
-        signalMapper->setMapping(banAction7d, 60*60*24*7);
-        signalMapper->setMapping(banAction365d, 60*60*24*365);
-        connect(banAction1h, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        connect(banAction24h, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        connect(banAction7d, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        connect(banAction365d, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(banSelectedNode(int)));
+        connect(banAction1h, &QAction::triggered, [this] { banSelectedNode(60 * 60); });
+        connect(banAction24h, &QAction::triggered, [this] { banSelectedNode(60 * 60 * 24); });
+        connect(banAction7d, &QAction::triggered, [this] { banSelectedNode(60 * 60 * 24 * 7); });
+        connect(banAction365d, &QAction::triggered, [this] { banSelectedNode(60 * 60 * 24 * 365); });
 
         // peer table context menu signals
         connect(ui->peerWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showPeersTableContextMenu(const QPoint&)));
@@ -616,16 +616,30 @@ void RPCConsole::message(int category, const QString &message, bool html)
     ui->messagesWidget->append(out);
 }
 
+void RPCConsole::updateNetworkState()
+{
+    QString connections = QString::number(clientModel->getNumConnections()) + " (";
+    connections += tr("In:") + " " + QString::number(clientModel->getNumConnections(CONNECTIONS_IN)) + " / ";
+    connections += tr("Out:") + " " + QString::number(clientModel->getNumConnections(CONNECTIONS_OUT)) + ")";
+
+    if(!clientModel->getNetworkActive()) {
+        connections += " (" + tr("Network activity disabled") + ")";
+    }
+
+    ui->numberOfConnections->setText(connections);
+}
+
 void RPCConsole::setNumConnections(int count)
 {
     if (!clientModel)
         return;
 
-    QString connections = QString::number(count) + " (";
-    connections += tr("In:") + " " + QString::number(clientModel->getNumConnections(CONNECTIONS_IN)) + " / ";
-    connections += tr("Out:") + " " + QString::number(clientModel->getNumConnections(CONNECTIONS_OUT)) + ")";
+    updateNetworkState();
+}
 
-    ui->numberOfConnections->setText(connections);
+void RPCConsole::setNetworkActive(bool networkActive)
+{
+    updateNetworkState();
 }
 
 void RPCConsole::setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers)
@@ -697,7 +711,6 @@ void RPCConsole::startExecutor()
     connect(this, SIGNAL(stopExecutor()), &thread, SLOT(quit()));
     // - queue executor for deletion (in execution thread)
     connect(&thread, SIGNAL(finished()), executor, SLOT(deleteLater()), Qt::DirectConnection);
-    connect(&thread, SIGNAL(finished()), this, SLOT(test()), Qt::DirectConnection);
 
     // Default implementation of QThread::run() simply spins up an event loop in the thread,
     // which is what we want.

@@ -277,7 +277,7 @@ public:
      * unordered_map will behave unpredictably if the custom hasher returns a
      * uint64_t, resulting in failures when syncing the chain (#4634).
      */
-    size_t operator()(const uint256& txid) const {
+    size_t operator()(const uint256& txid) const noexcept {
         return SipHashUint256(k0, k1, txid);
     }
 };
@@ -403,6 +403,11 @@ protected:
 public:
     CCoinsViewCache(CCoinsView *baseIn);
     ~CCoinsViewCache();
+
+    /**
+     * By deleting the copy constructor, we prevent accidentally using it when one intends to create a cache on top of a base cache.
+     */
+    CCoinsViewCache(const CCoinsViewCache &) = delete;
 
     // Standard CCoinsView methods
     bool GetCoins(const uint256 &txid, CCoins &coins) const;

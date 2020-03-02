@@ -415,9 +415,6 @@ public:
 class CAutoFile
 {
 private:
-	// Disallow copies
-	CAutoFile(const CAutoFile&);
-	CAutoFile& operator=(const CAutoFile&);
 
 	int nType;
 	int nVersion;
@@ -437,7 +434,11 @@ public:
 		fclose();
 	}
 
-	void fclose()
+    // Disallow copies
+    CAutoFile(const CAutoFile&) = delete;
+    CAutoFile& operator=(const CAutoFile&) = delete;
+
+    void fclose()
 	{
 		if (file) {
 			::fclose(file);
@@ -526,10 +527,6 @@ public:
 class CBufferedFile
 {
 private:
-	// Disallow copies
-	CBufferedFile(const CBufferedFile&);
-	CBufferedFile& operator=(const CBufferedFile&);
-
 	int nType;
 	int nVersion;
 
@@ -573,7 +570,11 @@ public:
 		fclose();
 	}
 
-	void fclose()
+    // Disallow copies
+    CBufferedFile(const CBufferedFile&) = delete;
+    CBufferedFile& operator=(const CBufferedFile&) = delete;
+
+    void fclose()
 	{
 		if (src) {
 			::fclose(src);

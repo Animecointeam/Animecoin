@@ -7,6 +7,7 @@
 #include "chainparams.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
+#include "crypto/sha256.h"
 #include "key.h"
 #include "main.h"
 #include "miner.h"
@@ -20,9 +21,13 @@
 #include "script/sigcache.h"
 #include "util.h"
 
+#include <memory>
+
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
+bool fUseFastIndex;
+std::unique_ptr<CConnman> g_connman;
 FastRandomContext insecure_rand_ctx(true);
 
 extern bool fPrintToConsole;
@@ -30,6 +35,7 @@ extern void noui_connect();
 
 BasicTestingSetup::BasicTestingSetup(const std::string& chainName)
 {
+        SHA256AutoDetect();
         RandomInit();
         ECC_Start();
         SetupEnvironment();
@@ -56,7 +62,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
         ClearDatadirCache();
         pathTemp = GetTempPath() / strprintf("test_animecoin_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
         boost::filesystem::create_directories(pathTemp);
-        mapArgs["-datadir"] = pathTemp.string();
+        ForceSetArg("-datadir", pathTemp.string());
         pblocktree = new CBlockTreeDB(1 << 20, true);
         pcoinsdbview = new CCoinsViewDB(1 << 23, true);
         pcoinsTip = new CCoinsViewCache(pcoinsdbview);
@@ -110,7 +116,7 @@ CBlock
 TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey)
 {
     const CChainParams& chainparams = Params();
-    CBlockTemplate *pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
     CBlock& block = pblocktemplate->block;
 
     // Replace mempool-selected txns with just coinbase plus passed-in txns:
@@ -128,7 +134,6 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     ProcessNewBlock(chainparams, shared_pblock, true, nullptr);
     
     CBlock result = block;
-    delete pblocktemplate;
     return result;
 }
 

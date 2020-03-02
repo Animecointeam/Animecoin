@@ -122,6 +122,9 @@ public:
     {
     }
 
+    CWalletDB(const CWalletDB&) = delete;
+    CWalletDB& operator=(const CWalletDB&) = delete;
+
     bool WriteName(const std::string& strAddress, const std::string& strName);
     bool EraseName(const std::string& strAddress);
 
@@ -137,11 +140,14 @@ public:
 
     bool WriteCScript(const uint160& hash, const CScript& redeemScript);
 
-    bool WriteWatchOnly(const CScript &script);
+    bool WriteWatchOnly(const CScript &script, const CKeyMetadata &keymeta);
     bool EraseWatchOnly(const CScript &script);
 
     bool WriteBestBlock(const CBlockLocator& locator);
     bool ReadBestBlock(CBlockLocator& locator);
+
+    bool WriteNonValidationBestBlock(const CBlockLocator& locator);
+    bool ReadNonValidationBestBlock(CBlockLocator& locator);
 
     bool WriteOrderPosNext(int64_t nOrderPosNext);
 
@@ -182,8 +188,8 @@ public:
     static unsigned int GetUpdateCounter();
 
 private:
-    CWalletDB(const CWalletDB&);
-    void operator=(const CWalletDB&);
+    // CWalletDB(const CWalletDB&);
+    // void operator=(const CWalletDB&);
 };
 
 #endif // BITCOIN_WALLETDB_H

@@ -9,10 +9,14 @@
 #include "arith_uint256.h"
 #include "primitives/block.h"
 #include "pow.h"
+#include "timedata.h"
 #include "tinyformat.h"
 #include "uint256.h"
 
 #include <vector>
+
+/** Whether to recalculate hashes on startup */
+extern bool fUseFastIndex;
 
 class CBlockFileInfo
 {
@@ -333,11 +337,15 @@ public:
 /** Used to marshal pointers into hashes for db storage. */
 class CDiskBlockIndex : public CBlockIndex
 {
+private:
+    uint256 blockHash;
+
 public:
     uint256 hashPrev;
 
     CDiskBlockIndex() {
         hashPrev = uint256();
+        blockHash = uint256();
     }
 
     explicit CDiskBlockIndex(const CBlockIndex* pindex) : CBlockIndex(*pindex) {
@@ -361,6 +369,10 @@ public:
         if (nStatus & BLOCK_HAVE_UNDO)
             READWRITE(VARINT(nUndoPos));
 
+        if (!ser_action.ForRead() && blockHash.IsNull())
+            GetBlockHash();
+        READWRITE(blockHash);
+
         // block header
         READWRITE(this->nVersion);
         READWRITE(hashPrev);
@@ -372,6 +384,9 @@ public:
 
     uint256 GetBlockHash() const
     {
+        if (fUseFastIndex && (nTime < GetAdjustedTime() - 24 * 60 * 60) && !blockHash.IsNull()) // TODO: clock drift settings.
+            return blockHash;
+
         CBlockHeader block;
         block.nVersion        = nVersion;
         block.hashPrevBlock   = hashPrev;
@@ -379,7 +394,10 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
-        return block.GetHash();
+
+        const_cast<CDiskBlockIndex*>(this)->blockHash = block.GetHash();
+
+        return blockHash;
     }
 
 

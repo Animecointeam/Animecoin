@@ -4,8 +4,8 @@ macx:TARGET = "Animecoin-Qt"
 VERSION = 0.10.0
 INCLUDEPATH += src src/qt
 QT += network printsupport
-DEFINES += QT_GUI BOOST_THREAD_USE_LIB HAVE_WORKING_BOOST_SLEEP_FOR
-DEFINES += ENABLE_WALLET
+DEFINES += QT_GUI BOOST_THREAD_USE_LIB HAVE_WORKING_BOOST_SLEEP_FOR EXPERIMENTAL_ASM
+DEFINES += ENABLE_WALLET ENABLE_SHANI
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
@@ -49,8 +49,8 @@ else
     DEFINES += DISABLE_ZMQ
 }
 
-QMAKE_CFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block"
-QMAKE_CXXFLAGS+="-O2 -march=native -ftree-vectorize -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -Wno-deprecated-copy"
+QMAKE_CFLAGS+="-Og -march=native -ftree-vectorize"
+QMAKE_CXXFLAGS+="-Og -march=native -ftree-vectorize -Wno-deprecated-copy"
 #QMAKE_LFLAGS+="-flto"
 
 # for boost 1.37, add -mt to the boost libraries
@@ -247,15 +247,15 @@ LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
 
 #Build univalue
 INCLUDEPATH += src/univalue/include
-LIBS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+LIBS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_get.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
     genunivalue.commands = cd $$PWD/src/univalue && ./autogen.sh && ./configure && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\"
-    genunivalue.target = $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    genunivalue.target = $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_get.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
     genunivalue.depends = FORCE
-    PRE_TARGETDEPS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
+    PRE_TARGETDEPS += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_get.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o
     QMAKE_EXTRA_TARGETS += genunivalue
     # Gross ugly hack that depends on qmake internals, unfortunately there is no other way to do it.
-    QMAKE_CLEAN += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o; cd $$PWD/src/univalue; $(MAKE) clean
+    QMAKE_CLEAN += $$PWD/src/univalue/lib/libunivalue_la-univalue.o $$PWD/src/univalue/lib/libunivalue_la-univalue_get.o $$PWD/src/univalue/lib/libunivalue_la-univalue_read.o $$PWD/src/univalue/lib/libunivalue_la-univalue_write.o; cd $$PWD/src/univalue; $(MAKE) clean
 
 # regenerate src/build.h
 !win32:contains(USE_BUILD_INFO, 1) {
@@ -273,6 +273,7 @@ QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wform
 # Input
 DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
+    src/auxiliaryblockrequest.h \
     src/crypto/aes.h \
     src/indirectmap.h \
     src/qt/transactiontablemodel.h \
@@ -443,10 +444,16 @@ HEADERS += src/qt/bitcoingui.h \
     src/policy/rbf.h
 
 SOURCES += src/qt/bitcoin.cpp \
+    src/auxiliaryblockrequest.cpp \
     src/crypto/aes.cpp \
     #src/crypto/ctaes/bench.c \
     src/crypto/ctaes/ctaes.c \
     #src/crypto/ctaes/test.c \
+    src/crypto/sha256_avx2.cpp \
+    src/crypto/sha256_avx512.cpp \
+    src/crypto/sha256_shani.cpp \
+    src/crypto/sha256_sse4.cpp \
+    src/crypto/sha256_sse41.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \

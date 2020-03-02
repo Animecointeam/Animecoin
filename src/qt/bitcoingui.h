@@ -80,7 +80,8 @@ private:
     UnitDisplayStatusBarControl *unitDisplayControl;
     QLabel *labelWalletEncryptionIcon;
     QLabel *labelWalletHDStatusIcon;
-    QLabel *labelConnectionsIcon;
+    QLabel *labelWalletSPVStatusIcon;
+    QLabel *connectionsControl;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
     QProgressBar *progressBar;
@@ -137,6 +138,9 @@ private:
 
     void updateHeadersSyncProgressLabel();
 
+    /** Update UI with latest network info from model. */
+    void updateNetworkState();
+
 signals:
     /** Signal raised when a URI was entered or dragged to the GUI */
     void receivedURI(const QString &uri);
@@ -144,8 +148,12 @@ signals:
 public slots:
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
+    /** Set network state shown in the UI */
+    void setNetworkActive(bool networkActive);
     /** Set number of blocks and last block date shown in the UI */
     void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
+    /** Set the auxiliary block request progress in the UI */
+    void setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, int requestesBlocks, /*int loadedBlocks,*/ int processedBlocks);
 
     /** Notify the user of an event from the core network or transaction handling code.
        @param[in] title     the message box / notification title
@@ -168,6 +176,12 @@ public slots:
      @see WalletModel::EncryptionStatus
      */
     void setHDStatus(int hdEnabled);
+
+    /** Set the spv-enabled status as shown in the UI.
+     @param[in] status            current spv enabled status
+     */
+    void setSPVStatus(int spvEnabled);
+    void toggleSPVMode();
 
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
@@ -219,6 +233,9 @@ private slots:
 
     /** Show progress dialog e.g. for verifychain */
     void showProgress(const QString &title, int nProgress);
+
+    /** Toggle networking */
+    void toggleNetworkActive();
 };
 
 class UnitDisplayStatusBarControl : public QLabel

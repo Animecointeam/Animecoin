@@ -420,6 +420,11 @@ bool SoftSetBoolArg(const std::string& strArg, bool fValue)
         return SoftSetArg(strArg, std::string("0"));
 }
 
+void ForceSetArg(const std::string& strArg, const std::string& strValue)
+{
+    mapArgs[strArg] = strValue;
+}
+
 static const int screenWidth = 79;
 static const int optIndent = 2;
 static const int msgIndent = 7;
@@ -799,12 +804,11 @@ void RenameThread(const char* name)
 
 void SetupEnvironment()
 {
-    std::locale loc("C");
     // On most POSIX systems (e.g. Linux, but not BSD) the environment's locale
     // may be invalid, in which case the "C" locale is used as fallback.
 #if !defined(WIN32) && !defined(MAC_OSX) && !defined(__FreeBSD__) && !defined(__OpenBSD__)
     try {
-        loc = std::locale(""); // Raises a runtime error if current locale is invalid
+        std::locale(""); // Raises a runtime error if current locale is invalid
     } catch (const std::runtime_error&) {
         setenv("LC_ALL", "C", 1);
     }
@@ -813,7 +817,7 @@ void SetupEnvironment()
     // in multithreading environments, it is set explicitly by the main thread.
     // A dummy locale is used to extract the internal default locale, used by
     // boost::filesystem::path, which is then used to explicitly imbue the path.
-    loc = boost::filesystem::path::imbue(std::locale::classic());
+    std::locale loc = boost::filesystem::path::imbue(std::locale::classic());
     boost::filesystem::path::imbue(loc);
 }
 
