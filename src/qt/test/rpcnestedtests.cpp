@@ -87,9 +87,13 @@ void RPCNestedTests::rpcNestedTests()
     RPCConsole::RPCExecuteCommandLine(result, "getblock(getbestblockhash())[tx][0]");
     QVERIFY(result == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
 */
+    UnloadBlockIndex();
     delete pcoinsTip;
+    pcoinsTip = nullptr;
     delete pcoinsdbview;
+    pcoinsdbview = nullptr;
     delete pblocktree;
+    pblocktree = nullptr;
 
     boost::filesystem::remove_all(boost::filesystem::path(path));
 }

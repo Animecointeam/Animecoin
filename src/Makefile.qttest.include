@@ -6,6 +6,8 @@ TEST_QT_MOC_CPP = \
   qt/test/moc_uritests.cpp
 
 if ENABLE_WALLET
+TEST_QT_MOC_CPP += \
+  qt/test/moc_wallettests.cpp
 if ENABLE_BIP70
 TEST_QT_MOC_CPP += \
   qt/test/moc_paymentservertests.cpp
@@ -16,8 +18,17 @@ TEST_QT_H = \
   qt/test/rpcnestedtests.h \
   qt/test/uritests.h \
   qt/test/paymentrequestdata.h \
-  qt/test/paymentservertests.h
+  qt/test/paymentservertests.h \
+  qt/test/wallettests.h
 
+TEST_BITCOIN_CPP = \
+  test/test_bitcoin.cpp
+#  test/testutil.cpp
+
+TEST_BITCOIN_H = \
+  test/test_bitcoin.h \
+  test/testutil.h
+  
 qt_test_test_animecoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_TEST_INCLUDES) $(PROTOBUF_CFLAGS)
 
@@ -25,8 +36,12 @@ qt_test_test_animecoin_qt_SOURCES = \
   qt/test/rpcnestedtests.cpp \
   qt/test/test_main.cpp \
   qt/test/uritests.cpp \
-  $(TEST_QT_H)
+  $(TEST_QT_H) \
+  $(TEST_BITCOIN_CPP) \
+  $(TEST_BITCOIN_H)
 if ENABLE_WALLET
+qt_test_test_animecoin_qt_SOURCES += \
+  qt/test/wallettests.cpp
 if ENABLE_BIP70
 qt_test_test_animecoin_qt_SOURCES += \
   qt/test/paymentservertests.cpp
