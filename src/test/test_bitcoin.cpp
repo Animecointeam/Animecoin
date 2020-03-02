@@ -26,8 +26,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
-bool fUseFastIndex;
-std::unique_ptr<CConnman> g_connman;
+// bool fUseFastIndex;
+// std::unique_ptr<CConnman> g_connman;
 FastRandomContext insecure_rand_ctx(true);
 
 extern bool fPrintToConsole;

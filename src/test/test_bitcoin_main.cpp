@@ -4,18 +4,18 @@
 
 #define BOOST_TEST_MODULE Bitcoin Test Suite
 
-#include "net.h"
+// #include "net.h"
 
 #include <boost/test/unit_test.hpp>
 
-std::unique_ptr<CConnman> g_connman;
+// std::unique_ptr<CConnman> g_connman;
 
 void Shutdown(void* parg)
 {
   exit(EXIT_SUCCESS);
 }
 
-void StartShutdown()
+/*void StartShutdown()
 {
   exit(EXIT_SUCCESS);
 }
@@ -23,4 +23,4 @@ void StartShutdown()
 bool ShutdownRequested()
 {
   return false;
-}
+}*/
