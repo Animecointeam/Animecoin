@@ -3682,7 +3682,7 @@ void CWallet::RequestSPVScan(int64_t optional_timestamp)
             if ((it.second < oldest_key) && (it.second > 1)) // Old watchonly keys are imported without timestamp.
             oldest_key = it.second;
         }
-        LogPrintf("Oldest key: %u\n", oldest_key);
+        // LogPrintf("Oldest key: %u\n", oldest_key);
     }
 
     if (optional_timestamp > 0)
