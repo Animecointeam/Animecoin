@@ -16,8 +16,7 @@ Coin features
 
 Upgrading
 ---------------------
-Upgrading to 0.10 is meant to be fully transparent for both database and network. You may just run the new release with the old data directory.
-If you encounter any problems, report those as bugs!
+0.10 changes the block index database format. Upgrading from 0.9 will require a reindex (or syncing from scratch).
 
 Downgrading
 ---------------------
@@ -50,7 +49,7 @@ Features to be removed in 0.10
 - Deprecated option -tor will be removed, use -onion instead (implemented)!
 - SOCKS4 support will be removed (implemented).
 - RPC over SSL will be removed (implemented, was never good). Use tunneling instead.
-- Qt4 support will be removed, years since EOL (in progress).
+- Qt4 support will be removed, years since EOL (implemented).
 
 0.9.2 release notes
 ---------------------
@@ -92,7 +91,7 @@ Required libraries
 - Boost
 - OpenSSL
 - Berkeley DB
-- protobuf (since Animecoin 0.9.1)
+- protobuf (added in 0.9, removed in 0.10)
 - libevent2 (since Animecoin 0.10 trunk)
 - Qt (optional if you don't need the GUI client)
 - miniupnpc (optional)
