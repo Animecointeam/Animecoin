@@ -277,20 +277,27 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 )
 CXXFLAGS="$TEMP_CXXFLAGS"
 
-TEMP_CXXFLAGS="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS $AVX512_CXXFLAGS"
-AC_MSG_CHECKING(for AVX512 intrinsics)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-    #include <stdint.h>
-    #include <immintrin.h>
-  ]],[[
-    __m512i l = _mm512_set1_epi32(0);
-    return _mm_extract_epi32(_mm512_extracti32x4_epi32(l, 3), 3);
-  ]])],
-[ AC_MSG_RESULT(yes); enable_avx512=yes; AC_DEFINE(ENABLE_AVX512, 1, [Define this symbol to build code that uses AVX512 intrinsics]) ],
-[ AC_MSG_RESULT(no)]
-)
-CXXFLAGS="$TEMP_CXXFLAGS"
+case $host in
+    *mingw*)
+      enable_avx512=no
+    ;;
+	*)
+		TEMP_CXXFLAGS="$CXXFLAGS"
+		CXXFLAGS="$CXXFLAGS $AVX512_CXXFLAGS"
+		AC_MSG_CHECKING(for AVX512 intrinsics)
+		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+		#include <stdint.h>
+		#include <immintrin.h>
+		]],[[
+			__m512i l = _mm512_set1_epi32(0);
+			return _mm_extract_epi32(_mm512_extracti32x4_epi32(l, 3), 3);
+		]])],
+		[ AC_MSG_RESULT(yes); enable_avx512=yes; AC_DEFINE(ENABLE_AVX512, 1, [Define this symbol to build code that uses AVX512 intrinsics]) ],
+		[ AC_MSG_RESULT(no)]
+		)
+		CXXFLAGS="$TEMP_CXXFLAGS"
+	;;
+esac
 
 TEMP_CXXFLAGS="$CXXFLAGS"
 CXXFLAGS="$CXXFLAGS $SHANI_CXXFLAGS"
