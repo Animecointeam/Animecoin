@@ -258,11 +258,17 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(receiveCoinsAction);
+    multisigAction = new QAction(QIcon(":/icons/send"), tr("Multitool"), this);
+    multisigAction->setStatusTip(tr("Create and spend multisig scripts"));
+    multisigAction->setToolTip(multisigAction->statusTip());
+    multisigAction->setCheckable(true);
+    multisigAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    tabGroup->addAction(multisigAction);
     historyAction = new QAction(QIcon(":/icons/history"), tr("&Transactions"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
     historyAction->setToolTip(historyAction->statusTip());
     historyAction->setCheckable(true);
-    historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
     tabGroup->addAction(historyAction);
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -276,6 +282,8 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
+    connect(multisigAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(multisigAction, SIGNAL(triggered()), this, SLOT(gotoMultisigPage()));
 #endif // ENABLE_WALLET
     quitAction = new QAction(QIcon(":/icons/quit"), tr("E&xit"), this);
     quitAction->setStatusTip(tr("Quit application"));
@@ -407,6 +415,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(addressAction);
         toolbar->addAction(receiveCoinsAction);
+        toolbar->addAction(multisigAction);
         toolbar->addAction(historyAction);
         toolbar->addAction(aboutAction);
         overviewAction->setChecked(true);
@@ -549,6 +558,7 @@ void BitcoinGUI::createTrayIconMenu()
     trayIconMenu->addAction(sendCoinsAction);
     trayIconMenu->addAction(addressAction);
     trayIconMenu->addAction(receiveCoinsAction);
+    trayIconMenu->addAction(multisigAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(signMessageAction);
     trayIconMenu->addAction(verifyMessageAction);
@@ -637,6 +647,11 @@ void BitcoinGUI::gotoSendCoinsPage(QString addr)
 {
     sendCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoSendCoinsPage(addr);
+}
+void BitcoinGUI::gotoMultisigPage()
+{
+    multisigAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoMultisigPage();
 }
 void BitcoinGUI::gotoAboutPage()
 {

@@ -276,6 +276,9 @@ HEADERS += src/qt/bitcoingui.h \
     src/auxiliaryblockrequest.h \
     src/crypto/aes.h \
     src/indirectmap.h \
+    src/qt/multisigaddressentry.h \
+    src/qt/multisigdialog.h \
+    src/qt/multisiginputentry.h \
     src/qt/transactiontablemodel.h \
     src/qt/addresstablemodel.h \
     src/qt/optionsdialog.h \
@@ -455,6 +458,9 @@ SOURCES += src/qt/bitcoin.cpp \
     src/crypto/sha256_sse4.cpp \
     src/crypto/sha256_sse41.cpp \
     src/qt/bitcoingui.cpp \
+    src/qt/multisigaddressentry.cpp \
+    src/qt/multisigdialog.cpp \
+    src/qt/multisiginputentry.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
     src/qt/optionsdialog.cpp \
@@ -606,6 +612,9 @@ RESOURCES += src/qt/bitcoin.qrc \
 
 FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/addressbookpage.ui \
+    src/qt/forms/multisigaddressentry.ui \
+    src/qt/forms/multisigdialog.ui \
+    src/qt/forms/multisiginputentry.ui \
     src/qt/forms/signverifymessagedialog.ui \
     src/qt/forms/aboutdialog.ui \
     src/qt/forms/editaddressdialog.ui \

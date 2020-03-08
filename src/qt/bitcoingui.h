@@ -99,6 +99,7 @@ private:
     QAction *aboutAction;
     QAction *addressAction;
     QAction *receiveCoinsAction;
+    QAction *multisigAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
     QAction *encryptWalletAction;
@@ -199,6 +200,8 @@ private slots:
     void gotoReceiveCoinsPage();
     /** Switch to oldschool receive coins page */
     void gotoAddressPage();
+    /** Awitch to multitool page */
+    void gotoMultisigPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /**Switch to About page */

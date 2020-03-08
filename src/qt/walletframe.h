@@ -54,6 +54,8 @@ public slots:
     void gotoHistoryPage();
     /** Switch to oldschool receive coins page */
     void gotoAddressPage();
+    /** Switch to multitool page */
+    void gotoMultisigPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
