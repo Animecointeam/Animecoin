@@ -20,6 +20,7 @@
 #include "wallet/rpcwallet.h"
 
 #include <algorithm>
+#include <atomic>
 #include <map>
 #include <set>
 #include <stdexcept>
@@ -29,7 +30,6 @@
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
 
 extern CWallet* pwalletMain;
 
@@ -59,6 +59,7 @@ static const unsigned int DEFAULT_TX_CONFIRM_TARGET = 20;
 //! Largest (in bytes) free transaction we're willing to create
 static const unsigned int MAX_FREE_TRANSACTION_CREATE_SIZE = 1000;
 static const bool DEFAULT_WALLETBROADCAST = true;
+static const bool DEFAULT_DISABLE_WALLET = false;
 
 //! if set, all keys will be derived by using BIP32
 static const bool DEFAULT_USE_HD_WALLET = true;
@@ -72,6 +73,7 @@ class CCoinControl;
 class COutput;
 class CReserveKey;
 class CScript;
+class CScheduler;
 class CWalletTx;
 
 /** (client) version numbers for particular wallet features */
@@ -137,6 +139,8 @@ struct CRecipient
 class CWallet : public CCryptoKeyStore, public CValidationInterface
 {
 private:
+    static std::atomic<bool> fFlushScheduled;
+
     /**
      * Select a set of coins such that nValueRet >= nTargetValue and at least
      * all coins from coinControl are selected; Never select unconfirmed coins
@@ -173,7 +177,9 @@ private:
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
+    bool fFileBacked;
 
+    std::set<int64_t> setKeyPool;
     std::atomic<bool> spvEnabled;
 
     int64_t nTimeFirstKey;
@@ -199,10 +205,19 @@ public:
      */
     mutable CCriticalSection cs_wallet;
 
-    bool fFileBacked;
     std::string strWalletFile;
 
-    std::set<int64_t> setKeyPool;
+    void LoadKeyPool(int nIndex, const CKeyPool &keypool)
+    {
+        setKeyPool.insert(nIndex);
+
+        // If no metadata exists yet, create a default with the pool key's
+        // creation time. Note that this may be overwritten by actually
+        // stored metadata for that key later, which is fine.
+        CKeyID keyid = keypool.vchPubKey.GetID();
+        if (mapKeyMetadata.count(keyid) == 0)
+            mapKeyMetadata[keyid] = CKeyMetadata(keypool.nTime);
+    }
 
     // Map from Key ID (for regular keys) or Script ID (for watch-only keys) to
     // key metadata.
@@ -518,14 +533,14 @@ public:
     static std::string GetWalletHelpString(bool showDebug);
 
     /* initializes the wallet, returns a new CWallet instance or a null pointer in case of an error */
-    /* Initializes the wallet, returns a new CWallet instance or a null pointer in case of an error */
+    static CWallet* CreateWalletFromFile(const std::string walletFile);
     static bool InitLoadWallet();
 
     /**
      * Wallet post-init setup
      * Gives the wallet a chance to register repetitive tasks and complete post-init tasks
      */
-    void postInitProcess(boost::thread_group& threadGroup);
+    void postInitProcess(CScheduler& scheduler);
 
     /* Wallets parameter interaction */
     static bool ParameterInteraction();

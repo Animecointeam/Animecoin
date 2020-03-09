@@ -35,7 +35,6 @@
 #include "validation.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
-#include "wallet/walletdb.h"
 #endif
 
 #include <stdint.h>
@@ -753,10 +752,7 @@ void InitParameterInteraction()
     if (GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY)) {
         if (SoftSetBoolArg("-whitelistrelay", false))
             LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -whitelistrelay=0\n", __func__);
-#ifdef ENABLE_WALLET
-        if (SoftSetBoolArg("-walletbroadcast", false))
-            LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
-#endif
+        // walletbroadcast is disabled in CWallet::ParameterInteraction()
     }
 
     // Forcing relay from whitelisted hosts implies we will accept relays from them in the first place.
@@ -816,12 +812,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         return InitError("Error: Initializing networking failed");
 
 #ifndef WIN32
-    if (GetBoolArg("-sysperms", false)) {
-#ifdef ENABLE_WALLET
-        if (!GetBoolArg("-disablewallet", false))
-            return InitError("Error: -sysperms is not allowed in combination with enabled wallet functionality");
-#endif
-    } else {
+    if (!GetBoolArg("-sysperms", false)) {
         umask(077);
     }
 
@@ -852,15 +843,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // whether to recalculate block hashes on startup or not
     fUseFastIndex = GetBoolArg("-fastindex", true);
 
-    // if using block pruning, then disable txindex
+    // if using block pruning, then disallow txindex
     if (GetArg("-prune", 0)||!GetBoolArg("-autorequestblocks", DEFAULT_AUTOMATIC_BLOCK_REQUESTS)) {
         if (GetBoolArg("-txindex", DEFAULT_TXINDEX))
             return InitError(_("Light client mode is incompatible with -txindex."));
-#ifdef ENABLE_WALLET
-        if (GetBoolArg("-rescan", false)) {
-            return InitError(_("Rescans are not possible in light mode. You will need to use -reindex which will download the whole blockchain again."));
-        }
-#endif
     }
 
     // Make sure enough file descriptors are available
@@ -963,9 +949,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     RegisterAllCoreRPCCommands(tableRPC);
 #ifdef ENABLE_WALLET
-    bool fDisableWallet = GetBoolArg("-disablewallet", false);
-    if (!fDisableWallet)
-        RegisterWalletRPCCommands(tableRPC);
+    RegisterWalletRPCCommands(tableRPC);
 #endif
 
     nConnectTimeout = GetArg("-timeout", DEFAULT_CONNECT_TIMEOUT);
@@ -992,7 +976,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 #ifdef ENABLE_WALLET
     if (!CWallet::ParameterInteraction())
         return false;
-#endif // ENABLE_WALLET
+#endif
 
     fIsBareMultisigStd = GetBoolArg("-permitbaremultisig", DEFAULT_PERMIT_BAREMULTISIG);
     fAcceptDatacarrier = GetBoolArg("-datacarrier", DEFAULT_ACCEPT_DATACARRIER);
@@ -1048,9 +1032,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (fPrintToDebugLog)
         OpenDebugLog();
 
-#ifdef ENABLE_WALLET
-    LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(0, 0, 0));
-#endif
     if (!fLogTimestamps)
         LogPrintf("Startup time: %s\n", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()));
     LogPrintf("Default data directory %s\n", GetDefaultDataDir().string());
@@ -1087,11 +1068,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // ********************************************************* Step 5: verify wallet database integrity
 #ifdef ENABLE_WALLET
-    if (!fDisableWallet) {
-        if (!CWallet::Verify())
-            return false;
-    } // (!fDisableWallet)
-#endif // ENABLE_WALLET
+    if (!CWallet::Verify())
+        return false;
+#endif
     // ********************************************************* Step 6: network initialization
 
     // Note that we absolutely cannot open any actual connections
@@ -1417,18 +1396,11 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // ********************************************************* Step 8: load wallet
 #ifdef ENABLE_WALLET
-    if (fDisableWallet) {
-        pwalletMain = nullptr;
-        LogPrintf("Wallet disabled!\n");
-    } else {
-
-        CWallet::InitLoadWallet();
-        if (!pwalletMain)
-            return false;
-    }
-#else // ENABLE_WALLET
+    if (!CWallet::InitLoadWallet())
+        return false;
+#else
     LogPrintf("No wallet compiled in!\n");
-#endif // !ENABLE_WALLET
+#endif
 
     // ********************************************************* Step 9: data directory maintenance
 
@@ -1496,11 +1468,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     //// debug print
     LogPrintf("mapBlockIndex.size() = %u\n",   mapBlockIndex.size());
     LogPrintf("nBestHeight = %d\n",            chainActive.Height());
-#ifdef ENABLE_WALLET
-    LogPrintf("setKeyPool.size() = %u\n",      pwalletMain ? pwalletMain->setKeyPool.size() : 0);
-    LogPrintf("mapWallet.size() = %u\n",       pwalletMain ? pwalletMain->mapWallet.size() : 0);
-    LogPrintf("mapAddressBook.size() = %u\n",  pwalletMain ? pwalletMain->mapAddressBook.size() : 0);
-#endif
 
     if (GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION))
         StartTorControl(threadGroup, scheduler);
@@ -1538,7 +1505,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
 #ifdef ENABLE_WALLET
     if (pwalletMain)
-        pwalletMain->postInitProcess(threadGroup);
+        pwalletMain->postInitProcess(scheduler);
 #endif
 
     return !fRequestShutdown;
