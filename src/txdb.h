@@ -8,7 +8,7 @@
 
 #include "chain.h"
 #include "dbwrapper.h"
-#include "main.h"
+#include "validation.h"
 
 #include <map>
 #include <string>

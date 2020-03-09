@@ -9,7 +9,7 @@
 #include "qt/walletmodel.h"
 #include "test/test_bitcoin.h"
 #include "base58.h"
-#include "main.h"
+#include "validation.h"
 #include "wallet/wallet.h"
 
 #include <QAbstractButton>

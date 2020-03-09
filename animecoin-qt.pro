@@ -276,6 +276,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/auxiliaryblockrequest.h \
     src/crypto/aes.h \
     src/indirectmap.h \
+    src/net_processing.h \
     src/qt/multisigaddressentry.h \
     src/qt/multisigdialog.h \
     src/qt/multisiginputentry.h \
@@ -299,7 +300,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/hash.h \
     src/uint256.h \
     src/serialize.h \
-    src/main.h \
     src/net.h \
     src/key.h \
     src/init.h \
@@ -331,6 +331,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/paymentserver.h \
     src/ui_interface.h \
     src/qt/rpcconsole.h \
+    src/validation.h \
     src/version.h \
     src/netbase.h \
     src/clientversion.h \
@@ -457,6 +458,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/crypto/sha256_shani.cpp \
     src/crypto/sha256_sse4.cpp \
     src/crypto/sha256_sse41.cpp \
+    src/net_processing.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/multisigaddressentry.cpp \
     src/qt/multisigdialog.cpp \
@@ -476,7 +478,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/hash.cpp \
     src/netbase.cpp \
     src/key.cpp \
-    src/main.cpp \
     src/init.cpp \
     src/net.cpp \
     src/bloom.cpp \
@@ -573,6 +574,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/askmultisigdialog.cpp \
     src/qt/newpubkeydialog.cpp \
     src/scheduler.cpp \
+    src/validation.cpp \
     src/wallet/db.cpp \
     src/wallet/rpcdump.cpp \
     src/wallet/rpcwallet.cpp \

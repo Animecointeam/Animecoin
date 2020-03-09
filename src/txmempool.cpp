@@ -8,7 +8,6 @@
 #include "clientversion.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
-#include "main.h"
 #include "policy/fees.h"
 #include "reverse_iterator.h"
 #include "streams.h"
@@ -16,6 +15,7 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "utiltime.h"
+#include "validation.h"
 #include "version.h"
 
 using namespace std;

@@ -8,7 +8,7 @@
 #include "base58.h"
 #include "consensus/validation.h"
 #include "key.h"
-#include "main.h"
+#include "validation.h"
 #include "multisigaddressentry.h"
 #include "multisiginputentry.h"
 #include "multisigdialog.h"

@@ -6,7 +6,7 @@
 #include "base58.h"
 #include "multisiginputentry.h"
 #include "ui_multisiginputentry.h"
-#include "main.h"
+#include "validation.h"
 #include "script/script.h"
 #include "util.h"
 #include "wallet/wallet.h"

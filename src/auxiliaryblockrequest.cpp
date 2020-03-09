@@ -5,7 +5,7 @@
 #include "auxiliaryblockrequest.h"
 
 #include "chainparams.h"
-#include "main.h"
+#include "validation.h"
 #include "validationinterface.h"
 #include "ui_interface.h"
 

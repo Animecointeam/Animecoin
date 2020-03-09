@@ -12,7 +12,6 @@
 #include "consensus/merkle.h"
 #include "consensus/validation.h"
 #include "hash.h"
-#include "main.h"
 #include "net.h"
 #include "policy/policy.h"
 #include "pow.h"
@@ -20,6 +19,7 @@
 #include "timedata.h"
 #include "util.h"
 #include "utilmoneystr.h"
+#include "validation.h"
 #include "validationinterface.h"
 
 #include <algorithm>

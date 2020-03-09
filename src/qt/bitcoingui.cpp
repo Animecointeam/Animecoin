@@ -27,6 +27,7 @@
 
 #include "init.h"
 #include "ui_interface.h"
+#include "validation.h" // for GetConsensus(), consider improvement.
 #include "util.h"
 
 #include <iostream>

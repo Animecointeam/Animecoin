@@ -9,10 +9,12 @@
 #include "rpc/server.h"
 #include "init.h"
 #include "net.h"
+#include "net_processing.h" // for fFetchBlocksWhileFetchingHeaders, consider removal?
 #include "policy/rbf.h"
 #include "timedata.h"
 #include "util.h"
 #include "utilmoneystr.h"
+#include "validation.h"
 #include "wallet.h"
 #include "walletdb.h"
 

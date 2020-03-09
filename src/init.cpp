@@ -17,9 +17,9 @@
 #include "httpserver.h"
 #include "httprpc.h"
 #include "key.h"
-#include "main.h"
 #include "miner.h"
 #include "net.h"
+#include "net_processing.h"
 #include "netbase.h"
 #include "policy/policy.h"
 #include "rpc/register.h"
@@ -32,6 +32,7 @@
 #include "ui_interface.h"
 #include "util.h"
 #include "utilmoneystr.h"
+#include "validation.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"

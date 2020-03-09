@@ -7,6 +7,7 @@
 #include "base58.h"
 #include "consensus/consensus.h"
 #include "timedata.h"
+#include "validation.h"
 #include "wallet/wallet.h"
 
 #include <stdint.h>

@@ -10,12 +10,12 @@
 #include "consensus/validation.h"
 #include "core_io.h"
 #include "init.h"
-#include "main.h"
 #include "miner.h"
 #include "net.h"
 #include "pow.h"
 #include "rpc/server.h"
 #include "util.h"
+#include "validation.h"
 #include "validationinterface.h"
 
 #include <memory>

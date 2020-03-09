@@ -15,8 +15,8 @@
 #include "coincontrol.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
-#include "main.h"
 #include "net.h"
+#include "net_processing.h"
 #include "policy/policy.h"
 #include "script/script.h"
 #include "script/sign.h"
@@ -24,6 +24,7 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "utilmoneystr.h"
+#include "validation.h"
 
 #include <assert.h>
 

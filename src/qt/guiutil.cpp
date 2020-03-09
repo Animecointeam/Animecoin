@@ -12,11 +12,11 @@
 #include "base58.h"
 #include "primitives/transaction.h"
 #include "init.h"
-#include "main.h"
 #include "protocol.h"
 #include "script/script.h"
 #include "script/standard.h"
 #include "util.h"
+#include "validation.h" // For minRelayTxFee
 
 #ifdef WIN32
 #ifdef _WIN32_WINNT

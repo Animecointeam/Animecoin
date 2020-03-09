@@ -5,7 +5,7 @@
 
 #include "clientversion.h"
 #include "init.h"
-#include "main.h"
+#include "validation.h"
 #include "noui.h"
 #include "scheduler.h"
 #include "util.h"

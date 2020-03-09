@@ -12,6 +12,7 @@
 #include "sync.h"
 #include "util.h"
 #include "utiltime.h"
+#include "validation.h" // For CheckTransaction
 #include "wallet/wallet.h"
 
 #include <atomic>
