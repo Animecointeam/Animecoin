@@ -179,39 +179,6 @@ namespace {
 
 } // anon namespace
 
-/* Use this class to start tracking transactions that are removed from the
- * mempool and pass all those transactions through SyncTransaction when the
- * object goes out of scope. This is currently only used to call SyncTransaction
- * on conflicts removed from the mempool during block connection.  Applied in
- * ActivateBestChain around ActivateBestStep which in turn calls:
- * ConnectTip->removeForBlock->removeConflicts
- */
-class MemPoolConflictRemovalTracker
-{
-private:
-    std::vector<CTransactionRef> conflictedTxs;
-    CTxMemPool &pool;
-
-public:
-    MemPoolConflictRemovalTracker(CTxMemPool &_pool) : pool(_pool) {
-        pool.NotifyEntryRemoved.connect(boost::bind(&MemPoolConflictRemovalTracker::NotifyEntryRemoved, this, _1, _2));
-    }
-
-    void NotifyEntryRemoved(CTransactionRef txRemoved, MemPoolRemovalReason reason) {
-        if (reason == MemPoolRemovalReason::CONFLICT) {
-            conflictedTxs.push_back(txRemoved);
-        }
-    }
-
-    ~MemPoolConflictRemovalTracker() {
-        pool.NotifyEntryRemoved.disconnect(boost::bind(&MemPoolConflictRemovalTracker::NotifyEntryRemoved, this, _1, _2));
-        for (const auto& tx : conflictedTxs) {
-            GetMainSignals().SyncTransaction(*tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK, true);
-        }
-        conflictedTxs.clear();
-    }
-};
-
 CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& locator)
 {
     // Find the first block the caller has in the main chain
@@ -782,7 +749,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         }
     }
 
-    GetMainSignals().SyncTransaction(tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK, true);
+    GetMainSignals().TransactionAddedToMempool(MakeTransactionRef(tx), true); //ptx
 
     return true;
 }
@@ -1824,7 +1791,8 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     CBlockIndex *pindexDelete = chainActive.Tip();
     assert(pindexDelete);
     // Read block from disk.
-    CBlock block;
+    std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
+    CBlock& block = *pblock;
     if (!ReadBlockFromDisk(block, pindexDelete, chainparams.GetConsensus()))
         return AbortNode(state, "Failed to read block");
     // Apply the block atomically to the chain state.
@@ -1861,9 +1829,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     UpdateTip(pindexDelete->pprev, chainparams);
     // Let wallets know transactions went from 1-confirmed to
     // 0-confirmed or conflicted:
-    for (const auto& tx : block.vtx) {
-         GetMainSignals().SyncTransaction(*tx, pindexDelete->pprev, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK, true);
-    }
+    GetMainSignals().BlockDisconnected(pblock);
     return true;
 }
 
@@ -1873,36 +1839,92 @@ static int64_t nTimeFlush = 0;
 static int64_t nTimeChainState = 0;
 static int64_t nTimePostConnect = 0;
 
+struct PerBlockConnectTrace {
+    CBlockIndex* pindex = nullptr;
+    std::shared_ptr<const CBlock> pblock;
+    std::shared_ptr<std::vector<CTransactionRef>> conflictedTxs;
+    PerBlockConnectTrace() : conflictedTxs(std::make_shared<std::vector<CTransactionRef>>()) {}
+};
 /**
  * Used to track blocks whose transactions were applied to the UTXO state as a
  * part of a single ActivateBestChainStep call.
+ *
+ * This class also tracks transactions that are removed from the mempool as
+ * conflicts (per block) and can be used to pass all those transactions
+ * through SyncTransaction.
+ *
+ * This class assumes (and asserts) that the conflicted transactions for a given
+ * block are added via mempool callbacks prior to the BlockConnected() associated
+ * with those transactions. If any transactions are marked conflicted, it is
+ * assumed that an associated block will always be added.
+ *
+ * This class is single-use, once you call GetBlocksConnected() you have to throw
+ * it away and make a new one.
  */
-struct ConnectTrace {
-    std::vector<std::pair<CBlockIndex*, std::shared_ptr<const CBlock> > > blocksConnected;
+class ConnectTrace {
+private:
+    std::vector<PerBlockConnectTrace> blocksConnected;
+    CTxMemPool &pool;
+
+public:
+    ConnectTrace(CTxMemPool &_pool) : blocksConnected(1), pool(_pool) {
+        pool.NotifyEntryRemoved.connect(boost::bind(&ConnectTrace::NotifyEntryRemoved, this, _1, _2));
+    }
+
+    ~ConnectTrace() {
+        pool.NotifyEntryRemoved.disconnect(boost::bind(&ConnectTrace::NotifyEntryRemoved, this, _1, _2));
+    }
+
+    void BlockConnected(CBlockIndex* pindex, std::shared_ptr<const CBlock> pblock) {
+        assert(!blocksConnected.back().pindex);
+        assert(pindex);
+        assert(pblock);
+        blocksConnected.back().pindex = pindex;
+        blocksConnected.back().pblock = std::move(pblock);
+        blocksConnected.emplace_back();
+    }
+
+    std::vector<PerBlockConnectTrace>& GetBlocksConnected() {
+        // We always keep one extra block at the end of our list because
+        // blocks are added after all the conflicted transactions have
+        // been filled in. Thus, the last entry should always be an empty
+        // one waiting for the transactions from the next block. We pop
+        // the last entry here to make sure the list we return is sane.
+        assert(!blocksConnected.back().pindex);
+        assert(blocksConnected.back().conflictedTxs->empty());
+        blocksConnected.pop_back();
+        return blocksConnected;
+    }
+
+    void NotifyEntryRemoved(CTransactionRef txRemoved, MemPoolRemovalReason reason) {
+        assert(!blocksConnected.back().pindex);
+        if (reason == MemPoolRemovalReason::CONFLICT) {
+            blocksConnected.back().conflictedTxs->emplace_back(std::move(txRemoved));
+        }
+    }
 };
 
 /**
  * Connect a new block to chainActive. pblock is either nullptr or a pointer to a CBlock
  * corresponding to pindexNew, to bypass loading it again from disk.
  *
- * The block is always added to connectTrace (either after loading from disk or by copying
- * pblock) - if that is not intended, care must be taken to remove the last entry in
- * blocksConnected in case of failure.
+ * The block is added to connectTrace if connection succeeds.
  */
 bool static ConnectTip(CValidationState& state, const CChainParams& chainparams, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, ConnectTrace& connectTrace)
 {
     assert(pindexNew->pprev == chainActive.Tip());
     // Read block from disk.
     int64_t nTime1 = GetTimeMicros();
+    std::shared_ptr<const CBlock> pthisBlock;
     if (!pblock) {
         std::shared_ptr<CBlock> pblockNew = std::make_shared<CBlock>();
-        connectTrace.blocksConnected.emplace_back(pindexNew, pblockNew);
         if (!ReadBlockFromDisk(*pblockNew, pindexNew, chainparams.GetConsensus()))
             return AbortNode(state, "Failed to read block");
+        pthisBlock = pblockNew;
     } else {
-        connectTrace.blocksConnected.emplace_back(pindexNew, pblock);
+        pthisBlock = pblock;
     }
-    const CBlock& blockConnecting = *connectTrace.blocksConnected.back().second;
+    const CBlock& blockConnecting = *pthisBlock;
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros(); nTimeReadFromDisk += nTime2 - nTime1;
     int64_t nTime3;
@@ -1936,6 +1958,8 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
     int64_t nTime6 = GetTimeMicros(); nTimePostConnect += nTime6 - nTime5; nTimeTotal += nTime6 - nTime1;
     LogPrint("bench", "  - Connect postprocess: %.2fms [%.2fs]\n", (nTime6 - nTime5) * 0.001, nTimePostConnect * 0.000001);
     LogPrint("bench", "- Connect block: %.2fms [%.2fs]\n", (nTime6 - nTime1) * 0.001, nTimeTotal * 0.000001);
+
+    connectTrace.BlockConnected(pindexNew, std::move(pthisBlock));
     return true;
 }
 
@@ -2054,8 +2078,6 @@ static bool ActivateBestChainStep(CValidationState& state, const CChainParams& c
                     state = CValidationState();
                     fInvalidFound = true;
                     fContinue = false;
-                    // If we didn't actually connect the block, don't notify listeners about it
-                    connectTrace.blocksConnected.pop_back();
                     break;
                 } else {
                     // A system error occurred (disk space, database error, ...).
@@ -2126,18 +2148,11 @@ bool ActivateBestChain(CValidationState &state, const CChainParams& chainparams,
         boost::this_thread::interruption_point();
 
         const CBlockIndex *pindexFork;
-        ConnectTrace connectTrace;
         bool fInitialDownload;
         {
             LOCK(cs_main);
-            { // TODO: Tempoarily ensure that mempool removals are notified before
-              // connected transactions.  This shouldn't matter, but the abandoned
-              // state of transactions in our wallet is currently cleared when we
-              // receive another notification and there is a race condition where
-              // notification of a connected conflict might cause an outside process
-              // to abandon a transaction and then have it inadvertantly cleared by
-              // the notification that the conflicted transaction was evicted.
-            MemPoolConflictRemovalTracker mrt(mempool);
+            ConnectTrace connectTrace(mempool); // Destructed before cs_main is unlocked
+
             CBlockIndex *pindexOldTip = chainActive.Tip();
             if (pindexMostWork == nullptr) {
                 pindexMostWork = FindMostWorkChain();
@@ -2161,22 +2176,15 @@ bool ActivateBestChain(CValidationState &state, const CChainParams& chainparams,
             pindexFork = chainActive.FindFork(pindexOldTip);
             fInitialDownload = IsInitialBlockDownload();
 
-            // throw all transactions though the signal-interface
-            for (const auto& pair : connectTrace.blocksConnected) {
-                assert(pair.second);
-                const CBlock& block = *(pair.second);
-                for (unsigned int i = 0; i < block.vtx.size(); i++)
-                    GetMainSignals().SyncTransaction(*block.vtx[i], pair.first, i, true);
+            for (const PerBlockConnectTrace& trace : connectTrace.GetBlocksConnected()) {
+                assert(trace.pblock && trace.pindex);
+                GetMainSignals().BlockConnected(trace.pblock, trace.pindex, *trace.conflictedTxs);
             }
         }
 
         // When we reach this point, we switched to a new tip (stored in pindexNewTip).
 
         // Notifications/callbacks that can run without cs_main
-
-        // throw all transactions though the signal-interface
-
-        } // MemPoolConflictRemovalTracker destroyed and conflict evictions are notified
 
         // Notify external listeners about the new tip.
         GetMainSignals().UpdatedBlockTip(pindexNewTip, pindexFork, fInitialDownload);

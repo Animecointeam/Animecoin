@@ -1120,6 +1120,37 @@ void CWallet::UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pi
         RequestSPVScan();
 }
 
+void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx, bool validated) {
+    LOCK2(cs_main, cs_wallet);
+    SyncTransaction(*ptx, nullptr, -1, validated);
+}
+
+void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) {
+    LOCK2(cs_main, cs_wallet);
+    // TODO: Tempoarily ensure that mempool removals are notified before
+    // connected transactions.  This shouldn't matter, but the abandoned
+    // state of transactions in our wallet is currently cleared when we
+    // receive another notification and there is a race condition where
+    // notification of a connected conflict might cause an outside process
+    // to abandon a transaction and then have it inadvertantly cleared by
+    // the notification that the conflicted transaction was evicted.
+
+    for (const CTransactionRef& ptx : vtxConflicted) {
+        SyncTransaction(*ptx, nullptr, -1, true);
+    }
+    for (size_t i = 0; i < pblock->vtx.size(); i++) {
+        SyncTransaction(*pblock->vtx[i], pindex, i, true);
+    }
+}
+
+void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) {
+    LOCK2(cs_main, cs_wallet);
+
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        SyncTransaction(*ptx, nullptr, -1, true);
+    }
+}
+
 void CWallet::SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock, bool validated)
 {
     LOCK2(cs_main, cs_wallet);
@@ -3112,9 +3143,9 @@ void CWallet::UpdatedTransaction(const uint256 &hashTx)
     }
 }
 
-void CWallet::GetScriptForMining(boost::shared_ptr<CReserveScript> &script)
+void CWallet::GetScriptForMining(std::shared_ptr<CReserveScript> &script)
 {
-    boost::shared_ptr<CReserveKey> rKey(new CReserveKey(this));
+    std::shared_ptr<CReserveKey> rKey = std::make_shared<CReserveKey>(this);
 
     CPubKey pubkey;
     if (!rKey->GetReservedKey(pubkey))

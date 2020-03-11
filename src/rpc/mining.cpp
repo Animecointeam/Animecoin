@@ -21,8 +21,6 @@
 #include <memory>
 #include <stdint.h>
 
-#include <boost/shared_ptr.hpp>
-
 #include <univalue.h>
 
 using namespace std;
@@ -134,7 +132,7 @@ UniValue generate(const JSONRPCRequest& request)
     int nHeight = 0;
     int nGenerate = request.params[0].get_int();
 
-    boost::shared_ptr<CReserveScript> coinbaseScript;
+    std::shared_ptr<CReserveScript> coinbaseScript;
     GetMainSignals().ScriptForMining(coinbaseScript);
 
     //throw an error if no script was provided

@@ -29,8 +29,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
-
 extern CWallet* pwalletMain;
 
 /**
@@ -174,6 +172,9 @@ private:
     void MarkConflicted(const uint256& hashBlock, const uint256& hashTx);
 
     void SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator>);
+
+    /* Used by TransactionAddedToMemorypool/BlockConnected/Disconnected */
+    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindexBlockConnected, int posInBlock, bool validated);
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
@@ -368,7 +369,9 @@ public:
     bool AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose=true);
     bool LoadToWallet(const CWalletTx& wtxIn);
     bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate, bool fValidated);
-    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock, bool validated);
+    void TransactionAddedToMempool(const CTransactionRef& tx, bool validated) override;
+    void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) override;
+    void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) override;
     void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew);
     void GetNonMempoolTransaction(const uint256 &hash, CTransactionRef &txsp);
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
@@ -463,12 +466,12 @@ public:
         }
     }
 
-    void GetScriptForMining(boost::shared_ptr<CReserveScript> &script);
-    void ResetRequestCount(const uint256 &hash)
+    void GetScriptForMining(std::shared_ptr<CReserveScript> &script) override;
+    void ResetRequestCount(const uint256 &hash) override
     {
         LOCK(cs_wallet);
         mapRequestCount[hash] = 0;
-    }
+    };
 
     unsigned int GetKeyPoolSize()
     {
