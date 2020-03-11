@@ -39,7 +39,6 @@ protected:
     virtual void GetNonMempoolTransaction(const uint256 &hash,  std::shared_ptr<const CTransaction> &txsp) {}
     virtual void SetBestChain(const CBlockLocator &locator) {}
     virtual void SetBestNVSChain() {}
-    virtual void UpdatedTransaction(const uint256 &hash) {}
     virtual void Inventory(const uint256 &hash) {}
     virtual void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman) {}
     virtual void BlockChecked(const CBlock&, const CValidationState&) {}
@@ -65,8 +64,6 @@ struct CMainSignals {
     boost::signals2::signal<void (const std::shared_ptr<const CBlock> &)> BlockDisconnected;
     /** Signal used to find transactions if the node has the inv-hash but not the transaction in its mempool (non-validation mode) */
     boost::signals2::signal<void (const uint256 &, std::shared_ptr<const CTransaction> &)> FindTransaction;
-    /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
-    boost::signals2::signal<void (const uint256 &)> UpdatedTransaction;
     /** Notifies listeners of a new active block chain. */
     boost::signals2::signal<void (const CBlockLocator &)> SetBestChain;
     /** Notifies listeners of a new non-validating block chain. */

@@ -1286,7 +1286,11 @@ bool AbortNode(CValidationState& state, const std::string& strMessage, const std
 
 } // anon namespace
 
-bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, bool* pfClean)
+/** Undo the effects of this block (with given index) on the UTXO set represented by coins.
+ *  In case pfClean is provided, operation will try to be tolerant about errors, and *pfClean
+ *  will be true if no problems were found. Otherwise, the return value will be false in case
+ *  of problems. Note that in any case, coins may be modified. */
+static bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockIndex* pindex, CCoinsViewCache& view, bool* pfClean = nullptr)
 {
     assert(pindex->GetBlockHash() == view.GetBestBlock());
 
@@ -1413,8 +1417,11 @@ static int64_t nTimeIndex = 0;
 static int64_t nTimeCallbacks = 0;
 static int64_t nTimeTotal = 0;
 
-bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex,
-                  CCoinsViewCache& view, const CChainParams& chainparams, bool fJustCheck)
+/** Apply the effects of this block (with given index) on the UTXO set represented by coins.
+ *  Validity checks that depend on the UTXO set are also done; ConnectBlock()
+ *  can fail if those validity checks fail (among other reasons). */
+static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex,
+                  CCoinsViewCache& view, const CChainParams& chainparams, bool fJustCheck = false)
 {
     AssertLockHeld(cs_main);
 
@@ -1617,11 +1624,6 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
     int64_t nTime5 = GetTimeMicros(); nTimeIndex += nTime5 - nTime4;
     LogPrint("bench", "    - Index writing: %.2fms [%.2fs]\n", 0.001 * (nTime5 - nTime4), nTimeIndex * 0.000001);
-
-    // Watch for changes to the previous coinbase transaction.
-    static uint256 hashPrevBestCoinBase;
-    GetMainSignals().UpdatedTransaction(hashPrevBestCoinBase);
-    hashPrevBestCoinBase = block.vtx[0]->GetHash();
 
     int64_t nTime6 = GetTimeMicros(); nTimeCallbacks += nTime6 - nTime5;
     LogPrint("bench", "    - Callbacks: %.2fms [%.2fs]\n", 0.001 * (nTime6 - nTime5), nTimeCallbacks * 0.000001);

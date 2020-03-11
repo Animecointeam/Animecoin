@@ -18,7 +18,6 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.BlockConnected.connect(boost::bind(&CValidationInterface::BlockConnected, pwalletIn, _1, _2, _3));
     g_signals.BlockDisconnected.connect(boost::bind(&CValidationInterface::BlockDisconnected, pwalletIn, _1));
     g_signals.FindTransaction.connect(boost::bind(&CValidationInterface::GetNonMempoolTransaction, pwalletIn, _1, _2));
-    g_signals.UpdatedTransaction.connect(boost::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, _1));
     g_signals.SetBestChain.connect(boost::bind(&CValidationInterface::SetBestChain, pwalletIn, _1));
     g_signals.SetBestNVSChain.connect(boost::bind(&CValidationInterface::SetBestNVSChain, pwalletIn));
     g_signals.Inventory.connect(boost::bind(&CValidationInterface::Inventory, pwalletIn, _1));
@@ -39,7 +38,6 @@ void UnregisterValidationInterface(CValidationInterface* pwalletIn) {
     g_signals.Inventory.disconnect(boost::bind(&CValidationInterface::Inventory, pwalletIn, _1));
     g_signals.SetBestNVSChain.disconnect(boost::bind(&CValidationInterface::SetBestNVSChain, pwalletIn));
     g_signals.SetBestChain.disconnect(boost::bind(&CValidationInterface::SetBestChain, pwalletIn, _1));
-    g_signals.UpdatedTransaction.disconnect(boost::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, _1));
     g_signals.FindTransaction.disconnect(boost::bind(&CValidationInterface::GetNonMempoolTransaction, pwalletIn, _1, _2));
     g_signals.TransactionAddedToMempool.disconnect(boost::bind(&CValidationInterface::TransactionAddedToMempool, pwalletIn, _1, _2));
     g_signals.BlockConnected.disconnect(boost::bind(&CValidationInterface::BlockConnected, pwalletIn, _1, _2, _3));
@@ -60,7 +58,6 @@ void UnregisterAllValidationInterfaces() {
     g_signals.TransactionAddedToMempool.disconnect_all_slots();
     g_signals.BlockConnected.disconnect_all_slots();
     g_signals.BlockDisconnected.disconnect_all_slots();
-    g_signals.UpdatedTransaction.disconnect_all_slots();
     g_signals.FindTransaction.disconnect_all_slots();
     g_signals.UpdatedBlockTip.disconnect_all_slots();
     g_signals.NewPoWValidBlock.disconnect_all_slots();
