@@ -4,6 +4,7 @@
 #include "chainparamsbase.h"
 #include "key.h"
 #include "pubkey.h"
+#include "scheduler.h"
 #include "txdb.h"
 
 #include <boost/filesystem.hpp>
@@ -28,6 +29,7 @@ struct TestingSetup: public BasicTestingSetup {
     boost::filesystem::path pathTemp;
     boost::thread_group threadGroup;
     CConnman* connman;
+    CScheduler scheduler;
 
     TestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
     ~TestingSetup();

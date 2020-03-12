@@ -11,6 +11,7 @@
 #include "rpc/server.h"
 #include "rpcconsole.h"
 //#include "test/testutil.h"
+#include "test/test_bitcoin.h"
 #include "univalue.h"
 #include "util.h"
 
@@ -24,23 +25,14 @@ void RPCNestedTests::rpcNestedTests()
 
     // do some test setup
     // could be moved to a more generic place when we add more tests on QT level
-    const CChainParams& chainparams = Params();
-    RegisterAllCoreRPCCommands(tableRPC);
     ClearDatadirCache();
     std::string path = QDir::tempPath().toStdString() + "/" + strprintf("test_animecoin_qt_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
     QDir dir(QString::fromStdString(path));
     dir.mkpath(".");
     ForceSetArg("-datadir", path);
     //mempool.setSanityCheck(1.0);
-    pblocktree = new CBlockTreeDB(1 << 20, true);
-    pcoinsdbview = new CCoinsViewDB(1 << 23, true);
-    pcoinsTip = new CCoinsViewCache(pcoinsdbview);
-    InitBlockIndex(chainparams);
-    {
-        CValidationState state;
-        bool ok = ActivateBestChain(state, chainparams);
-        QVERIFY(ok);
-    }
+
+    TestingSetup test;
 
     SetRPCWarmupFinished();
 
@@ -87,13 +79,6 @@ void RPCNestedTests::rpcNestedTests()
     RPCConsole::RPCExecuteCommandLine(result, "getblock(getbestblockhash())[tx][0]");
     QVERIFY(result == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
 */
-    UnloadBlockIndex();
-    delete pcoinsTip;
-    pcoinsTip = nullptr;
-    delete pcoinsdbview;
-    pcoinsdbview = nullptr;
-    delete pblocktree;
-    pblocktree = nullptr;
 
     boost::filesystem::remove_all(boost::filesystem::path(path));
 }

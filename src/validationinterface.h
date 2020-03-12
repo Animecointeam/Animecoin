@@ -6,7 +6,6 @@
 #ifndef BITCOIN_VALIDATIONINTERFACE_H
 #define BITCOIN_VALIDATIONINTERFACE_H
 
-#include <boost/signals2/signal.hpp>
 #include <memory>
 
 #include "primitives/transaction.h" // CTransaction(Ref)
@@ -19,6 +18,7 @@ class CReserveScript;
 class CValidationInterface;
 class CValidationState;
 class uint256;
+class CScheduler;
 
 // These functions dispatch to one or all registered wallets
 
@@ -31,58 +31,75 @@ void UnregisterAllValidationInterfaces();
 
 class CValidationInterface {
 protected:
-    virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) {}
-    virtual void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew) {}
+    /** Notifies listeners of updated block chain tip */
+    virtual void UpdatedBlockTip (const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) {}
+    /** Notifies listeners of a transaction having been added to mempool. */
     virtual void TransactionAddedToMempool(const CTransactionRef &ptxn, bool validated = true) {}
+    /**
+     * Notifies listeners of a block being connected.
+     * Provides a vector of transactions evicted from the mempool as a result.
+     */
     virtual void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted) {}
+    /** Notifies listeners of a block being disconnected */
     virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block) {}
+    /** Signal used to find transactions if the node has the inv-hash but not the transaction in its mempool (non-validation mode) */
     virtual void GetNonMempoolTransaction(const uint256 &hash,  std::shared_ptr<const CTransaction> &txsp) {}
+    /** Notifies listeners of a new active block chain. */
     virtual void SetBestChain(const CBlockLocator &locator) {}
+    /** Notifies listeners of a new non-validating block chain. */
     virtual void SetBestNVSChain() {}
+    /** Notifies listeners about an inventory item being seen on the network. */
     virtual void Inventory(const uint256 &hash) {}
+    /** Tells listeners to broadcast their data. */
     virtual void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman) {}
+    /** Notifies listeners of a block validation result */
     virtual void BlockChecked(const CBlock&, const CValidationState&) {}
     virtual void GetScriptForMining(std::shared_ptr<CReserveScript>&) {}
+    /** Notifies listeners that a block has been successfully mined */
     virtual void ResetRequestCount(const uint256 &hash) {}
+    /**
+     * Notifies listeners that a block which builds directly on our current tip
+     * has been received and connected to the headers tree, though not validated yet */
     virtual void NewPoWValidBlock(const CBlockIndex *pindex, const std::shared_ptr<const CBlock>& block) {}
+    /** Best header has changed */
+    virtual void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew) {}
     friend void ::RegisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterAllValidationInterfaces();
 };
 
-struct CMainSignals {
-    /** Notifies listeners of updated block chain tip */
-    boost::signals2::signal<void (const CBlockIndex *, const CBlockIndex *, bool fInitialDownload)> UpdatedBlockTip;
-    /** Notifies listeners of a transaction having been added to mempool. */
-    boost::signals2::signal<void (const CTransactionRef &, bool validated)> TransactionAddedToMempool;
-    /**
-     * Notifies listeners of a block being connected.
-     * Provides a vector of transactions evicted from the mempool as a result.
-     */
-    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::vector<CTransactionRef> &)> BlockConnected;
-    /** Notifies listeners of a block being disconnected */
-    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &)> BlockDisconnected;
-    /** Signal used to find transactions if the node has the inv-hash but not the transaction in its mempool (non-validation mode) */
-    boost::signals2::signal<void (const uint256 &, std::shared_ptr<const CTransaction> &)> FindTransaction;
-    /** Notifies listeners of a new active block chain. */
-    boost::signals2::signal<void (const CBlockLocator &)> SetBestChain;
-    /** Notifies listeners of a new non-validating block chain. */
-    boost::signals2::signal<void ()> SetBestNVSChain;
-    /** Notifies listeners about an inventory item being seen on the network. */
-    boost::signals2::signal<void (const uint256 &)> Inventory;
-    /** Tells listeners to broadcast their data. */
-    boost::signals2::signal<void (int64_t nBestBlockTime, CConnman* connman)> Broadcast;
-    /** Notifies listeners of a block validation result */
-    boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
-    boost::signals2::signal<void (std::shared_ptr<CReserveScript>&)> ScriptForMining;
-    /** Notifies listeners that a block has been successfully mined */
-    boost::signals2::signal<void (const uint256 &)> BlockFound;
-    /**
-     * Notifies listeners that a block which builds directly on our current tip
-     * has been received and connected to the headers tree, though not validated yet */
-    boost::signals2::signal<void (const CBlockIndex *, const std::shared_ptr<const CBlock>&)> NewPoWValidBlock;
-    /** Best header has changed */
-    boost::signals2::signal<void (bool, const CBlockIndex *)> UpdatedBlockHeaderTip;
+struct MainSignalsInstance;
+class CMainSignals {
+private:
+    std::unique_ptr<MainSignalsInstance> m_internals;
+
+    friend void ::RegisterValidationInterface(CValidationInterface*);
+    friend void ::UnregisterValidationInterface(CValidationInterface*);
+    friend void ::UnregisterAllValidationInterfaces();
+
+public:
+    /** Register a CScheduler to give callbacks which should run in the background (may only be called once) */
+    void RegisterBackgroundSignalScheduler(CScheduler& scheduler);
+    /** Unregister a CScheduler to give callbacks which should run in the background - these callbacks will now be dropped! */
+    void UnregisterBackgroundSignalScheduler();
+    /** Call any remaining callbacks on the calling thread */
+    void FlushBackgroundCallbacks();
+
+    void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
+    void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *);
+    void TransactionAddedToMempool(const CTransactionRef &, bool valid);
+    void BlockConnected(const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::vector<CTransactionRef> &);
+    void BlockDisconnected(const std::shared_ptr<const CBlock> &);
+    void FindTransaction(const uint256 &,  std::shared_ptr<const CTransaction> &);
+    void UpdatedTransaction(const uint256 &);
+    void SetBestChain(const CBlockLocator &);
+    void SetBestNVSChain();
+    void Inventory(const uint256 &);
+    void Broadcast(int64_t nBestBlockTime, CConnman* connman);
+    void BlockChecked(const CBlock&, const CValidationState&);
+    void ScriptForMining(std::shared_ptr<CReserveScript>&);
+    void BlockFound(const uint256 &);
+    void NewPoWValidBlock(const CBlockIndex *, const std::shared_ptr<const CBlock>&);
 };
 
 CMainSignals& GetMainSignals();
