@@ -3033,7 +3033,7 @@ bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interruptMsg
                     if (pto->filterInventoryKnown.contains(hash)) {
                         continue;
                     }
-                    // Not in the mempool anymore? don't bother sending it.
+                    // Not in the mempool anymore? Check wallet in case we're in non-validating mode, otherwise don't bother sending it.
                     auto txinfo = mempool.info(hash);
                     CTransactionRef txsp = txinfo.tx;
                     if (!txsp)

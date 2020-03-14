@@ -58,7 +58,7 @@ void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<cons
         // fire signal with txns
         if (passThroughSignals) {
             std::shared_ptr<std::vector<CTransactionRef>> conflicts (std::make_shared<std::vector<CTransactionRef>>());
-            GetMainSignals().BlockConnected (currentBlock, pindexRequest, *conflicts);
+            GetMainSignals().BlockConnected (currentBlock, pindexRequest, conflicts);
             for(const auto& tx : currentBlock->vtx)
             {
                 bool valid = ((pindexRequest->nStatus & BLOCK_VALID_MASK) == BLOCK_VALID_MASK);
