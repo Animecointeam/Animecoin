@@ -8,6 +8,7 @@
 #include "base58.h"
 #include "consensus/validation.h"
 #include "key.h"
+#include "net_processing.h" // For fAutoRequestBlocks, I know it's gross.
 #include "validation.h"
 #include "multisigaddressentry.h"
 #include "multisiginputentry.h"
@@ -17,7 +18,7 @@
 #include "script/script.h"
 #include "script/sign.h"
 #include "sendcoinsentry.h"
-#include "util.h"
+#include "utilmoneystr.h"
 #include "wallet/wallet.h"
 #include "walletmodel.h"
 
@@ -50,6 +51,12 @@ MultisigDialog::MultisigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Mu
 
     ui->signTransactionButton->setEnabled(false);
     ui->sendTransactionButton->setEnabled(false);
+
+    if (!fAutoRequestBlocks)
+    {
+        ui->statusLabel->setText(tr("Spending multisig is only available to full nodes now, sorry"));
+        ui->tabSpendFunds->setEnabled (false);
+    }
 }
 
 MultisigDialog::~MultisigDialog()
@@ -387,7 +394,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         for (const CTxIn& txin : mergedTx.vin) {
             const uint256& prevHash = txin.prevout.hash;
             CCoins coins;
-            view.GetCoins(prevHash, coins); // this is certainly allowed to fail
+            view.AccessCoins(prevHash); // this is certainly allowed to fail
         }
         view.SetBackend(viewDummy); // switch back to avoid locking db/mempool too long
     }
@@ -417,14 +424,13 @@ void MultisigDialog::on_signTransactionButton_clicked()
     for(int i = 0; i < mergedTx.vin.size(); i++)
     {
         CTxIn& txin = mergedTx.vin[i];
-        CCoins coins;
-        if (!view.GetCoins(txin.prevout.hash, coins) || !coins.IsAvailable(txin.prevout.n))
+        const CCoins* coins = view.AccessCoins(txin.prevout.hash);
+        if (coins == nullptr || !coins->IsAvailable(txin.prevout.n))
         {
             fComplete = false;
             continue;
         }
-        const CScript& prevPubKey = coins.vout[txin.prevout.n].scriptPubKey;
-
+        const CScript& prevPubKey = coins->vout[txin.prevout.n].scriptPubKey;
         txin.scriptSig.clear();
         SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL);
         txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig);
@@ -483,21 +489,36 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     if(GetTransaction(txHash, existingTx, Params().GetConsensus(), blockHash))
     {
         if(!blockHash.IsNull())
+        {
+            emit message(tr("Send Raw Transaction"), tr("This transaction is already in blockchain."), CClientUIInterface::MSG_ERROR);
             return;
+        }
     }
 
     // Send the transaction to the local node
     bool fMissingInputs;
     CValidationState state;
     if (!AcceptToMemoryPool(mempool, state, tx, false, &fMissingInputs, false, nMaxRawTxFee))
+    {
+        emit message(tr("Send Raw Transaction"), tr("Transaction rejected: ") + QString::fromStdString(state.GetRejectReason()), CClientUIInterface::MSG_ERROR);
         return;
+    }
     if (state.IsInvalid())
+    {
+        emit message(tr("Send Raw Transaction"), tr("Invalid transaction: ") + QString::fromStdString(state.GetRejectReason()), CClientUIInterface::MSG_ERROR);
         return;
+    }
     if (fMissingInputs)
+    {
+        emit message(tr("Send Raw Transaction"), tr("Failed to find the inputs in coin database."), CClientUIInterface::MSG_ERROR);
         return;
+    }
     //GetMainSignals().SyncTransaction(tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK, true);
     if(!g_connman)
+    {
+        emit message(tr("Send Raw Transaction"), tr("Network is unreachable!"), CClientUIInterface::MSG_ERROR);
         return;
+    }
     CInv inv(MSG_TX, tx.GetHash());
     g_connman->ForEachNode([&inv](CNode* pnode)
     {
@@ -563,8 +584,7 @@ void MultisigDialog::updateAmounts()
         if(entry)
             inputsAmount += entry->getAmount();
     }
-    QString inputsAmountStr;
-    inputsAmountStr.asprintf("%.5f", (double) inputsAmount / COIN);
+    QString inputsAmountStr = QString::fromStdString (FormatMoney(inputsAmount));
     ui->inputsAmount->setText(inputsAmountStr);
 
     // Update outputs amount
@@ -575,13 +595,21 @@ void MultisigDialog::updateAmounts()
         if(entry)
             outputsAmount += entry->getValue().amount;
     }
-    QString outputsAmountStr;
-    outputsAmountStr.asprintf("%.5f", (double) outputsAmount / COIN);
+    QString outputsAmountStr = QString::fromStdString (FormatMoney(outputsAmount));
     ui->outputsAmount->setText(outputsAmountStr);
 
     // Update Fee amount
     CAmount fee = inputsAmount - outputsAmount;
-    QString feeStr;
-    feeStr.asprintf("%.5f", (double) fee / COIN);
-    ui->fee->setText(feeStr);
+    if (fee < 0)
+    {
+        ui->createTransactionButton->setEnabled(false);
+        ui->fee->setText(tr("NaN"));
+        ui->statusLabel->setText(tr("Output amount exceeds input balance!"));
+    }
+    else
+    {
+        ui->createTransactionButton->setEnabled(true);
+        QString feeStr = QString::fromStdString (FormatMoney(fee));
+        ui->fee->setText(feeStr);
+    }
 }

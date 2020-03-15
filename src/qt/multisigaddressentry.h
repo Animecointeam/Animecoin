@@ -13,7 +13,7 @@ namespace Ui
 
 class MultisigAddressEntry : public QFrame
 {
-    Q_OBJECT;
+    Q_OBJECT
 
   public:
     explicit MultisigAddressEntry(QWidget *parent = 0);

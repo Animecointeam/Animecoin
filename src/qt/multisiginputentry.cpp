@@ -8,7 +8,7 @@
 #include "ui_multisiginputentry.h"
 #include "validation.h"
 #include "script/script.h"
-#include "util.h"
+#include "utilmoneystr.h"
 #include "wallet/wallet.h"
 #include "walletmodel.h"
 
@@ -56,7 +56,7 @@ CAmount MultisigInputEntry::getAmount()
     CTransaction tx;
     uint256 blockHash;
 
-    if(GetTransaction(txHash, tx, Params().GetConsensus(), blockHash))
+    if(GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
     {
         if(nOutput < tx.vout.size())
         {
@@ -122,8 +122,7 @@ void MultisigInputEntry::on_transactionId_textChanged(const QString &transaction
         idStr.setNum(i);
         const CTxOut& txOut = tx.vout[i];
         CAmount amount = txOut.nValue;
-        QString amountStr;
-        amountStr.asprintf("%.5f", (double) amount / COIN);
+        QString amountStr = QString::fromStdString (FormatMoney(amount));
         CScript script = txOut.scriptPubKey;
         CTxDestination addr;
         if(ExtractDestination(script, addr))
@@ -144,7 +143,7 @@ void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
 
     CTransaction tx;
     uint256 blockHash;
-    if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash))
+    if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
         return;
     const CTxOut& txOut = tx.vout[index];
     CScript script = txOut.scriptPubKey;

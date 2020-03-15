@@ -16,7 +16,7 @@ Coin features
 
 Upgrading
 ---------------------
-0.10 changes the block index database format. Upgrading from 0.9 will require a reindex (or syncing from scratch).
+0.10 changes the block index database format. Upgrading from 0.9 will require a -reindex (or syncing from scratch).
 
 Downgrading
 ---------------------
@@ -25,31 +25,40 @@ Since 0.10 uses a new parallelized sync mode, the block database assembled by 0.
 The wallet format has also been updated. Downgrading will automatically perform -rescan, which may take a long time.
 0.10 also includes support for HD wallets. Newly created wallets will not be backwards compatible.
 
-0.10 upcoming features
+New 0.10 sync modes
 ---------------------
-- Parallelized block syncing (implemented).
-- Fee Control Features (implemented).
-- libsecp256k1 integration (implemented, key checks no longer call OpenSSL).
-- Improved application design, including animecoin-tx and consensus library (implemented).
-- Many security and RPC improvements for smoother integration of applications (ongoing).
-- A soft fork akin to BIP-0065 (implemented, awaiting activation).
-- A user interface for multisig capabilities (in progress).
-- Tor hidden service setup automation (implemented).
+0.10 brings SPV and pruning support with the following options:
+- Full mode: the entire blockchain is downloaded as usual.
+- Pruned mode: the entire blockchain is downloaded, old blocks exceeding the user-defined disk space amount are pruned. Switching back from this mode requires -reindex.
+- SPV mode: only block headers and blocks younger than your wallet keys are downloaded. Blockchain validation is entrusted to network. This reduces the amount of data required to sync by about 70%.
+- Hybrid mode: downloads the full blockchain, but allows sending and receiving transactions as soon as block headers and recent blocks are downloaded, before the complete sync is finalized. You can switch between hybrid and full mode on the fly.
+
+Current light mode limitations:
+- Mining is disabled in SPV mode (planned to be re-enabled once soft fork activates).
+- Signing raw transactions is unavalable in SPV mode (there's no chainstate data to scan for inputs).
+- Operations implying rescan (such as importing keys) cannot be done in pruned and SPV modes (SPV improvements in development).
+
+0.10 pre-release notes
+---------------------
+- Faster block syncing and compact blocks support.
+- Wallet startup time reduced significantly by caching the block hashes on disk; transaction table updating is also much faster now.
+- Fee Control Features available.
+- Running wallet in SPV mode is possible now, pruned mode is available as well, more options in development.
+- A soft fork akin to BIP-0065 is prepared. Blocks of the new version are not yet generated in pre-release versions.
+- Initial support for the user interface to multisig capabilities.
+- Improved application design, including animecoin-tx and consensus library.
+- Tor hidden service setup automated.
+- Deprecated option -tor removed, use -onion instead.
+- libsecp256k1 integration.
+- getwork RPC removed following bitcoin upstream, this may break certain solo mining setups.
+- SOCKS4 support removed.
+- RPC over SSL removed (was never good, kindly use tunneling if needed).
+- Qt4 support removed (years since EOL).
 
 Features in progress but not necessarily finalized before 0.10 release
 ---------------------
-- Lightweight nodes (running wallet in SPV mode is possible now, pruned mode is available as well, more options upcoming).
 - BIP-0009/0068/0112/0113 aggregation (will not be activated before BIP-0065 fork).
-- Animecoin-specific optimizations (wallet startup time reduced significantly by caching the block hashes on disk; transaction table updating is faster now, with more improvements coming).
-- Minimize third-party dependencies.
-
-Features to be removed in 0.10
----------------------
-- getwork will be removed following bitcoin upstream, this may break certain antique mining software (implemented).
-- Deprecated option -tor will be removed, use -onion instead (implemented)!
-- SOCKS4 support will be removed (implemented).
-- RPC over SSL will be removed (implemented, was never good). Use tunneling instead.
-- Qt4 support will be removed, years since EOL (implemented).
+- OpenSSL dependency removal.
 
 0.9.2 release notes
 ---------------------
@@ -129,7 +138,7 @@ Other release notes
 License
 ---------------------
 Copyright (c) 2009-2019 Bitcoin Developers
-Copyright (c) 2014-2019 Animecoin Developers
+Copyright (c) 2014-2020 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING.
 This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](http://www.openssl.org/).

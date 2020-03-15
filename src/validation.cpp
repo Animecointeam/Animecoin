@@ -810,6 +810,14 @@ bool GetTransaction(const uint256 &hash, CTransaction &txOut, const Consensus::P
         }
     }
 
+    // In case of non-validating mode, we may scan the wallet too.
+    GetMainSignals().FindTransaction(hash, ptx);
+    if (ptx)
+    {
+        txOut = *ptx;
+        return true;
+    }
+
     if (fAllowSlow) { // use coin database to locate block that contains transaction, and scan it
         int nHeight = -1;
         {
