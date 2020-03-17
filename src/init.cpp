@@ -82,14 +82,6 @@ static CZMQNotificationInterface* pzmqNotificationInterface = nullptr;
 #define MIN_CORE_FILEDESCRIPTORS 150
 #endif
 
-/** Used to pass flags to the Bind() function */
-enum BindFlags {
-    BF_NONE         = 0,
-    BF_EXPLICIT     = (1U << 0),
-    BF_REPORT_ERROR = (1U << 1),
-    BF_WHITELIST    = (1U << 2),
-};
-
 static const char* FEE_ESTIMATES_FILENAME="fee_estimates.dat";
 
 //////////////////////////////////////////////////////////////////////////////
@@ -279,18 +271,6 @@ void HandleSIGTERM(int)
 void HandleSIGHUP(int)
 {
     fReopenDebugLog = true;
-}
-
-bool static Bind(CConnman& connman, const CService &addr, unsigned int flags) {
-    if (!(flags & BF_EXPLICIT) && IsLimited(addr))
-        return false;
-    std::string strError;
-    if (!connman.BindListenPort(addr, strError, (flags & BF_WHITELIST) != 0)) {
-        if (flags & BF_REPORT_ERROR)
-            return InitError(strError);
-        return false;
-    }
-    return true;
 }
 
 void OnRPCStarted()
@@ -871,8 +851,16 @@ bool AppInitParameterInteraction()
             return InitError(_("Light client mode is incompatible with -txindex."));
     }
 
+    // -bind and -whitebind can't be set when not listening
+    size_t nUserBind =
+        (mapMultiArgs.count("-bind") ? mapMultiArgs.at("-bind").size() : 0) +
+        (mapMultiArgs.count("-whitebind") ? mapMultiArgs.at("-whitebind").size() : 0);
+    if (nUserBind != 0 && !GetBoolArg("-listen", DEFAULT_LISTEN)) {
+        return InitError("Cannot set -bind or -whitebind together with -listen=0");
+    }
+
     // Make sure enough file descriptors are available
-    int nBind = std::max((int)mapArgs.count("-bind") + (int)mapArgs.count("-whitebind"), 1);
+    int nBind = std::max(nUserBind, size_t(1));
     nUserMaxConnections = GetArg("-maxconnections", DEFAULT_MAX_PEER_CONNECTIONS);
     nMaxConnections = std::max(nUserMaxConnections, 0);
 
@@ -1166,16 +1154,6 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
     }
 
-    if (mapArgs.count("-whitelist")) {
-        for (const std::string& net : mapMultiArgs["-whitelist"]) {
-            CSubNet subnet;
-            LookupSubNet(net.c_str(), subnet);
-            if (!subnet.IsValid())
-                return InitError(strprintf(_("Invalid netmask specified in -whitelist: '%s'"), net));
-            connman.AddWhitelistedRange(subnet);
-        }
-    }
-
     bool proxyRandomize = GetBoolArg("-proxyrandomize", DEFAULT_PROXYRANDOMIZE);
     // -proxy sets a proxy for all outgoing network traffic
     // -noproxy (or -proxy=0) as well as the empty string can be used to not set a proxy, this is the default
@@ -1215,34 +1193,6 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     fDiscover = GetBoolArg("-discover", true);
     fNameLookup = GetBoolArg("-dns", DEFAULT_NAME_LOOKUP);
     fRelayTxes = !GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY);
-
-    bool fBound = false;
-    if (fListen) {
-        if (mapArgs.count("-bind") || mapArgs.count("-whitebind")) {
-            for (const std::string& strBind : mapMultiArgs["-bind"]) {
-                CService addrBind;
-                if (!Lookup(strBind.c_str(), addrBind, GetListenPort(), false))
-                    return InitError(ResolveErrMsg("bind", strBind));
-                fBound |= Bind(connman, addrBind, (BF_EXPLICIT | BF_REPORT_ERROR));
-            }
-            for (const std::string& strBind : mapMultiArgs["-whitebind"]) {
-                CService addrBind;
-                if (!Lookup(strBind.c_str(), addrBind, 0, false))
-                    return InitError(ResolveErrMsg("whitebind", strBind));
-                if (addrBind.GetPort() == 0)
-                    return InitError(strprintf(_("Need to specify a port with -whitebind: '%s'"), strBind));
-                fBound |= Bind(connman, addrBind, (BF_EXPLICIT | BF_REPORT_ERROR | BF_WHITELIST));
-            }
-        }
-        else {
-            struct in_addr inaddr_any;
-            inaddr_any.s_addr = INADDR_ANY;
-            fBound |= Bind(connman, CService(in6addr_any, GetListenPort()), BF_NONE);
-            fBound |= Bind(connman, CService(inaddr_any, GetListenPort()), !fBound ? BF_REPORT_ERROR : BF_NONE);
-        }
-        if (!fBound)
-            return InitError(_("Failed to listen on any port. Use -listen=0 if you want this."));
-    }
 
     if (mapArgs.count("-externalip")) {
         for (const std::string& strAddr : mapMultiArgs["-externalip"]) {
@@ -1527,7 +1477,6 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     // Map ports with UPnP
     MapPort(GetBoolArg("-upnp", DEFAULT_UPNP));
 
-    std::string strNodeError;
     CConnman::Options connOptions;
     connOptions.nLocalServices = nLocalServices;
     connOptions.nRelevantServices = nRelevantServices;
@@ -1543,8 +1492,41 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     connOptions.nMaxOutboundTimeframe = nMaxOutboundTimeframe;
     connOptions.nMaxOutboundLimit = nMaxOutboundLimit;
 
-    if (!connman.Start(scheduler, strNodeError, connOptions))
-        return InitError(strNodeError);
+    if (mapMultiArgs.count("-bind")) {
+        for (const std::string& strBind : mapMultiArgs.at("-bind")) {
+            CService addrBind;
+            if (!Lookup(strBind.c_str(), addrBind, GetListenPort(), false)) {
+                return InitError(ResolveErrMsg("bind", strBind));
+            }
+            connOptions.vBinds.push_back(addrBind);
+        }
+    }
+    if (mapMultiArgs.count("-whitebind")) {
+        for (const std::string& strBind : mapMultiArgs.at("-whitebind")) {
+            CService addrBind;
+            if (!Lookup(strBind.c_str(), addrBind, 0, false)) {
+                return InitError(ResolveErrMsg("whitebind", strBind));
+            }
+            if (addrBind.GetPort() == 0) {
+                return InitError(strprintf(_("Need to specify a port with -whitebind: '%s'"), strBind));
+            }
+            connOptions.vWhiteBinds.push_back(addrBind);
+        }
+    }
+
+    if (mapMultiArgs.count("-whitelist")) {
+        for (const auto& net : mapMultiArgs.at("-whitelist")) {
+            CSubNet subnet;
+            LookupSubNet(net.c_str(), subnet);
+            if (!subnet.IsValid())
+                return InitError(strprintf(_("Invalid netmask specified in -whitelist: '%s'"), net));
+            connOptions.vWhitelistedRange.push_back(subnet);
+        }
+    }
+
+    if (!connman.Start(scheduler, connOptions)) {
+        return false;
+    }
 
     // Generate coins in the background
     GenerateBitcoins(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
