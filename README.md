@@ -34,7 +34,7 @@ New 0.10 sync modes
 - Hybrid mode: downloads the full blockchain, but allows sending and receiving transactions as soon as block headers and recent blocks are downloaded, before the complete sync is finalized. You can switch between hybrid and full mode on the fly.
 
 Current light mode limitations:
-- Mining is disabled in SPV mode (planned to be re-enabled once soft fork activates).
+- Mining RPC interface is disabled in SPV mode (planned to be re-enabled once soft fork activates).
 - Signing raw transactions is unavalable in SPV mode (there's no chainstate data to scan for inputs).
 - Operations implying rescan (such as importing keys) cannot be done in pruned and SPV modes (SPV improvements in development).
 

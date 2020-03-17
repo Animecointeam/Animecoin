@@ -56,7 +56,7 @@ void MultisigAddressEntry::setRemoveEnabled(bool enabled)
 
 void MultisigAddressEntry::on_pasteButton_clicked()
 {
-    ui->address->setText(QApplication::clipboard()->text());
+    ui->pubkey->setText(QApplication::clipboard()->text());
 }
 
 void MultisigAddressEntry::on_deleteButton_clicked()
