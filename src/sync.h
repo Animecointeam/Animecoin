@@ -274,7 +274,6 @@ public:
         grant.Release();
         grant.sem = sem;
         grant.fHaveGrant = fHaveGrant;
-        sem = nullptr;
         fHaveGrant = false;
     }
 

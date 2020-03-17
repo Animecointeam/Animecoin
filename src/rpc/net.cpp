@@ -89,6 +89,7 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
             "    \"version\": v,              (numeric) The peer version, such as 7001\n"
             "    \"subver\": \"/Satoshi:0.8.5/\",  (string) The string version\n"
             "    \"inbound\": true|false,     (boolean) Inbound (true) or Outbound (false)\n"
+            "    \"addnode\": true|false,     (boolean) Whether connection was due to addnode and is using an addnode slot\n"
             "    \"startingheight\": n,       (numeric) The starting height (block) of the peer\n"
             "    \"banscore\": n,             (numeric) The ban score\n"
             "    \"synced_headers\": n,       (numeric) The last header we have in common with this peer\n"
@@ -147,6 +148,7 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
         // their ver message.
         obj.pushKV("subver", stats.cleanSubVer);
         obj.pushKV("inbound", stats.fInbound);
+        obj.pushKV("addnode", stats.fAddnode);
         obj.pushKV("startingheight", stats.nStartingHeight);
         if (fStateStats) {
             obj.pushKV("banscore", statestats.nMisbehavior);
