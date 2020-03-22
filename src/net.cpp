@@ -1771,8 +1771,8 @@ void CConnman::ThreadOpenAddedConnections()
             }
         }
         // Retry every 60 seconds if a connection was attempted, otherwise two seconds
-        if (!interruptNet.sleep_for(std::chrono::seconds(tried ? 60 : 2)));
-        return;
+        if (!interruptNet.sleep_for(std::chrono::seconds(tried ? 60 : 2)))
+            return;
     }
 }
 

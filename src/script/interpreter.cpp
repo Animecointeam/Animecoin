@@ -247,8 +247,8 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
 	vector<bool> vfExec;
 	vector<valtype> altstack;
 	set_error(serror, SCRIPT_ERR_UNKNOWN_ERROR);
-	if (script.size() > 10000)
-		return set_error(serror, SCRIPT_ERR_SCRIPT_SIZE);
+    if (script.size() > MAX_SCRIPT_SIZE)
+        return set_error(serror, SCRIPT_ERR_SCRIPT_SIZE);
 	int nOpCount = 0;
 	bool fRequireMinimal = (flags & SCRIPT_VERIFY_MINIMALDATA) != 0;
 
@@ -994,8 +994,8 @@ public:
 
 	/** Serialize the passed scriptCode, skipping OP_CODESEPARATORs */
 	template<typename S>
-	void SerializeScriptCode(S &s, int nType, int nVersion) const {
-		CScript::const_iterator it = scriptCode.begin();
+    void SerializeScriptCode(S &s) const {
+        CScript::const_iterator it = scriptCode.begin();
 		CScript::const_iterator itBegin = it;
 		opcodetype opcode;
 		unsigned int nCodeSeparators = 0;
@@ -1017,54 +1017,54 @@ public:
 
 	/** Serialize an input of txTo */
 	template<typename S>
-	void SerializeInput(S &s, unsigned int nInput, int nType, int nVersion) const {
-		// In case of SIGHASH_ANYONECANPAY, only the input being signed is serialized
+    void SerializeInput(S &s, unsigned int nInput) const {
+        // In case of SIGHASH_ANYONECANPAY, only the input being signed is serialized
 		if (fAnyoneCanPay)
 			nInput = nIn;
 		// Serialize the prevout
-		::Serialize(s, txTo.vin[nInput].prevout, nType, nVersion);
-		// Serialize the script
+        ::Serialize(s, txTo.vin[nInput].prevout);
+        // Serialize the script
 		if (nInput != nIn)
 			// Blank out other inputs' signatures
-            ::Serialize(s, CScriptBase(), nType, nVersion);
+            ::Serialize(s, CScriptBase());
         else
-			SerializeScriptCode(s, nType, nVersion);
-		// Serialize the nSequence
+            SerializeScriptCode(s);
+        // Serialize the nSequence
 		if (nInput != nIn && (fHashSingle || fHashNone))
 			// let the others update at will
-			::Serialize(s, (int)0, nType, nVersion);
-		else
-			::Serialize(s, txTo.vin[nInput].nSequence, nType, nVersion);
-	}
+            ::Serialize(s, (int)0);
+        else
+            ::Serialize(s, txTo.vin[nInput].nSequence);
+    }
 
 	/** Serialize an output of txTo */
 	template<typename S>
-	void SerializeOutput(S &s, unsigned int nOutput, int nType, int nVersion) const {
-		if (fHashSingle && nOutput != nIn)
+    void SerializeOutput(S &s, unsigned int nOutput) const {
+        if (fHashSingle && nOutput != nIn)
 			// Do not lock-in the txout payee at other indices as txin
-			::Serialize(s, CTxOut(), nType, nVersion);
-		else
-			::Serialize(s, txTo.vout[nOutput], nType, nVersion);
-	}
+            ::Serialize(s, CTxOut());
+        else
+            ::Serialize(s, txTo.vout[nOutput]);
+    }
 
 	/** Serialize txTo */
 	template<typename S>
-	void Serialize(S &s, int nType, int nVersion) const {
-		// Serialize nVersion
-		::Serialize(s, txTo.nVersion, nType, nVersion);
-		// Serialize vin
+    void Serialize(S &s) const {
+        // Serialize nVersion
+        ::Serialize(s, txTo.nVersion);
+        // Serialize vin
 		unsigned int nInputs = fAnyoneCanPay ? 1 : txTo.vin.size();
 		::WriteCompactSize(s, nInputs);
 		for (unsigned int nInput = 0; nInput < nInputs; nInput++)
-			 SerializeInput(s, nInput, nType, nVersion);
-		// Serialize vout
+            SerializeInput(s, nInput);
+        // Serialize vout
 		unsigned int nOutputs = fHashNone ? 0 : (fHashSingle ? nIn+1 : txTo.vout.size());
 		::WriteCompactSize(s, nOutputs);
 		for (unsigned int nOutput = 0; nOutput < nOutputs; nOutput++)
-			 SerializeOutput(s, nOutput, nType, nVersion);
-		// Serialize nLockTime
-		::Serialize(s, txTo.nLockTime, nType, nVersion);
-	}
+            SerializeOutput(s, nOutput);
+        // Serialize nLockTime
+        ::Serialize(s, txTo.nLockTime);
+    }
 };
 
 } // anon namespace
