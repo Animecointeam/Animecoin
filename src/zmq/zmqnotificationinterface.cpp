@@ -6,7 +6,7 @@
 #include "zmqpublishnotifier.h"
 
 #include "version.h"
-#include "main.h"
+#include "validation.h"
 #include "streams.h"
 #include "util.h"
 
@@ -145,11 +145,14 @@ void CZMQNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, co
     }
 }
 
-void CZMQNotificationInterface::SyncTransaction(const CTransaction& tx, const CBlockIndex* pindex, int posInBlock, bool validated)
+void CZMQNotificationInterface::TransactionAddedToMempool(const CTransactionRef& ptx, bool validated)
 {
-    // don't post non-validated tx for now
     if (!validated)
         return;
+
+    // Used by BlockConnected and BlockDisconnected as well, because they're
+    // all the same external callback.
+    const CTransaction& tx = *ptx;
 
     for (std::list<CZMQAbstractNotifier*>::iterator i = notifiers.begin(); i!=notifiers.end(); )
     {
@@ -163,5 +166,21 @@ void CZMQNotificationInterface::SyncTransaction(const CTransaction& tx, const CB
             notifier->Shutdown();
             i = notifiers.erase(i);
         }
+    }
+}
+
+void CZMQNotificationInterface::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexConnected, const std::vector<CTransactionRef>& vtxConflicted)
+{
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        // Do a normal notify for each transaction added in the block
+        TransactionAddedToMempool(ptx, true);
+    }
+}
+
+void CZMQNotificationInterface::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock)
+{
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        // Do a normal notify for each transaction removed in block disconnection
+        TransactionAddedToMempool(ptx, true);
     }
 }

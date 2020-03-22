@@ -15,17 +15,20 @@
 #include "coincontrol.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
-#include "main.h"
 #include "net.h"
+#include "net_processing.h"
 #include "policy/policy.h"
+#include "scheduler.h"
 #include "script/script.h"
 #include "script/sign.h"
 #include "timedata.h"
 #include "util.h"
 #include "ui_interface.h"
 #include "utilmoneystr.h"
+#include "validation.h"
 
 #include <assert.h>
+#include <future>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
@@ -456,56 +459,33 @@ void CWallet::Flush(bool shutdown)
 
 bool CWallet::Verify()
 {
+    if (GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET))
+        return true;
+
+    uiInterface.InitMessage(_("Verifying wallet..."));
     std::string walletFile = GetArg("-wallet", DEFAULT_WALLET_DAT);
 
-    LogPrintf("Using wallet %s\n", walletFile);
-    uiInterface.InitMessage(_("Verifying wallet..."));
-
-    // Wallet file must be a plain filename without a directory
-    if (walletFile != boost::filesystem::basename(walletFile) + boost::filesystem::extension(walletFile))
-        return InitError(strprintf(_("Wallet %s resides outside data directory %s"), walletFile, GetDataDir().string()));
-
-    if (!bitdb.Open(GetDataDir()))
-    {
-        // try moving the database env out of the way
-        boost::filesystem::path pathDatabase = GetDataDir() / "database";
-        boost::filesystem::path pathDatabaseBak = GetDataDir() / strprintf("database.%d.bak", GetTime());
-        try {
-            boost::filesystem::rename(pathDatabase, pathDatabaseBak);
-            LogPrintf("Moved old %s to %s. Retrying.\n", pathDatabase.string(), pathDatabaseBak.string());
-        } catch (const boost::filesystem::filesystem_error&) {
-            // failure is ok (well, not really, but it's not worse than what we started with)
-        }
-
-        // try again
-        if (!bitdb.Open(GetDataDir())) {
-            // if it still fails, it probably means we can't even create the database env
-            return InitError(strprintf(_("Error initializing wallet database environment %s!"), GetDataDir()));
-        }
-    }
+    std::string strError;
+    if (!CWalletDB::VerifyEnvironment(walletFile, GetDataDir().string(), strError))
+        return InitError(strError);
 
     if (GetBoolArg("-salvagewallet", false))
     {
         // Recover readable keypairs:
-        if (!CWalletDB::Recover(bitdb, walletFile, true))
+        CWallet dummyWallet;
+        if (!CWalletDB::Recover(walletFile, (void *)&dummyWallet, CWalletDB::RecoverKeysOnlyFilter))
             return false;
     }
 
-    if (boost::filesystem::exists(GetDataDir() / walletFile))
+    std::string strWarning;
+    bool dbV = CWalletDB::VerifyDatabaseFile(walletFile, GetDataDir().string(), strWarning, strError);
+    if (!strWarning.empty())
+        InitWarning(strWarning);
+    if (!dbV)
     {
-        CDBEnv::VerifyResult r = bitdb.Verify(walletFile, CWalletDB::Recover);
-        if (r == CDBEnv::RECOVER_OK)
-        {
-            InitWarning(strprintf(_("Warning: Wallet file corrupt, data salvaged!"
-                                  " Original %s saved as %s in %s; if"
-                                  " your balance or transactions are incorrect you should"
-                                  " restore from a backup."),
-                                  walletFile, "wallet.{timestamp}.bak", GetDataDir()));
-        }
-        if (r == CDBEnv::RECOVER_FAIL)
-            return InitError(strprintf(_("%s corrupt, salvage failed"), walletFile));
+        InitError(strError);
+        return false;
     }
-
     return true;
 }
 
@@ -1141,6 +1121,80 @@ void CWallet::UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pi
         RequestSPVScan();
 }
 
+void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx, bool validated) {
+    LOCK2(cs_main, cs_wallet);
+    SyncTransaction(*ptx, nullptr, -1, validated);
+
+    auto it = mapWallet.find(ptx->GetHash());
+    if (it != mapWallet.end()) {
+        it->second.fInMempool = true;
+    }
+}
+
+void CWallet::TransactionRemovedFromMempool(const CTransactionRef &ptx) {
+    LOCK(cs_wallet);
+    auto it = mapWallet.find(ptx->GetHash());
+    if (it != mapWallet.end()) {
+        it->second.fInMempool = false;
+    }
+}
+
+void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) {
+    LOCK2(cs_main, cs_wallet);
+    // TODO: Tempoarily ensure that mempool removals are notified before
+    // connected transactions.  This shouldn't matter, but the abandoned
+    // state of transactions in our wallet is currently cleared when we
+    // receive another notification and there is a race condition where
+    // notification of a connected conflict might cause an outside process
+    // to abandon a transaction and then have it inadvertantly cleared by
+    // the notification that the conflicted transaction was evicted.
+
+    for (const CTransactionRef& ptx : vtxConflicted) {
+        SyncTransaction(*ptx, nullptr, -1, true);
+        TransactionRemovedFromMempool(ptx);
+    }
+    for (size_t i = 0; i < pblock->vtx.size(); i++) {
+        SyncTransaction(*pblock->vtx[i], pindex, i, true);
+        TransactionRemovedFromMempool(pblock->vtx[i]);
+    }
+    m_last_block_processed = pindex;
+}
+
+void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) {
+    LOCK2(cs_main, cs_wallet);
+
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        SyncTransaction(*ptx, nullptr, -1, true);
+    }
+}
+
+void CWallet::BlockUntilSyncedToCurrentChain() {
+    AssertLockNotHeld(cs_main);
+    AssertLockNotHeld(cs_wallet);
+
+    {
+        // Skip the queue-draining stuff if we know we're caught up with
+        // chainActive.Tip()...
+        // We could also take cs_wallet here, and call m_last_block_processed
+        // protected by cs_wallet instead of cs_main, but as long as we need
+        // cs_main here anyway, its easier to just call it cs_main-protected.
+        LOCK(cs_main);
+        const CBlockIndex* initialChainTip = chainActive.Tip();
+        if (m_last_block_processed->GetAncestor(initialChainTip->nHeight) == initialChainTip) {
+            return;
+        }
+    }
+
+    // ...otherwise put a callback in the validation interface queue and wait
+    // for the queue to drain enough to execute it (indicating we are caught up
+    // at least with the time we entered this function).
+    std::promise<void> promise;
+    CallFunctionInValidationInterfaceQueue([&promise] {
+        promise.set_value();
+    });
+    promise.get_future().wait();
+}
+
 void CWallet::SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock, bool validated)
 {
     LOCK2(cs_main, cs_wallet);
@@ -1756,11 +1810,7 @@ CAmount CWalletTx::GetChange() const
 
 bool CWalletTx::InMempool() const
 {
-    LOCK(mempool.cs);
-    if (mempool.exists(GetHash())) {
-        return true;
-    }
-    return false;
+    return fInMempool;
 }
 
 bool CWalletTx::IsTrusted() const
@@ -2559,15 +2609,19 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CCon
         // Track how many getdata requests our transaction gets
         mapRequestCount[wtxNew.GetHash()] = 0;
 
+        // Get the inserted-CWalletTx from mapWallet so that the
+        // fInMempool flag is cached properly
+        CWalletTx& wtx = mapWallet[wtxNew.GetHash()];
+
         if (fBroadcastTransactions)
         {
             // Broadcast
-            if (wtxNew.fValidated && !wtxNew.AcceptToMemoryPool(false, maxTxFee)) {
+            if (wtx.fValidated && !wtx.AcceptToMemoryPool(false, maxTxFee)) {
                 // This must not fail. The transaction has already been signed and recorded.
                 LogPrintf("CommitTransaction(): Error: Transaction not valid");
                 return false;
             }
-            wtxNew.RelayWalletTransaction(connman);
+            wtx.RelayWalletTransaction(connman);
         }
     }
     return true;
@@ -2624,6 +2678,8 @@ CAmount CWallet::GetMinimumFee(unsigned int nTxBytes, unsigned int nConfirmTarge
 
 DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
 {
+    LOCK2(cs_main, cs_wallet);
+
     if (!fFileBacked)
         return DB_LOAD_OK;
     fFirstRunRet = false;
@@ -2632,7 +2688,6 @@ DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
     {
         if (CDB::Rewrite(strWalletFile, "\x04pool"))
         {
-            LOCK(cs_wallet);
             setKeyPool.clear();
             // Note: can't top-up keypool here, because wallet is locked.
             // User will be prompted to unlock wallet the next operation
@@ -3122,20 +3177,9 @@ void CWallet::GetAllReserveKeys(set<CKeyID>& setAddress) const
     }
 }
 
-void CWallet::UpdatedTransaction(const uint256 &hashTx)
+void CWallet::GetScriptForMining(std::shared_ptr<CReserveScript> &script)
 {
-    {
-        LOCK(cs_wallet);
-        // Only notify UI if this transaction is in this wallet
-        map<uint256, CWalletTx>::const_iterator mi = mapWallet.find(hashTx);
-        if (mi != mapWallet.end())
-            NotifyTransactionChanged(this, hashTx, CT_UPDATED);
-    }
-}
-
-void CWallet::GetScriptForMining(boost::shared_ptr<CReserveScript> &script)
-{
-    boost::shared_ptr<CReserveKey> rKey(new CReserveKey(this));
+    std::shared_ptr<CReserveKey> rKey = std::make_shared<CReserveKey>(this);
 
     CPubKey pubkey;
     if (!rKey->GetReservedKey(pubkey))
@@ -3413,10 +3457,8 @@ std::string CWallet::GetWalletHelpString(bool showDebug)
     return strUsage;
 }
 
-bool CWallet::InitLoadWallet()
+CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
 {
-    std::string walletFile = GetArg("-wallet", DEFAULT_WALLET_DAT);
-
     // needed to restore wallet transaction meta data after -zapwallettxes
     std::vector<CWalletTx> vWtx;
 
@@ -3426,7 +3468,8 @@ bool CWallet::InitLoadWallet()
         CWallet *tempWallet = new CWallet(walletFile);
         DBErrors nZapWalletRet = tempWallet->ZapWalletTx(vWtx);
         if (nZapWalletRet != DB_LOAD_OK) {
-            return InitError(strprintf(_("Error loading %s: Wallet corrupted"), walletFile));
+            InitError(strprintf(_("Error loading %s: Wallet corrupted"), walletFile));
+            return nullptr;
         }
 
         delete tempWallet;
@@ -3441,23 +3484,29 @@ bool CWallet::InitLoadWallet()
     DBErrors nLoadWalletRet = walletInstance->LoadWallet(fFirstRun);
     if (nLoadWalletRet != DB_LOAD_OK)
     {
-        if (nLoadWalletRet == DB_CORRUPT)
-            return InitError(strprintf(_("Error loading %s: Wallet corrupted"), walletFile));
+        if (nLoadWalletRet == DB_CORRUPT) {
+            InitError(strprintf(_("Error loading %s: Wallet corrupted"), walletFile));
+            return nullptr;
+        }
         else if (nLoadWalletRet == DB_NONCRITICAL_ERROR)
         {
             InitWarning(strprintf(_("Error reading %s! All keys read correctly, but transaction data"
                                          " or address book entries might be missing or incorrect."),
                                 walletFile));
         }
-        else if (nLoadWalletRet == DB_TOO_NEW)
-            return InitError(strprintf(_("Error loading %s: Wallet requires newer version of %s"),
-                               walletFile, _(PACKAGE_NAME)));
+        else if (nLoadWalletRet == DB_TOO_NEW) {
+            InitError(strprintf(_("Error loading %s: Wallet requires newer version of %s"), walletFile, _(PACKAGE_NAME)));
+            return nullptr;
+        }
         else if (nLoadWalletRet == DB_NEED_REWRITE)
         {
-            return InitError(strprintf(_("Wallet needed to be rewritten: restart %s to complete"), _(PACKAGE_NAME)));
+            InitError(strprintf(_("Wallet needed to be rewritten: restart %s to complete"), _(PACKAGE_NAME)));
+            return nullptr;
         }
-        else
-            return InitError(strprintf(_("Error loading %s"), walletFile));
+        else {
+            InitError(strprintf(_("Error loading %s"), walletFile));
+            return nullptr;
+        }
     }
 
     if (GetBoolArg("-upgradewallet", fFirstRun))
@@ -3473,7 +3522,8 @@ bool CWallet::InitLoadWallet()
             LogPrintf("Allowing wallet upgrade up to %i\n", nMaxVersion);
         if (nMaxVersion < walletInstance->GetVersion())
         {
-            return InitError(_("Cannot downgrade wallet"));
+            InitError(_("Cannot downgrade wallet"));
+            return nullptr;
         }
         walletInstance->SetMaxVersion(nMaxVersion);
     }
@@ -3491,9 +3541,9 @@ bool CWallet::InitLoadWallet()
         CPubKey newDefaultKey;
         if (walletInstance->GetKeyFromPool(newDefaultKey)) {
             walletInstance->SetDefaultKey(newDefaultKey);
-            if (!walletInstance->SetAddressBook(walletInstance->vchDefaultKey.GetID(), "", "receive"))
-            {
-                return InitError(_("Cannot write default address") += "\n");
+            if (!walletInstance->SetAddressBook(walletInstance->vchDefaultKey.GetID(), "", "receive")) {
+                InitError(_("Cannot write default address") += "\n");
+                return nullptr;
             }
         }
 
@@ -3501,28 +3551,30 @@ bool CWallet::InitLoadWallet()
     }
     else if (mapArgs.count("-usehd")) {
         bool useHD = GetBoolArg("-usehd", DEFAULT_USE_HD_WALLET);
-        if (walletInstance->IsHDEnabled() && !useHD)
-            return InitError(strprintf(_("Error loading %s: You can't disable HD on a already existing HD wallet"), walletFile));
-        if (!walletInstance->IsHDEnabled() && useHD)
-            return InitError(strprintf(_("Error loading %s: You can't enable HD on a already existing non-HD wallet"), walletFile));
+        if (walletInstance->IsHDEnabled() && !useHD) {
+            InitError(strprintf(_("Error loading %s: You can't disable HD on a already existing HD wallet"), walletFile));
+            return nullptr;
+        }
+        if (!walletInstance->IsHDEnabled() && useHD) {
+            InitError(strprintf(_("Error loading %s: You can't enable HD on a already existing non-HD wallet"), walletFile));
+            return nullptr;
+        }
     }
 
     LogPrintf(" wallet      %15dms\n", GetTimeMillis() - nStart);
 
-    RegisterValidationInterface(walletInstance);
-
-    CBlockIndex *pindexRescan = chainActive.Tip();
-    if (GetBoolArg("-rescan", false))
-        pindexRescan = chainActive.Genesis();
-    else
+    CBlockIndex *pindexRescan = chainActive.Genesis();
+    if (!GetBoolArg("-rescan", false))
     {
         CWalletDB walletdb(walletFile);
         CBlockLocator locator;
         if (walletdb.ReadBestBlock(locator))
             pindexRescan = FindForkInGlobalIndex(chainActive, locator);
-        else
-            pindexRescan = chainActive.Genesis();
     }
+
+    walletInstance->m_last_block_processed = chainActive.Tip();
+    RegisterValidationInterface(walletInstance);
+
     if (chainActive.Tip() && chainActive.Tip() != pindexRescan)
     {
         //We can't rescan beyond non-pruned blocks, stop and throw an error
@@ -3534,8 +3586,10 @@ bool CWallet::InitLoadWallet()
             while (block && block->pprev && (block->pprev->nStatus & BLOCK_HAVE_DATA) && block->pprev->nTx > 0 && pindexRescan != block)
                 block = block->pprev;
 
-            if (pindexRescan != block)
-                return InitError(_("Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)"));
+            if (pindexRescan != block) {
+                InitError(_("Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)"));
+                return nullptr;
+            }
         }
 
         uiInterface.InitMessage(_("Rescanning..."));
@@ -3582,7 +3636,33 @@ bool CWallet::InitLoadWallet()
 
     walletInstance->SetBroadcastTransactions(GetBoolArg("-walletbroadcast", DEFAULT_WALLETBROADCAST));
 
-    pwalletMain = walletInstance;
+    {
+        LOCK(walletInstance->cs_wallet);
+        LogPrintf("setKeyPool.size() = %u\n",      walletInstance->GetKeyPoolSize());
+        LogPrintf("mapWallet.size() = %u\n",       walletInstance->mapWallet.size());
+        LogPrintf("mapAddressBook.size() = %u\n",  walletInstance->mapAddressBook.size());
+    }
+    // Add wallet transactions that aren't already in a block to mapTransactions
+    // walletInstance->ReacceptWalletTransactions();
+
+    return walletInstance;
+}
+
+bool CWallet::InitLoadWallet()
+{
+    if (GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET)) {
+        pwalletMain = NULL;
+        LogPrintf("Wallet disabled!\n");
+        return true;
+    }
+
+    std::string walletFile = GetArg("-wallet", DEFAULT_WALLET_DAT);
+
+    CWallet * const pwallet = CreateWalletFromFile(walletFile);
+    if (!pwallet) {
+        return false;
+    }
+    pwalletMain = pwallet;
 
     if (GetBoolArg("-spv", DEFAULT_USE_SPV))
     {
@@ -3596,18 +3676,34 @@ bool CWallet::InitLoadWallet()
     return true;
 }
 
-void CWallet::postInitProcess(boost::thread_group& threadGroup)
+std::atomic<bool> CWallet::fFlushScheduled(false);
+
+void CWallet::postInitProcess(CScheduler& scheduler)
 {
     // Add wallet transactions that aren't already in a block to mempool
     // Do this here as mempool requires genesis block to be loaded
     ReacceptWalletTransactions();
 
     // Run a thread to flush wallet periodically
-    threadGroup.create_thread(boost::bind(&ThreadFlushWalletDB, boost::ref(this->strWalletFile)));
+    if (!CWallet::fFlushScheduled.exchange(true)) {
+        scheduler.scheduleEvery(MaybeCompactWalletDB, 500);
+    }
 }
 
 bool CWallet::ParameterInteraction()
 {
+    if (GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET))
+        return true;
+
+    if (GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY) && SoftSetBoolArg("-walletbroadcast", false)) {
+        LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
+    }
+    if (GetBoolArg("-sysperms", false))
+        return InitError("-sysperms is not allowed in combination with enabled wallet functionality");
+
+    if ((GetArg("-prune", 0) || !GetBoolArg("-autorequestblocks", DEFAULT_AUTOMATIC_BLOCK_REQUESTS)) && GetBoolArg("-rescan", false))
+        return InitError(_("Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again."));
+
     if (mapArgs.count("-mintxfee"))
     {
         CAmount n = 0;
@@ -3790,11 +3886,7 @@ bool CWallet::BackupWallet(const std::string& strDest)
                     pathDest /= strWalletFile;
 
                 try {
-#if BOOST_VERSION >= 104000
                     boost::filesystem::copy_file(pathSrc, pathDest, boost::filesystem::copy_option::overwrite_if_exists);
-#else
-                    boost::filesystem::copy_file(pathSrc, pathDest);
-#endif
                     LogPrintf("copied %s to %s\n", strWalletFile, pathDest.string());
                     return true;
                 } catch (const boost::filesystem::filesystem_error& e) {
@@ -3871,8 +3963,15 @@ int CMerkleTx::GetBlocksToMaturity() const
 }
 
 
-bool CMerkleTx::AcceptToMemoryPool(bool fLimitFree, CAmount nAbsurdFee)
+bool CWalletTx::AcceptToMemoryPool(bool fLimitFree, CAmount nAbsurdFee)
 {
     CValidationState state;
-    return ::AcceptToMemoryPool(mempool, state, *this, fLimitFree, nullptr, false, nAbsurdFee);
+    // We must set fInMempool here - while it will be re-set to true by the
+    // entered-mempool callback, if we did not there would be a race where a
+    // user could call sendmoney in a loop and hit spurious out of funds errors
+    // because we think that the transaction they just generated's change is
+    // unavailable as we're not yet aware its in mempool.
+    bool ret = ::AcceptToMemoryPool(mempool, state, *this, fLimitFree, nullptr, false, nAbsurdFee);
+    fInMempool = ret;
+    return ret;
 }

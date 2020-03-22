@@ -4,8 +4,9 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "clientversion.h"
+#include "compat.h"
 #include "init.h"
-#include "main.h"
+#include "validation.h"
 #include "noui.h"
 #include "scheduler.h"
 #include "util.h"
@@ -33,8 +34,6 @@
  * \section Navigation
  * Use the buttons <code>Namespaces</code>, <code>Classes</code> or <code>Files</code> at the top of the page to start navigating the code.
  */
-
-static bool fDaemon;
 
 void WaitForShutdown(boost::thread_group* threadGroup)
 {
@@ -123,36 +122,43 @@ bool AppInit(int argc, char* argv[])
             fprintf(stderr, "Error: There is no RPC client functionality in animecoind anymore. Use the animecoin-cli utility instead.\n");
             exit(1);
         }
-#ifndef WIN32
-        fDaemon = GetBoolArg("-daemon", false);
-        if (fDaemon)
-        {
-            fprintf(stdout, "Animecoin server starting\n");
-
-            // Daemonize
-            pid_t pid = fork();
-            if (pid < 0)
-            {
-                fprintf(stderr, "Error: fork() returned %d errno %d\n", pid, errno);
-                return false;
-            }
-            if (pid > 0) // Parent process, pid is child process id
-            {
-                return true;
-            }
-            // Child process falls through to rest of initialization
-
-            pid_t sid = setsid();
-            if (sid < 0)
-                fprintf(stderr, "Error: setsid() returned %d errno %d\n", sid, errno);
-        }
-#endif
+        // -server defaults to true for bitcoind but not for the GUI so do this here
         SoftSetBoolArg("-server", true);
-
         // Set this early so that parameter interactions go to console
         InitLogging();
         InitParameterInteraction();
-        fRet = AppInit2(threadGroup, scheduler);
+        if (!AppInitBasicSetup())
+        {
+            // InitError will have been called with detailed error, which ends up on console
+            exit(1);
+        }
+        if (!AppInitParameterInteraction())
+        {
+            // InitError will have been called with detailed error, which ends up on console
+            exit(1);
+        }
+        if (!AppInitSanityChecks())
+        {
+            // InitError will have been called with detailed error, which ends up on console
+            exit(1);
+        }
+        if (GetBoolArg("-daemon", false))
+        {
+#if HAVE_DECL_DAEMON
+            fprintf(stdout, "Animecoin server starting\n");
+
+            // Daemonize
+            if (daemon(1, 0)) { // don't chdir (1), do close FDs (0)
+                fprintf(stderr, "Error: daemon() failed: %s\n", strerror(errno));
+                return false;
+            }
+#else
+            fprintf(stderr, "Error: -daemon is not supported on this operating system\n");
+            return false;
+#endif // HAVE_DECL_DAEMON
+        }
+
+        fRet = AppInitMain(threadGroup, scheduler);
     }
     catch (const std::exception& e) {
         PrintExceptionContinue(&e, "AppInit()");

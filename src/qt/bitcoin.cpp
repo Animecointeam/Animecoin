@@ -24,7 +24,7 @@
 #endif
 
 #include "init.h"
-#include "main.h"
+#include "validation.h"
 //#include "rpcserver.h"
 #include "scheduler.h"
 #include "ui_interface.h"
@@ -245,8 +245,23 @@ void BitcoinCore::initialize()
 {
     try
     {
-        qDebug() << __func__ << ": Running AppInit2 in thread";
-        int rv = AppInit2(threadGroup, scheduler);
+        qDebug() << __func__ << ": Running initialization in thread";
+        if (!AppInitBasicSetup())
+        {
+            emit initializeResult(false);
+            return;
+        }
+        if (!AppInitParameterInteraction())
+        {
+            emit initializeResult(false);
+            return;
+        }
+        if (!AppInitSanityChecks())
+        {
+            emit initializeResult(false);
+            return;
+        }
+        int rv = AppInitMain(threadGroup, scheduler);
         emit initializeResult(rv);
     } catch (const std::exception& e) {
         handleRunawayException(&e);

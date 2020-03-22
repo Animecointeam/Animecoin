@@ -5,12 +5,13 @@
 #include "base58.h"
 #include "rpc/server.h"
 #include "init.h"
-#include "main.h"
+#include "net_processing.h" // for fAutoRequestBlocks, consider removal?
 #include "script/script.h"
 #include "script/standard.h"
 #include "sync.h"
 #include "util.h"
 #include "utiltime.h"
+#include "validation.h"
 #include "wallet.h"
 #include "merkleblock.h"
 #include "core_io.h"
@@ -343,8 +344,6 @@ UniValue removeprunedfunds(const JSONRPCRequest& request)
     if(vHashOut.empty()) {
         throw JSONRPCError(RPC_INTERNAL_ERROR, "Transaction does not exist in wallet.");
     }
-
-    ThreadFlushWalletDB(pwalletMain->strWalletFile);
 
     return NullUniValue;
 }

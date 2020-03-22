@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
-    <height>150</height>
+    <width>727</width>
+    <height>176</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -30,6 +30,50 @@
     <property name="spacing">
      <number>12</number>
     </property>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="addAsLabel">
+      <property name="toolTip">
+       <string>Enter a label for this address to add it to the list of used addresses</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayoutAmount" stretch="0,0">
+      <item>
+       <widget class="BitcoinAmountField" name="payAmount"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount">
+        <property name="toolTip">
+         <string>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
+        </property>
+        <property name="text">
+         <string>S&amp;ubtract fee from amount</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="messageTextLabel">
+      <property name="toolTip">
+       <string>A message that was attached to the anime: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Abimecoin network.</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::PlainText</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="messageLabel">
+      <property name="text">
+       <string>Message:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="payToLabel">
       <property name="text">
@@ -118,13 +162,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="addAsLabel">
-      <property name="toolTip">
-       <string>Enter a label for this address to add it to the list of used addresses</string>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="0">
      <widget class="QLabel" name="amountLabel">
       <property name="text">
@@ -135,43 +172,6 @@
       </property>
       <property name="buddy">
        <cstring>payAmount</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayoutAmount" stretch="0,1">
-      <item>
-       <widget class="BitcoinAmountField" name="payAmount"/>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount">
-        <property name="toolTip">
-         <string>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
-        </property>
-        <property name="text">
-         <string>S&amp;ubtract fee from amount</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="messageLabel">
-      <property name="text">
-       <string>Message:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="messageTextLabel">
-      <property name="toolTip">
-       <string>A message that was attached to the anime: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Abimecoin network.</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::PlainText</enum>
       </property>
      </widget>
     </item>
@@ -1131,7 +1131,7 @@
    <property name="autoFillBackground">
     <bool>true</bool>
    </property>
-    <property name="frameShape">
+   <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="frameShadow">
@@ -1225,13 +1225,14 @@
    <extends>QLineEdit</extends>
    <header>qvalidatedlineedit.h</header>
   </customwidget>
-   <customwidget>
+  <customwidget>
    <class>BitcoinAmountField</class>
    <extends>QLineEdit</extends>
    <header>bitcoinamountfield.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
-  <tabstops>
+ <tabstops>
   <tabstop>payTo</tabstop>
   <tabstop>addressBookButton</tabstop>
   <tabstop>pasteButton</tabstop>

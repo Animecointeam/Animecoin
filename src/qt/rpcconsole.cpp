@@ -10,7 +10,7 @@
 #include "guiutil.h"
 #include "peertablemodel.h"
 
-#include "main.h"
+#include "validation.h"
 #include "chainparams.h"
 #include "netbase.h"
 #include "rpc/server.h"

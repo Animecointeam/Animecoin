@@ -361,6 +361,12 @@ BOOST_AUTO_TEST_CASE(ApproximateBestSubset)
     BOOST_CHECK_EQUAL(setCoinsRet.size(), 101);
 }
 
+static void AddKey(CWallet& wallet, const CKey& key)
+{
+    LOCK(wallet.cs_wallet);
+    wallet.AddKeyPubKey(key, key.GetPubKey());
+}
+
 static int64_t AddTx(CWallet& wallet, uint32_t lockTime, int64_t mockTime, int64_t blockTime)
 {
     CMutableTransaction tx;

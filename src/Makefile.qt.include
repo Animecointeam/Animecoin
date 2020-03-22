@@ -60,6 +60,9 @@ QT_FORMS_UI = \
   qt/forms/editaddressdialog.ui \
   qt/forms/helpmessagedialog.ui \
   qt/forms/intro.ui \
+  qt/forms/multisigaddressentry.ui \
+  qt/forms/multisigdialog.ui \
+  qt/forms/multisiginputentry.ui \
   qt/forms/newpubkeydialog.ui \
   qt/forms/openuridialog.ui \
   qt/forms/optionsdialog.ui \
@@ -92,6 +95,9 @@ QT_MOC_CPP = \
   qt/moc_intro.cpp \
   qt/moc_macdockiconhandler.cpp \
   qt/moc_macnotificationhandler.cpp \
+  qt/moc_multisigaddressentry.cpp \
+  qt/moc_multisigdialog.cpp \
+  qt/moc_multisiginputentry.cpp \
   qt/moc_newpubkeydialog.cpp \
   qt/moc_notificator.cpp \
   qt/moc_openuridialog.cpp \
@@ -168,6 +174,9 @@ BITCOIN_QT_H = \
   qt/intro.h \
   qt/macdockiconhandler.h \
   qt/macnotificationhandler.h \
+  qt/multisigaddressentry.h \
+  qt/multisigdialog.h \
+  qt/multisiginputentry.h \
   qt/networkstyle.h \
   qt/newpubkeydialog.h \
   qt/notificator.h \
@@ -289,6 +298,9 @@ BITCOIN_QT_CPP += \
   qt/coincontroldialog.cpp \
   qt/coincontroltreewidget.cpp \
   qt/editaddressdialog.cpp \
+  qt/multisigaddressentry.cpp \
+  qt/multisigdialog.cpp \
+  qt/multisiginputentry.cpp \
   qt/newpubkeydialog.cpp \
   qt/openuridialog.cpp \
   qt/overviewpage.cpp \

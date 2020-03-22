@@ -7,13 +7,14 @@
 #include "auxiliaryblockrequest.h"
 #include "checkpoints.h"
 #include "consensus/validation.h"
-#include "main.h"
+#include "hash.h"
+#include "net_processing.h"
 #include "policy/policy.h"
 #include "primitives/transaction.h"
 #include "rpc/server.h"
 #include "sync.h"
 #include "util.h"
-#include "hash.h"
+#include "validation.h"
 
 #include <stdint.h>
 

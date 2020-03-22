@@ -9,6 +9,7 @@
 #include "bitcoingui.h"
 #include "clientmodel.h"
 #include "guiutil.h"
+#include "multisigdialog.h"
 #include "optionsmodel.h"
 #include "overviewpage.h"
 #include "receivecoinsdialog.h"
@@ -55,12 +56,14 @@ WalletView::WalletView(QWidget *parent):
     addressPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::ReceivingTab, nullptr);
     receiveCoinsPage = new ReceiveCoinsDialog();
     sendCoinsPage = new SendCoinsDialog();
+    multisigPage = new MultisigDialog(nullptr);
     aboutPage = new AboutDialog(nullptr);
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
     addWidget(addressPage);
     addWidget(receiveCoinsPage);
+    addWidget(multisigPage);
     addWidget(sendCoinsPage);
     addWidget(aboutPage);
 
@@ -77,6 +80,8 @@ WalletView::WalletView(QWidget *parent):
     connect(sendCoinsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from transactionView
     connect(transactionView, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    // Pass through messages from Multitool
+    connect(multisigPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
 }
 
 WalletView::~WalletView()
@@ -126,6 +131,7 @@ void WalletView::setWalletModel(WalletModel *walletModel)
     addressPage->setModel(walletModel->getAddressTableModel());
     receiveCoinsPage->setModel(walletModel);
     sendCoinsPage->setModel(walletModel);
+    multisigPage->setModel(walletModel);
 
     if (walletModel)
     {
@@ -199,6 +205,11 @@ void WalletView::gotoSendCoinsPage(QString addr)
 
     if (!addr.isEmpty())
         sendCoinsPage->setAddress(addr);
+}
+
+void WalletView::gotoMultisigPage()
+{
+    setCurrentWidget(multisigPage);
 }
 
 void WalletView::gotoAboutPage()

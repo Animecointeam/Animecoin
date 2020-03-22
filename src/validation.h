@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_MAIN_H
-#define BITCOIN_MAIN_H
+#ifndef BITCOIN_VALIDATION_H
+#define BITCOIN_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/bitcoin-config.h"
@@ -17,7 +17,7 @@
 #include "coins.h"
 #include "primitives/block.h"
 #include "primitives/transaction.h"
-#include "net.h"
+#include "protocol.h" // For CMessageHeader::MessageStartChars
 #include "script/script.h"
 #include "script/sigcache.h"
 #include "script/standard.h"
@@ -25,7 +25,6 @@
 #include "tinyformat.h"
 #include "txmempool.h"
 #include "uint256.h"
-#include "validationinterface.h"
 
 #include <algorithm>
 #include <exception>
@@ -35,6 +34,11 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <atomic>
+
+#include <boost/unordered_map.hpp>
+#include <boost/filesystem/path.hpp>
 
 class CBlockIndex;
 class CBlockTreeDB;
@@ -426,17 +430,6 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 /** Functions for validating blocks and updating the block tree */
 
-/** Undo the effects of this block (with given index) on the UTXO set represented by coins.
- *  In case pfClean is provided, operation will try to be tolerant about errors, and *pfClean
- *  will be true if no problems were found. Otherwise, the return value will be false in case
- *  of problems. Note that in any case, coins may be modified. */
-bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& coins, bool* pfClean = nullptr);
-
-
-/** Apply the effects of this block (with given index) on the UTXO set represented by coins */
-bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& coins,
-                  const CChainParams& chainparams, bool fJustCheck = false);
-
 /** Context-independent validity checks */
 bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true);
 bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true, bool fCheckMerkleRoot = true);
@@ -512,60 +505,4 @@ void DumpMempool();
 /** Load the mempool from disk. */
 bool LoadMempool();
 
-// The following things handle network-processing logic
-// (and should be moved to a separate file)
-
-/** Headers download timeout expressed in microseconds
- *  Timeout = base + per_header * (expected number of headers) */
-static constexpr int64_t HEADERS_DOWNLOAD_TIMEOUT_BASE = 15 * 60 * 1000000; // 15 minutes
-static constexpr int64_t HEADERS_DOWNLOAD_TIMEOUT_PER_HEADER = 1000; // 1ms/header
-
-/** Register with a network node to receive its signals */
-void RegisterNodeSignals(CNodeSignals& nodeSignals);
-/** Unregister a network node */
-void UnregisterNodeSignals(CNodeSignals& nodeSignals);
-
-/** if disabled, blocks will not be requested automatically, usefull for non-validation mode */
-static const bool DEFAULT_AUTOMATIC_BLOCK_REQUESTS = true;
-extern std::atomic<bool> fAutoRequestBlocks;
-
-static const bool DEFAULT_FETCH_BLOCKS_WHILE_FETCH_HEADERS = true;
-extern std::atomic<bool> fFetchBlocksWhileFetchingHeaders;
-
-class PeerLogicValidation : public CValidationInterface {
-private:
-    CConnman* connman;
-
-public:
-    PeerLogicValidation(CConnman* connmanIn);
-
-    virtual void SyncTransaction(const CTransaction& tx, const CBlockIndex* pindex, int nPosInBlock, bool validated);
-    virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload);
-    virtual void BlockChecked(const CBlock& block, const CValidationState& state);
-};
-
-struct CNodeStateStats {
-    int nMisbehavior;
-    int nSyncHeight;
-    int nCommonHeight;
-    std::vector<int> vHeightInFlight;
-};
-
-/** Get statistics from node state */
-bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
-/** Increase a node's misbehavior score. */
-void Misbehaving(NodeId nodeid, int howmuch);
-
-/** Process protocol messages received from a given node */
-bool ProcessMessages(CNode* pfrom, CConnman& connman, std::atomic<bool>& interrupt);
-/**
- * Send queued protocol messages to be sent to a give node.
- *
- * @param[in]   pto             The node which we are sending messages to.
- * @param[in]   connman         The connection manager for that node.
- * @param[in]   interrupt       Interrupt condition for processing threads
- * @return                      True if there is more work to be done
- */
-bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interrupt);
-
-#endif // BITCOIN_MAIN_H
+#endif // BITCOIN_VALIDATION_H
