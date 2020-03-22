@@ -11,6 +11,7 @@
 
 #include "base58.h"
 #include "init.h"
+#include "validation.h" // For strMessageMagic
 #include "wallet/wallet.h"
 
 #include <string>

@@ -17,6 +17,7 @@ class ClientModel;
 class OverviewPage;
 class ReceiveCoinsDialog;
 class SendCoinsDialog;
+class MultisigDialog;
 class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
@@ -64,6 +65,7 @@ private:
     AddressBookPage *addressPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
+    MultisigDialog *multisigPage;
     TransactionView *transactionView;
     AboutDialog *aboutPage;
 
@@ -76,6 +78,8 @@ public slots:
     void gotoHistoryPage();
     /** Switch to olschoold receive coins page */
     void gotoAddressPage();
+    /** Switch to multisig page */
+    void gotoMultisigPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */

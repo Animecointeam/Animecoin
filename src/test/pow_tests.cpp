@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "arith_uint256.h"
-#include "main.h"
+#include "validation.h"
 #include "pow.h"
 #include "util.h"
 #include "test/test_bitcoin.h"

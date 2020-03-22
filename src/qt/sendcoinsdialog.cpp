@@ -21,6 +21,7 @@
 #include "base58.h"
 #include "coincontrol.h"
 #include "ui_interface.h"
+#include "validation.h" // mempool and minRelayTxFee
 #include "wallet/wallet.h"
 
 #include <QFontMetrics>

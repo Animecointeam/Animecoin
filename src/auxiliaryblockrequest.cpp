@@ -5,7 +5,7 @@
 #include "auxiliaryblockrequest.h"
 
 #include "chainparams.h"
-#include "main.h"
+#include "validation.h"
 #include "validationinterface.h"
 #include "ui_interface.h"
 
@@ -57,12 +57,12 @@ void CAuxiliaryBlockRequest::processWithPossibleBlock(const std::shared_ptr<cons
 
         // fire signal with txns
         if (passThroughSignals) {
-            unsigned int cnt = 0;
+            std::shared_ptr<std::vector<CTransactionRef>> conflicts (std::make_shared<std::vector<CTransactionRef>>());
+            GetMainSignals().BlockConnected (currentBlock, pindexRequest, conflicts);
             for(const auto& tx : currentBlock->vtx)
             {
                 bool valid = ((pindexRequest->nStatus & BLOCK_VALID_MASK) == BLOCK_VALID_MASK);
-                GetMainSignals().SyncTransaction(*tx, pindexRequest, cnt, valid);
-                cnt++;
+                GetMainSignals().TransactionAddedToMempool(tx, valid);
             }
         }
         this->processedUpToSize++;

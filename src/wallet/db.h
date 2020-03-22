@@ -28,9 +28,6 @@ class COutPoint;
 
 struct CBlockLocator;
 
-void ThreadFlushWalletDB(const std::string& strWalletFile);
-
-
 class CDBEnv
 {
 private:
@@ -64,7 +61,7 @@ public:
     enum VerifyResult { VERIFY_OK,
                         RECOVER_OK,
                         RECOVER_FAIL };
-    VerifyResult Verify(std::string strFile, bool (*recoverFunc)(CDBEnv& dbenv, std::string strFile));
+    VerifyResult Verify(const std::string& strFile, bool (*recoverFunc)(const std::string& strFile));
     /**
      * Salvage data from a file that Verify says is bad.
      * fAggressive sets the DB_AGGRESSIVE flag (see berkeley DB->verify() method documentation).
@@ -116,6 +113,15 @@ public:
 
     void Flush();
     void Close();
+    static bool Recover(const std::string& filename, void *callbackDataIn, bool (*recoverKVcallback)(void* callbackData, CDataStream ssKey, CDataStream ssValue));
+
+    /* flush the wallet passively (TRY_LOCK)
+       ideal to be called periodically */
+    static bool PeriodicFlush(std::string strFile);
+    /* verifies the database environment */
+    static bool VerifyEnvironment(const std::string& walletFile, const boost::filesystem::path& dataDir, std::string& errorStr);
+    /* verifies the database file */
+    static bool VerifyDatabaseFile(const std::string& walletFile, const boost::filesystem::path& dataDir, std::string& warningStr, std::string& errorStr, bool (*recoverFunc)(const std::string& strFile));
 
 protected:
     template <typename K, typename T>

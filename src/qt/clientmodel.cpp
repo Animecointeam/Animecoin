@@ -12,11 +12,11 @@
 #include "chainparams.h"
 #include "checkpoints.h"
 #include "clientversion.h"
-#include "main.h"
 #include "net.h"
 #include "txmempool.h"
 #include "ui_interface.h"
 #include "util.h"
+#include "validation.h"
 
 #include <stdint.h>
 

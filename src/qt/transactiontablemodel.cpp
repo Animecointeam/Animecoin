@@ -12,10 +12,10 @@
 #include "transactionrecord.h"
 #include "walletmodel.h"
 
-#include "main.h"
 #include "sync.h"
 #include "uint256.h"
 #include "util.h"
+#include "validation.h"
 #include "wallet/wallet.h"
 
 #include <algorithm>

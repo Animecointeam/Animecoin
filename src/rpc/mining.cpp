@@ -10,18 +10,16 @@
 #include "consensus/validation.h"
 #include "core_io.h"
 #include "init.h"
-#include "main.h"
 #include "miner.h"
 #include "net.h"
 #include "pow.h"
 #include "rpc/server.h"
 #include "util.h"
+#include "validation.h"
 #include "validationinterface.h"
 
 #include <memory>
 #include <stdint.h>
-
-#include <boost/shared_ptr.hpp>
 
 #include <univalue.h>
 
@@ -134,7 +132,7 @@ UniValue generate(const JSONRPCRequest& request)
     int nHeight = 0;
     int nGenerate = request.params[0].get_int();
 
-    boost::shared_ptr<CReserveScript> coinbaseScript;
+    std::shared_ptr<CReserveScript> coinbaseScript;
     GetMainSignals().ScriptForMining(coinbaseScript);
 
     //throw an error if no script was provided

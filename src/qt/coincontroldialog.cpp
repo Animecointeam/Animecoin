@@ -18,7 +18,7 @@
 #include "walletmodel.h"
 
 #include "coincontrol.h"
-#include "main.h"
+#include "validation.h" // For minRelayTxFee
 #include "wallet/wallet.h"
 
 #include <QApplication>
