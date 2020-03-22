@@ -1107,8 +1107,8 @@ void CTxMemPool::TrimToSize(size_t sizelimit, std::vector<uint256>* pvNoSpendsRe
         std::vector<CTransaction> txn;
         if (pvNoSpendsRemaining) {
             txn.reserve(stage.size());
-            for (txiter it : stage)
-                txn.push_back(it->GetTx());
+            for (txiter iter : stage)
+                txn.push_back(iter->GetTx());
         }
         RemoveStaged(stage, false, MemPoolRemovalReason::SIZELIMIT);
         if (pvNoSpendsRemaining) {
@@ -1116,8 +1116,8 @@ void CTxMemPool::TrimToSize(size_t sizelimit, std::vector<uint256>* pvNoSpendsRe
                 for (const CTxIn& txin : tx.vin) {
                     if (exists(txin.prevout.hash))
                         continue;
-                    auto it = mapNextTx.lower_bound(COutPoint(txin.prevout.hash, 0));
-                    if (it == mapNextTx.end() || it->first->hash != txin.prevout.hash)
+                    auto iter = mapNextTx.lower_bound(COutPoint(txin.prevout.hash, 0));
+                    if (iter == mapNextTx.end() || iter->first->hash != txin.prevout.hash)
                         pvNoSpendsRemaining->push_back(txin.prevout.hash);
                 }
             }

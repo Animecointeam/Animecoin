@@ -494,10 +494,10 @@ UniValue getmempoolancestors(const JSONRPCRequest& request)
         UniValue o(UniValue::VOBJ);
         for (CTxMemPool::txiter ancestorIt : setAncestors) {
             const CTxMemPoolEntry &e = *ancestorIt;
-            const uint256& hash = e.GetTx().GetHash();
+            const uint256& _hash = e.GetTx().GetHash();
             UniValue info(UniValue::VOBJ);
             entryToJSON(info, e);
-            o.pushKV(hash.ToString(), info);
+            o.pushKV(_hash.ToString(), info);
         }
         return o;
     }
@@ -558,10 +558,10 @@ UniValue getmempooldescendants(const JSONRPCRequest& request)
         UniValue o(UniValue::VOBJ);
         for (CTxMemPool::txiter descendantIt : setDescendants) {
             const CTxMemPoolEntry &e = *descendantIt;
-            const uint256& hash = e.GetTx().GetHash();
+            const uint256& _hash = e.GetTx().GetHash();
             UniValue info(UniValue::VOBJ);
             entryToJSON(info, e);
-            o.pushKV(hash.ToString(), info);
+            o.pushKV(_hash.ToString(), info);
         }
         return o;
     }
