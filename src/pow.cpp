@@ -9,7 +9,6 @@
 #include "chain.h"
 #include "primitives/block.h"
 #include "uint256.h"
-#include "util.h"
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
@@ -54,7 +53,6 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
 {
     // Limit adjustment step
     int64_t nActualTimespan = pindexLast->GetBlockTime() - nFirstBlockTime;
-    LogPrintf("  nActualTimespan = %d before bounds\n", nActualTimespan);
     int64_t LimUp = params.nPowTargetTimespan * 100 / 110; // 110% up
     int64_t LimDown = params.nPowTargetTimespan * 2; // 200% down
 	if (nActualTimespan < LimUp)
@@ -69,20 +67,12 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
 	// Retarget
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     arith_uint256 bnNew;
-    arith_uint256 bnOld;
-	bnNew.SetCompact(pindexLast->nBits);
-	bnOld = bnNew;
-	bnNew *= nActualTimespan;
+    bnNew.SetCompact(pindexLast->nBits);
+    bnNew *= nActualTimespan;
     bnNew /= params.nPowTargetTimespan;
 
     if (bnNew > bnPowLimit)
         bnNew = bnPowLimit;
-
-	/// debug print
-	LogPrintf("GetNextWorkRequired RETARGET\n");
-    LogPrintf("params.nPowTargetTimespan = %d    nActualTimespan = %d\n", params.nPowTargetTimespan, nActualTimespan);
-    LogPrintf("Before: %08x  %s\n", pindexLast->nBits, bnOld.ToString());
-	LogPrintf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.ToString());
 
 	return bnNew.GetCompact();
 }
@@ -97,11 +87,11 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
 
 	// Check range
     if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(params.powLimit))
-        return error("CheckProofOfWork(): nBits below minimum work");
+        return false;
 
 	// Check proof of work matches claimed amount
     if (UintToArith256(hash) > bnTarget)
-        return error("CheckProofOfWork() : hash doesn't match nBits");
+        return false;
 
     return true;
 }

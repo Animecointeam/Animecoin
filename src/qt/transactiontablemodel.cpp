@@ -83,6 +83,9 @@ public:
         qDebug() << "TransactionTablePriv::refreshWallet";
         cachedWallet.clear();
 
+        {
+        LOCK(cs_main);
+
         std::vector<CWalletTx> walletTxes = wallet->getWalletTxs();
 
         // Divide the work between multiple threads to speedup the process if the vector is larger than 4k txes
@@ -121,9 +124,11 @@ public:
                 future.waitForFinished();
                 cachedWallet.append(future.result());
             }
+
         } else {
             // Single thread flow
             cachedWallet.append(convertTxToRecords(this, wallet, walletTxes));
+        }
         }
     }
 
