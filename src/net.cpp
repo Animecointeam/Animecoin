@@ -83,12 +83,6 @@ std::string strSubVersion;
 
 limitedmap<CInv, int64_t> mapAlreadyAskedFor(MAX_INV_SZ);
 
-bool churnNode=false;
-void setChurnMode(){
-  churnNode=true;
-  MAX_OUTBOUND_CONNECTIONS = 50;
-}
-
 void CConnman::AddOneShot(const std::string& strDest)
 {
     LOCK(cs_vOneShots);
@@ -1294,13 +1288,6 @@ void CConnman::ThreadSocketHandler()
                     LogPrintf("ping timeout: %fs\n", 0.000001 * (GetTimeMicros() - pnode->nPingUsecStart));
                     pnode->fDisconnect = true;
                 }
-				else if (churnNode && (pnode->fInbound==true && GetTime() - pnode->nTimeConnected > 600))
-				{
-					//If set to churn this is an inbound connection, and has been connected for more than 10 minutes,
-					//disconnect it to make room for other new nodes.
-					printf("new node churn\n");
-					pnode->fDisconnect = true;
-				}
             }
         }
         {

@@ -17,7 +17,7 @@ class AskMultisigDialog : public QDialog
 public:
     explicit AskMultisigDialog(QWidget *parent = 0);
     ~AskMultisigDialog();
-    void setModel(AddressTableModel *model) { this->model = model; }
+    void setModel(AddressTableModel *_model) { this->model = _model; }
     QString generateAddress(QString);
 
     // These both should be called only after calling generateAddress

@@ -679,9 +679,6 @@ bool AppInitServers(boost::thread_group& threadGroup)
 // Parameter interaction based on rules
 void InitParameterInteraction()
 {
-    int isChurn = GetArg("-churn", 0);
-    if(isChurn){ setChurnMode(); }
-
     // when specifying an explicit binding address, you want to listen on it
     // even when -connect or -proxy is specified
     if (mapArgs.count("-bind")) {
