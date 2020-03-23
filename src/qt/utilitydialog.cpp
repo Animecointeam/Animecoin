@@ -261,10 +261,10 @@ PaperWalletDialog::PaperWalletDialog(QWidget *parent) :
     }
 }
 
-void PaperWalletDialog::setModel(WalletModel *model)
+void PaperWalletDialog::setModel(WalletModel *_model)
 {
     RandAddSeed();
-    this->model = model;
+    this->model = _model;
     this->on_getNewAddress_clicked();
 }
 

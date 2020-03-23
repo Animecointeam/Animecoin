@@ -393,9 +393,9 @@ void PaymentServer::handleURIConnection()
     handleURIOrFile(msg);
 }
 
-void PaymentServer::setOptionsModel(OptionsModel *optionsModel)
+void PaymentServer::setOptionsModel(OptionsModel *_optionsModel)
 {
-    this->optionsModel = optionsModel;
+    this->optionsModel = _optionsModel;
 }
 
 #ifdef ENABLE_BIP70

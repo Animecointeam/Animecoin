@@ -25,9 +25,9 @@ MultisigAddressEntry::~MultisigAddressEntry()
     delete ui;
 }
 
-void MultisigAddressEntry::setModel(WalletModel *model)
+void MultisigAddressEntry::setModel(WalletModel *_model)
 {
-    this->model = model;
+    this->model = _model;
     clear();
 }
 

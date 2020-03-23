@@ -30,9 +30,9 @@ static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
 static int64_t nLastSPVUpdateNotification = 0;
 
-ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
+ClientModel::ClientModel(OptionsModel *_optionsModel, QObject *parent) :
     QObject(parent),
-    optionsModel(optionsModel),
+    optionsModel(_optionsModel),
     peerTableModel(0),
     banTableModel(0),
     pollTimer(0)
