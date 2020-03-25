@@ -524,12 +524,7 @@ bool PaymentServer::readPaymentRequestFromFile(const QString& filename, PaymentR
     }
 
     // BIP70 DoS protection
-    if (f.size() > BIP70_MAX_PAYMENTREQUEST_SIZE) {
-        qWarning() << QString("PaymentServer::%1: Payment request %2 is too large (%3 bytes, allowed %4 bytes).")
-            .arg(__func__)
-            .arg(filename)
-            .arg(f.size())
-            .arg(BIP70_MAX_PAYMENTREQUEST_SIZE);
+    if (!verifySize(f.size())) {
         return false;
     }
 
@@ -592,6 +587,14 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
             return false;
         }
 
+        // Bitcoin amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
+        // but CAmount is defined as int64_t. Because of that we need to verify that amounts are in a valid range
+        // and no overflow has happened.
+        if (!verifyAmount(sendingTo.second)) {
+            emit message(tr("Payment request rejected"), tr("Invalid payment request."), CClientUIInterface::MSG_ERROR);
+            return false;
+        }
+
         // Extract and check amounts
         CTxOut txOut(sendingTo.second, sendingTo.first);
         if (txOut.IsDust(::minRelayTxFee)) {
@@ -603,6 +606,12 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
         }
 
         recipient.amount += sendingTo.second;
+
+        // Also verify that the final amount is still in a valid range after adding additional amounts.
+        if (!verifyAmount(recipient.amount)) {
+            emit message(tr("Payment request rejected"), tr("Invalid payment request."), CClientUIInterface::MSG_ERROR);
+            return false;
+        }
     }
     // Store addresses and format them to fit nicely into the GUI
     recipient.address = addresses.join("<br />");
@@ -687,14 +696,13 @@ void PaymentServer::netRequestFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     // BIP70 DoS protection
-    if (reply->size() > BIP70_MAX_PAYMENTREQUEST_SIZE) {
-        QString msg = tr("Payment request %1 is too large (%2 bytes, allowed %3 bytes).")
-            .arg(reply->request().url().toString())
-            .arg(reply->size())
-            .arg(BIP70_MAX_PAYMENTREQUEST_SIZE);
-
-        qWarning() << QString("PaymentServer::%1:").arg(__func__) << msg;
-        emit message(tr("Payment request DoS protection"), msg, CClientUIInterface::MSG_ERROR);
+    if (!verifySize(reply->size())) {
+        emit message(tr("Payment request rejected"),
+            tr("Payment request %1 is too large (%2 bytes, allowed %3 bytes).")
+                .arg(reply->request().url().toString())
+                .arg(reply->size())
+                .arg(BIP70_MAX_PAYMENTREQUEST_SIZE),
+            CClientUIInterface::MSG_ERROR);
         return;
     }
 
@@ -783,6 +791,30 @@ bool PaymentServer::verifyExpired(const payments::PaymentDetails& requestDetails
         qWarning() << QString("PaymentServer::%1: Payment request expired \"%2\".")
             .arg(__func__)
             .arg(requestExpires);
+    }
+    return fVerified;
+}
+
+bool PaymentServer::verifySize(qint64 requestSize)
+{
+    bool fVerified = (requestSize <= BIP70_MAX_PAYMENTREQUEST_SIZE);
+    if (!fVerified) {
+        qWarning() << QString("PaymentServer::%1: Payment request too large (%2 bytes, allowed %3 bytes).")
+            .arg(__func__)
+            .arg(requestSize)
+            .arg(BIP70_MAX_PAYMENTREQUEST_SIZE);
+    }
+    return fVerified;
+}
+
+bool PaymentServer::verifyAmount(const CAmount& requestAmount)
+{
+    bool fVerified = MoneyRange(requestAmount);
+    if (!fVerified) {
+        qWarning() << QString("PaymentServer::%1: Payment request amount out of allowed range (%2, allowed 0 - %3).")
+            .arg(__func__)
+            .arg(requestAmount)
+            .arg(MAX_MONEY);
     }
     return fVerified;
 }

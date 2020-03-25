@@ -95,14 +95,17 @@ public:
     // Return certificate store
     static X509_STORE* getCertStore();
 
-    // This is now public, because we use it in paymentservertests.cpp
-     static bool readPaymentRequestFromFile(const QString& filename, PaymentRequestPlus& request);
-
     // Verify that the payment request network matches the client network
      static bool verifyNetwork(const payments::PaymentDetails& requestDetails);
 
     // Verify if the payment request is expired
      static bool verifyExpired(const payments::PaymentDetails& requestDetails);
+
+     // Verify the payment request size is valid as per BIP70
+     static bool verifySize(qint64 requestSize);
+
+     // Verify the payment request amount is valid
+     static bool verifyAmount(const CAmount& requestAmount);
 #endif
 
 signals:
@@ -149,6 +152,7 @@ private:
     OptionsModel *optionsModel;
 
 #ifdef ENABLE_BIP70
+    static bool readPaymentRequestFromFile(const QString& filename, PaymentRequestPlus& request);
     bool processPaymentRequest(const PaymentRequestPlus& request, SendCoinsRecipient& recipient);
     void fetchRequest(const QUrl& url);
 
