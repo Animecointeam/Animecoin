@@ -135,6 +135,7 @@ TransactionView::TransactionView(QWidget *parent) :
     QAction *copyLabelAction = new QAction(tr("Copy label"), this);
     QAction *copyAmountAction = new QAction(tr("Copy amount"), this);
     QAction *copyTxIDAction = new QAction(tr("Copy transaction ID"), this);
+    QAction *copyTxHexAction = new QAction(tr("Copy raw transaction"), this);
     QAction *editLabelAction = new QAction(tr("Edit label"), this);
     QAction *showDetailsAction = new QAction(tr("Show transaction details"), this);
 
@@ -143,6 +144,7 @@ TransactionView::TransactionView(QWidget *parent) :
     contextMenu->addAction(copyLabelAction);
     contextMenu->addAction(copyAmountAction);
     contextMenu->addAction(copyTxIDAction);
+    contextMenu->addAction(copyTxHexAction);
     contextMenu->addAction(showDetailsAction);
     contextMenu->addSeparator();
     contextMenu->addAction(abandonAction);
@@ -162,6 +164,7 @@ TransactionView::TransactionView(QWidget *parent) :
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(copyLabel()));
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
     connect(copyTxIDAction, SIGNAL(triggered()), this, SLOT(copyTxID()));
+    connect(copyTxHexAction, SIGNAL(triggered()), this, SLOT(copyTxHex()));
     connect(editLabelAction, SIGNAL(triggered()), this, SLOT(editLabel()));
     connect(showDetailsAction, SIGNAL(triggered()), this, SLOT(showDetails()));
 }
@@ -397,6 +400,11 @@ void TransactionView::copyAmount()
 void TransactionView::copyTxID()
 {
     GUIUtil::copyEntryData(transactionView, 0, TransactionTableModel::TxIDRole);
+}
+
+void TransactionView::copyTxHex()
+{
+    GUIUtil::copyEntryData(transactionView, 0, TransactionTableModel::TxHexRole);
 }
 
 void TransactionView::editLabel()
