@@ -101,18 +101,18 @@ public:
         txDest = address.Get();
     }
 
-    TransactionRecord(uint256 hash, qint64 time):
-        hash(hash), time(time), type(Other), strAddress(""), debit(0),
+    TransactionRecord(uint256 _hash, qint64 _time):
+        hash(_hash), time(_time), type(Other), strAddress(""), debit(0),
             credit(0), idx(0)
     {
         address = CBitcoinAddress(strAddress);
         txDest = address.Get();
     }
 
-    TransactionRecord(uint256 hash, qint64 time,
+    TransactionRecord(uint256 _hash, qint64 _time,
                       Type _type, const std::string &_strAddress,
-                      const CAmount& debit, const CAmount& credit):
-        hash(hash), time(time), type(_type), strAddress(_strAddress), debit(debit), credit(credit),
+                      const CAmount& _debit, const CAmount& _credit):
+        hash(_hash), time(_time), type(_type), strAddress(_strAddress), debit(_debit), credit(_credit),
             idx(0)
     {
         address = CBitcoinAddress(strAddress);

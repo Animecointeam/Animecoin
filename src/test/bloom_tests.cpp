@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_serialize)
     BOOST_CHECK_MESSAGE(filter.contains(ParseHex("b9300670b4c5366e95b2699e8b18bc75e5f729c5")), "BloomFilter doesn't contain just-inserted object (3)!");
 
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
-    filter.Serialize(stream, SER_NETWORK, PROTOCOL_VERSION);
+    stream << filter;
 
     vector<unsigned char> vch = ParseHex("03614e9b050000000000000001");
     vector<char> expected(vch.size());
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_serialize_with_tweak)
     BOOST_CHECK_MESSAGE(filter.contains(ParseHex("b9300670b4c5366e95b2699e8b18bc75e5f729c5")), "BloomFilter doesn't contain just-inserted object (3)!");
 
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
-    filter.Serialize(stream, SER_NETWORK, PROTOCOL_VERSION);
+    stream << filter;
 
     vector<unsigned char> vch = ParseHex("03ce4299050000000100008001");
     vector<char> expected(vch.size());
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_key)
     filter.insert(vector<unsigned char>(hash.begin(), hash.end()));
 
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
-    filter.Serialize(stream, SER_NETWORK, PROTOCOL_VERSION);
+    stream << filter;
 
     vector<unsigned char> vch = ParseHex("038fc16b080000000000000001");
     vector<char> expected(vch.size());
@@ -166,8 +166,8 @@ BOOST_AUTO_TEST_CASE(bloom_match)
     COutPoint prevOutPoint(uint256S("0x90c122d70786e899529d71dbeba91ba216982fb6ba58f3bdaab65e73b7e9260b"), 0);
     {
         vector<unsigned char> data(32 + sizeof(unsigned int));
-        memcpy(&data[0], prevOutPoint.hash.begin(), 32);
-        memcpy(&data[32], &prevOutPoint.n, sizeof(unsigned int));
+        memcpy(data.data(), prevOutPoint.hash.begin(), 32);
+        memcpy(data.data()+32, &prevOutPoint.n, sizeof(unsigned int));
         filter.insert(data);
     }
     BOOST_CHECK_MESSAGE(filter.IsRelevantAndUpdate(tx), "Simple Bloom filter didn't match manually serialized COutPoint");

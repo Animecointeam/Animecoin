@@ -12,6 +12,7 @@
 #include "transactionrecord.h"
 #include "walletmodel.h"
 
+#include "core_io.h"
 #include "sync.h"
 #include "uint256.h"
 #include "util.h"
@@ -61,9 +62,9 @@ struct TxLessThan
 class TransactionTablePriv
 {
 public:
-    TransactionTablePriv(CWallet *wallet, TransactionTableModel *parent) :
-        wallet(wallet),
-        parent(parent)
+    TransactionTablePriv(CWallet *_wallet, TransactionTableModel *_parent) :
+        wallet(_wallet),
+        parent(_parent)
     {
     }
 
@@ -82,6 +83,9 @@ public:
     {
         qDebug() << "TransactionTablePriv::refreshWallet";
         cachedWallet.clear();
+
+        {
+        LOCK(cs_main);
 
         std::vector<CWalletTx> walletTxes = wallet->getWalletTxs();
 
@@ -121,9 +125,11 @@ public:
                 future.waitForFinished();
                 cachedWallet.append(future.result());
             }
+
         } else {
             // Single thread flow
             cachedWallet.append(convertTxToRecords(this, wallet, walletTxes));
+        }
         }
     }
 
@@ -287,13 +293,25 @@ public:
         }
         return QString();
     }
+
+    QString getTxHex(TransactionRecord *rec)
+    {
+        LOCK2(cs_main, wallet->cs_wallet);
+        std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
+        if(mi != wallet->mapWallet.end())
+        {
+            std::string strHex = EncodeHexTx(static_cast<CTransaction>(mi->second));
+            return QString::fromStdString(strHex);
+        }
+        return QString();
+    }
 };
 
-TransactionTableModel::TransactionTableModel(CWallet* wallet, WalletModel *parent):
+TransactionTableModel::TransactionTableModel(CWallet* _wallet, WalletModel *parent):
         QAbstractTableModel(parent),
-        wallet(wallet),
+        wallet(_wallet),
         walletModel(parent),
-        priv(new TransactionTablePriv(wallet, this)),
+        priv(new TransactionTablePriv(_wallet, this)),
         fProcessingQueuedTransactions(false)
 {
     columns << QString() << QString() << tr("Date") << tr("Type") << tr("Address") << BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
@@ -691,6 +709,8 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         return rec->getTxID();
     case TxHashRole:
         return QString::fromStdString(rec->hash.ToString());
+    case TxHexRole:
+        return priv->getTxHex(rec);
     case ConfirmedRole:
         return rec->status.countsForBalance;
     case FormattedAmountRole:
@@ -758,8 +778,8 @@ struct TransactionNotification
 {
 public:
     TransactionNotification() {}
-    TransactionNotification(uint256 hash, ChangeType status, bool showTransaction):
-        hash(hash), status(status), showTransaction(showTransaction) {}
+    TransactionNotification(uint256 _hash, ChangeType _status, bool _showTransaction):
+        hash(_hash), status(_status), showTransaction(_showTransaction) {}
 
     void invoke(QObject *ttm)
     {

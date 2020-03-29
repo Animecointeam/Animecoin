@@ -323,7 +323,7 @@ void MultisigDialog::on_transaction_textChanged()
         MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
         if(entry)
         {
-            entry->setTransactionId(QString(prevoutHash.GetHex().c_str()));
+            entry->setTransactionId(QString::fromStdString (HexStr(prevoutHash.GetHex())));
             entry->setTransactionOutputIndex(txin.prevout.n);
         }
     }
