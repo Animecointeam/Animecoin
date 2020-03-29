@@ -143,19 +143,6 @@ void OptionsModel::Init(bool resetSettings)
 
     language = settings.value("language").toString();
 
-    // Mining options
-    if (settings.contains("nMiningIntensity"))
-    {
-        int nMiningIntensity = settings.value("nMiningIntensity").toInt();
-        if (nMiningIntensity != 0)
-        {
-            SoftSetArg("-gen", "1");
-            SoftSetArg("-genproclimit", settings.value("nMiningIntensity").toString().toStdString());
-            addOverriddenOption("-gen");
-            addOverriddenOption("-genproclimit");
-        }
-    }
-
     // Sync modes
     if (!settings.contains("nSyncMode"))
         settings.setValue("nSyncMode", 0);
