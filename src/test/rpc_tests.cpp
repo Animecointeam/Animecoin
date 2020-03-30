@@ -320,4 +320,27 @@ BOOST_AUTO_TEST_CASE(rpc_ban)
     BOOST_CHECK_EQUAL(adr.get_str(), "2001:4d48:ac57:400:cacf:e9ff:fe1d:9c63/128");
 }
 
+BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
+{
+    UniValue result;
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 101);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 101);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM", "9"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 1);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+    BOOST_CHECK_EQUAL(result[2].get_int(), 9);
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM", "9"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 1);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+    BOOST_CHECK_EQUAL(result[2].get_int(), 9);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
