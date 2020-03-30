@@ -404,8 +404,8 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageGroup(_("Debugging/Testing options:"));
     if (showDebug)
     {
-        strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), 5760));
-        strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), 3));
+        strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), DEFAULT_CHECKBLOCKS));
+        strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), DEFAULT_CHECKLEVEL));
         strUsage += HelpMessageOpt("-checkpoints", strprintf("Disable expensive verification for known chain history (default: %u)", DEFAULT_CHECKPOINTS_ENABLED));
         strUsage += HelpMessageOpt("-disablesafemode", strprintf("Disable safemode, override a real safe mode event (default: %u)", DEFAULT_DISABLE_SAFEMODE));
         strUsage += HelpMessageOpt("-testsafemode", strprintf("Force safe mode (default: %u)", DEFAULT_TESTSAFEMODE));
@@ -1323,7 +1323,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 }
 
                 uiInterface.InitMessage(_("Verifying blocks..."));
-                if (fHavePruned && GetArg("-checkblocks", 5760) > MIN_BLOCKS_TO_KEEP) {
+                if (fHavePruned && GetArg("-checkblocks", DEFAULT_CHECKBLOCKS) > MIN_BLOCKS_TO_KEEP) {
                     LogPrintf("Prune: pruned datadir may not have more than %d blocks; only checking available blocks",
                         MIN_BLOCKS_TO_KEEP);
                 }
@@ -1340,8 +1340,8 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                     }
                 }
 
-                if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview, GetArg("-checklevel", 3),
-                              GetArg("-checkblocks", 5760))) {
+                if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview, GetArg("-checklevel", DEFAULT_CHECKLEVEL),
+                              GetArg("-checkblocks", DEFAULT_CHECKBLOCKS))) {
                     strLoadError = _("Corrupted block database detected");
                     break;
                 }

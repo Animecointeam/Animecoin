@@ -24,6 +24,7 @@ using namespace std;
 
 static const char DEFAULT_RPCCONNECT[] = "127.0.0.1";
 static const int DEFAULT_HTTP_CLIENT_TIMEOUT=900;
+static const bool DEFAULT_NAMED=false;
 
 std::string HelpMessageCli()
 {
@@ -33,6 +34,7 @@ std::string HelpMessageCli()
     strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), BITCOIN_CONF_FILENAME));
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
     AppendParamsHelpMessages(strUsage);
+    strUsage += HelpMessageOpt("-named", strprintf(_("Pass named instead of positional arguments (default: %s)"), DEFAULT_NAMED));
     strUsage += HelpMessageOpt("-rpcconnect=<ip>", strprintf(_("Send commands to node running on <ip> (default: %s)"), DEFAULT_RPCCONNECT));
     strUsage += HelpMessageOpt("-rpcport=<port>", strprintf(_("Connect to JSON-RPC on <port> (default: %u or testnet: %u)"), 8332, 18332));
     strUsage += HelpMessageOpt("-rpcwait", _("Wait for RPC server to start"));
@@ -74,6 +76,7 @@ static bool AppInitRPC(int argc, char* argv[])
         if (!mapArgs.count("-version")) {
             strUsage += "\n" + _("Usage:") + "\n" +
                   "  animecoin-cli [options] <command> [params]  " + _("Send command to Animecoin") + "\n" +
+                  "  animecoin-cli [options] -named <command> [name=value] ... " + strprintf(_("Send command to %s (with named arguments)"), _(PACKAGE_NAME)) + "\n" +
                   "  animecoin-cli [options] help                " + _("List commands") + "\n" +
                   "  animecoin-cli [options] help <command>      " + _("Get help for a command") + "\n";
 
@@ -277,8 +280,15 @@ int CommandLineRPC(int argc, char *argv[])
         if (args.size() < 1)
             throw runtime_error("too few parameters (need at least command)");
         std::string strMethod = args[0];
-        UniValue params = RPCConvertValues(strMethod, std::vector<std::string>(args.begin()+1, args.end()));
+        args.erase(args.begin()); // Remove trailing method name from arguments vector
 
+        UniValue params;
+        if(GetBoolArg("-named", DEFAULT_NAMED)) {
+            params = RPCConvertNamedValues(strMethod, args);
+        } else {
+            params = RPCConvertValues(strMethod, args);
+        }
+        
         // Execute and handle connection failures with -rpcwait
         const bool fWait = GetBoolArg("-rpcwait", false);
         do {

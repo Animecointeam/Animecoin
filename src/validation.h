@@ -218,6 +218,9 @@ extern uint64_t nPruneTarget;
 /** Block files containing a block-height within MIN_BLOCKS_TO_KEEP of chainActive.Tip() will not be pruned. */
 static const signed int MIN_BLOCKS_TO_KEEP = 5760;
 
+static const signed int DEFAULT_CHECKBLOCKS = MIN_BLOCKS_TO_KEEP;
+static const unsigned int DEFAULT_CHECKLEVEL = 3;
+
 // Require that user allocate space for block & undo files (blk???.dat and rev???.dat)
 // Rough real-life estimation: 4GB per 5.5M blocks = 780B per block on average.
 // Add 15% for Undo data = 900B
