@@ -900,7 +900,7 @@ UniValue sendmany(const JSONRPCRequest& request)
                 "1. \"fromaccount\"         (string, required) The account to send the funds from, can be \"\" for the default account\n"
                 "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
                 "    {\n"
-                "      \"address\":amount   (numeric) The bitcoin address is the key, the numeric amount in " + CURRENCY_UNIT + " is the value\n"
+                "      \"address\":amount   (numeric) The animecoin address is the key, the numeric amount in " + CURRENCY_UNIT + " is the value\n"
                 "      ,...\n"
                 "    }\n"
                 "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
@@ -1020,7 +1020,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
 
             "\nArguments:\n"
             "1. nrequired        (numeric, required) The number of required signatures out of the n keys or addresses.\n"
-            "2. \"keys\"         (string, required) A json array of bitcoin addresses or hex-encoded public keys\n"
+            "2. \"keys\"         (string, required) A json array of animecoin addresses or hex-encoded public keys\n"
             "     [\n"
             "       \"address\"  (string) animecoin address or hex-encoded public key\n"
             "       ...,\n"
@@ -2494,7 +2494,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "1. \"hexstring\"           (string, required) The hex string of the raw transaction\n"
                             "2. options                 (object, optional)\n"
                             "   {\n"
-                            "     \"changeAddress\"     (string, optional, default pool address) The bitcoin address to receive the change\n"
+                            "     \"changeAddress\"     (string, optional, default pool address) The animecoin address to receive the change\n"
                             "     \"changePosition\"    (numeric, optional, default random) The index of the change output\n"
                             "     \"includeWatching\"   (boolean, optional, default false) Also select inputs which are watch only\n"
                             "     \"lockUnspents\"      (boolean, optional, default false) Lock selected unspent outputs\n"
@@ -2555,7 +2555,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
            CBitcoinAddress address(options["changeAddress"].get_str());
 
            if (!address.IsValid())
-               throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid bitcoin address");
+               throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid animecoin address");
 
            changeAddress = address.Get();
        }
