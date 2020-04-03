@@ -6,6 +6,7 @@
 #define BITCOIN_MEMUSAGE_H
 
 #include "indirectmap.h"
+#include <robin_hood.h>
 
 #include <stdlib.h>
 
@@ -162,6 +163,12 @@ template<typename X, typename Y, typename Z>
 static inline size_t DynamicUsage(const std::unordered_map<X, Y, Z>& m)
 {
     return MallocUsage(sizeof(unordered_node<std::pair<const X, Y> >)) * m.size() + MallocUsage(sizeof(void*) * m.bucket_count());
+}
+
+template<typename X, typename Y, typename Z>
+static inline size_t DynamicUsage(const robin_hood::unordered_node_map<X, Y, Z>& m)
+{
+    return MallocUsage(sizeof(unordered_node<std::pair<const X, Y> >)) * m.size() + MallocUsage(sizeof(void*) * (m.mask() + 1));
 }
 
 }

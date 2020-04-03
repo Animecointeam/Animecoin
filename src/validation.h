@@ -18,6 +18,7 @@
 #include "primitives/block.h"
 #include "primitives/transaction.h"
 #include "protocol.h" // For CMessageHeader::MessageStartChars
+#include <robin_hood.h>
 #include "script/script.h"
 #include "script/sigcache.h"
 #include "script/standard.h"
@@ -37,7 +38,6 @@
 
 #include <atomic>
 
-#include <boost/unordered_map.hpp>
 #include <boost/filesystem/path.hpp>
 
 class CBlockIndex;
@@ -171,7 +171,7 @@ struct BlockHasher
 extern CScript COINBASE_FLAGS;
 extern CCriticalSection cs_main;
 extern CTxMemPool mempool;
-typedef std::unordered_map<uint256, CBlockIndex*, BlockHasher> BlockMap;
+typedef robin_hood::unordered_node_map<uint256, CBlockIndex*, BlockHasher> BlockMap;
 extern BlockMap mapBlockIndex;
 extern uint64_t nLastBlockTx;
 extern uint64_t nLastBlockSize;

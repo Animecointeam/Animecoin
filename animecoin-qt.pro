@@ -293,6 +293,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/base58.h \
     src/checkpoints.h \
     src/compat.h \
+    src/robin_hood.h \
     src/rpc/register.h \
     src/sync.h \
     src/threadinterrupt.h \
