@@ -36,5 +36,19 @@
   { "exec": "./animecoin-tx",
     "args": ["-create", "outscript=0:"],
     "output_cmp": "txcreate2.hex"
+  },
+  { "exec": "./animecoin-tx",
+    "args":
+    ["-create",
+     "in=5897de6bd6027a475eadd57019d4e6872c396d0716c4875a5f1a6fcfdf385c1f:0",
+     "outdata=4:badhexdata"],
+    "return_code": 1
+  },
+  { "exec": "./animecoin-tx",
+    "args":
+    ["-create",
+     "in=5897de6bd6027a475eadd57019d4e6872c396d0716c4875a5f1a6fcfdf385c1f:0",
+     "outdata=badhexdata"],
+    "return_code": 1
   }
 ]

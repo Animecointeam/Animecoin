@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>548</width>
-    <height>428</height>
+    <width>546</width>
+    <height>426</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -182,6 +182,9 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabMining">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <attribute name="title">
        <string>&amp;Mining</string>
       </attribute>

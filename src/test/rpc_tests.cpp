@@ -140,6 +140,24 @@ BOOST_AUTO_TEST_CASE(rpc_rawsign)
     */
 }
 
+BOOST_AUTO_TEST_CASE(rpc_createraw_op_return)
+{
+    BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"68656c6c6f776f726c64\"}"));
+
+    // Allow more than one data transaction output
+    BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"68656c6c6f776f726c64\",\"data\":\"68656c6c6f776f726c64\"}"));
+
+    // Key not "data" (bad address)
+    BOOST_CHECK_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"somedata\":\"68656c6c6f776f726c64\"}"), runtime_error);
+
+    // Bad hex encoding of data output
+    BOOST_CHECK_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"12345\"}"), runtime_error);
+    BOOST_CHECK_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"12345g\"}"), runtime_error);
+
+    // Data 81 bytes long
+    BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"010203040506070809101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081\"}"));
+}
+
 BOOST_AUTO_TEST_CASE(rpc_format_monetary_values)
 {
     
@@ -318,6 +336,29 @@ BOOST_AUTO_TEST_CASE(rpc_ban)
     o1 = ar[0].get_obj();
     adr = find_value(o1, "address");
     BOOST_CHECK_EQUAL(adr.get_str(), "2001:4d48:ac57:400:cacf:e9ff:fe1d:9c63/128");
+}
+
+BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
+{
+    UniValue result;
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 101);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 101);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM", "9"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 1);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+    BOOST_CHECK_EQUAL(result[2].get_int(), 9);
+
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM", "9"}));
+    BOOST_CHECK_EQUAL(result[0].get_int(), 1);
+    BOOST_CHECK_EQUAL(result[1].get_str(), "AdQ9PFnysqAm8smLZFPg6G53A2d2dLz2cM");
+    BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

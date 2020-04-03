@@ -159,15 +159,15 @@ QString Intro::getDefaultDataDirectory()
 	return GUIUtil::boostPathToQString(GetDefaultDataDir());
 }
 
-void Intro::pickDataDirectory()
+bool Intro::pickDataDirectory()
 {
 	namespace fs = boost::filesystem;
 	QSettings settings;
 	/* If data directory provided on command line, no need to look at settings
 	   or show a picking dialog */
 	if(!GetArg("-datadir", "").empty())
-		return;
-	/* 1) Default data directory for operating system */
+        return true;
+    /* 1) Default data directory for operating system */
 	QString dataDir = getDefaultDataDirectory();
 	/* 2) Allow QSettings to override default dir */
 	dataDir = settings.value("strDataDir", dataDir).toString();
@@ -184,8 +184,8 @@ void Intro::pickDataDirectory()
 			if(!intro.exec())
 			{
 				/* Cancel clicked */
-				exit(0);
-			}
+                return false;
+            }
 			dataDir = intro.getDataDirectory();
 			try {
 				TryCreateDirectory(GUIUtil::qstringToBoostPath(dataDir));
@@ -213,6 +213,7 @@ void Intro::pickDataDirectory()
 	 */
 	if(dataDir != getDefaultDataDirectory())
 		SoftSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting
+    return true;
 }
 
 void Intro::setStatus(int status, const QString &message, quint64 bytesAvailable)

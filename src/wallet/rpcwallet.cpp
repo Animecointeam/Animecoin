@@ -116,7 +116,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
                 "\nArguments:\n"
                 "1. \"account\"        (string, optional) The account name for the address to be linked to. if not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
                 "\nResult:\n"
-                "\"animecoinaddress\"      (string) The new animecoin address\n"
+                "\"address\"    (string) The new animecoin address\n"
                 "\nExamples:\n"
                 + HelpExampleCli("getnewaddress", "")
                 + HelpExampleCli("getnewaddress", "\"\"")
@@ -168,7 +168,7 @@ UniValue getaccountaddress(const JSONRPCRequest& request)
                 "\nArguments:\n"
                 "1. \"account\"       (string, required) The account name for the address. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created and a new address created  if there is no account by the given name.\n"
                 "\nResult:\n"
-                "\"animecoinaddress\"     (string) The account animecoin address\n"
+                "\"address\"          (string) The account animecoin address\n"
                 "\nExamples:\n"
                 + HelpExampleCli("getaccountaddress", "")
                 + HelpExampleCli("getaccountaddress", "\"\"")
@@ -230,10 +230,10 @@ UniValue setaccount(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-                "setaccount \"animecoinaddress\" \"account\"\n"
+                "setaccount \"address\" \"account\"\n"
                 "\nSets the account associated with the given address.\n"
                 "\nArguments:\n"
-                "1. \"animecoinaddress\"    (string, required) The animecoin address to be associated with an account.\n"
+                "1. \"address\"         (string, required) The animecoin address to be associated with an account.\n"
                 "2. \"account\"         (string, required) The account to assign the address to.\n"
                 "\nExamples:\n"
                 + HelpExampleCli("setaccount", "\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\" \"tabby\"")
@@ -276,10 +276,10 @@ UniValue getaccount(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
-                "getaccount \"animecoinaddress\"\n"
+                "getaccount \"address\"\n"
                 "\nReturns the account associated with the given address.\n"
                 "\nArguments:\n"
-                "1. \"animecoinaddress\"    (string, required) The animecoin address for account lookup.\n"
+                "1. \"address\"         (string, required) The animecoin address for account lookup.\n"
                 "\nResult:\n"
                 "\"accountname\"        (string) the account address\n"
                 "\nExamples:\n"
@@ -311,10 +311,10 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
                 "getaddressesbyaccount \"account\"\n"
                 "\nReturns the list of addresses for the given account.\n"
                 "\nArguments:\n"
-                "1. \"account\"  (string, required) The account name.\n"
+                "1. \"account\"        (string, required) The account name.\n"
                 "\nResult:\n"
                 "[                     (json array of string)\n"
-                "  \"animecoinaddress\"    (string) an animecoin address associated with the given account\n"
+                "  \"address\"         (string) an animecoin address associated with the given account\n"
                 "  ,...\n"
                 "]\n"
                 "\nExamples:\n"
@@ -379,21 +379,21 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
         throw std::runtime_error(
-                "sendtoaddress \"animecoinaddress\" amount ( \"comment\" \"comment-to\" subtractfeefromamount )\n"
+                "sendtoaddress \"address\" amount ( \"comment\" \"comment_to\" subtractfeefromamount )\n"
                 "\nSend an amount to a given address. The amount is a real and is rounded to the nearest 0.00000001\n"
                 + HelpRequiringPassphrase() +
                 "\nArguments:\n"
-                "1. \"animecoinaddress\"  (string, required) The animecoin address to send to.\n"
-                "2. \"amount\"      (numeric, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
-                "3. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
+                "1. \"address\"            (string, required) The animecoin address to send to.\n"
+                "2. \"amount\"             (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
+                "3. \"comment\"            (string, optional) A comment used to store what the transaction is for. \n"
                 "                             This is not part of the transaction, just kept in your wallet.\n"
-                "4. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
+                "4. \"comment_to\"         (string, optional) A comment to store the name of the person or organization \n"
                 "                             to which you're sending the transaction. This is not part of the \n"
                 "                             transaction, just kept in your wallet.\n"
                 "5. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
                 "                             The recipient will receive less bitcoins than you enter in the amount field.\n"
                 "\nResult:\n"
-                "\"transactionid\"  (string) The transaction id.\n"
+                "\"txid\"                  (string) The transaction id.\n"
                 "\nExamples:\n"
                 + HelpExampleCli("sendtoaddress", "\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\" 0.1")
                 + HelpExampleCli("sendtoaddress", "\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\" 0.1 \"donation\" \"seans outpost\"")
@@ -449,7 +449,7 @@ UniValue listaddressgroupings(const JSONRPCRequest& request)
             "[\n"
             "  [\n"
             "    [\n"
-            "      \"address\",            (string) The animecoin address\n"
+            "      \"address\",     (string) The animecoin address\n"
             "      amount,                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
             "      \"account\"             (string, optional) DEPRECATED. The account\n"
             "    ]\n"
@@ -496,11 +496,11 @@ UniValue signmessage(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 2)
         throw std::runtime_error(
-                "signmessage \"animecoinaddress\" \"message\"\n"
+                "signmessage \"address\" \"message\"\n"
                 "\nSign a message with the private key of an address"
                 + HelpRequiringPassphrase() + "\n"
                 "\nArguments:\n"
-                "1. \"animecoinaddress\"    (string, required) The animecoin address to use for the private key.\n"
+                "1. \"address\"         (string, required) The animecoin address to use for the private key.\n"
                 "2. \"message\"         (string, required) The message to create a signature of.\n"
                 "\nResult:\n"
                 "\"signature\"          (string) The signature of the message encoded in base 64\n"
@@ -552,10 +552,10 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-                "getreceivedbyaddress \"animecoinaddress\" ( minconf )\n"
-                "\nReturns the total amount received by the given animecoinaddress in transactions with at least minconf confirmations.\n"
+                "getreceivedbyaddress \"address\" ( minconf )\n"
+                "\nReturns the total amount received by the given address in transactions with at least minconf confirmations.\n"
                 "\nArguments:\n"
-                "1. \"animecoinaddress\"    (string, required) The animecoin address for transactions.\n"
+                "1. \"address\"         (string, required) The animecoin address for transactions.\n"
                 "2. minconf             (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
                 "\nResult:\n"
                 "amount   (numeric) The total amount in " + CURRENCY_UNIT + " received at this address.\n"
@@ -674,7 +674,7 @@ UniValue getbalance(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 3)
         throw std::runtime_error(
-                "getbalance ( \"account\" minconf includeWatchonly )\n"
+                "getbalance ( \"account\" minconf include_watchonly )\n"
                 "\nIf account is not specified, returns the server's total available balance.\n"
                 "If account is specified, returns the balance in the account.\n"
                 "Note that the account \"\" is not the same as leaving the parameter out.\n"
@@ -682,7 +682,7 @@ UniValue getbalance(const JSONRPCRequest& request)
                 "\nArguments:\n"
                 "1. \"account\"      (string, optional) The selected account, or \"*\" for entire wallet. It may be the default account using \"\".\n"
                 "2. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
-                "3. include_watchonly (bool, optional, default=false) Also include balance in watch-only addresses (see 'importaddress')\n"
+                "3. include_watchonly (bool, optional, default=false) Also include balance in watchonly addresses (see 'importaddress')\n"
                 "\nResult:\n"
                 "amount              (numeric) The total amount in " + CURRENCY_UNIT + " received for this account.\n"
                 "\nExamples:\n"
@@ -824,22 +824,22 @@ UniValue sendfrom(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 6)
         throw std::runtime_error(
-                "sendfrom \"fromaccount\" \"toanimecoinaddress\" amount ( minconf \"comment\" \"comment-to\" )\n"
+                "sendfrom \"fromaccount\" \"toaddress\" amount ( minconf \"comment\" \"comment_to\" )\n"
                 "\nSent an amount from an account to an animecoin address.\n"
                 "The amount is a real and is rounded to the nearest 0.00000001."
                 + HelpRequiringPassphrase() + "\n"
                 "\nArguments:\n"
                 "1. \"fromaccount\"       (string, required) The name of the account to send funds from. May be the default account using \"\".\n"
-                "2. \"toanimecoinaddress\"    (string, required) The animecoin address to send funds to.\n"
+                "2. \"toaddress\"         (string, required) The animecoin address to send funds to.\n"
                 "3. amount                (numeric, required) The amount in " + CURRENCY_UNIT + " (transaction fee is added on top).\n"
                 "4. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
                 "5. \"comment\"           (string, optional) A comment used to store what the transaction is for. \n"
                 "                                     This is not part of the transaction, just kept in your wallet.\n"
-                "6. \"comment-to\"        (string, optional) An optional comment to store the name of the person or organization \n"
+                "6. \"comment_to\"        (string, optional) An optional comment to store the name of the person or organization \n"
                 "                                     to which you're sending the transaction. This is not part of the transaction, \n"
                 "                                     it is just kept in your wallet.\n"
                 "\nResult:\n"
-                "\"transactionid\"        (string) The transaction id.\n"
+                "\"txid\"                 (string) The transaction id.\n"
                 "\nExamples:\n"
                 "\nSend 0.01 " + CURRENCY_UNIT + " from the default account to the address, must have at least 1 confirmation\n"
                 + HelpExampleCli("sendfrom", "\"\" \"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\" 0.01") +
@@ -900,12 +900,12 @@ UniValue sendmany(const JSONRPCRequest& request)
                 "1. \"fromaccount\"         (string, required) The account to send the funds from, can be \"\" for the default account\n"
                 "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
                 "    {\n"
-                "      \"address\":amount   (numeric) The bitcoin address is the key, the numeric amount in " + CURRENCY_UNIT + " is the value\n"
+                "      \"address\":amount   (numeric) The animecoin address is the key, the numeric amount in " + CURRENCY_UNIT + " is the value\n"
                 "      ,...\n"
                 "    }\n"
                 "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
                 "4. \"comment\"             (string, optional) A comment\n"
-                "5. subtractfeefromamount   (string, optional) A json object with addresses and booleans.\n"
+                "5. subtractfeefrom         (array, optional) A json array with addresses.\n"
                 "                           The fee will be equally deducted from the amount of each selected address.\n"
                 "                           Those recipients will receive less bitcoins than you enter in their corresponding amount field.\n"
                 "                           Default for each address is false. If no addresses are specified here, the sender pays the fee.\n"
@@ -914,7 +914,7 @@ UniValue sendmany(const JSONRPCRequest& request)
                 "      ,...\n"
                 "    }\n"
                 "\nResult:\n"
-                "\"transactionid\"          (string) The transaction id for the send. Only 1 transaction is created regardless of \n"
+                "\"txid\"                   (string) The transaction id for the send. Only 1 transaction is created regardless of \n"
                 "                                    the number of addresses.\n"
                 "\nExamples:\n"
                 "\nSend two amounts to two different addresses:\n"
@@ -1020,7 +1020,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
 
             "\nArguments:\n"
             "1. nrequired        (numeric, required) The number of required signatures out of the n keys or addresses.\n"
-            "2. \"keysobject\"   (string, required) A json array of animecoin addresses or hex-encoded public keys\n"
+            "2. \"keys\"         (string, required) A json array of animecoin addresses or hex-encoded public keys\n"
             "     [\n"
             "       \"address\"  (string) animecoin address or hex-encoded public key\n"
             "       ...,\n"
@@ -1028,7 +1028,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
             "3. \"account\"      (string, optional) An account to assign the addresses to.\n"
 
             "\nResult:\n"
-            "\"animecoinaddress\"  (string) An animecoin address associated with the keys.\n"
+            "\"address\"         (string) An animecoin address associated with the keys.\n"
 
             "\nExamples:\n"
             "\nAdd a multisig address from 2 addresses\n"
@@ -1196,12 +1196,12 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 3)
         throw std::runtime_error(
-                "listreceivedbyaddress ( minconf includeempty includeWatchonly)\n"
+                "listreceivedbyaddress ( minconf include_empty include_watchonly)\n"
                 "\nList balances by receiving address.\n"
                 "\nArguments:\n"
-                "1. minconf       (numeric, optional, default=1) The minimum number of confirmations before payments are included.\n"
-                "2. includeempty  (numeric, optional, default=false) Whether to include addresses that haven't received any payments.\n"
-                "3. include_watchonly (bool, optional, default=false) Whether to include watch-only addresses (see 'importaddress').\n"
+                "1. minconf           (numeric, optional, default=1) The minimum number of confirmations before payments are included.\n"
+                "2. include_empty     (bool, optional, default=false) Whether to include addresses that haven't received any payments.\n"
+                "3. include_watchonly (bool, optional, default=false) Whether to include watchonly addresses (see 'importaddress').\n"
 
                 "\nResult:\n"
                 "[\n"
@@ -1242,12 +1242,12 @@ UniValue listreceivedbyaccount(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 3)
         throw std::runtime_error(
-                "listreceivedbyaccount ( minconf includeempty includeWatchonly)\n"
+                "listreceivedbyaccount ( minconf include_empty include_watchonly)\n"
                 "\nList balances by account.\n"
                 "\nArguments:\n"
-                "1. minconf      (numeric, optional, default=1) The minimum number of confirmations before payments are included.\n"
-                "2. includeempty (boolean, optional, default=false) Whether to include accounts that haven't received any payments.\n"
-                "3. include_watchonly (bool, optional, default=false) Whether to include watch-only addresses (see 'importaddress').\n"
+                "1. minconf           (numeric, optional, default=1) The minimum number of confirmations before payments are included.\n"
+                "2. include_empty     (bool, optional, default=false) Whether to include accounts that haven't received any payments.\n"
+                "3. include_watchonly (bool, optional, default=false) Whether to include watchonly addresses (see 'importaddress').\n"
 
                 "\nResult:\n"
                 "[\n"
@@ -1382,20 +1382,20 @@ UniValue listtransactions(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
-                "listtransactions ( \"account\" count from includeWatchonly)\n"
+                "listtransactions ( \"account\" count skip include_watchonly)\n"
                 "\nReturns up to 'count' most recent transactions skipping the first 'from' transactions for account 'account'.\n"
                 "\nArguments:\n"
                 "1. \"account\"    (string, optional) The account name. If not included, it will list all transactions for all accounts.\n"
                 "                                     If \"\" is set, it will list transactions for the default account.\n"
                 "2. count          (numeric, optional, default=10) The number of transactions to return\n"
-                "3. from           (numeric, optional, default=0) The number of transactions to skip\n"
-                "4. include_watchonly (bool, optional, default=false) Include transactions to watch-only addresses (see 'importaddress')\n"
+                "3. skip           (numeric, optional, default=0) The number of transactions to skip\n"
+                "4. include_watchonly (bool, optional, default=false) Include transactions to watchonly addresses (see 'importaddress')\n"
                 "\nResult:\n"
                 "[\n"
                 "  {\n"
                 "    \"account\":\"accountname\",       (string) The account name associated with the transaction. \n"
                 "                                                It will be \"\" for the default account.\n"
-                "    \"address\":\"animecoinaddress\",      (string) The animecoin address of the transaction. Not present for \n"
+                "    \"address\":\"address\",    (string) The animecoin address of the transaction. Not present for \n"
                 "                                                move transactions (category = move).\n"
                 "    \"category\":\"send|receive|move\", (string) The transaction category. 'move' is a local (off blockchain)\n"
                 "                                                transaction between accounts, and not associated with an address,\n"
@@ -1516,11 +1516,11 @@ UniValue listaccounts(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 2)
         throw std::runtime_error(
-                "listaccounts ( minconf includeWatchonly)\n"
+                "listaccounts ( minconf include_watchonly)\n"
                 "\nReturns Object that has account names as keys, account balances as values.\n"
                 "\nArguments:\n"
-                "1. minconf          (numeric, optional, default=1) Only include transactions with at least this many confirmations\n"
-                "2. include_watchonly   (bool, optional, default=false) Include balances in watch-only addresses (see 'importaddress')\n"
+                "1. minconf             (numeric, optional, default=1) Only include transactions with at least this many confirmations\n"
+                "2. include_watchonly   (bool, optional, default=false) Include balances in watchonly addresses (see 'importaddress')\n"
                 "\nResult:\n"
                 "{                      (json object where keys are account names, and values are numeric balances\n"
                 "  \"account\": x.xxx,  (numeric) The property name is the account name, and the value is the total balance for the account.\n"
@@ -1599,17 +1599,17 @@ UniValue listsinceblock(const JSONRPCRequest& request)
 
     if (request.fHelp)
         throw std::runtime_error(
-                "listsinceblock ( \"blockhash\" target-confirmations includeWatchonly)\n"
+                "listsinceblock ( \"blockhash\" target_confirmations include_watchonly)\n"
                 "\nGet all transactions in blocks since block [blockhash], or all transactions if omitted\n"
                 "\nArguments:\n"
-                "1. \"blockhash\"   (string, optional) The block hash to list transactions since\n"
-                "2. target-confirmations:    (numeric, optional) The confirmations required, must be 1 or more\n"
-                "3. include_watchonly:       (bool, optional, default=false) Include transactions to watch-only addresses (see 'importaddress')"
+                "1. \"blockhash\"            (string, optional) The block hash to list transactions since\n"
+                "2. target_confirmations:    (numeric, optional) The confirmations required, must be 1 or more\n"
+                "3. include_watchonly:       (bool, optional, default=false) Include transactions to watchonly addresses (see 'importaddress')"
                 "\nResult:\n"
                 "{\n"
                 "  \"transactions\": [\n"
                 "    \"account\":\"accountname\",       (string) The account name associated with the transaction. Will be \"\" for the default account.\n"
-                "    \"address\":\"animecoinaddress\",      (string) The animecoin address of the transaction. Not present for move transactions (category = move).\n"
+                "    \"address\":\"address\",    (string) The animecoin address of the transaction. Not present for move transactions (category = move).\n"
                 "    \"category\":\"send|receive\",     (string) The transaction category. 'send' has negative amounts, 'receive' has positive amounts.\n"
                 "    \"amount\": x.xxx,          (numeric) The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and for the 'move' category for moves \n"
                 "                                          outbound. It is positive for the 'receive' category, and for the 'move' category for inbound funds.\n"
@@ -1698,11 +1698,11 @@ UniValue gettransaction(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-                "gettransaction \"txid\" ( includeWatchonly )\n"
+                "gettransaction \"txid\" ( include_watchonly )\n"
                 "\nGet detailed information about in-wallet transaction <txid>\n"
                 "\nArguments:\n"
-                "1. \"txid\"    (string, required) The transaction id\n"
-                "2. \"include_watchonly\"     (bool, optional, default=false) Whether to include watch-only addresses in balance calculation and details[]\n"
+                "1. \"txid\"                  (string, required) The transaction id\n"
+                "2. \"include_watchonly\"     (bool, optional, default=false) Whether to include watchonly addresses in balance calculation and details[]\n"
                 "\nResult:\n"
                 "{\n"
                 "  \"amount\" : x.xxx,        (numeric) The transaction amount in " + CURRENCY_UNIT + "\n"
@@ -1720,7 +1720,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
                 "  \"details\" : [\n"
                 "    {\n"
                 "      \"account\" : \"accountname\",      (string) DEPRECATED. The account name involved in the transaction, can be \"\" for the default account.\n"
-                "      \"address\" : \"address\",          (string) The bitcoin address involved in the transaction\n"
+                "      \"address\" : \"address\",   (string) The animecoin address involved in the transaction\n"
                 "      \"category\" : \"send|receive\",    (string) The category, either 'send' or 'receive'\n"
                 "      \"amount\" : x.xxx,                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
                 "      \"label\" : \"label\",              (string) A comment for the address/transaction, if any\n"
@@ -2060,7 +2060,7 @@ UniValue encryptwallet(const JSONRPCRequest& request)
                 "\nNow set the passphrase to use the wallet, such as for signing or sending animecoins\n"
                 + HelpExampleCli("walletpassphrase", "\"my pass phrase\"") +
                 "\nNow we can so something like sign\n"
-                + HelpExampleCli("signmessage", "\"animecoinaddress\" \"test message\"") +
+                + HelpExampleCli("signmessage", "\"address\" \"test message\"") +
                 "\nNow lock the wallet again by removing the passphrase\n"
                 + HelpExampleCli("walletlock", "") +
                 "\nAs a json rpc call\n"
@@ -2365,7 +2365,7 @@ UniValue listunspent(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 3)
         throw std::runtime_error(
-                "listunspent ( minconf maxconf  [\"address\",...] )\n"
+                "listunspent ( minconf maxconf  [\"addresses\",...] )\n"
                 "\nReturns array of unspent transaction outputs\n"
             "with between minconf and maxconf (inclusive) confirmations.\n"
                 "Optionally filter to only include txouts paid to specified addresses.\n"
@@ -2492,9 +2492,9 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "Only pay-to-pubkey, multisig, and P2SH versions thereof are currently supported for watch-only\n"
                             "\nArguments:\n"
                             "1. \"hexstring\"           (string, required) The hex string of the raw transaction\n"
-                            "2. options               (object, optional)\n"
+                            "2. options                 (object, optional)\n"
                             "   {\n"
-                            "     \"changeAddress\"     (string, optional, default pool address) The bitcoin address to receive the change\n"
+                            "     \"changeAddress\"     (string, optional, default pool address) The animecoin address to receive the change\n"
                             "     \"changePosition\"    (numeric, optional, default random) The index of the change output\n"
                             "     \"includeWatching\"   (boolean, optional, default false) Also select inputs which are watch only\n"
                             "     \"lockUnspents\"      (boolean, optional, default false) Lock selected unspent outputs\n"
@@ -2555,7 +2555,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
            CBitcoinAddress address(options["changeAddress"].get_str());
 
            if (!address.IsValid())
-               throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid bitcoin address");
+               throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid animecoin address");
 
            changeAddress = address.Get();
        }
@@ -2642,53 +2642,54 @@ extern UniValue importmulti(const JSONRPCRequest& request);
 static const CRPCCommand commands[] =
 { //  category              name                        actor (function)           okSafeMode
     //  --------------------- ------------------------    -----------------------    ----------
-    { "rawtransactions",    "fundrawtransaction",       &fundrawtransaction,       false },
-    { "hidden",             "resendwallettransactions", &resendwallettransactions, true  },
-    { "wallet",             "abandontransaction",       &abandontransaction,       false },
-    { "wallet",             "addmultisigaddress",       &addmultisigaddress,       true  },
-    { "wallet",             "backupwallet",             &backupwallet,             true  },
-    { "wallet",             "dumpprivkey",              &dumpprivkey,              true  },
-    { "wallet",             "dumpwallet",               &dumpwallet,               true  },
-    { "wallet",             "encryptwallet",            &encryptwallet,            true  },
-    { "wallet",             "getaccountaddress",        &getaccountaddress,        true  },
-    { "wallet",             "getaccount",               &getaccount,               true  },
-    { "wallet",             "getaddressesbyaccount",    &getaddressesbyaccount,    true  },
-    { "wallet",             "getbalance",               &getbalance,               false },
-    { "wallet",             "getnewaddress",            &getnewaddress,            true  },
-    { "wallet",             "getrawchangeaddress",      &getrawchangeaddress,      true  },
-    { "wallet",             "getreceivedbyaccount",     &getreceivedbyaccount,     false },
-    { "wallet",             "getreceivedbyaddress",     &getreceivedbyaddress,     false },
-    { "wallet",             "gettransaction",           &gettransaction,           false },
-    { "wallet",             "getunconfirmedbalance",    &getunconfirmedbalance,    false },
-    { "wallet",             "getwalletinfo",            &getwalletinfo,            false },
-    { "wallet",             "importmulti",              &importmulti,              true  },
-    { "wallet",             "importprivkey",            &importprivkey,            true  },
-    { "wallet",             "importwallet",             &importwallet,             true  },
-    { "wallet",             "importaddress",            &importaddress,            true  },
-    { "wallet",             "importprunedfunds",        &importprunedfunds,        true  },
-    { "wallet",             "importpubkey",             &importpubkey,             true  },
-    { "wallet",             "keypoolrefill",            &keypoolrefill,            true  },
-    { "wallet",             "listaccounts",             &listaccounts,             false },
-    { "wallet",             "listaddressgroupings",     &listaddressgroupings,     false },
-    { "wallet",             "listlockunspent",          &listlockunspent,          false },
-    { "wallet",             "listreceivedbyaccount",    &listreceivedbyaccount,    false },
-    { "wallet",             "listreceivedbyaddress",    &listreceivedbyaddress,    false },
-    { "wallet",             "listsinceblock",           &listsinceblock,           false },
-    { "wallet",             "listtransactions",         &listtransactions,         false },
-    { "wallet",             "listunspent",              &listunspent,              false },
-    { "wallet",             "lockunspent",              &lockunspent,              true  },
-    { "wallet",             "move",                     &movecmd,                  false },
-    { "wallet",             "sendfrom",                 &sendfrom,                 false },
-    { "wallet",             "sendmany",                 &sendmany,                 false },
-    { "wallet",             "sendtoaddress",            &sendtoaddress,            false },
-    { "wallet",             "setaccount",               &setaccount,               true  },
-    { "wallet",             "settxfee",                 &settxfee,                 true  },
-    { "wallet",             "signmessage",              &signmessage,              true  },
-    { "wallet",             "walletlock",               &walletlock,               true  },
-    { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   true  },
-    { "wallet",             "walletpassphrase",         &walletpassphrase,         true  },
-    { "wallet",             "removeprunedfunds",        &removeprunedfunds,        true  },
-    { "wallet",             "setspv",                   &setspv,                   true  }, //   {"state"} },
+  { "rawtransactions",    "fundrawtransaction",       &fundrawtransaction,       false,  {"hexstring","options"} },
+  { "hidden",             "resendwallettransactions", &resendwallettransactions, true,   {} },
+  { "wallet",             "abandontransaction",       &abandontransaction,       false,  {"txid"} },
+  { "wallet",             "addmultisigaddress",       &addmultisigaddress,       true,   {"nrequired","keys","account"} },
+//  { "wallet",             "addwitnessaddress",        &addwitnessaddress,        true,   {"address"} },
+  { "wallet",             "backupwallet",             &backupwallet,             true,   {"destination"} },
+  { "wallet",             "dumpprivkey",              &dumpprivkey,              true,   {"address"}  },
+  { "wallet",             "dumpwallet",               &dumpwallet,               true,   {"filename"} },
+  { "wallet",             "encryptwallet",            &encryptwallet,            true,   {"passphrase"} },
+  { "wallet",             "getaccountaddress",        &getaccountaddress,        true,   {"account"} },
+  { "wallet",             "getaccount",               &getaccount,               true,   {"address"} },
+  { "wallet",             "getaddressesbyaccount",    &getaddressesbyaccount,    true,   {"account"} },
+  { "wallet",             "getbalance",               &getbalance,               false,  {"account","minconf","include_watchonly"} },
+  { "wallet",             "getnewaddress",            &getnewaddress,            true,   {"account"} },
+  { "wallet",             "getrawchangeaddress",      &getrawchangeaddress,      true,   {} },
+  { "wallet",             "getreceivedbyaccount",     &getreceivedbyaccount,     false,  {"account","minconf"} },
+  { "wallet",             "getreceivedbyaddress",     &getreceivedbyaddress,     false,  {"address","minconf"} },
+  { "wallet",             "gettransaction",           &gettransaction,           false,  {"txid","include_watchonly"} },
+  { "wallet",             "getunconfirmedbalance",    &getunconfirmedbalance,    false,  {} },
+  { "wallet",             "getwalletinfo",            &getwalletinfo,            false,  {} },
+  { "wallet",             "importmulti",              &importmulti,              true,   {"requests","options"} },
+  { "wallet",             "importprivkey",            &importprivkey,            true,   {"privkey","label","rescan"} },
+  { "wallet",             "importwallet",             &importwallet,             true,   {"filename"} },
+  { "wallet",             "importaddress",            &importaddress,            true,   {"address","label","rescan","p2sh"} },
+  { "wallet",             "importprunedfunds",        &importprunedfunds,        true,   {"rawtransaction","txoutproof"} },
+  { "wallet",             "importpubkey",             &importpubkey,             true,   {"pubkey","label","rescan"} },
+  { "wallet",             "keypoolrefill",            &keypoolrefill,            true,   {"newsize"} },
+  { "wallet",             "listaccounts",             &listaccounts,             false,  {"minconf","include_watchonly"} },
+  { "wallet",             "listaddressgroupings",     &listaddressgroupings,     false,  {} },
+  { "wallet",             "listlockunspent",          &listlockunspent,          false,  {} },
+  { "wallet",             "listreceivedbyaccount",    &listreceivedbyaccount,    false,  {"minconf","include_empty","include_watchonly"} },
+  { "wallet",             "listreceivedbyaddress",    &listreceivedbyaddress,    false,  {"minconf","include_empty","include_watchonly"} },
+  { "wallet",             "listsinceblock",           &listsinceblock,           false,  {"blockhash","target_confirmations","include_watchonly"} },
+  { "wallet",             "listtransactions",         &listtransactions,         false,  {"account","count","skip","include_watchonly"} },
+  { "wallet",             "listunspent",              &listunspent,              false,  {"minconf","maxconf","addresses"} },
+  { "wallet",             "lockunspent",              &lockunspent,              true,   {"unlock","transactions"} },
+  { "wallet",             "move",                     &movecmd,                  false,  {"fromaccount","toaccount","amount","minconf","comment"} },
+  { "wallet",             "sendfrom",                 &sendfrom,                 false,  {"fromaccount","toaddress","amount","minconf","comment","comment_to"} },
+  { "wallet",             "sendmany",                 &sendmany,                 false,  {"fromaccount","amounts","minconf","comment","subtractfeefrom"} },
+  { "wallet",             "sendtoaddress",            &sendtoaddress,            false,  {"address","amount","comment","comment_to","subtractfeefromamount"} },
+  { "wallet",             "setaccount",               &setaccount,               true,   {"address","account"} },
+  { "wallet",             "settxfee",                 &settxfee,                 true,   {"amount"} },
+  { "wallet",             "signmessage",              &signmessage,              true,   {"address","message"} },
+  { "wallet",             "walletlock",               &walletlock,               true,   {} },
+  { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   true,   {"oldpassphrase","newpassphrase"} },
+  { "wallet",             "walletpassphrase",         &walletpassphrase,         true,   {"passphrase","timeout"} },
+  { "wallet",             "removeprunedfunds",        &removeprunedfunds,        true,   {"txid"} },
+  { "wallet",             "setspv",                   &setspv,                   true,   {"state"} },
 };
 
 void RegisterWalletRPCCommands(CRPCTable &t)
