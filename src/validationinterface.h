@@ -171,7 +171,6 @@ public:
     void BlockConnected(const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::shared_ptr<const std::vector<CTransactionRef>> &);
     void BlockDisconnected(const std::shared_ptr<const CBlock> &);
     void FindTransaction(const uint256 &, std::shared_ptr<const CTransaction> &);
-    void UpdatedTransaction(const uint256 &);
     void SetBestChain(const CBlockLocator &);
     void SetBestNVSChain();
     void Inventory(const uint256 &);
