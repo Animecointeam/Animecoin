@@ -173,6 +173,9 @@ public:
     //! Byte offset within rev?????.dat where this block's undo data is stored
     unsigned int nUndoPos;
 
+    //! Total amount of work (expected number of hashes) in this block
+    arith_uint256 nBlockProof;
+
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork;
 
@@ -207,6 +210,7 @@ public:
         nFile = 0;
         nDataPos = 0;
         nUndoPos = 0;
+        nBlockProof = arith_uint256();
         nChainWork = arith_uint256();
         nTx = 0;
         nChainTx = 0;
@@ -343,6 +347,7 @@ class CDiskBlockIndex : public CBlockIndex
 {
 private:
     uint256 blockHash;
+    uint256 blockProof;
 
 public:
     uint256 hashPrev;
@@ -350,6 +355,7 @@ public:
     CDiskBlockIndex() {
         hashPrev = uint256();
         blockHash = uint256();
+        blockProof = uint256();
     }
 
     explicit CDiskBlockIndex(const CBlockIndex* pindex) : CBlockIndex(*pindex) {
@@ -378,6 +384,10 @@ public:
             GetBlockHash();
         READWRITE(blockHash);
 
+        if (!ser_action.ForRead() && blockProof.IsNull())
+            GetChainWork();
+        READWRITE(blockProof);
+
         // block header
         READWRITE(this->nVersion);
         READWRITE(hashPrev);
@@ -405,6 +415,16 @@ public:
         return blockHash;
     }
 
+    uint256 GetChainWork() const
+    {
+        if (fUseFastIndex && (nTime < GetAdjustedTime() - 24 * 60 * 60) && !blockProof.IsNull()) // TODO: clock drift settings.
+            return blockProof;
+
+        CBlockIndex block;
+        block.nBits = nBits;
+        const_cast<CDiskBlockIndex*>(this)->blockProof = ArithToUint256 (GetBlockProof(block));
+        return blockProof;
+    }
 
     std::string ToString() const
     {
