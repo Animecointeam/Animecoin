@@ -106,7 +106,7 @@ public:
         parent(_parent), piter(_piter) { }
     ~CDBIterator();
 
-    bool Valid();
+    bool Valid() const;
 
     void SeekToFirst();
 

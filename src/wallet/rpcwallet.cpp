@@ -90,7 +90,7 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
     }
     entry.pushKV("bip125-replaceable", rbfStatus);
 
-    for (const std::pair<std::string,std::string>& item : wtx.mapValue)
+    for (const std::pair<const std::string,std::string>& item : wtx.mapValue)
         entry.pushKV(item.first, item.second);
 }
 
@@ -328,7 +328,7 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
 
     // Find all addresses that have the given account
     UniValue ret(UniValue::VARR);
-    for (const std::pair<CBitcoinAddress, CAddressBookData>& item : pwalletMain->mapAddressBook)
+    for (const std::pair<const CBitcoinAddress, CAddressBookData>& item : pwalletMain->mapAddressBook)
     {
         const CBitcoinAddress& address = item.first;
         const std::string& strName = item.second.name;
@@ -591,7 +591,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
 
     // Tally
     CAmount nAmount = 0;
-    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    for (std::map<const uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
         if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated)) // *wtx.tx
@@ -1088,7 +1088,7 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
 
     // Tally
     std::map<CBitcoinAddress, tallyitem> mapTally;
-    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    for (std::map<const uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
 
@@ -1172,14 +1172,14 @@ UniValue ListReceived(const UniValue& params, bool fByAccounts)
 
     if (fByAccounts)
     {
-        for (std::map<std::string, tallyitem>::iterator it = mapAccountTally.begin(); it != mapAccountTally.end(); ++it)
+        for (const auto& entry : mapAccountTally)
         {
-            CAmount nAmount = (*it).second.nAmount;
-            int nConf = (*it).second.nConf;
+            CAmount nAmount = entry.second.nAmount;
+            int nConf = entry.second.nConf;
             UniValue obj(UniValue::VOBJ);
-            if((*it).second.fIsWatchonly)
+            if (entry.second.fIsWatchonly)
                 obj.pushKV("involvesWatchonly", true);
-            obj.pushKV("account",       (*it).first);
+            obj.pushKV("account",       entry.first);
             obj.pushKV("amount",        ValueFromAmount(nAmount));
             obj.pushKV("confirmations", (nConf == std::numeric_limits<int>::max() ? 0 : nConf));
             ret.push_back(obj);
@@ -1552,12 +1552,12 @@ UniValue listaccounts(const JSONRPCRequest& request)
             includeWatchonly = includeWatchonly | ISMINE_WATCH_ONLY;
 
     std::map<std::string, CAmount> mapAccountBalances;
-    for (const std::pair<CTxDestination, CAddressBookData>& entry : pwalletMain->mapAddressBook) {
+    for (const std::pair<const CTxDestination, CAddressBookData>& entry : pwalletMain->mapAddressBook) {
         if (IsMine(*pwalletMain, entry.first) & includeWatchonly) // This address belongs to me
             mapAccountBalances[entry.second.name] = 0;
     }
 
-    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
+    for (std::map<const uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
         CAmount nFee;
@@ -1586,7 +1586,7 @@ UniValue listaccounts(const JSONRPCRequest& request)
         mapAccountBalances[entry.strAccount] += entry.nCreditDebit;
 
     UniValue ret(UniValue::VOBJ);
-    for (const std::pair<std::string, CAmount>& accountBalance : mapAccountBalances) {
+    for (const std::pair<const std::string, CAmount>& accountBalance : mapAccountBalances) {
         ret.pushKV(accountBalance.first, ValueFromAmount(accountBalance.second));
     }
     return ret;
@@ -1673,7 +1673,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
 
     UniValue transactions(UniValue::VARR);
 
-    for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); it++)
+    for (std::map<const uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); it++)
     {
         CWalletTx tx = (*it).second;
 
@@ -2225,7 +2225,7 @@ UniValue listlockunspent(const JSONRPCRequest& request)
 
     UniValue ret(UniValue::VARR);
 
-    for (COutPoint &outpt : vOutpts) {
+    for (const COutPoint& outpt : vOutpts) {
         UniValue o(UniValue::VOBJ);
 
         o.pushKV("txid", outpt.hash.GetHex());

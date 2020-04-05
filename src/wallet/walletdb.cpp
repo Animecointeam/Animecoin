@@ -641,7 +641,7 @@ DBErrors CWalletDB::LoadWallet(CWallet* pwallet)
     if ((wss.nKeys + wss.nCKeys + wss.nWatchKeys) != wss.nKeyMeta)
         pwallet->UpdateTimeFirstKey(1);
 
-    for (uint256 hash : wss.vWalletUpgrade)
+    for (const uint256& hash : wss.vWalletUpgrade)
         WriteTx(pwallet->mapWallet[hash]);
 
     // Rewrite encrypted wallets of versions 0.4.0 and 0.5.0rc:
@@ -735,7 +735,7 @@ DBErrors CWalletDB::ZapWalletTx(vector<CWalletTx>& vWtx)
         return err;
 
     // erase each wallet TX
-    for (uint256& hash : vTxHash) {
+    for (const uint256& hash : vTxHash) {
         if (!EraseTx(hash))
             return DB_CORRUPT;
     }
@@ -759,7 +759,7 @@ DBErrors CWalletDB::ZapSelectTx(vector<uint256>& vTxHashIn, vector<uint256>& vTx
     // erase each matching wallet TX
     bool delerror = false;
     vector<uint256>::iterator it = vTxHashIn.begin();
-    for  (uint256 hash : vTxHash) {
+    for  (const uint256& hash : vTxHash) {
         while (it < vTxHashIn.end() && (*it) < hash) {
             it++;
         }

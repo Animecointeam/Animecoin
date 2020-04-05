@@ -287,7 +287,7 @@ public:
 	//
 	bool eof() const             { return size() == 0; }
 	CDataStream* rdbuf()         { return this; }
-	int in_avail()               { return size(); }
+    int in_avail()  const        { return size(); }
 
 	void SetType(int n)          { nType = n; }
     int GetType() const          { return nType; }
@@ -604,7 +604,7 @@ public:
 	}
 
 	// return the current reading position
-	uint64_t GetPos() {
+    uint64_t GetPos()  const {
 		return nReadPos;
 	}
 

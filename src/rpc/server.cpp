@@ -181,8 +181,8 @@ std::string CRPCTable::help(const std::string& strCommand) const
     set<rpcfn_type> setDone;
     vector<pair<string, const CRPCCommand*> > vCommands;
 
-    for (map<string, const CRPCCommand*>::const_iterator mi = mapCommands.begin(); mi != mapCommands.end(); ++mi)
-        vCommands.push_back(make_pair(mi->second->category + mi->first, mi->second));
+    for (const auto& entry : mapCommands)
+        vCommands.push_back(make_pair(entry.second->category + entry.first, entry.second));
     sort(vCommands.begin(), vCommands.end());
 
     for (const std::pair<string, const CRPCCommand*>& command : vCommands)

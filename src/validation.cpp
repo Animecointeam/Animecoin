@@ -457,7 +457,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         // do all inputs exist?
         // Note that this does not check for the presence of actual outputs (see the next check for that),
         // only helps filling in pfMissingInputs (to determine missing vs spent).
-        for (const CTxIn txin : tx.vin) {
+        for (const CTxIn& txin : tx.vin) {
             if (!pcoinsTip->HaveCoinsInCache(txin.prevout.hash))
                 vHashTxnToUncache.push_back(txin.prevout.hash);
             if (!view.HaveCoins(txin.prevout.hash)) {
@@ -728,7 +728,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState& state, const C
         }
 
         // Remove conflicting transactions from the mempool
-        for (const CTxMemPool::txiter it : allConflicting)
+        for (CTxMemPool::txiter it : allConflicting)
         {
             LogPrint("mempool", "replacing tx %s with %s for %s BTC additional fees, %d delta bytes\n",
                     it->GetTx().GetHash().ToString(),
@@ -2931,8 +2931,8 @@ uint64_t CalculateCurrentUsage()
 /* Prune a block file (modify associated database entries)*/
 void PruneOneBlockFile(const int fileNumber)
 {
-    for (BlockMap::iterator it = mapBlockIndex.begin(); it != mapBlockIndex.end(); ++it) {
-        CBlockIndex* pindex = it->second;
+    for (const auto& entry : mapBlockIndex) {
+        CBlockIndex* pindex = entry.second;
         if (pindex->nFile == fileNumber) {
             pindex->nStatus &= ~BLOCK_HAVE_DATA;
             pindex->nStatus &= ~BLOCK_HAVE_UNDO;
@@ -3325,7 +3325,7 @@ void UnloadBlockIndex()
     g_failed_blocks.clear();
     setDirtyFileInfo.clear();
 
-    for (BlockMap::value_type& entry : mapBlockIndex) {
+    for (const BlockMap::value_type& entry : mapBlockIndex) {
         delete entry.second;
     }
     mapBlockIndex.clear();
@@ -3515,8 +3515,8 @@ void static CheckBlockIndex(const Consensus::Params& consensusParams)
 
     // Build forward-pointing map of the entire block tree.
     std::multimap<CBlockIndex*,CBlockIndex*> forward;
-    for (BlockMap::iterator it = mapBlockIndex.begin(); it != mapBlockIndex.end(); ++it) {
-        forward.insert(std::make_pair(it->second->pprev, it->second));
+    for (const robin_hood::pair<const uint256, CBlockIndex*>& entry : mapBlockIndex) {
+        forward.insert(std::make_pair(entry.second->pprev, entry.second));
     }
 
     assert(forward.size() == mapBlockIndex.size());

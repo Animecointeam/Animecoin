@@ -327,7 +327,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     questionString.append("<hr />");
     CAmount totalAmount = currentTransaction.getTotalTransactionAmount() + txFee;
     QStringList alternativeUnits;
-    foreach(BitcoinUnits::Unit u, BitcoinUnits::availableUnits())
+    foreach(const BitcoinUnits::Unit u, BitcoinUnits::availableUnits())
     {
         if(u != model->getOptionsModel()->getDisplayUnit())
             alternativeUnits.append(BitcoinUnits::formatHtmlWithUnit(u, totalAmount));

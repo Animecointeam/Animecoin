@@ -183,7 +183,7 @@ private:
     /** Remove confirmed (inBlock) entries from given set */
     void onlyUnconfirmed(CTxMemPool::setEntries& testSet);
     /** Test if a new package would "fit" in the block */
-    bool TestPackage(uint64_t packageSize, unsigned int packageSigOps);
+    bool TestPackage(uint64_t packageSize, unsigned int packageSigOps) const;
     /** Test if a set of transactions are all final */
     bool TestPackageFinality(const CTxMemPool::setEntries& package);
     /** Return true if given transaction from mapTx has already been evaluated,

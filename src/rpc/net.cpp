@@ -155,7 +155,7 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
             obj.pushKV("synced_headers", statestats.nSyncHeight);
             obj.pushKV("synced_blocks", statestats.nCommonHeight);
             UniValue heights(UniValue::VARR);
-            for (int height : statestats.vHeightInFlight) {
+            for (const int height : statestats.vHeightInFlight) {
                 heights.push_back(height);
             }
             obj.pushKV("inflight", heights);
@@ -439,7 +439,7 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
     UniValue localAddresses(UniValue::VARR);
     {
         LOCK(cs_mapLocalHost);
-        for (const std::pair<CNetAddr, LocalServiceInfo> &item : mapLocalHost)
+        for (const std::pair<const CNetAddr, LocalServiceInfo> &item : mapLocalHost)
         {
             UniValue rec(UniValue::VOBJ);
             rec.pushKV("address", item.first.ToString());
@@ -537,11 +537,11 @@ UniValue listbanned(const JSONRPCRequest& request)
     g_connman->GetBanned(banMap);
 
     UniValue bannedAddresses(UniValue::VARR);
-    for (banmap_t::iterator it = banMap.begin(); it != banMap.end(); it++)
+    for (const auto& entry : banMap)
     {
-        CBanEntry banEntry = (*it).second;
+        const CBanEntry& banEntry = entry.second;
         UniValue rec(UniValue::VOBJ);
-        rec.pushKV("address", (*it).first.ToString());
+        rec.pushKV("address", entry.first.ToString());
         rec.pushKV("banned_until", banEntry.nBanUntil);
         rec.pushKV("ban_created", banEntry.nCreateTime);
         rec.pushKV("ban_reason", banEntry.banReasonToString());

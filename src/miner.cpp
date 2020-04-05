@@ -185,7 +185,7 @@ void BlockAssembler::onlyUnconfirmed(CTxMemPool::setEntries& testSet)
     }
 }
 
-bool BlockAssembler::TestPackage(uint64_t packageSize, unsigned int packageSigOps)
+bool BlockAssembler::TestPackage(uint64_t packageSize, unsigned int packageSigOps) const
 {
     if (nBlockSize + packageSize >= nBlockMaxSize)
         return false;
@@ -198,7 +198,7 @@ bool BlockAssembler::TestPackage(uint64_t packageSize, unsigned int packageSigOp
 // are final.
 bool BlockAssembler::TestPackageFinality(const CTxMemPool::setEntries& package)
 {
-    for (const CTxMemPool::txiter it : package) {
+    for (CTxMemPool::txiter it : package) {
         if (!IsFinalTx(it->GetTx(), nHeight, nLockTimeCutoff))
             return false;
     }
@@ -326,7 +326,7 @@ void BlockAssembler::addScoreTxs()
 void BlockAssembler::UpdatePackagesForAdded(const CTxMemPool::setEntries& alreadyAdded,
         indexed_modified_transaction_set &mapModifiedTx)
 {
-    for (const CTxMemPool::txiter it : alreadyAdded) {
+    for (CTxMemPool::txiter it : alreadyAdded) {
         CTxMemPool::setEntries descendants;
         mempool.CalculateDescendants(it, descendants);
         // Insert all descendants (not yet in block) into the modified set

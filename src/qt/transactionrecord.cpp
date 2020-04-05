@@ -262,7 +262,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
 
 }
 
-bool TransactionRecord::statusUpdateNeeded()
+bool TransactionRecord::statusUpdateNeeded() const
 {
     AssertLockHeld(cs_main);
     return (status.cur_num_blocks != chainActive.Height()  || status.cur_num_blocks_headers_chain != headersChainActive.Height() || status.needsUpdate);

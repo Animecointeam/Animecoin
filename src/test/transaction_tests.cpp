@@ -53,7 +53,7 @@ unsigned int ParseScriptFlags(string strFlags)
     vector<string> words;
     boost::algorithm::split(words, strFlags, boost::algorithm::is_any_of(","));
 
-    for (string word : words)
+    for (const std::string& word : words)
     {
         if (!mapFlagNames.count(word))
             BOOST_ERROR("Bad test: unknown verification flag '" << word << "'");
