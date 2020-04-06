@@ -10,6 +10,7 @@
 #include "rpcnestedtests.h"
 #include "util.h"
 #include "uritests.h"
+#include "compattests.h"
 
 #ifdef ENABLE_WALLET
 #ifdef ENABLE_BIP70
@@ -78,6 +79,10 @@ int main(int argc, char *argv[])
         fInvalid = true;
 	}
 
+    CompatTests test4;
+    if (QTest::qExec(&test4) != 0)
+        fInvalid = true;
+        
 #ifdef ENABLE_WALLET
 //    WalletTests test5;
 //    if (QTest::qExec(&test5) != 0) {
