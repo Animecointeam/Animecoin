@@ -145,7 +145,10 @@ static CCoinsViewDB *pcoinsdbview = nullptr;
 static CCoinsViewErrorCatcher *pcoinscatcher = nullptr;
 static unique_ptr<ECCVerifyHandle> globalVerifyHandle;
 
-void Interrupt(boost::thread_group& threadGroup)
+static boost::thread_group threadGroup;
+static CScheduler scheduler;
+
+void Interrupt()
 {
     InterruptHTTPServer();
     InterruptHTTPRPC();
@@ -154,7 +157,6 @@ void Interrupt(boost::thread_group& threadGroup)
     InterruptTorControl();
     if (g_connman)
         g_connman->Interrupt();
-    threadGroup.interrupt_all();
 }
 
 void Shutdown()
@@ -190,6 +192,12 @@ void Shutdown()
     g_connman.reset();
 
     StopTorControl();
+
+    // After everything has been shut down, but before things get flushed, stop the
+    // CScheduler/checkqueue threadGroup
+    threadGroup.interrupt_all();
+    threadGroup.join_all();
+
     DumpMempool();
 
     if (fFeeEstimatesInitialized)
@@ -655,7 +663,7 @@ bool InitSanityCheck(void)
     return true;
 }
 
-bool AppInitServers(boost::thread_group& threadGroup)
+bool AppInitServers()
 {
     RPCServer::OnStarted(&OnRPCStarted);
     RPCServer::OnStopped(&OnRPCStopped);
@@ -1040,13 +1048,13 @@ bool AppInitSanityChecks()
         return InitError(strprintf(_("Initialization sanity check failed. %s is shutting down."), _(PACKAGE_NAME)));
 
     // Probe the data directory lock to give an early error message, if possible
+    // We cannot hold the data directory lock here, as the forking for daemon() hasn't yet happened,
+    // and a fork will cause weird behavior to it.
     return LockDataDirectory(true);
 }
 
-bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
+bool AppInitLockDataDirectory()
 {
-    const CChainParams& chainparams = Params();
-    // ********************************************************* Step 4a: application initialization
     // After daemonization get the data directory lock again and hold on to it until exit
     // This creates a slight window for a race condition to happen, however this condition is harmless: it
     // will at most make us exit without printing a message to console.
@@ -1054,7 +1062,13 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         // Detailed error printed inside LockDataDirectory
         return false;
     }
+    return true;
+}
 
+bool AppInitMain()
+{
+    const CChainParams& chainparams = Params();
+    // ********************************************************* Step 4a: application initialization
 #ifndef WIN32
     CreatePidFile(GetPidFile(), getpid());
 #endif
@@ -1095,7 +1109,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (GetBoolArg("-server", false))
     {
         uiInterface.InitMessage.connect(SetRPCWarmupStatus);
-        if (!AppInitServers(threadGroup))
+        if (!AppInitServers())
             return InitError(_("Unable to start HTTP server. See debug log for details."));
     }
 

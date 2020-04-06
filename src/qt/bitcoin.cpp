@@ -26,7 +26,6 @@
 #include "init.h"
 #include "validation.h"
 //#include "rpcserver.h"
-#include "scheduler.h"
 #include "ui_interface.h"
 #include "util.h"
 
@@ -150,19 +149,21 @@ class BitcoinCore: public QObject
     Q_OBJECT
 public:
     explicit BitcoinCore();
+    /** Basic initialization, before starting initialization/shutdown thread.
+     * Return true on success.
+     */
+    static bool baseInitialize();
 
 public slots:
     void initialize();
     void shutdown();
 
 signals:
-    void initializeResult(int retval);
-    void shutdownResult(int retval);
+    void initializeResult(bool success);
+    void shutdownResult();
     void runawayException(const QString &message);
 
 private:
-    boost::thread_group threadGroup;
-    CScheduler scheduler;
 
     /// Pass fatal exception message to UI thread
     void handleRunawayException(const std::exception *e);
@@ -201,8 +202,8 @@ public:
     WId getMainWinId() const;
 
 public slots:
-    void initializeResult(int retval);
-    void shutdownResult(int retval);
+    void initializeResult(bool success);
+    void shutdownResult();
     /// Handle runaway exceptions. Shows a message box with the problem and quits the program.
     void handleRunawayException(const QString &message);
 
@@ -241,27 +242,33 @@ void BitcoinCore::handleRunawayException(const std::exception *e)
     emit runawayException(QString::fromStdString(strMiscWarning));
 }
 
+bool BitcoinCore::baseInitialize()
+{
+    if (!AppInitBasicSetup())
+    {
+        return false;
+    }
+    if (!AppInitParameterInteraction())
+    {
+        return false;
+    }
+    if (!AppInitSanityChecks())
+    {
+        return false;
+    }
+    if (!AppInitLockDataDirectory())
+    {
+        return false;
+    }
+    return true;
+}
+
 void BitcoinCore::initialize()
 {
     try
     {
         qDebug() << __func__ << ": Running initialization in thread";
-        if (!AppInitBasicSetup())
-        {
-            emit initializeResult(false);
-            return;
-        }
-        if (!AppInitParameterInteraction())
-        {
-            emit initializeResult(false);
-            return;
-        }
-        if (!AppInitSanityChecks())
-        {
-            emit initializeResult(false);
-            return;
-        }
-        int rv = AppInitMain(threadGroup, scheduler);
+        bool rv = AppInitMain();
         emit initializeResult(rv);
     } catch (const std::exception& e) {
         handleRunawayException(&e);
@@ -275,11 +282,10 @@ void BitcoinCore::shutdown()
     try
     {
         qDebug() << __func__ << ": Running Shutdown in thread";
-        Interrupt(threadGroup);
-        threadGroup.join_all();
+        Interrupt();
         Shutdown();
         qDebug() << __func__ << ": Shutdown finished";
-        emit shutdownResult(1);
+        emit shutdownResult();
     } catch (const std::exception& e) {
         handleRunawayException(&e);
     } catch (...) {
@@ -363,8 +369,8 @@ void BitcoinApplication::startThread()
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */
-    connect(executor, SIGNAL(initializeResult(int)), this, SLOT(initializeResult(int)));
-    connect(executor, SIGNAL(shutdownResult(int)), this, SLOT(shutdownResult(int)));
+    connect(executor, SIGNAL(initializeResult(bool)), this, SLOT(initializeResult(bool)));
+    connect(executor, SIGNAL(shutdownResult()), this, SLOT(shutdownResult()));
     connect(executor, SIGNAL(runawayException(QString)), this, SLOT(handleRunawayException(QString)));
     connect(this, SIGNAL(requestedInitialize()), executor, SLOT(initialize()));
     connect(this, SIGNAL(requestedShutdown()), executor, SLOT(shutdown()));
@@ -413,12 +419,12 @@ void BitcoinApplication::requestShutdown()
     emit requestedShutdown();
 }
 
-void BitcoinApplication::initializeResult(int retval)
+void BitcoinApplication::initializeResult(bool success)
 {
-    qDebug() << __func__ << ": Initialization result: " << retval;
-    // Set exit result: 0 if successful, 1 if failure
-    returnValue = retval ? 0 : 1;
-    if(retval)
+    qDebug() << __func__ << ": Initialization result: " << success;
+    // Set exit result.
+    returnValue = success ? EXIT_SUCCESS : EXIT_FAILURE;
+    if(success)
     {
 #ifdef ENABLE_WALLET
 #ifdef ENABLE_BIP70
@@ -472,9 +478,8 @@ void BitcoinApplication::initializeResult(int retval)
     }
 }
 
-void BitcoinApplication::shutdownResult(int retval)
+void BitcoinApplication::shutdownResult()
 {
-    qDebug() << __func__ << ": Shutdown result: " << retval;
     quit(); // Exit main loop after shutdown finished
 }
 
@@ -632,16 +637,26 @@ int main(int argc, char *argv[])
     if (GetBoolArg("-splash", DEFAULT_SPLASHSCREEN) && !GetBoolArg("-min", false))
         app.createSplashScreen(networkStyle.data());
 
+    int rv = EXIT_SUCCESS;
     try
     {
         app.createWindow(networkStyle.data());
-        app.requestInitialize();
+        // Perform base initialization before spinning up initialization/shutdown thread
+        // This is acceptable because this function only contains steps that are quick to execute,
+        // so the GUI thread won't be held up.
+        if (BitcoinCore::baseInitialize()) {
+            app.requestInitialize();
 #if defined(Q_OS_WIN)
-        WinShutdownMonitor::registerShutdownBlockReason(QObject::tr("Animecoin didn't yet exit safely..."), (HWND)app.getMainWinId());
+        WinShutdownMonitor::registerShutdownBlockReason(QObject::tr("%1 didn't yet exit safely...").arg(QObject::tr(PACKAGE_NAME)), (HWND)app.getMainWinId());
 #endif
         app.exec();
         app.requestShutdown();
         app.exec();
+        rv = app.getReturnValue();
+    } else {
+        // A dialog with detailed error will have been shown by InitError()
+        rv = EXIT_FAILURE;
+    }
     } catch (const std::exception& e) {
         PrintExceptionContinue(&e, "Runaway exception");
         app.handleRunawayException(QString::fromStdString(strMiscWarning));
@@ -649,6 +664,6 @@ int main(int argc, char *argv[])
         PrintExceptionContinue(nullptr, "Runaway exception");
         app.handleRunawayException(QString::fromStdString(strMiscWarning));
     }
-    return app.getReturnValue();
+    return rv;
 }
 #endif // BITCOIN_QT_TEST
