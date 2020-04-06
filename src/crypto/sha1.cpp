@@ -163,8 +163,8 @@ CSHA1& CSHA1::Write(const unsigned char* data, size_t len)
 		sha1::Transform(s, buf);
 		bufsize = 0;
 	}
-	while (end >= data + 64) {
-		// Process full chunks directly from the source.
+    while (end - data >= 64) {
+        // Process full chunks directly from the source.
 		sha1::Transform(s, data);
 		bytes += 64;
 		data += 64;
