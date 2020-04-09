@@ -49,8 +49,6 @@ Features no longer requiring OpenSSL
 Features still using OpenSSL
 ---------------------
 - RNG. Requires more code uplifting to migrate.
-- Unit test EC-checking control group. Should be migrated to own implementation.
-- ???
 
 Features that should not be backported
 ---------------------

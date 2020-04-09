@@ -210,7 +210,6 @@ public slots:
 signals:
     void requestedInitialize();
     void requestedShutdown();
-    void stopThread();
     void splashFinished(QWidget *window);
 
 private:
@@ -314,7 +313,7 @@ BitcoinApplication::~BitcoinApplication()
     if(coreThread)
     {
         qDebug() << __func__ << ": Stopping thread";
-        emit stopThread();
+        coreThread->quit();
         coreThread->wait();
         qDebug() << __func__ << ": Stopped thread";
     }
@@ -375,8 +374,7 @@ void BitcoinApplication::startThread()
     connect(this, SIGNAL(requestedInitialize()), executor, SLOT(initialize()));
     connect(this, SIGNAL(requestedShutdown()), executor, SLOT(shutdown()));
     /*  make sure executor object is deleted in its own thread */
-    connect(this, SIGNAL(stopThread()), executor, SLOT(deleteLater()));
-    connect(this, SIGNAL(stopThread()), coreThread, SLOT(quit()));
+    connect(coreThread, &QThread::finished, executor, &QObject::deleteLater);
 
     coreThread->start();
 }

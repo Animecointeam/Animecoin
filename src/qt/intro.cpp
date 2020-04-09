@@ -130,8 +130,8 @@ Intro::~Intro()
 {
 	delete ui;
 	/* Ensure thread is finished before it is deleted */
-	emit stopThread();
-	thread->wait();
+    thread->quit();
+    thread->wait();
 }
 
 QString Intro::getDataDirectory()
@@ -282,8 +282,7 @@ void Intro::startThread()
 	connect(executor, SIGNAL(reply(int,QString,quint64)), this, SLOT(setStatus(int,QString,quint64)));
 	connect(this, SIGNAL(requestCheck()), executor, SLOT(check()));
 	/*  make sure executor object is deleted in its own thread */
-	connect(this, SIGNAL(stopThread()), executor, SLOT(deleteLater()));
-	connect(this, SIGNAL(stopThread()), thread, SLOT(quit()));
+    connect(thread, &QThread::finished, executor, &QObject::deleteLater);
 
 	thread->start();
 }
