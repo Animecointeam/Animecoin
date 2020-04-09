@@ -111,6 +111,7 @@ static const char* FEE_ESTIMATES_FILENAME="fee_estimates.dat";
 //
 
 std::atomic<bool> fRequestShutdown(false);
+std::atomic<bool> fDumpMempoolLater(false);
 
 void StartShutdown()
 {
@@ -198,7 +199,8 @@ void Shutdown()
     threadGroup.interrupt_all();
     threadGroup.join_all();
 
-    DumpMempool();
+    if (fDumpMempoolLater)
+        DumpMempool();
 
     if (fFeeEstimatesInitialized)
     {
@@ -645,6 +647,7 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
     }
 
     LoadMempool();
+    fDumpMempoolLater = !fRequestShutdown;
 }
 
 /** Sanity checks
@@ -1101,7 +1104,7 @@ bool AppInitMain()
      */
     RegisterAllCoreRPCCommands(tableRPC);
 #ifdef ENABLE_WALLET
-    RegisterWalletRPC(tableRPC);
+    RegisterWalletRPCCommands(tableRPC);
 #endif
 
     /* Start the RPC server already.  It will be started in "warmup" mode

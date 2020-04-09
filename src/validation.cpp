@@ -3811,6 +3811,8 @@ static const uint64_t MEMPOOL_DUMP_VERSION = 1;
              } else {
                  ++skipped;
              }
+             if (ShutdownRequested())
+                 return false;
          }
          std::map<uint256, CAmount> mapDeltas;
          file >> mapDeltas;
