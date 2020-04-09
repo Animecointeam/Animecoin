@@ -960,11 +960,6 @@ bool AppInitParameterInteraction()
         fPruneMode = true;
     }
 
-    RegisterAllCoreRPCCommands(tableRPC);
-#ifdef ENABLE_WALLET
-    RegisterWalletRPCCommands(tableRPC);
-#endif
-
     nConnectTimeout = GetArg("-timeout", DEFAULT_CONNECT_TIMEOUT);
     if (nConnectTimeout <= 0)
         nConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
@@ -1100,6 +1095,14 @@ bool AppInitMain()
 
     GetMainSignals().RegisterBackgroundSignalScheduler(scheduler);
     GetMainSignals().RegisterWithMempoolSignals(mempool);
+
+    /* Register RPC commands regardless of -server setting so they will be
+     * available in the GUI RPC console even if external calls are disabled.
+     */
+    RegisterAllCoreRPCCommands(tableRPC);
+#ifdef ENABLE_WALLET
+    RegisterWalletRPC(tableRPC);
+#endif
 
     /* Start the RPC server already.  It will be started in "warmup" mode
      * and not really process calls already (but it will signify connections
