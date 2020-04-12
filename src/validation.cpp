@@ -1295,6 +1295,39 @@ bool AbortNode(CValidationState& state, const std::string& strMessage, const std
 
 } // anon namespace
 
+/**
+ * Apply the undo operation of a CTxInUndo to the given chain state.
+ * @param undo The undo object.
+ * @param view The coins view to which to apply the changes.
+ * @param out The out point that corresponds to the tx input.
+ * @return True on success.
+ */
+bool ApplyTxInUndo(const CTxInUndo& undo, CCoinsViewCache& view, const COutPoint& out)
+{
+    bool fClean = true;
+
+    CCoinsModifier coins = view.ModifyCoins(out.hash);
+    if (undo.nHeight != 0) {
+        // undo data contains height: this is the last output of the prevout tx being spent
+        if (!coins->IsPruned())
+            fClean = fClean && error("%s: undo data overwriting existing transaction", __func__);
+        coins->Clear();
+        coins->fCoinBase = undo.fCoinBase;
+        coins->nHeight = undo.nHeight;
+        coins->nVersion = undo.nVersion;
+    } else {
+        if (coins->IsPruned())
+            fClean = fClean && error("%s: undo data adding output to missing transaction", __func__);
+    }
+    if (coins->IsAvailable(out.n))
+        fClean = fClean && error("%s: undo data overwriting existing output", __func__);
+    if (coins->vout.size() < out.n+1)
+        coins->vout.resize(out.n+1);
+    coins->vout[out.n] = undo.txout;
+
+    return fClean;
+}
+
 /** Undo the effects of this block (with given index) on the UTXO set represented by coins.
  *  In case pfClean is provided, operation will try to be tolerant about errors, and *pfClean
  *  will be true if no problems were found. Otherwise, the return value will be false in case
@@ -1324,11 +1357,8 @@ static bool DisconnectBlock(const CBlock& block, CValidationState& state, const 
         uint256 hash = tx.GetHash();
 
         // Check that all outputs are available and match the outputs in the block itself
-        // exactly. Note that transactions with only provably unspendable outputs won't
-        // have outputs available even in the block itself, so we handle that case
-        // specially with outsEmpty.
+        // exactly.
         {
-        CCoins outsEmpty;
         CCoinsModifier outs = view.ModifyCoins(hash);
         outs->ClearUnspendable();
 
@@ -1353,24 +1383,8 @@ static bool DisconnectBlock(const CBlock& block, CValidationState& state, const 
             for (unsigned int j = tx.vin.size(); j-- > 0;) {
                 const COutPoint &out = tx.vin[j].prevout;
                 const CTxInUndo &undo = txundo.vprevout[j];
-                CCoinsModifier coins = view.ModifyCoins(out.hash);
-                if (undo.nHeight != 0) {
-                    // undo data contains height: this is the last output of the prevout tx being spent
-                    if (!coins->IsPruned())
-                        fClean = fClean && error("DisconnectBlock() : undo data overwriting existing transaction");
-                    coins->Clear();
-                    coins->fCoinBase = undo.fCoinBase;
-                    coins->nHeight = undo.nHeight;
-                    coins->nVersion = undo.nVersion;
-                } else {
-                    if (coins->IsPruned())
-                        fClean = fClean && error("DisconnectBlock() : undo data adding output to missing transaction");
-                }
-                if (coins->IsAvailable(out.n))
-                    fClean = fClean && error("DisconnectBlock() : undo data overwriting existing output");
-                if (coins->vout.size() < out.n+1)
-                    coins->vout.resize(out.n+1);
-                coins->vout[out.n] = undo.txout;
+                if (!ApplyTxInUndo(undo, view, out))
+                    fClean = false;
             }
         }
     }
@@ -1381,9 +1395,9 @@ static bool DisconnectBlock(const CBlock& block, CValidationState& state, const 
     if (pfClean) {
         *pfClean = fClean;
         return true;
-    } else {
-        return fClean;
     }
+
+    return fClean;
 }
 
 void static FlushBlockFile(bool fFinalize = false)
