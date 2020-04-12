@@ -1643,18 +1643,26 @@ UniValue listsinceblock(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    CBlockIndex *pindex = nullptr;
+    const CBlockIndex *pindex = nullptr;
     int target_confirms = 1;
     isminefilter filter = ISMINE_SPENDABLE;
 
-    if (request.params.size() > 0)
+    if ((request.params.size() > 0) && !request.params[0].get_str().empty())
     {
         uint256 blockId;
 
         blockId.SetHex(request.params[0].get_str());
         BlockMap::iterator it = mapBlockIndex.find(blockId);
-        if (it != mapBlockIndex.end())
-            pindex = it->second;
+        if (it == mapBlockIndex.end()) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
+        }
+        pindex = it->second;
+        if (chainActive[pindex->nHeight] != pindex) {
+            // the block being asked for is a part of a deactivated chain;
+            // we don't want to depend on its perceived height in the block
+            // chain, we want to instead use the last common ancestor
+            pindex = chainActive.FindFork(pindex);
+        }
     }
 
     if (request.params.size() > 1)
@@ -1665,9 +1673,10 @@ UniValue listsinceblock(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter");
     }
 
-    if(request.params.size() > 2)
-        if(request.params[2].get_bool())
-            filter = filter | ISMINE_WATCH_ONLY;
+    if (request.params.size() > 2 && request.params[2].get_bool())
+    {
+        filter = filter | ISMINE_WATCH_ONLY;
+    }
 
     int depth = pindex ? (1 + chainActive.Height() - pindex->nHeight) : -1;
 
