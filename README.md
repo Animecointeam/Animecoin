@@ -17,6 +17,8 @@ Coin features
 Upgrading
 ---------------------
 0.10 changes the block index database format. Upgrading from 0.9 will require a -reindex (or syncing from scratch).
+Chainstate database format is also changed. Normally it will be detected and upgraded as needed.
+If you run an SPV node built from trunk, chainstate database is mostly empty and may not be auto-upgraded in some cases. If you have issues with transactions being stuck after an upgrade, remove the chainstate directory before starting the software.
 
 Downgrading
 ---------------------
