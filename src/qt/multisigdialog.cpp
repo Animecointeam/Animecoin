@@ -392,9 +392,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         view.SetBackend(viewMempool); // temporarily switch cache backend to db+mempool view
 
         for (const CTxIn& txin : mergedTx.vin) {
-            const uint256& prevHash = txin.prevout.hash;
-            CCoins coins;
-            view.AccessCoins(prevHash); // this is certainly allowed to fail
+            view.AccessCoin(txin.prevout); // Load entries from viewChain into view; can fail.
         }
         view.SetBackend(viewDummy); // switch back to avoid locking db/mempool too long
     }
@@ -424,13 +422,13 @@ void MultisigDialog::on_signTransactionButton_clicked()
     for(int i = 0; i < mergedTx.vin.size(); i++)
     {
         CTxIn& txin = mergedTx.vin[i];
-        const CCoins* coins = view.AccessCoins(txin.prevout.hash);
-        if (coins == nullptr || !coins->IsAvailable(txin.prevout.n))
+        const Coin& coin = view.AccessCoin(txin.prevout);
+        if (coin.IsSpent())
         {
             fComplete = false;
             continue;
         }
-        const CScript& prevPubKey = coins->vout[txin.prevout.n].scriptPubKey;
+        const CScript& prevPubKey = coin.out.scriptPubKey;
         txin.scriptSig.clear();
         SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL);
         txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig);
