@@ -748,8 +748,12 @@ void InitParameterInteraction()
 
     // -zapwallettx implies a rescan
     if (GetBoolArg("-zapwallettxes", false)) {
-        if (SoftSetBoolArg("-rescan", true))
-            LogPrintf("%s: parameter interaction: -zapwallettxes=<mode> -> setting -rescan=1\n", __func__);
+            if (!GetBoolArg("-autorequestblocks", true)) {
+                if (SoftSetBoolArg("-reindex", true))
+                            LogPrintf("%s: parameter interaction: -zapwallettxes=<mode> -> setting -reindex=1\n", __func__);
+            }
+            else if (SoftSetBoolArg("-rescan", true))
+                LogPrintf("%s: parameter interaction: -zapwallettxes=<mode> -> setting -rescan=1\n", __func__);
     }
 
     // disable walletbroadcast and whitelistrelay in blocksonly mode
