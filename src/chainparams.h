@@ -78,7 +78,7 @@ public:
     /** Make standard checks */
     bool RequireStandard() const { return fRequireStandard; }
     int64_t DelayGetHeadersTime() const { return nDelayGetHeadersTime; }
-    int64_t PruneAfterHeight() const { return nPruneAfterHeight; }
+    uint64_t PruneAfterHeight() const { return nPruneAfterHeight; }
     /** Make miner stop after a block is found. In RPC, don't return until nGenProcLimit blocks are generated */
     bool MineBlocksOnDemand() const { return fMineBlocksOnDemand; }
     /** In the future use NetworkIDString() for RPC fields */
