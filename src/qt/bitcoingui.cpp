@@ -719,7 +719,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     if (clientModel->hasAuxiliaryBlockRequest())
         return;
 
-    // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbelled text)
+    // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbled text)
     statusBar()->clearMessage();
 
     // Acquire current block source
@@ -831,6 +831,8 @@ void BitcoinGUI::setAuxiliaryBlockRequestProgress(const QDateTime& blockDate, in
     {
         if (requestedBlocks > 1)
         {
+            statusBar()->clearMessage();
+
             // at this stage, always display the progress bar and its label
             progressBar->setVisible(true);
             progressBarLabel->setVisible(true);
