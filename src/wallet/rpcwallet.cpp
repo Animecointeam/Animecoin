@@ -2404,6 +2404,7 @@ UniValue listunspent(const JSONRPCRequest& request)
                 "    \"scriptPubKey\" : \"key\", (string) the script key\n"
                 "    \"amount\" : x.xxx,         (numeric) the transaction amount in " + CURRENCY_UNIT + "\n"
                 "    \"confirmations\" : n       (numeric) The number of confirmations\n"
+                "    \"redeemScript\" : n        (string) The redeemScript if scriptPubKey is P2SH\n"
                 "  }\n"
                 "  ,...\n"
                 "]\n"
@@ -2450,38 +2451,34 @@ UniValue listunspent(const JSONRPCRequest& request)
         if (out.nDepth < nMinDepth || out.nDepth > nMaxDepth)
             continue;
 
-        if (setAddress.size()) {
-            CTxDestination address;
-            if (!ExtractDestination(out.tx->vout[out.i].scriptPubKey, address))
-                continue;
+        CTxDestination address;
+        const CScript& scriptPubKey = out.tx->vout[out.i].scriptPubKey;
+        bool fValidAddress = ExtractDestination(scriptPubKey, address);
 
-            if (!setAddress.count(address))
-                continue;
-        }
+        if (setAddress.size() && (!fValidAddress || !setAddress.count(address)))
+            continue;
 
-        CAmount nValue = out.tx->vout[out.i].nValue;
-        const CScript& pk = out.tx->vout[out.i].scriptPubKey;
         UniValue entry(UniValue::VOBJ);
         entry.pushKV("txid", out.tx->GetHash().GetHex());
         entry.pushKV("vout", out.i);
-        CTxDestination address;
-        if (ExtractDestination(out.tx->vout[out.i].scriptPubKey, address)) {
+
+        if (fValidAddress) {
             entry.pushKV("address", CBitcoinAddress(address).ToString());
+
             if (pwalletMain->mapAddressBook.count(address))
                 entry.pushKV("account", pwalletMain->mapAddressBook[address].name);
-        }
-        entry.pushKV("scriptPubKey", HexStr(pk.begin(), pk.end()));
-        if (pk.IsPayToScriptHash()) {
-            CTxDestination address;
-            if (ExtractDestination(pk, address)) {
+
+            if (scriptPubKey.IsPayToScriptHash()) {
                 const CScriptID& hash = boost::get<CScriptID>(address);
                 CScript redeemScript;
                 if (pwalletMain->GetCScript(hash, redeemScript))
                     entry.pushKV("redeemScript", HexStr(redeemScript.begin(), redeemScript.end()));
             }
         }
-        entry.pushKV("amount",ValueFromAmount(nValue));
-        entry.pushKV("confirmations",out.nDepth);
+
+        entry.pushKV("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
+        entry.pushKV("amount", ValueFromAmount(out.tx->vout[out.i].nValue));
+        entry.pushKV("confirmations", out.nDepth);
         entry.pushKV("spendable", out.fSpendable);
         results.push_back(entry);
     }
