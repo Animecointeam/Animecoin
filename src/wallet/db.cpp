@@ -609,11 +609,11 @@ bool CDB::PeriodicFlush(std::string strFile)
     {
         // Don't do this if any databases are in use
         int nRefCount = 0;
-        map<string, int>::iterator mi = bitdb.mapFileUseCount.begin();
-        while (mi != bitdb.mapFileUseCount.end())
+        map<string, int>::iterator mit = bitdb.mapFileUseCount.begin();
+        while (mit != bitdb.mapFileUseCount.end())
         {
-            nRefCount += (*mi).second;
-            mi++;
+            nRefCount += (*mit).second;
+            mit++;
         }
 
         if (nRefCount == 0)

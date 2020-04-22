@@ -1132,8 +1132,6 @@ bool AppInitMain()
             return InitError(_("Unable to start HTTP server. See debug log for details."));
     }
 
-    int64_t nStart;
-
     // ********************************************************* Step 5: verify wallet database integrity
 #ifdef ENABLE_WALLET
     if (!CWallet::Verify())
@@ -1306,8 +1304,8 @@ bool AppInitMain()
 
         uiInterface.InitMessage(_("Loading block index..."));
 
-        nStart = GetTimeMillis();
         do {
+            const int64_t load_block_index_start_time = GetTimeMillis();
             try {
                 UnloadBlockIndex();
                 delete pcoinsTip;
@@ -1428,6 +1426,7 @@ bool AppInitMain()
             }
 
             fLoaded = true;
+            LogPrintf(" block index %15dms\n", GetTimeMillis() - load_block_index_start_time);
         } while(false);
 
         if (!fLoaded && !fRequestShutdown) {
@@ -1457,7 +1456,6 @@ bool AppInitMain()
         LogPrintf("Shutdown requested. Exiting.\n");
         return false;
     }
-    LogPrintf(" block index %15dms\n", GetTimeMillis() - nStart);
 
     boost::filesystem::path est_path = GetDataDir() / FEE_ESTIMATES_FILENAME;
     CAutoFile est_filein(fopen(est_path.string().c_str(), "rb"), SER_DISK, CLIENT_VERSION);

@@ -64,15 +64,15 @@ MultisigDialog::~MultisigDialog()
     delete ui;
 }
 
-void MultisigDialog::setModel(WalletModel *model)
+void MultisigDialog::setModel(WalletModel *_model)
 {
-    this->model = model;
+    this->model = _model;
 
     for(int i = 0; i < ui->pubkeyEntries->count(); i++)
     {
         MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->pubkeyEntries->itemAt(i)->widget());
         if(entry)
-            entry->setModel(model);
+            entry->setModel(_model);
     }
 
 
@@ -80,7 +80,7 @@ void MultisigDialog::setModel(WalletModel *model)
     {
         MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
         if(entry)
-            entry->setModel(model);
+            entry->setModel(_model);
     }
 
 
@@ -88,7 +88,7 @@ void MultisigDialog::setModel(WalletModel *model)
     {
         SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(i)->widget());
         if(entry)
-            entry->setModel(model);
+            entry->setModel(_model);
     }
 }
 
@@ -419,7 +419,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
 
     // Sign what we can
     bool fComplete = true;
-    for(int i = 0; i < mergedTx.vin.size(); i++)
+    for (unsigned int i = 0; i < mergedTx.vin.size(); i++)
     {
         CTxIn& txin = mergedTx.vin[i];
         const Coin& coin = view.AccessCoin(txin.prevout);
