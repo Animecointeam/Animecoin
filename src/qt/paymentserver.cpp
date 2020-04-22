@@ -57,8 +57,6 @@ const char* BIP70_MESSAGE_PAYMENTREQUEST = "PaymentRequest";
 const char* BIP71_MIMETYPE_PAYMENT = "application/animecoin-payment";
 const char* BIP71_MIMETYPE_PAYMENTACK = "application/animecoin-paymentack";
 const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/animecoin-paymentrequest";
-// BIP70 max payment request size in bytes (DoS protection)
-const qint64 BIP70_MAX_PAYMENTREQUEST_SIZE = 50000;
 
 struct X509StoreDeleter {
     void operator()(X509_STORE* b) {
