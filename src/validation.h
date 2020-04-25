@@ -15,6 +15,7 @@
 #include "chain.h"
 #include "chainparams.h"
 #include "coins.h"
+#include "fs.h"
 #include "primitives/block.h"
 #include "primitives/transaction.h"
 #include "protocol.h" // For CMessageHeader::MessageStartChars
@@ -37,8 +38,6 @@
 #include <vector>
 
 #include <atomic>
-
-#include <boost/filesystem/path.hpp>
 
 class CBlockIndex;
 class CBlockTreeDB;
@@ -271,7 +270,7 @@ FILE* OpenBlockFile(const CDiskBlockPos &pos, bool fReadOnly = false);
 /** Open an undo file (rev?????.dat) */
 FILE* OpenUndoFile(const CDiskBlockPos &pos, bool fReadOnly = false);
 /** Translation to a filesystem path */
-boost::filesystem::path GetBlockPosFilename(const CDiskBlockPos &pos, const char *prefix);
+fs::path GetBlockPosFilename(const CDiskBlockPos &pos, const char *prefix);
 /** Import blocks from an external file */
 bool LoadExternalBlockFile(const CChainParams& chainparams, FILE* fileIn, CDiskBlockPos *dbp = nullptr);
 /** Ensures we have a genesis block in the block tree, possibly writing one to disk. */

@@ -121,6 +121,7 @@ BITCOIN_CORE_H = \
   crypto/sph_skein.h \
   wallet/db.h \
   hashblock.h \
+  fs.h \
   httprpc.h \
   httpserver.h \
   indirectmap.h \
@@ -384,6 +385,7 @@ libanimecoin_util_a_SOURCES = \
   arith_uint256.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
+  fs.cpp \
   random.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \

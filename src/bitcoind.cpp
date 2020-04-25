@@ -5,6 +5,7 @@
 
 #include "clientversion.h"
 #include "compat.h"
+#include "fs.h"
 #include "init.h"
 #include "validation.h"
 #include "noui.h"
@@ -13,7 +14,6 @@
 #include "httprpc.h"
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
 #include <stdio.h>
@@ -83,14 +83,14 @@ bool AppInit(int argc, char* argv[])
 
     try
     {
-        if (!boost::filesystem::is_directory(GetDataDir(false)))
+        if (!fs::is_directory(GetDataDir(false)))
         {
             fprintf(stderr, "Error: Specified data directory \"%s\" does not exist.\n", mapArgs["-datadir"].c_str());
             return false;
         }
         try
         {
-            ReadConfigFile(mapArgs, mapMultiArgs);
+            ReadConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME), mapArgs, mapMultiArgs);
         } catch(const std::exception &e) {
             fprintf(stderr,"Error reading configuration file: %s\n", e.what());
             return false;

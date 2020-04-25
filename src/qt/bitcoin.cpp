@@ -9,6 +9,7 @@
 #include "bitcoingui.h"
 
 #include "clientmodel.h"
+#include "fs.h"
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "intro.h"
@@ -35,7 +36,6 @@
 
 #include <stdint.h>
 
-#include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
 
 #include <QApplication>
@@ -563,14 +563,14 @@ int main(int argc, char *argv[])
 
     /// 6. Determine availability of data directory and parse animecoin.conf
     /// - Do not call GetDataDir(true) before this step finishes
-    if (!boost::filesystem::is_directory(GetDataDir(false)))
+    if (!fs::is_directory(GetDataDir(false)))
     {
         QMessageBox::critical(0, QObject::tr("Animecoin"),
                               QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(mapArgs["-datadir"])));
         return EXIT_FAILURE;
     }
     try {
-        ReadConfigFile(mapArgs, mapMultiArgs);
+        ReadConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME), mapArgs, mapMultiArgs);
     } catch (const std::exception& e) {
         QMessageBox::critical(0, QObject::tr("Animecoin"),
                               QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));

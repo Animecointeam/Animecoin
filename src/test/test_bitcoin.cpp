@@ -8,6 +8,7 @@
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
 #include "crypto/sha256.h"
+#include "fs.h"
 #include "key.h"
 #include "validation.h"
 #include "miner.h"
@@ -25,7 +26,6 @@
 
 #include <memory>
 
-#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
 // bool fUseFastIndex;
@@ -62,7 +62,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     RegisterAllCoreRPCCommands(tableRPC);
         ClearDatadirCache();
         pathTemp = GetTempPath() / strprintf("test_animecoin_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
-        boost::filesystem::create_directories(pathTemp);
+        fs::create_directories(pathTemp);
         ForceSetArg("-datadir", pathTemp.string());
         
         // Note that because we don't bother running a scheduler thread here,
@@ -103,7 +103,7 @@ TestingSetup::~TestingSetup()
         delete pcoinsTip;
         delete pcoinsdbview;
         delete pblocktree;
-        boost::filesystem::remove_all(pathTemp);
+        fs::remove_all(pathTemp);
 }
 
 TestChain100Setup::TestChain100Setup() : TestingSetup(CBaseChainParams::REGTEST)

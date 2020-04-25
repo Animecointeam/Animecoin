@@ -6,13 +6,12 @@
 #define BITCOIN_DBWRAPPER_H
 
 #include "clientversion.h"
+#include "fs.h"
 #include "serialize.h"
 #include "streams.h"
 #include "util.h"
 #include "utilstrencodings.h"
 #include "version.h"
-
-#include <boost/filesystem/path.hpp>
 
 #include <leveldb/db.h>
 #include <leveldb/write_batch.h>
@@ -223,7 +222,7 @@ public:
      *                        with a zero'd byte array.
      * @param[in] compression   Enable snappy compression for the database
      */
-    CDBWrapper(const boost::filesystem::path& path, size_t nCacheSize, bool fMemory = false, bool fWipe = false, bool obfuscate = false, bool compression = false);
+    CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory = false, bool fWipe = false, bool obfuscate = false, bool compression = false);
     ~CDBWrapper();
 
     template <typename K, typename V>

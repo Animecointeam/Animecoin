@@ -10,6 +10,7 @@
 #include "addrman.h"
 #include "amount.h"
 #include "bloom.h"
+#include "fs.h"
 #include "compat.h"
 #include "hash.h"
 #include "limitedmap.h"
@@ -32,8 +33,6 @@
 #ifndef WIN32
 #include <arpa/inet.h>
 #endif
-
-#include <boost/filesystem/path.hpp>
 
 class CAddrMan;
 class CBlockIndex;

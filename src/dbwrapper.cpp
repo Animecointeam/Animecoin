@@ -4,10 +4,9 @@
 
 #include "dbwrapper.h"
 
+#include "fs.h"
 #include "random.h"
 #include "util.h"
-
-#include <boost/filesystem.hpp>
 
 #include <leveldb/cache.h>
 #include <leveldb/env.h>
@@ -81,7 +80,7 @@ static leveldb::Options GetOptions(size_t nCacheSize, bool compression)
     return options;
 }
 
-CDBWrapper::CDBWrapper(const boost::filesystem::path& path, size_t nCacheSize, bool fMemory, bool fWipe, bool obfuscate, bool compression)
+CDBWrapper::CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory, bool fWipe, bool obfuscate, bool compression)
 {
     penv = nullptr;
     readoptions.verify_checksums = true;
