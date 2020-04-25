@@ -86,13 +86,13 @@ Features in progress but not necessarily finalized before 0.10 release
 
 Building from source
 ---------------------
-You may use either way to build the Qt client:
-1. animecoin-qt.pro for qmake / Qt Creator. Adjust the library paths and prefixes as needed and build.
-The .pro file may not be up to date with the latest trunk changes.
-2. Autotools for commandline (MSYS2 shell in Windows case):
+Using autotools for commandline (MSYS2 shell in Windows case):
  - ./autogen.sh
  - ./configure (with any options necessary)
  - make (use e.g. make -j8 for utilizing 8 CPU cores to speed up the build process)
+
+Alternatively, you may use animecoin-qt.pro for qmake / Qt Creator to build the GUI client. Adjust the library paths and prefixes as needed.
+The .pro file, however, is deprecated and may not be up to date with the latest trunk changes.
 
 You may want to use the strip utility to reduce the size of resulting executables.
 Autotools will also build commandline utilities.
@@ -102,7 +102,7 @@ Required libraries
 - Boost
 - OpenSSL
 - Berkeley DB
-- protobuf (added in 0.9, removed in 0.10)
+- protobuf (added in 0.9, optional since 0.10)
 - libevent2 (since Animecoin 0.10 trunk)
 - Qt (optional if you don't need the GUI client)
 - miniupnpc (optional)
