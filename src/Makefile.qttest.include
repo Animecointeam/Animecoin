@@ -24,8 +24,8 @@ TEST_QT_H = \
   qt/test/wallettests.h
 
 TEST_BITCOIN_CPP = \
-  test/test_bitcoin.cpp
-#  test/testutil.cpp
+  test/test_bitcoin.cpp \
+  test/testutil.cpp
 
 TEST_BITCOIN_H = \
   test/test_bitcoin.h \

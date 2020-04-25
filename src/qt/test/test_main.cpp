@@ -8,9 +8,10 @@
 
 #include "chainparams.h"
 #include "rpcnestedtests.h"
-#include "util.h"
 #include "uritests.h"
 #include "compattests.h"
+
+#include "test/testutil.h"
 
 #ifdef ENABLE_WALLET
 #ifdef ENABLE_BIP70

@@ -20,7 +20,8 @@
 #include "rpc/server.h"
 #include "rpc/register.h"
 #include "script/sigcache.h"
-#include "util.h"
+
+#include "test/testutil.h"
 
 #include <memory>
 

@@ -86,6 +86,8 @@ BITCOIN_TESTS =\
   test/test_bitcoin.h \
   test/test_bitcoin_main.cpp \
   test/test_random.h \
+  test/testutil.cpp \
+  test/testutil.h \
   test/timedata_tests.cpp \
   test/transaction_tests.cpp \
   test/txvalidationcache_tests.cpp \
