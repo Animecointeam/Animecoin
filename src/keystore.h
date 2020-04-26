@@ -112,4 +112,7 @@ public:
 typedef std::vector<unsigned char, secure_allocator<unsigned char> > CKeyingMaterial;
 typedef std::map<CKeyID, std::pair<CPubKey, std::vector<unsigned char> > > CryptedKeyMap;
 
+/** Checks if a CKey is in the given CKeyStore compressed or otherwise*/
+bool HaveKey(const CKeyStore& store, const CKey& key);
+
 #endif // BITCOIN_KEYSTORE_H

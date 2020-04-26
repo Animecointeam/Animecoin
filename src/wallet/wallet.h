@@ -89,7 +89,9 @@ enum WalletFeature
 
     FEATURE_HD_SPLIT = 100000, // Wallet with HD chain split (change outputs will use m/0'/1'/k)
 
-    FEATURE_LATEST = FEATURE_COMPRPUBKEY // HD is optional, use FEATURE_COMPRPUBKEY as latest version
+    FEATURE_PRE_SPLIT_KEYPOOL = 100000, // Upgraded to HD SPLIT and can have a pre-split keypool
+
+    FEATURE_LATEST = FEATURE_PRE_SPLIT_KEYPOOL
 };
 
 
@@ -100,6 +102,7 @@ public:
     int64_t nTime;
     CPubKey vchPubKey;
     bool fInternal; // for change outputs
+    bool m_pre_split; // For keys generated before keypool split upgrade
 
     CKeyPool();
     CKeyPool(const CPubKey& vchPubKeyIn, bool internalIn);
@@ -122,9 +125,18 @@ public:
                    (this will be the case for any wallet before the HD chain split version) */
                 fInternal = false;
             }
+            try {
+                READWRITE(m_pre_split);
+            }
+            catch (std::ios_base::failure&) {
+                /* flag as postsplit address if we can't read the m_pre_split boolean
+                   (this will be the case for any wallet that upgrades to HD chain split)*/
+                m_pre_split = false;
+            }
         }
         else {
             READWRITE(fInternal);
+            READWRITE(m_pre_split);
         }
     }
 };
@@ -202,7 +214,9 @@ private:
     CHDChain hdChain;
     bool fFileBacked;
 
-    std::set<int64_t> setKeyPool;
+    std::set<int64_t> setInternalKeyPool;
+    std::set<int64_t> setExternalKeyPool;
+    std::set<int64_t> set_pre_split_keypool;
     std::atomic<bool> spvEnabled;
 
     int64_t nTimeFirstKey;
@@ -233,9 +247,6 @@ private:
     /* HD derive new child key (on internal or external chain) */
     void DeriveNewChildKey(CWalletDB &walletdb, CKeyMetadata& metadata, CKey& secret, bool internal = false);
 
-    std::set<int64_t> setInternalKeyPool;
-    std::set<int64_t> setExternalKeyPool;
-
 public:
     /*
      * Main wallet lock.
@@ -250,7 +261,13 @@ public:
 
     void LoadKeyPool(int nIndex, const CKeyPool &keypool)
     {
-        setKeyPool.insert(nIndex);
+        if (keypool.m_pre_split) {
+            set_pre_split_keypool.insert(nIndex);
+        } else if (keypool.fInternal) {
+            setInternalKeyPool.insert(nIndex);
+        } else {
+            setExternalKeyPool.insert(nIndex);
+        }
 
         // If no metadata exists yet, create a default with the pool key's
         // creation time. Note that this may be overwritten by actually
@@ -259,6 +276,8 @@ public:
         if (mapKeyMetadata.count(keyid) == 0)
             mapKeyMetadata[keyid] = CKeyMetadata(keypool.nTime);
     }
+
+    void MarkPreSplitKeys();
 
     // Map from Key ID (for regular keys) or Script ID (for watch-only keys) to
     // key metadata.
@@ -511,7 +530,7 @@ public:
     {
         LOCK(cs_wallet);
         mapRequestCount[hash] = 0;
-    };
+    }
 
     unsigned int GetKeyPoolSize()
     {
@@ -601,6 +620,9 @@ public:
 
     /* Generates a new HD master key (will not be activated) */
     CPubKey GenerateNewHDMasterKey();
+
+    /* Derives a new HD master key (will not be activated) */
+    CPubKey DeriveNewMasterHDKey(const CKey& key);
 
     /* Set the current HD master key (will reset the chain child index counters)
        Sets the master key's version based on the current wallet version (so the
