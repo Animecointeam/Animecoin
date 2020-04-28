@@ -217,6 +217,7 @@ private:
     std::set<int64_t> setInternalKeyPool;
     std::set<int64_t> setExternalKeyPool;
     std::set<int64_t> set_pre_split_keypool;
+    int64_t m_max_keypool_index;
     std::atomic<bool> spvEnabled;
 
     int64_t nTimeFirstKey;
@@ -259,7 +260,7 @@ public:
 
     std::string strWalletFile;
 
-    void LoadKeyPool(int nIndex, const CKeyPool &keypool)
+    void LoadKeyPool(int64_t nIndex, const CKeyPool &keypool)
     {
         if (keypool.m_pre_split) {
             set_pre_split_keypool.insert(nIndex);
@@ -268,6 +269,7 @@ public:
         } else {
             setExternalKeyPool.insert(nIndex);
         }
+        m_max_keypool_index = std::max(m_max_keypool_index, nIndex);
 
         // If no metadata exists yet, create a default with the pool key's
         // creation time. Note that this may be overwritten by actually
@@ -316,6 +318,7 @@ public:
         nOrderPosNext = 0;
         nNextResend = 0;
         nLastResend = 0;
+        m_max_keypool_index = 0;
         nTimeFirstKey = 0;
         fBroadcastTransactions = false;
         pNVSLastKnownBestHeader = nullptr;
