@@ -218,6 +218,7 @@ private:
     std::set<int64_t> setExternalKeyPool;
     std::set<int64_t> set_pre_split_keypool;
     int64_t m_max_keypool_index;
+    std::map<CKeyID, int64_t> m_pool_key_to_index;
     std::atomic<bool> spvEnabled;
 
     int64_t nTimeFirstKey;
@@ -260,24 +261,7 @@ public:
 
     std::string strWalletFile;
 
-    void LoadKeyPool(int64_t nIndex, const CKeyPool &keypool)
-    {
-        if (keypool.m_pre_split) {
-            set_pre_split_keypool.insert(nIndex);
-        } else if (keypool.fInternal) {
-            setInternalKeyPool.insert(nIndex);
-        } else {
-            setExternalKeyPool.insert(nIndex);
-        }
-        m_max_keypool_index = std::max(m_max_keypool_index, nIndex);
-
-        // If no metadata exists yet, create a default with the pool key's
-        // creation time. Note that this may be overwritten by actually
-        // stored metadata for that key later, which is fine.
-        CKeyID keyid = keypool.vchPubKey.GetID();
-        if (mapKeyMetadata.count(keyid) == 0)
-            mapKeyMetadata[keyid] = CKeyMetadata(keypool.nTime);
-    }
+    void LoadKeyPool(int64_t nIndex, const CKeyPool &keypool);
 
     void MarkPreSplitKeys();
 
@@ -351,7 +335,7 @@ public:
     std::vector<CWalletTx> getWalletTxs();
 
     //! check whether we are allowed to upgrade (or already support) to the named feature
-    bool CanSupportFeature(enum WalletFeature wf) { AssertLockHeld(cs_wallet); return nWalletMaxVersion >= wf; }
+    bool CanSupportFeature(enum WalletFeature wf) const { AssertLockHeld(cs_wallet); return nWalletMaxVersion >= wf; }
 
     /**
      * populate vCoins with vector of available COutputs.
@@ -483,10 +467,14 @@ public:
     bool TopUpKeyPool(unsigned int kpSize = 0);
     void ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, bool fRequestedInternal);
     void KeepKey(int64_t nIndex);
-    void ReturnKey(int64_t nIndex, bool fInternal);
+    void ReturnKey(int64_t nIndex, bool fInternal, const CPubKey& pubkey);
     bool GetKeyFromPool(CPubKey &key, bool internal = false);
     int64_t GetOldestKeyPoolTime();
-    void GetAllReserveKeys(std::set<CKeyID>& setAddress) const;
+    /**
+     * Marks all keys in the keypool up to and including reserve_key as used.
+     */
+    void MarkReserveKeysAsUsed(int64_t keypool_id);
+    const std::map<CKeyID, int64_t>& GetAllReserveKeys() const { return m_pool_key_to_index; }
 
     std::set< std::set<CTxDestination> > GetAddressGroupings();
     std::map<CTxDestination, CAmount> GetAddressBalances();
