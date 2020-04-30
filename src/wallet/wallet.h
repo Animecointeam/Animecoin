@@ -420,7 +420,7 @@ public:
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) override;
     void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew);
     void GetNonMempoolTransaction(const uint256 &hash, CTransactionRef &txsp);
-    int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
+    CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
     void TransactionRemovedFromMempool(const CTransactionRef &ptx) override;
     void ReacceptWalletTransactions();
     void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman);
