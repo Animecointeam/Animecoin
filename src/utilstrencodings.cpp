@@ -7,6 +7,7 @@
 
 #include "tinyformat.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <errno.h>
@@ -725,4 +726,16 @@ bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out)
         *amount_out = mantissa;
 
     return true;
+}
+
+void Downcase(std::string& str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c){return ToLower(c);});
+}
+
+std::string Capitalize(std::string str)
+{
+    if (str.empty()) return str;
+    str[0] = ToUpper(str.front());
+    return str;
 }

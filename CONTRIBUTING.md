@@ -32,8 +32,6 @@ Boost features that should be removed soon
 - boost::bind -> std::bind
 - boost::random
 - boost::program_options
-- boost::algorithm, boost::to_lower/boost::to_upper
-- boost::scoped_array
 
 Obsolete software features
 ---------------------
