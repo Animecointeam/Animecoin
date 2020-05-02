@@ -107,25 +107,32 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
 
 UniValue getrawtransaction(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw runtime_error(
-                "getrawtransaction \"txid\" ( verbose )\n"
-                "\nNOTE: By default this function only works sometimes. This is when the tx is in the mempool\n"
-                "or there is an unspent output in the utxo for this transaction. To make it always work,\n"
-                "you need to maintain a transaction index, using the -txindex command line option.\n"
+                "getrawtransaction \"txid\" ( verbose \"blockhash\" )\n"
+
+                "\nNOTE: By default this function only works for mempool transactions. If the -txindex option is\n"
+                "enabled, it also works for blockchain transactions. If the block which contains the transaction\n"
+                "is known, its hash can be provided even for nodes without -txindex. Note that if a blockhash is\n"
+                "provided, only that block will be searched and if the transaction is in the mempool or other\n"
+                "blocks, or if this node does not have the given block available, the transaction will not be found.\n"
+                "DEPRECATED: for now, it also works for transactions with unspent outputs.\n"
+
                 "\nReturn the raw transaction data.\n"
                 "\nIf verbose is 'true', returns an Object with information about 'txid'.\n"
                 "If verbose is 'false' or omitted, returns a string that is serialized, hex-encoded data for 'txid'.\n"
 
                 "\nArguments:\n"
                 "1. \"txid\"      (string, required) The transaction id\n"
-                "2. verbose       (bool, optional, default=false) If true, return a string, other return a json object\n"
+                "2. verbose     (bool, optional, default=false) If false, return a string, otherwise return a json object\n"
+                "3. \"blockhash\" (string, optional) The block in which to look for the transaction\n"
 
                 "\nResult (if verbose is not set or set to false):\n"
                 "\"data\"      (string) The serialized, hex-encoded data for 'txid'\n"
 
                 "\nResult (if verbose is set to true):\n"
                 "{\n"
+                "  \"in_active_chain\": b, (bool) Whether specified block is in the active chain or not (only present with explicit \"blockhash\" argument)\n"
                 "  \"hex\" : \"data\",       (string) The serialized, hex-encoded data for 'txid'\n"
                 "  \"txid\" : \"id\",        (string) The transaction id (same as provided)\n"
                 "  \"version\" : n,          (numeric) The version\n"
@@ -169,43 +176,60 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
                 + HelpExampleCli("getrawtransaction", "\"mytxid\"")
                 + HelpExampleCli("getrawtransaction", "\"mytxid\" true")
                 + HelpExampleRpc("getrawtransaction", "\"mytxid\", true")
-            );
+                + HelpExampleCli("getrawtransaction", "\"mytxid\" false \"myblockhash\"")
+                + HelpExampleCli("getrawtransaction", "\"mytxid\" true \"myblockhash\"")
+        );
 
     LOCK(cs_main);
 
+    bool in_active_chain = true;
     uint256 hash = ParseHashV(request.params[0], "parameter 1");
+    CBlockIndex* blockindex = nullptr;
 
     // Accept either a bool (true) or a num (>=1) to indicate verbose output.
     bool fVerbose = false;
     if (request.params.size() > 1) {
-        if (request.params[1].isNum()) {
-            if (request.params[1].get_int() != 0) {
-                fVerbose = true;
+        fVerbose = request.params[1].isNum() ? (request.params[1].get_int() != 0) : request.params[1].get_bool();
+    }
+
+    if (!request.params[2].isNull()) {
+        uint256 blockhash = ParseHashV(request.params[2], "parameter 3");
+        if (!blockhash.IsNull()) {
+            BlockMap::iterator it = mapBlockIndex.find(blockhash);
+            if (it == mapBlockIndex.end()) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block hash not found");
             }
-        }
-        else if(request.params[1].isBool()) {
-            if(request.params[1].isTrue()) {
-                fVerbose = true;
-            }
-        }
-        else {
-            throw JSONRPCError(RPC_TYPE_ERROR, "Invalid type provided. Verbose parameter must be a boolean.");
+            blockindex = it->second;
+            in_active_chain = chainActive.Contains(blockindex);
         }
     }
 
     CTransaction tx;
-    uint256 hashBlock;
-    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available about transaction");
-
+    uint256 hash_block;
+    if (!GetTransaction(hash, tx, Params().GetConsensus(), hash_block, true, blockindex)) {
+        std::string errmsg;
+        if (blockindex) {
+            if (!(blockindex->nStatus & BLOCK_HAVE_DATA)) {
+                throw JSONRPCError(RPC_MISC_ERROR, "Block not available");
+            }
+            errmsg = "No such transaction found in the provided block";
+        } else {
+            errmsg = fTxIndex
+              ? "No such mempool or blockchain transaction"
+              : "No such mempool transaction. Use -txindex to enable blockchain transaction queries";
+        }
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, errmsg + ". Use gettransaction for wallet transactions.");
+    }
     string strHex = EncodeHexTx(tx);
 
-    if (!fVerbose)
+    if (!fVerbose) {
         return strHex;
+    }
 
     UniValue result(UniValue::VOBJ);
     result.pushKV("hex", strHex);
-    TxToJSON(tx, hashBlock, result);
+    if (blockindex) result.pushKV("in_active_chain", in_active_chain);
+    TxToJSON(tx, hash_block, result);
     return result;
 }
 
@@ -878,7 +902,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         okSafeMode
   //  --------------------- ------------------------  -----------------------  ----------
-  { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true,  {"txid","verbose"} },
+  { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true,  {"txid","verbose","blockhash"} },
   { "rawtransactions",    "createrawtransaction",   &createrawtransaction,   true,  {"transactions","outputs","locktime"} },
   { "rawtransactions",    "decoderawtransaction",   &decoderawtransaction,   true,  {"hexstring"} },
   { "rawtransactions",    "decodescript",           &decodescript,           true,  {"hexstring"} },
