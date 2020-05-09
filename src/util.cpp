@@ -74,10 +74,8 @@
 #endif
 
 #include <boost/algorithm/string/case_conv.hpp> // for to_lower()
-#include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/predicate.hpp> // for startswith() and endswith()
 #include <boost/program_options/detail/config_file.hpp>
-#include <boost/program_options/parsers.hpp>
 #include <boost/thread.hpp>
 #include <mutex>
 #include <openssl/crypto.h>
@@ -330,6 +328,45 @@ int LogPrintStr(const std::string &str)
         }
     }
     return ret;
+}
+
+/** A map that contains all the currently held directory locks. After
+ * successful locking, these will be held here until the global destructor
+ * cleans them up and thus automatically unlocks them, or ReleaseDirectoryLocks
+ * is called.
+ */
+static std::map<std::string, std::unique_ptr<fsbridge::FileLock>> dir_locks;
+/** Mutex to protect dir_locks. */
+static std::mutex cs_dir_locks;
+
+bool LockDirectory(const fs::path& directory, const std::string lockfile_name, bool probe_only)
+{
+    std::lock_guard<std::mutex> ulock(cs_dir_locks);
+    fs::path pathLockFile = directory / lockfile_name;
+
+    // If a lock for this directory already exists in the map, don't try to re-lock it
+    if (dir_locks.count(pathLockFile.string())) {
+        return true;
+    }
+
+    // Create empty lock file if it doesn't exist.
+    FILE* file = fsbridge::fopen(pathLockFile, "a");
+    if (file) fclose(file);
+    auto lock = MakeUnique<fsbridge::FileLock>(pathLockFile);
+    if (!lock->TryLock()) {
+        return error("Error while attempting to lock directory %s: %s", directory.string(), lock->GetReason());
+    }
+    if (!probe_only) {
+        // Lock successful and we're not just probing, put it into the map
+        dir_locks.emplace(pathLockFile.string(), std::move(lock));
+    }
+    return true;
+}
+
+void ReleaseDirectoryLocks()
+{
+    std::lock_guard<std::mutex> ulock(cs_dir_locks);
+    dir_locks.clear();
 }
 
 static void InterpretNegativeSetting(string name, map<string, string>& mapSettingsRet)
