@@ -585,7 +585,7 @@ void ReadConfigFile(const std::string& confPath,
                     map<string, string>& mapSettingsRet,
                     map<string, vector<string> >& mapMultiSettingsRet)
 {
-    fs::ifstream streamConfig(GetConfigFile(confPath));
+    fsbridge::ifstream streamConfig(GetConfigFile(confPath));
     if (!streamConfig.good())
         return; // No animecoin.conf file is OK
 
@@ -836,7 +836,11 @@ void SetupEnvironment()
     // A dummy locale is used to extract the internal default locale, used by
     // fs::path, which is then used to explicitly imbue the path.
     std::locale loc = fs::path::imbue(std::locale::classic());
+#ifndef WIN32
     fs::path::imbue(loc);
+#else
+    fs::path::imbue(std::locale(loc, new std::codecvt_utf8_utf16<wchar_t>()));
+#endif
 }
 
 bool SetupNetworking()
