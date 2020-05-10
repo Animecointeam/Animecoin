@@ -53,6 +53,8 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+#include <boost/bind.hpp>
+
 const QString BitcoinGUI::DEFAULT_WALLET = "~Default";
 
 BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :

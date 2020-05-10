@@ -33,6 +33,8 @@
 #include <QSet>
 #include <QTimer>
 
+#include <boost/bind.hpp>
+
 using namespace std;
 
 WalletModel::WalletModel(CWallet *_wallet, OptionsModel *_optionsModel, QObject *parent) :

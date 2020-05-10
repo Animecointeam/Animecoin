@@ -286,7 +286,10 @@ BITCOIN_QT_CPP = \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp \
   qt/verticallabel.cpp \
-  qt/winshutdownmonitor.cpp
+  qt/utilitydialog.cpp
+if TARGET_WINDOWS
+BITCOIN_QT_CPP += qt/winshutdownmonitor.cpp
+endif
 
 if ENABLE_WALLET
 
