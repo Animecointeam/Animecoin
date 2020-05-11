@@ -18,6 +18,7 @@
 
 #include <atomic>
 
+#include <boost/version.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
 
