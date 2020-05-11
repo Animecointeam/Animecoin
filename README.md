@@ -108,6 +108,7 @@ Required libraries
 - miniupnpc (optional)
 - qrencode (optional)
 - ZeroMQ (optional)
+- univalue (optional, since 0.10; bundled version will be used unless --with-system-univalue specified)
 
 Berkeley DB notes
 ---------------------
