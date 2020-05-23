@@ -1712,7 +1712,8 @@ void CWallet::ReacceptWalletTransactions()
         CWalletTx& wtx = *(item.second);
 
         LOCK(mempool.cs);
-        wtx.AcceptToMemoryPool(false, maxTxFee);
+        CValidationState state;
+        wtx.AcceptToMemoryPool(false, maxTxFee, state);
     }
 }
 
@@ -1723,7 +1724,7 @@ bool CWalletTx::RelayWalletTransaction(CConnman* connman)
     {
         CValidationState state;
         /* GetDepthInMainChain already catches known conflicts. */
-        if (!fValidated || InMempool() || AcceptToMemoryPool(false, maxTxFee)) {
+        if (!fValidated || InMempool() || AcceptToMemoryPool(false, maxTxFee, state)) {
             LogPrintf("Relaying wtx %s\n", GetHash().ToString());
             if (connman) {
                 CInv inv(MSG_TX, GetHash());
@@ -2737,7 +2738,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
 /**
  * Call after CreateTransaction unless you want to abort
  */
-bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CConnman* connman)
+bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CConnman* connman, CValidationState& state)
 {
     {
         LOCK2(cs_main, cs_wallet);
@@ -2769,9 +2770,9 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CCon
         if (fBroadcastTransactions)
         {
             // Broadcast
-            if (wtx.fValidated && !wtx.AcceptToMemoryPool(false, maxTxFee)) {
+            if (wtx.fValidated && !wtx.AcceptToMemoryPool(false, maxTxFee, state)) {
                 // This must not fail. The transaction has already been signed and recorded.
-                LogPrintf("CommitTransaction(): Error: Transaction not valid");
+                LogPrintf("CommitTransaction(): Error: Transaction not valid, %s\n", state.GetRejectReason());
                 return false;
             }
             wtx.RelayWalletTransaction(connman);
@@ -4268,9 +4269,8 @@ int CMerkleTx::GetBlocksToMaturity() const
 }
 
 
-bool CWalletTx::AcceptToMemoryPool(bool fLimitFree, CAmount nAbsurdFee)
+bool CWalletTx::AcceptToMemoryPool(bool fLimitFree, CAmount nAbsurdFee, CValidationState& state)
 {
-    CValidationState state;
     // We must set fInMempool here - while it will be re-set to true by the
     // entered-mempool callback, if we did not there would be a race where a
     // user could call sendmoney in a loop and hit spurious out of funds errors
