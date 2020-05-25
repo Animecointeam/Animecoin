@@ -296,12 +296,13 @@ void CBlockPolicyEstimator::removeTx(uint256 hash)
     mapMemPoolTxs.erase(hash);
 }
 
-CBlockPolicyEstimator::CBlockPolicyEstimator(const CFeeRate& _minRelayFee)
+CBlockPolicyEstimator::CBlockPolicyEstimator()
     : nBestSeenHeight(0)
 {
-    minTrackedFee = _minRelayFee < CFeeRate(MIN_FEERATE) ? CFeeRate(MIN_FEERATE) : _minRelayFee;
+    static_assert(MIN_BUCKET_FEERATE > 0, "Min feerate must be nonzero");
+    minTrackedFee = CFeeRate(MIN_BUCKET_FEERATE);
     std::vector<double> vfeelist;
-    for (double bucketBoundary = minTrackedFee.GetFeePerK(); bucketBoundary <= MAX_FEERATE; bucketBoundary *= FEE_SPACING) {
+    for (double bucketBoundary = minTrackedFee.GetFeePerK(); bucketBoundary <= MAX_BUCKET_FEERATE; bucketBoundary *= FEE_SPACING) {
         vfeelist.push_back(bucketBoundary);
     }
     vfeelist.push_back(INF_FEERATE);
@@ -485,9 +486,9 @@ void CBlockPolicyEstimator::Read(CAutoFile& filein, int nFileVersion)
 
 FeeFilterRounder::FeeFilterRounder(const CFeeRate& minIncrementalFee)
 {
-    CAmount minFeeLimit = minIncrementalFee.GetFeePerK() / 2;
+    CAmount minFeeLimit = std::max(CAmount(1), minIncrementalFee.GetFeePerK() / 2);
     feeset.insert(0);
-    for (double bucketBoundary = minFeeLimit; bucketBoundary <= MAX_FEERATE; bucketBoundary *= FEE_SPACING) {
+    for (double bucketBoundary = minFeeLimit; bucketBoundary <= MAX_BUCKET_FEERATE; bucketBoundary *= FEE_SPACING) {
         feeset.insert(bucketBoundary);
     }
 }

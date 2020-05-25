@@ -69,6 +69,14 @@ void UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, 
 BlockAssembler::BlockAssembler(const CChainParams& _chainparams)
     : chainparams(_chainparams)
 {
+    if (mapArgs.count("-blockmintxfee")) {
+        CAmount n = 0;
+        ParseMoney(GetArg("-blockmintxfee", ""), n);
+        blockMinFeeRate = CFeeRate(n);
+    } else {
+        blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
+    }
+
     // Largest block you're willing to create:
     nBlockMaxSize = GetArg("-blockmaxsize", DEFAULT_BLOCK_MAX_SIZE);
     // Limit to between 1K and MAX_BLOCK_SIZE-1K for sanity:
@@ -447,7 +455,7 @@ void BlockAssembler::addPackageTxs()
             packageSigOps = modit->nSigOpCountWithAncestors;
         }
 
-        if (packageFees < ::minRelayTxFee.GetFee(packageSize) && nBlockSize >= nBlockMinSize) {
+        if (packageFees < blockMinFeeRate.GetFee(packageSize) && nBlockSize >= nBlockMinSize) {
             // Everything else we might consider has a lower fee rate
             return;
         }
