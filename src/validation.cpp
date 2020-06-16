@@ -1662,6 +1662,9 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
  * The caches and indexes are flushed depending on the mode we're called with
  * if they're too large, if it's been a while since the last write,
  * or always and in all cases if we're in prune mode and are deleting files.
+ *
+ * If FLUSH_STATE_NONE is used, then FlushStateToDisk(...) won't do anything
+ * besides checking if we need to prune.
  */
 bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode, int nManualPruneHeight) {
     int64_t nMempoolUsage = mempool.DynamicMemoryUsage();
@@ -2855,8 +2858,7 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
         return AbortNode(state, std::string("System error: ") + e.what());
     }
 
-    if (fCheckForPruning)
-        FlushStateToDisk(state, FLUSH_STATE_NONE); // we just allocated more disk space for block files
+    FlushStateToDisk(state, FLUSH_STATE_NONE);
 
     return true;
 }
