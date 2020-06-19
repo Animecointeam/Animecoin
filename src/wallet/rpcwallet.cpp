@@ -133,7 +133,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
 
     // Parse the account first so we don't generate a key if there's an error
     std::string strAccount;
-    if (request.params.size() > 0)
+    if (!request.params[0].isNull())
         strAccount = AccountFromValue(request.params[0]);
 
     if (!pwallet->IsLocked()) {
@@ -204,7 +204,7 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() > 1)
+    if (request.fHelp || request.params.size() > 0)
         throw std::runtime_error(
             "getrawchangeaddress\n"
             "\nReturns a new Animecoin address, for receiving change.\n"
@@ -465,7 +465,7 @@ UniValue listaddressgroupings(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp)
+    if (request.fHelp || request.params.size() != 0)
         throw std::runtime_error(
             "listaddressgroupings\n"
             "\nLists groups of addresses which have had their common ownership\n"
@@ -618,7 +618,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
 
     // Minimum confirmations
     int nMinDepth = 1;
-    if (request.params.size() > 1)
+    if (!request.params[1].isNull())
         nMinDepth = request.params[1].get_int();
 
     // Tally
@@ -673,7 +673,7 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
 
     // Minimum confirmations
     int nMinDepth = 1;
-    if (request.params.size() > 1)
+    if (!request.params[1].isNull())
         nMinDepth = request.params[1].get_int();
 
     // Get the set of pub keys assigned to account
@@ -743,10 +743,10 @@ UniValue getbalance(const JSONRPCRequest& request)
         return  ValueFromAmount(pwallet->GetBalance());
 
     int nMinDepth = 1;
-    if (request.params.size() > 1)
+    if (!request.params[1].isNull())
         nMinDepth = request.params[1].get_int();
     isminefilter filter = ISMINE_SPENDABLE;
-    if(request.params.size() > 2)
+    if(!request.params[2].isNull())
         if(request.params[2].get_bool())
             filter = filter | ISMINE_WATCH_ONLY;
 
@@ -983,7 +983,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     std::string strAccount = AccountFromValue(request.params[0]);
     UniValue sendTo = request.params[1].get_obj();
     int nMinDepth = 1;
-    if (request.params.size() > 2)
+    if (!request.params[2].isNull())
         nMinDepth = request.params[2].get_int();
 
     CWalletTx wtx;
@@ -1122,16 +1122,16 @@ UniValue ListReceived(CWallet * const pwallet, const UniValue& params, bool fByA
 {
     // Minimum confirmations
     int nMinDepth = 1;
-    if (params.size() > 0)
+    if (!params[0].isNull())
         nMinDepth = params[0].get_int();
 
     // Whether to include empty accounts
     bool fIncludeEmpty = false;
-    if (params.size() > 1)
+    if (!params[1].isNull())
         fIncludeEmpty = params[1].get_bool();
 
     isminefilter filter = ISMINE_SPENDABLE;
-    if(params.size() > 2)
+    if(!params[2].isNull())
         if(params[2].get_bool())
             filter = filter | ISMINE_WATCH_ONLY;
 
@@ -1508,16 +1508,16 @@ UniValue listtransactions(const JSONRPCRequest& request)
     LOCK2(cs_main, pwallet->cs_wallet);
 
     std::string strAccount = "*";
-    if (request.params.size() > 0)
+    if (!request.params[0].isNull())
         strAccount = request.params[0].get_str();
     int nCount = 10;
-    if (request.params.size() > 1)
+    if (!request.params[1].isNull())
         nCount = request.params[1].get_int();
     int nFrom = 0;
-    if (request.params.size() > 2)
+    if (!request.params[2].isNull())
         nFrom = request.params[2].get_int();
     isminefilter filter = ISMINE_SPENDABLE;
-    if(request.params.size() > 3)
+    if(!request.params[3].isNull())
         if(request.params[3].get_bool())
             filter = filter | ISMINE_WATCH_ONLY;
 
@@ -1661,7 +1661,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp)
+    if (request.fHelp || request.params.size() > 3)
         throw std::runtime_error(
                 "listsinceblock ( \"blockhash\" target_confirmations include_watchonly)\n"
                 "\nGet all transactions in blocks since block [blockhash], or all transactions if omitted\n"
@@ -1711,7 +1711,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
     int target_confirms = 1;
     isminefilter filter = ISMINE_SPENDABLE;
 
-    if ((request.params.size() > 0) && !request.params[0].get_str().empty())
+    if (!request.params[0].isNull() && !request.params[0].get_str().empty())
     {
         uint256 blockId;
 
@@ -1729,7 +1729,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
         }
     }
 
-    if (request.params.size() > 1)
+    if (!request.params[1].isNull())
     {
         target_confirms = request.params[1].get_int();
 
@@ -1825,7 +1825,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     hash.SetHex(request.params[0].get_str());
 
     isminefilter filter = ISMINE_SPENDABLE;
-    if(request.params.size() > 1)
+    if(!request.params[1].isNull())
         if(request.params[1].get_bool())
             filter = filter | ISMINE_WATCH_ONLY;
 
@@ -1954,7 +1954,7 @@ UniValue keypoolrefill(const JSONRPCRequest& request)
 
     // 0 is interpreted by TopUpKeyPool() as the default keypool size given by -keypool
     unsigned int kpSize = 0;
-    if (request.params.size() > 0) {
+    if (!request.params[0].isNull()) {
         if (request.params[0].get_int() < 0)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected valid size.");
         kpSize = (unsigned int)request.params[0].get_int();
@@ -2655,7 +2655,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
    CFeeRate feeRate = CFeeRate(0);
    bool overrideEstimatedFeerate = false;
 
-   if (request.params.size() > 1) {
+   if (!request.params[1].isNull()) {
      if (request.params[1].type() == UniValue::VBOOL) {
        // backward compatibility bool only fallback
        includeWatching = request.params[1].get_bool();

@@ -189,7 +189,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
 
     // Accept either a bool (true) or a num (>=1) to indicate verbose output.
     bool fVerbose = false;
-    if (request.params.size() > 1) {
+    if (!request.params[1].isNull()) {
         fVerbose = request.params[1].isNum() ? (request.params[1].get_int() != 0) : request.params[1].get_bool();
     }
 
@@ -273,7 +273,7 @@ UniValue gettxoutproof(const JSONRPCRequest& request)
     CBlockIndex* pblockindex = nullptr;
 
     uint256 hashBlock;
-    if (request.params.size() > 1)
+    if (!request.params[1].isNull())
     {
         hashBlock = uint256S(request.params[1].get_str());
         if (!mapBlockIndex.count(hashBlock))
@@ -459,6 +459,7 @@ UniValue createrawtransaction(const JSONRPCRequest& request)
         }
     }
 
+    // use if (!request.params[3].isNull() && rbfOptIn != SignalsOptInRBF(rawTx)) { here later
     return EncodeHexTx(rawTx);
 }
 
