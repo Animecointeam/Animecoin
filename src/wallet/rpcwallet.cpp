@@ -2679,7 +2679,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
            CBitcoinAddress address(options["changeAddress"].get_str());
 
            if (!address.IsValid())
-               throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid animecoin address");
+               throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "changeAddress must be a valid animecoin address");
 
            changeAddress = address.Get();
        }
@@ -2714,7 +2714,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
     std::string strFailReason;
 
     if (!pwallet->FundTransaction(tx, nFeeOut, overrideEstimatedFeerate, feeRate, changePosition, strFailReason, includeWatching, lockUnspents, changeAddress)) {
-        throw JSONRPCError(RPC_INTERNAL_ERROR, strFailReason);
+        throw JSONRPCError(RPC_WALLET_ERROR, strFailReason);
     }
 
     UniValue result(UniValue::VOBJ);
