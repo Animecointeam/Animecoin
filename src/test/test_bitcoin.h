@@ -68,13 +68,12 @@ struct TestMemPoolEntryHelper
     int64_t nTime;
     double dPriority;
     unsigned int nHeight;
-    bool hadNoDependencies;
     bool spendsCoinbase;
     unsigned int sigOpCount;
 
     TestMemPoolEntryHelper() :
         nFee(0), nTime(0), dPriority(0.0), nHeight(1),
-        hadNoDependencies(false), spendsCoinbase(false), sigOpCount(1) { }
+        spendsCoinbase(false), sigOpCount(1) { }
 
     CTxMemPoolEntry FromTx(const CMutableTransaction &tx, CTxMemPool *pool = nullptr);
     CTxMemPoolEntry FromTx(const CTransaction &tx, CTxMemPool *pool = nullptr);
@@ -84,7 +83,6 @@ struct TestMemPoolEntryHelper
     TestMemPoolEntryHelper &Time(int64_t _time) { nTime = _time; return *this; }
     TestMemPoolEntryHelper &Priority(double _priority) { dPriority = _priority; return *this; }
     TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
-    TestMemPoolEntryHelper &HadNoDependencies(bool _hnd) { hadNoDependencies = _hnd; return *this; }
     TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
     TestMemPoolEntryHelper &SigOps(unsigned int _sigops) { sigOpCount = _sigops; return *this; }
 };
