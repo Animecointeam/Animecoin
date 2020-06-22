@@ -13,6 +13,7 @@
 #include "init.h"
 #include "miner.h"
 #include "net.h"
+#include "policy/fees.h"
 #include "pow.h"
 #include "rpc/server.h"
 #include "util.h"
@@ -674,7 +675,7 @@ UniValue estimatefee(const JSONRPCRequest& request)
     if (nBlocks < 1)
         nBlocks = 1;
 
-    CFeeRate feeRate = mempool.estimateFee(nBlocks);
+    CFeeRate feeRate = ::feeEstimator.estimateFee(nBlocks);
     if (feeRate == CFeeRate(0))
         return -1.0;
 
@@ -738,7 +739,7 @@ UniValue estimatesmartfee(const JSONRPCRequest& request)
 
     UniValue result(UniValue::VOBJ);
     int answerFound;
-    CFeeRate feeRate = mempool.estimateSmartFee(nBlocks, &answerFound);
+    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocks, &answerFound, ::mempool);
     result.pushKV("feerate", feeRate == CFeeRate(0) ? -1.0 : ValueFromAmount(feeRate.GetFeePerK()));
     result.pushKV("blocks", answerFound);
     return result;

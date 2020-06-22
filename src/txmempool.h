@@ -493,8 +493,7 @@ public:
 
     /** Create a new CTxMemPool.
      */
-    CTxMemPool();
-    ~CTxMemPool();
+    CTxMemPool(CBlockPolicyEstimator* estimator = nullptr);
 
     /**
      * If sanity-checking is turned on, check makes sure the pool is
@@ -618,15 +617,6 @@ public:
     TxMempoolInfo info(const uint256& hash) const;
     std::vector<TxMempoolInfo> infoAll() const;
 
-    /** Estimate fee rate needed to get into the next nBlocks */
-    CFeeRate estimateFee(int nBlocks) const;
-
-    /** Estimate fee rate needed to get into the next nBlocks
-     *  If no answer can be given at nBlocks, return an estimate
-     *  at the lowest number of blocks where one can be given
-     */
-    CFeeRate estimateSmartFee(int nBlocks, int *answerFoundAtBlocks = nullptr) const;
-
     /** Estimate priority needed to get into the next nBlocks */
     double estimatePriority(int nBlocks) const;
 
@@ -635,10 +625,6 @@ public:
      *  at the lowest number of blocks where one can be given
      */
     double estimateSmartPriority(int nBlocks, int *answerFoundAtBlocks = nullptr) const;
-
-    /** Write/Read estimates to disk */
-    bool WriteFeeEstimates(CAutoFile& fileout) const;
-    bool ReadFeeEstimates(CAutoFile& filein);
 
     size_t DynamicMemoryUsage() const;
 

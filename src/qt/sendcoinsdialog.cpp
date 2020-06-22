@@ -22,6 +22,7 @@
 #include "coincontrol.h"
 #include "ui_interface.h"
 #include "validation.h" // mempool and minRelayTxFee
+#include "policy/fees.h"
 #include "wallet/wallet.h"
 
 #include <QFontMetrics>
@@ -661,7 +662,7 @@ void SendCoinsDialog::updateSmartFeeLabel()
 
     int nBlocksToConfirm = ui->sliderSmartFee->maximum() - ui->sliderSmartFee->value() + 2;
     int estimateFoundAtBlocks = nBlocksToConfirm;
-    CFeeRate feeRate = mempool.estimateSmartFee(nBlocksToConfirm, &estimateFoundAtBlocks);
+    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocksToConfirm, &estimateFoundAtBlocks, ::mempool);
     if (feeRate <= CFeeRate(0)) // not enough data => minfee
     {
         ui->labelSmartFee->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(),
