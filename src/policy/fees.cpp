@@ -596,7 +596,7 @@ bool CBlockPolicyEstimator::Write(CAutoFile& fileout) const
 {
     try {
         LOCK(cs_feeEstimator);
-        fileout << 139900; // version required to read: 0.13.99 or later
+        fileout << 100000; // version required to read: 0.10.0 or later
         fileout << CLIENT_VERSION; // version that wrote the file
         fileout << nBestSeenHeight;
         feeStats->Write(fileout);
@@ -619,7 +619,7 @@ bool CBlockPolicyEstimator::Read(CAutoFile& filein)
         filein >> nFileBestSeenHeight;
         feeStats->Read(filein);
         nBestSeenHeight = nFileBestSeenHeight;
-        // if nVersionThatWrote < 139900 then another TxConfirmStats (for priority) follows but can be ignored.
+        // if nVersionThatWrote < 100000 then another TxConfirmStats (for priority) follows but can be ignored.
     }
     catch (const std::exception&) {
         LogPrintf("CBlockPolicyEstimator::Read(): unable to read policy estimator data (non-fatal)\n");
