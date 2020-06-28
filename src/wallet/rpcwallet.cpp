@@ -2523,9 +2523,9 @@ UniValue listunspent(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() > 3)
+    if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
-                "listunspent ( minconf maxconf  [\"addresses\",...] )\n"
+                "listunspent ( minconf maxconf  [\"addresses\",...] [include_unsafe] )\n"
                 "\nReturns array of unspent transaction outputs\n"
             "with between minconf and maxconf (inclusive) confirmations.\n"
                 "Optionally filter to only include txouts paid to specified addresses.\n"
@@ -2539,6 +2539,10 @@ UniValue listunspent(const JSONRPCRequest& request)
                 "      \"address\"   (string) animecoin address\n"
                 "      ,...\n"
                 "    ]\n"
+                "4. include_unsafe (bool, optional, default=true) Include outputs that are not safe to spend\n"
+                "                  because they come from unconfirmed untrusted transactions or unconfirmed\n"
+                "                  replacement transactions (cases where we are less sure that a conflicting\n"
+                "                  transaction won't be mined).\n"
                 "\nResult\n"
                 "[                   (array of json object)\n"
                 "  {\n"
@@ -2562,18 +2566,21 @@ UniValue listunspent(const JSONRPCRequest& request)
                 + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\\\",\\\"Ad9gq1rYvKDiFWCQPnrXVBCZEhwmQYXNks\\\"]\"")
             );
 
-    RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM, UniValue::VARR});
-
     int nMinDepth = 1;
-    if (request.params.size() > 0)
+    if (request.params.size() > 0 && !request.params[0].isNull()) {
+        RPCTypeCheckArgument(request.params[0], UniValue::VNUM);
         nMinDepth = request.params[0].get_int();
+    }
 
     int nMaxDepth = 9999999;
-    if (request.params.size() > 1)
+    if (request.params.size() > 1 && !request.params[1].isNull()) {
+        RPCTypeCheckArgument(request.params[1], UniValue::VNUM);
         nMaxDepth = request.params[1].get_int();
+    }
 
     std::set<CBitcoinAddress> setAddress;
-    if (request.params.size() > 2) {
+    if (request.params.size() > 2 && !request.params[2].isNull()) {
+        RPCTypeCheckArgument(request.params[2], UniValue::VARR);
         UniValue inputs = request.params[2].get_array();
         for (unsigned int idx = 0; idx < inputs.size(); idx++) {
             const UniValue& input = inputs[idx];
@@ -2590,10 +2597,16 @@ UniValue listunspent(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    bool include_unsafe = true;
+    if (request.params.size() > 3 && !request.params[3].isNull()) {
+        RPCTypeCheckArgument(request.params[3], UniValue::VBOOL);
+        include_unsafe = request.params[3].get_bool();
+    }
+
     UniValue results(UniValue::VARR);
     std::vector<COutput> vecOutputs;
     LOCK2(cs_main, pwallet->cs_wallet);
-    pwallet->AvailableCoins(vecOutputs, false, nullptr, true);
+    pwalletMain->AvailableCoins(vecOutputs, !include_unsafe, nullptr, true);
     for (const COutput& out : vecOutputs) {
         if (out.nDepth < nMinDepth || out.nDepth > nMaxDepth)
             continue;
@@ -2916,7 +2929,7 @@ static const CRPCCommand commands[] =
   { "wallet",             "listreceivedbyaddress",    &listreceivedbyaddress,    false,  {"minconf","include_empty","include_watchonly"} },
   { "wallet",             "listsinceblock",           &listsinceblock,           false,  {"blockhash","target_confirmations","include_watchonly","include_removed"} },
   { "wallet",             "listtransactions",         &listtransactions,         false,  {"account","count","skip","include_watchonly"} },
-  { "wallet",             "listunspent",              &listunspent,              false,  {"minconf","maxconf","addresses"} },
+  { "wallet",             "listunspent",              &listunspent,              false,  {"minconf","maxconf","addresses","include_unsafe"} },
   { "wallet",             "lockunspent",              &lockunspent,              true,   {"unlock","transactions"} },
   { "wallet",             "move",                     &movecmd,                  false,  {"fromaccount","toaccount","amount","minconf","comment"} },
   { "wallet",             "sendfrom",                 &sendfrom,                 false,  {"fromaccount","toaddress","amount","minconf","comment","comment_to"} },
