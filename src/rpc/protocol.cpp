@@ -13,7 +13,6 @@
 #include "version.h"
 
 #include <stdint.h>
-#include <fstream>
 
 using namespace std;
 
@@ -69,11 +68,14 @@ static const std::string COOKIEAUTH_USER = "__cookie__";
 /** Default name for auth cookie file */
 static const std::string COOKIEAUTH_FILE = ".cookie";
 
-boost::filesystem::path GetAuthCookieFile()
+/** Get name of RPC authentication cookie file */
+static fs::path GetAuthCookieFile(bool temp=false)
 {
-    boost::filesystem::path path(GetArg("-rpccookiefile", COOKIEAUTH_FILE));
-    if (!path.is_complete()) path = GetDataDir() / path;
-    return path;
+    std::string arg = GetArg("-rpccookiefile", COOKIEAUTH_FILE);
+    if (temp) {
+        arg += ".tmp";
+    }
+    return AbsPathForConfigVal(fs::path(arg));
 }
 
 bool GenerateAuthCookie(std::string *cookie_out)
@@ -85,15 +87,21 @@ bool GenerateAuthCookie(std::string *cookie_out)
     /** the umask determines what permissions are used to create this file -
      * these are set to 077 in init.cpp unless overridden with -sysperms.
      */
-    std::ofstream file;
-    boost::filesystem::path filepath = GetAuthCookieFile();
-    file.open(filepath.string().c_str());
+    fsbridge::ofstream file;
+    fs::path filepath_tmp = GetAuthCookieFile(true);
+    file.open(filepath_tmp);
     if (!file.is_open()) {
-        LogPrintf("Unable to open cookie authentication file %s for writing\n", filepath.string());
+        LogPrintf("Unable to open cookie authentication file %s for writing\n", filepath_tmp.string());
         return false;
     }
     file << cookie;
     file.close();
+
+    fs::path filepath = GetAuthCookieFile(false);
+    if (!RenameOver(filepath_tmp, filepath)) {
+        LogPrintf("Unable to rename cookie authentication file %s to %s\n", filepath_tmp.string(), filepath.string());
+        return false;
+    }
     LogPrintf("Generated RPC authentication cookie %s\n", filepath.string());
 
     if (cookie_out)
@@ -103,10 +111,10 @@ bool GenerateAuthCookie(std::string *cookie_out)
 
 bool GetAuthCookie(std::string *cookie_out)
 {
-    std::ifstream file;
+    fsbridge::ifstream file;
     std::string cookie;
-    boost::filesystem::path filepath = GetAuthCookieFile();
-    file.open(filepath.string().c_str());
+    fs::path filepath = GetAuthCookieFile();
+    file.open(filepath);
     if (!file.is_open())
         return false;
     std::getline(file, cookie);
@@ -120,8 +128,8 @@ bool GetAuthCookie(std::string *cookie_out)
 void DeleteAuthCookie()
 {
     try {
-        boost::filesystem::remove(GetAuthCookieFile());
-    } catch (const boost::filesystem::filesystem_error& e) {
-        LogPrintf("%s: Unable to remove random auth cookie file: %s\n", __func__, e.what());
+        fs::remove(GetAuthCookieFile());
+    } catch (const fs::filesystem_error& e) {
+        LogPrintf("%s: Unable to remove random auth cookie file: %s\n", __func__, fsbridge::get_filesystem_error_message(e));
     }
 }

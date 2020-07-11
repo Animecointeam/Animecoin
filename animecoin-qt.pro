@@ -275,6 +275,7 @@ DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
     src/auxiliaryblockrequest.h \
     src/crypto/aes.h \
+    src/fs.h \
     src/indirectmap.h \
     src/net_processing.h \
     src/qt/multisigaddressentry.h \
@@ -293,6 +294,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/base58.h \
     src/checkpoints.h \
     src/compat.h \
+    src/robin_hood.h \
     src/rpc/register.h \
     src/sync.h \
     src/threadinterrupt.h \
@@ -458,6 +460,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/crypto/sha256_shani.cpp \
     src/crypto/sha256_sse4.cpp \
     src/crypto/sha256_sse41.cpp \
+    src/fs.cpp \
     src/net_processing.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/multisigaddressentry.cpp \

@@ -127,12 +127,10 @@ public:
 		Init(nTypeIn, nVersionIn);
 	}
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
 	CDataStream(const char* pbegin, const char* pend, int nTypeIn, int nVersionIn) : vch(pbegin, pend)
 	{
 		Init(nTypeIn, nVersionIn);
 	}
-#endif
 
 	CDataStream(const vector_type& vchIn, int nTypeIn, int nVersionIn) : vch(vchIn.begin(), vchIn.end())
 	{
@@ -198,6 +196,8 @@ public:
 	void clear()                                     { vch.clear(); nReadPos = 0; }
 	iterator insert(iterator it, const char& x=char()) { return vch.insert(it, x); }
 	void insert(iterator it, size_type n, const char& x) { vch.insert(it, n, x); }
+    value_type* data()                               { return vch.data() + nReadPos; }
+    const value_type* data() const                   { return vch.data() + nReadPos; }
 
 	void insert(iterator it, std::vector<char>::const_iterator first, std::vector<char>::const_iterator last)
 	{
@@ -213,7 +213,6 @@ public:
 			vch.insert(it, first, last);
 	}
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
 	void insert(iterator it, const char* first, const char* last)
 	{
         if (last == first) return;
@@ -227,7 +226,6 @@ public:
 		else
 			vch.insert(it, first, last);
 	}
-#endif
 
 	iterator erase(iterator it)
 	{
@@ -287,7 +285,7 @@ public:
 	//
 	bool eof() const             { return size() == 0; }
 	CDataStream* rdbuf()         { return this; }
-	int in_avail()               { return size(); }
+    int in_avail()  const        { return size(); }
 
 	void SetType(int n)          { nType = n; }
     int GetType() const          { return nType; }
@@ -540,20 +538,21 @@ protected:
 			readNow = nAvail;
 		if (readNow == 0)
 			return false;
-		size_t read = fread((void*)&vchBuf[pos], 1, readNow, src);
-		if (read == 0) {
+        size_t nBytes = fread((void*)&vchBuf[pos], 1, readNow, src);
+        if (nBytes == 0) {
 			throw std::ios_base::failure(feof(src) ? "CBufferedFile::Fill : end of file" : "CBufferedFile::Fill : fread failed");
-		} else {
-			nSrcPos += read;
-			return true;
 		}
-	}
+        nSrcPos += nBytes;
+        return true;
+    }
 
 public:
 	CBufferedFile(FILE *fileIn, uint64_t nBufSize, uint64_t nRewindIn, int nTypeIn, int nVersionIn) :
         nType(nTypeIn), nVersion(nVersionIn), nSrcPos(0), nReadPos(0), nReadLimit((uint64_t)(-1)), nRewind(nRewindIn), vchBuf(nBufSize, 0)
     {
-		src = fileIn;
+        if (nRewindIn >= nBufSize)
+            throw std::ios_base::failure("Rewind limit must be less than buffer size");
+        src = fileIn;
 	}
 
 	~CBufferedFile()
@@ -585,8 +584,6 @@ public:
     void read(char *pch, size_t nSize) {
         if (nSize + nReadPos > nReadLimit)
 			throw std::ios_base::failure("Read attempted past buffer limit");
-		if (nSize + nRewind > vchBuf.size())
-			throw std::ios_base::failure("Read larger than buffer size");
 		while (nSize > 0) {
 			if (nReadPos == nSrcPos)
 				Fill();
@@ -604,23 +601,26 @@ public:
 	}
 
 	// return the current reading position
-	uint64_t GetPos() {
+    uint64_t GetPos()  const {
 		return nReadPos;
 	}
 
 	// rewind to a given reading position
 	bool SetPos(uint64_t nPos) {
-		nReadPos = nPos;
-		if (nReadPos + nRewind < nSrcPos) {
-			nReadPos = nSrcPos - nRewind;
+        size_t bufsize = vchBuf.size();
+        if (nPos + bufsize < nSrcPos) {
+            // rewinding too far, rewind as far as possible
+            nReadPos = nSrcPos - bufsize;
 			return false;
-		} else if (nReadPos > nSrcPos) {
-			nReadPos = nSrcPos;
+        }
+        if (nPos > nSrcPos) {
+            // can't go this far forward, go as far as possible
+            nReadPos = nSrcPos;
 			return false;
-		} else {
-			return true;
 		}
-	}
+        nReadPos = nPos;
+        return true;
+    }
 
 	bool Seek(uint64_t nPos) {
 		long nLongPos = nPos;

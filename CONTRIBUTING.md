@@ -32,8 +32,6 @@ Boost features that should be removed soon
 - boost::bind -> std::bind
 - boost::random
 - boost::program_options
-- boost::algorithm, boost::to_lower/boost::to_upper
-- boost::scoped_array
 
 Obsolete software features
 ---------------------
@@ -49,8 +47,6 @@ Features no longer requiring OpenSSL
 Features still using OpenSSL
 ---------------------
 - RNG. Requires more code uplifting to migrate.
-- Unit test EC-checking control group. Should be migrated to own implementation.
-- ???
 
 Features that should not be backported
 ---------------------

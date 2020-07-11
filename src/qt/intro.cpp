@@ -2,14 +2,13 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "fs.h"
 #include "intro.h"
 #include "ui_intro.h"
 
 #include "guiutil.h"
 
 #include "util.h"
-
-#include <boost/filesystem.hpp>
 
 #include <QFileDialog>
 #include <QSettings>
@@ -66,7 +65,6 @@ FreespaceChecker::FreespaceChecker(Intro *_intro)
 
 void FreespaceChecker::check()
 {
-	namespace fs = boost::filesystem;
 	QString dataDirStr = intro->getPathToCheck();
 	fs::path dataDir = GUIUtil::qstringToBoostPath(dataDirStr);
 	uint64_t freeBytesAvailable = 0;
@@ -130,8 +128,8 @@ Intro::~Intro()
 {
 	delete ui;
 	/* Ensure thread is finished before it is deleted */
-	emit stopThread();
-	thread->wait();
+    thread->quit();
+    thread->wait();
 }
 
 QString Intro::getDataDirectory()
@@ -161,7 +159,6 @@ QString Intro::getDefaultDataDirectory()
 
 bool Intro::pickDataDirectory()
 {
-	namespace fs = boost::filesystem;
 	QSettings settings;
 	/* If data directory provided on command line, no need to look at settings
 	   or show a picking dialog */
@@ -282,8 +279,7 @@ void Intro::startThread()
 	connect(executor, SIGNAL(reply(int,QString,quint64)), this, SLOT(setStatus(int,QString,quint64)));
 	connect(this, SIGNAL(requestCheck()), executor, SLOT(check()));
 	/*  make sure executor object is deleted in its own thread */
-	connect(this, SIGNAL(stopThread()), executor, SLOT(deleteLater()));
-	connect(this, SIGNAL(stopThread()), thread, SLOT(quit()));
+    connect(thread, &QThread::finished, executor, &QObject::deleteLater);
 
 	thread->start();
 }

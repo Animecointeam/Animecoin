@@ -121,6 +121,25 @@ BOOST_AUTO_TEST_CASE(siphash)
         hasher3.Write(uint64_t(x)|(uint64_t(x+1)<<8)|(uint64_t(x+2)<<16)|(uint64_t(x+3)<<24)|
                      (uint64_t(x+4)<<32)|(uint64_t(x+5)<<40)|(uint64_t(x+6)<<48)|(uint64_t(x+7)<<56));
     }
+
+    // Check consistency between CSipHasher and SipHashUint256[Extra].
+/*
+    FastRandomContext ctx;
+    for (int i = 0; i < 16; ++i) {
+        uint64_t k1 = ctx.rand64();
+        uint64_t k2 = ctx.rand64();
+        uint256 x = GetRandHash();
+        uint32_t n = ctx.rand32();
+        uint8_t nb[4];
+        WriteLE32(nb, n);
+        CSipHasher sip256(k1, k2);
+        sip256.Write(x.begin(), 32);
+        CSipHasher sip288 = sip256;
+        sip288.Write(nb, 4);
+        BOOST_CHECK_EQUAL(SipHashUint256(k1, k2, x), sip256.Finalize());
+        BOOST_CHECK_EQUAL(SipHashUint256Extra(k1, k2, x, n), sip288.Finalize());
+    }
+    */
 }
 
 BOOST_AUTO_TEST_SUITE_END()

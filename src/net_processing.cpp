@@ -53,6 +53,7 @@ struct IteratorComparator
 };
 
 struct COrphanTx {
+    // When modifying, adapt the copy of this definition in tests/DoS_tests.
     CTransaction tx;
     NodeId fromPeer;
     int64_t nTimeExpire;
@@ -388,25 +389,6 @@ bool PeerHasHeader(CNodeState *state, const CBlockIndex *pindex)
     if (state->pindexBestHeaderSent && pindex == state->pindexBestHeaderSent->GetAncestor(pindex->nHeight))
         return true;
     return false;
-}
-
-/** Find the last common ancestor two blocks have.
- *  Both pa and pb must be non-nullptr. */
-const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* pb) {
-    if (pa->nHeight > pb->nHeight) {
-        pa = pa->GetAncestor(pb->nHeight);
-    } else if (pb->nHeight > pa->nHeight) {
-        pb = pb->GetAncestor(pa->nHeight);
-    }
-
-    while (pa != pb && pa && pb) {
-        pa = pa->pprev;
-        pb = pb->pprev;
-    }
-
-    // Eventually all chain branches meet at the genesis block.
-    assert(pa == pb);
-    return pa;
 }
 
 /** Update pindexLastCommonBlock and add not-in-flight missing successors to vBlocks, until it has
@@ -746,7 +728,7 @@ void PeerLogicValidation::BlockConnected(const std::shared_ptr<const CBlock>& pb
     // Erase orphan transactions include or precluded by this block
     if (vOrphanErase.size()) {
         int nErased = 0;
-        for (uint256 &orphanHash : vOrphanErase) {
+        for (const uint256& orphanHash : vOrphanErase) {
             nErased += EraseOrphanTx(orphanHash);
         }
         LogPrint("mempool", "Erased %d orphan tx included or conflicted by block\n", nErased);
@@ -875,8 +857,9 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         return recentRejects->contains(inv.hash) ||
                mempool.exists(inv.hash) ||
                mapOrphanTransactions.count(inv.hash) ||
-               pcoinsTip->HaveCoins(inv.hash);
-        }
+               pcoinsTip->HaveCoinInCache(COutPoint(inv.hash, 0)) || // Best effort: only try output 0 and 1
+               pcoinsTip->HaveCoinInCache(COutPoint(inv.hash, 1));
+    }
     case MSG_BLOCK:
         return mapBlockIndex.count(inv.hash);
     }
@@ -1747,7 +1730,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                 }
             }
 
-            for (uint256 hash : vEraseQueue)
+            for (const uint256& hash : vEraseQueue)
                 EraseOrphanTx(hash);
         }
         else if (fMissingInputs)

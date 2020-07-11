@@ -6,6 +6,7 @@
 #include "db.h"
 
 #include "addrman.h"
+#include "fs.h"
 #include "hash.h"
 #include "protocol.h"
 #include "util.h"
@@ -17,7 +18,6 @@
 #include <sys/stat.h>
 #endif
 
-#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 #include <boost/version.hpp>
 
@@ -67,7 +67,7 @@ void CDBEnv::Close()
     EnvShutdown();
 }
 
-bool CDBEnv::Open(const boost::filesystem::path& pathIn)
+bool CDBEnv::Open(const fs::path& pathIn, bool retry)
 {
     if (fDbEnvInit)
         return true;
@@ -75,9 +75,14 @@ bool CDBEnv::Open(const boost::filesystem::path& pathIn)
     boost::this_thread::interruption_point();
 
     strPath = pathIn.string();
-    boost::filesystem::path pathLogDir = pathIn / "database";
+    if (!LockDirectory(pathIn, ".walletlock")) {
+        LogPrintf("Cannot obtain a lock on wallet directory %s. Another instance of animecoin may be using it.\n", strPath);
+        return false;
+    }
+
+    fs::path pathLogDir = pathIn / "database";
     TryCreateDirectory(pathLogDir);
-    boost::filesystem::path pathErrorFile = pathIn / "db.log";
+    fs::path pathErrorFile = pathIn / "db.log";
     LogPrintf("CDBEnv::Open : LogDir=%s ErrorFile=%s\n", pathLogDir.string(), pathErrorFile.string());
 
     unsigned int nEnvFlags = 0;
@@ -90,7 +95,7 @@ bool CDBEnv::Open(const boost::filesystem::path& pathIn)
     dbenv->set_lg_max(1048576);
     dbenv->set_lk_max_locks(40000);
     dbenv->set_lk_max_objects(40000);
-    dbenv->set_errfile(fopen(pathErrorFile.string().c_str(), "a")); /// debug
+    dbenv->set_errfile(fsbridge::fopen(pathErrorFile, "a")); /// debug
     dbenv->set_flags(DB_AUTO_COMMIT, 1);
     dbenv->set_flags(DB_TXN_WRITE_NOSYNC, 1);
     dbenv->log_set_config(DB_LOG_AUTO_REMOVE, 1);
@@ -104,8 +109,27 @@ bool CDBEnv::Open(const boost::filesystem::path& pathIn)
                              DB_RECOVER |
                              nEnvFlags,
                          S_IRUSR | S_IWUSR);
-    if (ret != 0)
-        return error("CDBEnv::Open : Error %d opening database environment: %s\n", ret, DbEnv::strerror(ret));
+    if (ret != 0) {
+        dbenv->close(0);
+        LogPrintf("CDBEnv::Open: Error %d opening database environment: %s\n", ret, DbEnv::strerror(ret));
+        if (retry) {
+            // try moving the database env out of the way
+            fs::path pathDatabaseBak = pathIn / strprintf("database.%d.bak", GetTime());
+            try {
+                fs::rename(pathLogDir, pathDatabaseBak);
+                LogPrintf("Moved old %s to %s. Retrying.\n", pathLogDir.string(), pathDatabaseBak.string());
+            } catch (const fs::filesystem_error&) {
+                // failure is ok (well, not really, but it's not worse than what we started with)
+            }
+            // try opening it again one more time
+            if (!Open(pathIn, false)) {
+                // if it still fails, it probably means we can't even create the database env
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
     fDbEnvInit = true;
     fMockDb = false;
@@ -207,6 +231,7 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
     if (ret > 0)
     {
         LogPrintf("Cannot create database file %s\n", filename);
+        pdbCopy->close(0);
         return false;
     }
 
@@ -233,43 +258,22 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
     return fSuccess;
 }
 
-bool CDB::VerifyEnvironment(const std::string& walletFile, const boost::filesystem::path& dataDir, std::string& errorStr)
+bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr)
 {
     LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(0, 0, 0));
     LogPrintf("Using wallet %s\n", walletFile);
 
-    // Wallet file must be a plain filename without a directory
-    if (walletFile != boost::filesystem::basename(walletFile) + boost::filesystem::extension(walletFile))
-    {
-        errorStr = strprintf(_("Wallet %s resides outside data directory %s"), walletFile, dataDir.string());
+    if (!bitdb.Open(dataDir, true)) {
+        errorStr = strprintf(_("Error initializing wallet database environment %s!"), GetDataDir());
         return false;
     }
 
-    if (!bitdb.Open(dataDir))
-    {
-        // try moving the database env out of the way
-        boost::filesystem::path pathDatabase = dataDir / "database";
-        boost::filesystem::path pathDatabaseBak = dataDir / strprintf("database.%d.bak", GetTime());
-        try {
-            boost::filesystem::rename(pathDatabase, pathDatabaseBak);
-            LogPrintf("Moved old %s to %s. Retrying.\n", pathDatabase.string(), pathDatabaseBak.string());
-        } catch (const boost::filesystem::filesystem_error&) {
-            // failure is ok (well, not really, but it's not worse than what we started with)
-        }
-
-        // try again
-        if (!bitdb.Open(dataDir)) {
-            // if it still fails, it probably means we can't even create the database env
-            errorStr = strprintf(_("Error initializing wallet database environment %s!"), GetDataDir());
-            return false;
-        }
-    }
     return true;
 }
 
-bool CDB::VerifyDatabaseFile(const std::string& walletFile, const boost::filesystem::path& dataDir, std::string& warningStr, std::string& errorStr, bool (*recoverFunc)(const std::string& strFile))
+bool CDB::VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr, bool (*recoverFunc)(const std::string& strFile))
 {
-    if (boost::filesystem::exists(dataDir / walletFile))
+    if (fs::exists(dataDir / walletFile))
     {
         CDBEnv::VerifyResult r = bitdb.Verify(walletFile, recoverFunc);
         if (r == CDBEnv::RECOVER_OK)
@@ -521,15 +525,15 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                                 break;
                             }
                             if (pszSkip &&
-                                strncmp(&ssKey[0], pszSkip, std::min(ssKey.size(), strlen(pszSkip))) == 0)
+                                    strncmp(ssKey.data(), pszSkip, std::min(ssKey.size(), strlen(pszSkip))) == 0)
                                 continue;
-                            if (strncmp(&ssKey[0], "\x07version", 8) == 0) {
+                            if (strncmp(ssKey.data(), "\x07version", 8) == 0) {
                                 // Update version:
                                 ssValue.clear();
                                 ssValue << CLIENT_VERSION;
                             }
-                            Dbt datKey(&ssKey[0], ssKey.size());
-                            Dbt datValue(&ssValue[0], ssValue.size());
+                            Dbt datKey(ssKey.data(), ssKey.size());
+                            Dbt datValue(ssValue.data(), ssValue.size());
                             int ret2 = pdbCopy->put(nullptr, &datKey, &datValue, DB_NOOVERWRITE);
                             if (ret2 > 0)
                                 fSuccess = false;
@@ -539,8 +543,10 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                         bitdb.CloseDb(strFile);
                         if (pdbCopy->close(0))
                             fSuccess = false;
-                        delete pdbCopy;
+                    } else {
+                        pdbCopy->close(0);
                     }
+                    delete pdbCopy;
                 }
                 if (fSuccess) {
                     Db dbA(bitdb.dbenv, 0);
@@ -595,7 +601,7 @@ void CDBEnv::Flush(bool fShutdown)
                 dbenv->log_archive(&listp, DB_ARCH_REMOVE);
                 Close();
                 if (!fMockDb)
-                    boost::filesystem::remove_all(boost::filesystem::path(strPath) / "database");
+                    fs::remove_all(fs::path(strPath) / "database");
             }
         }
     }
@@ -609,11 +615,11 @@ bool CDB::PeriodicFlush(std::string strFile)
     {
         // Don't do this if any databases are in use
         int nRefCount = 0;
-        map<string, int>::iterator mi = bitdb.mapFileUseCount.begin();
-        while (mi != bitdb.mapFileUseCount.end())
+        map<string, int>::iterator mit = bitdb.mapFileUseCount.begin();
+        while (mit != bitdb.mapFileUseCount.end())
         {
-            nRefCount += (*mi).second;
-            mi++;
+            nRefCount += (*mit).second;
+            mit++;
         }
 
         if (nRefCount == 0)

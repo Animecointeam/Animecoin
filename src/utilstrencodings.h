@@ -23,7 +23,8 @@
 enum SafeChars
 {
     SAFE_CHARS_DEFAULT, //!< The full set of allowed chars
-    SAFE_CHARS_UA_COMMENT //!< BIP-0014 subset
+    SAFE_CHARS_UA_COMMENT, //!< BIP-0014 subset
+    SAFE_CHARS_FILENAME, //!< Chars allowed in filenames
 };
 
 /**
@@ -58,6 +59,16 @@ std::string itostr(int n);
 int64_t atoi64(const char* psz);
 int64_t atoi64(const std::string& str);
 int atoi(const std::string& str);
+
+/**
+ * Tests if the given character is a decimal digit.
+ * @param[in] c     character to test
+ * @return          true if the argument is a decimal digit; otherwise false.
+ */
+constexpr bool IsDigit(char c)
+{
+    return c >= '0' && c <= '9';
+}
 
 /**
  * Convert string to signed 32-bit integer with strict parse error feedback.
@@ -146,5 +157,49 @@ bool TimingResistantEqual(const T& a, const T& b)
  * @note The result must be in the range (-10^18,10^18), otherwise an overflow error will trigger.
  */
 bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out);
+
+/**
+ * Converts the given character to its lowercase equivalent.
+ * This function is locale independent. It only converts uppercase
+ * characters in the standard 7-bit ASCII range.
+ * @param[in] c     the character to convert to lowercase.
+ * @return          the lowercase equivalent of c; or the argument
+ *                  if no conversion is possible.
+ */
+constexpr unsigned char ToLower(unsigned char c)
+{
+    return (c >= 'A' && c <= 'Z' ? (c - 'A') + 'a' : c);
+}
+
+/**
+ * Converts the given string to its lowercase equivalent.
+ * This function is locale independent. It only converts uppercase
+ * characters in the standard 7-bit ASCII range.
+ * @param[in,out] str   the string to convert to lowercase.
+ */
+void Downcase(std::string& str);
+
+/**
+ * Converts the given character to its uppercase equivalent.
+ * This function is locale independent. It only converts lowercase
+ * characters in the standard 7-bit ASCII range.
+ * @param[in] c     the character to convert to uppercase.
+ * @return          the uppercase equivalent of c; or the argument
+ *                  if no conversion is possible.
+ */
+constexpr unsigned char ToUpper(unsigned char c)
+{
+    return (c >= 'a' && c <= 'z' ? (c - 'a') + 'A' : c);
+}
+
+/**
+ * Capitalizes the first character of the given string.
+ * This function is locale independent. It only capitalizes the
+ * first character of the argument if it has an uppercase equivalent
+ * in the standard 7-bit ASCII range.
+ * @param[in] str   the string to capitalize.
+ * @return          string with the first letter capitalized.
+ */
+std::string Capitalize(std::string str);
 
 #endif // BITCOIN_UTILSTRENCODINGS_H

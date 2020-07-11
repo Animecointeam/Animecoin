@@ -64,15 +64,15 @@ MultisigDialog::~MultisigDialog()
     delete ui;
 }
 
-void MultisigDialog::setModel(WalletModel *model)
+void MultisigDialog::setModel(WalletModel *_model)
 {
-    this->model = model;
+    this->model = _model;
 
     for(int i = 0; i < ui->pubkeyEntries->count(); i++)
     {
         MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->pubkeyEntries->itemAt(i)->widget());
         if(entry)
-            entry->setModel(model);
+            entry->setModel(_model);
     }
 
 
@@ -80,7 +80,7 @@ void MultisigDialog::setModel(WalletModel *model)
     {
         MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
         if(entry)
-            entry->setModel(model);
+            entry->setModel(_model);
     }
 
 
@@ -88,7 +88,7 @@ void MultisigDialog::setModel(WalletModel *model)
     {
         SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(i)->widget());
         if(entry)
-            entry->setModel(model);
+            entry->setModel(_model);
     }
 }
 
@@ -392,9 +392,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         view.SetBackend(viewMempool); // temporarily switch cache backend to db+mempool view
 
         for (const CTxIn& txin : mergedTx.vin) {
-            const uint256& prevHash = txin.prevout.hash;
-            CCoins coins;
-            view.AccessCoins(prevHash); // this is certainly allowed to fail
+            view.AccessCoin(txin.prevout); // Load entries from viewChain into view; can fail.
         }
         view.SetBackend(viewDummy); // switch back to avoid locking db/mempool too long
     }
@@ -421,16 +419,16 @@ void MultisigDialog::on_signTransactionButton_clicked()
 
     // Sign what we can
     bool fComplete = true;
-    for(int i = 0; i < mergedTx.vin.size(); i++)
+    for (unsigned int i = 0; i < mergedTx.vin.size(); i++)
     {
         CTxIn& txin = mergedTx.vin[i];
-        const CCoins* coins = view.AccessCoins(txin.prevout.hash);
-        if (coins == nullptr || !coins->IsAvailable(txin.prevout.n))
+        const Coin& coin = view.AccessCoin(txin.prevout);
+        if (coin.IsSpent())
         {
             fComplete = false;
             continue;
         }
-        const CScript& prevPubKey = coins->vout[txin.prevout.n].scriptPubKey;
+        const CScript& prevPubKey = coin.out.scriptPubKey;
         txin.scriptSig.clear();
         SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL);
         txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig);

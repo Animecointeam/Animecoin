@@ -9,11 +9,20 @@ AM_CXXFLAGS = $(HARDENED_CXXFLAGS)
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 EXTRA_LIBRARIES =
 
+if EMBEDDED_UNIVALUE
+LIBUNIVALUE = univalue/libunivalue.la
+
+$(LIBUNIVALUE): $(wildcard univalue/lib/*) $(wildcard univalue/include/*)
+	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
+else
+LIBUNIVALUE = $(UNIVALUE_LIBS)
+endif
+
 BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
 BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
-BITCOIN_INCLUDES += -I$(srcdir)/univalue/include
+BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
 
 LIBBITCOIN_SERVER=libanimecoin_server.a
 LIBBITCOIN_COMMON=libanimecoin_common.a
@@ -23,7 +32,6 @@ LIBBITCOIN_UTIL=libanimecoin_util.a
 LIBBITCOIN_CRYPTO_BASE=crypto/libanimecoin_crypto_base.a
 LIBBITCOINQT=qt/libanimecoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
-LIBUNIVALUE=univalue/libunivalue.la
 
 if ENABLE_ZMQ
 LIBBITCOIN_ZMQ=libanimecoin_zmq.a
@@ -56,9 +64,6 @@ endif
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
 
-
-$(LIBUNIVALUE): $(wildcard univalue/lib/*) $(wildcard univalue/include/*)
-	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $ univalue/
 	
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
@@ -121,6 +126,7 @@ BITCOIN_CORE_H = \
   crypto/sph_skein.h \
   wallet/db.h \
   hashblock.h \
+  fs.h \
   httprpc.h \
   httpserver.h \
   indirectmap.h \
@@ -384,6 +390,7 @@ libanimecoin_util_a_SOURCES = \
   arith_uint256.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
+  fs.cpp \
   random.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \

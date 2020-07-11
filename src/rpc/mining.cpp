@@ -13,6 +13,7 @@
 #include "init.h"
 #include "miner.h"
 #include "net.h"
+#include "policy/fees.h"
 #include "pow.h"
 #include "rpc/server.h"
 #include "util.h"
@@ -87,7 +88,7 @@ UniValue getnetworkhashps(const JSONRPCRequest& request)
        );
 
     LOCK(cs_main);
-    return GetNetworkHashPS(request.params.size() > 0 ? request.params[0].get_int() : 120, request.params.size() > 1 ? request.params[1].get_int() : -1);
+    return GetNetworkHashPS(!request.params[0].isNull() ? request.params[0].get_int() : 120, !request.params[1].isNull() ? request.params[1].get_int() : -1);
 }
 
 UniValue generateBlocks(std::shared_ptr<CReserveScript> coinbaseScript, int nGenerate, uint64_t nMaxTries, bool keepScript)
@@ -195,7 +196,7 @@ UniValue generatetoaddress(const JSONRPCRequest& request)
 
     int nGenerate = request.params[0].get_int();
     uint64_t nMaxTries = 1000000;
-    if (request.params.size() > 2) {
+    if (!request.params[2].isNull()) {
         nMaxTries = request.params[2].get_int();
     }
 
@@ -366,7 +367,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
     std::string strMode = "template";
     UniValue lpval = NullUniValue;
-    if (request.params.size() > 0)
+    if (!request.params[0].isNull())
     {
         const UniValue& oparam = request.params[0].get_obj();
         const UniValue& modeval = find_value(oparam, "mode");
@@ -652,6 +653,7 @@ UniValue estimatefee(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "estimatefee nblocks\n"
+            "\nDEPRECATED. Please use estimatesmartfee for more intelligent estimates."
             "\nEstimates the approximate fee per kilobyte\n"
             "needed for a transaction to begin confirmation\n"
             "within nblocks blocks.\n"
@@ -674,7 +676,7 @@ UniValue estimatefee(const JSONRPCRequest& request)
     if (nBlocks < 1)
         nBlocks = 1;
 
-    CFeeRate feeRate = mempool.estimateFee(nBlocks);
+    CFeeRate feeRate = ::feeEstimator.estimateFee(nBlocks);
     if (feeRate == CFeeRate(0))
         return -1.0;
 
@@ -710,15 +712,18 @@ UniValue estimatepriority(const JSONRPCRequest& request)
 
 UniValue estimatesmartfee(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() != 1)
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
-            "estimatesmartfee nblocks\n"
-            "\nWARNING: This interface is unstable and may disappear or change!\n"
+            "estimatesmartfee nblocks (conservative)\n"
             "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
             "confirmation within nblocks blocks if possible and return the number of blocks\n"
             "for which the estimate is valid.\n"
             "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
+            "1. nblocks       (numeric)\n"
+            "2. conservative  (bool, optional, default=true) Whether to return a more conservative estimate which\n"
+            "                 also satisfies a longer history. A conservative estimate potentially returns a higher\n"
+            "                 feerate and is more likely to be sufficient for the desired target, but is not as\n"
+            "                 responsive to short term drops in the prevailing fee market\n"
             "\nResult:\n"
             "{\n"
             "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in BTC)\n"
@@ -735,12 +740,99 @@ UniValue estimatesmartfee(const JSONRPCRequest& request)
     RPCTypeCheck(request.params, {UniValue::VNUM});
 
     int nBlocks = request.params[0].get_int();
+    bool conservative = true;
+    if (request.params.size() > 1 && !request.params[1].isNull()) {
+        RPCTypeCheckArgument(request.params[1], UniValue::VBOOL);
+        conservative = request.params[1].get_bool();
+    }
 
     UniValue result(UniValue::VOBJ);
     int answerFound;
-    CFeeRate feeRate = mempool.estimateSmartFee(nBlocks, &answerFound);
+    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocks, &answerFound, ::mempool, conservative);
     result.pushKV("feerate", feeRate == CFeeRate(0) ? -1.0 : ValueFromAmount(feeRate.GetFeePerK()));
     result.pushKV("blocks", answerFound);
+    return result;
+}
+
+UniValue estimaterawfee(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 1|| request.params.size() > 3)
+        throw std::runtime_error(
+            "estimaterawfee nblocks (threshold horizon)\n"
+            "\nWARNING: This interface is unstable and may disappear or change!\n"
+            "\nWARNING: This is an advanced API call that is tightly coupled to the specific\n"
+            "         implementation of fee estimation. The parameters it can be called with\n"
+            "         and the results it returns will change if the internal implementation changes.\n"
+            "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
+            "confirmation within nblocks blocks if possible. Uses virtual transaction size as defined\n"
+            "in BIP 141 (witness data is discounted).\n"
+            "\nArguments:\n"
+            "1. nblocks     (numeric)\n"
+            "2. threshold   (numeric, optional) The proportion of transactions in a given feerate range that must have been\n"
+            "               confirmed within nblocks in order to consider those feerates as high enough and proceed to check\n"
+            "               lower buckets.  Default: 0.95\n"
+            "3. horizon     (numeric, optional) How long a history of estimates to consider. 0=short, 1=medium, 2=long.\n"
+            "               Default: 1\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"feerate\" : x.x,        (numeric) estimate fee-per-kilobyte (in BTC)\n"
+            "  \"decay\" : x.x,          (numeric) exponential decay (per block) for historical moving average of confirmation data\n"
+            "  \"scale\" : x,            (numeric) The resolution of confirmation targets at this time horizon\n"
+            "  \"pass\" : {              (json object) information about the lowest range of feerates to succeed in meeting the threshold\n"
+            "      \"startrange\" : x.x,     (numeric) start of feerate range\n"
+            "      \"endrange\" : x.x,       (numeric) end of feerate range\n"
+            "      \"withintarget\" : x.x,   (numeric) number of txs over history horizon in the feerate range that were confirmed within target\n"
+            "      \"totalconfirmed\" : x.x, (numeric) number of txs over history horizon in the feerate range that were confirmed at any point\n"
+            "      \"inmempool\" : x.x,      (numeric) current number of txs in mempool in the feerate range unconfirmed for at least target blocks\n"
+            "      \"leftmempool\" : x.x,    (numeric) number of txs over history horizon in the feerate range that left mempool unconfirmed after target\n"
+            "  }\n"
+            "  \"fail\" : { ... }        (json object) information about the highest range of feerates to fail to meet the threshold\n"
+            "}\n"
+            "\n"
+            "A negative feerate is returned if no answer can be given.\n"
+            "\nExample:\n"
+            + HelpExampleCli("estimaterawfee", "6 0.9 1")
+            );
+
+    RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM, UniValue::VNUM}, true);
+    RPCTypeCheckArgument(request.params[0], UniValue::VNUM);
+    int nBlocks = request.params[0].get_int();
+    double threshold = 0.95;
+    if (!request.params[1].isNull())
+        threshold = request.params[1].get_real();
+    FeeEstimateHorizon horizon = FeeEstimateHorizon::MED_HALFLIFE;
+    if (!request.params[2].isNull()) {
+        int horizonInt = request.params[2].get_int();
+        if (horizonInt < 0 || horizonInt > 2) {
+            throw JSONRPCError(RPC_TYPE_ERROR, "Invalid horizon for fee estimates");
+        } else {
+            horizon = (FeeEstimateHorizon)horizonInt;
+        }
+    }
+    UniValue result(UniValue::VOBJ);
+    CFeeRate feeRate;
+    EstimationResult buckets;
+    feeRate = ::feeEstimator.estimateRawFee(nBlocks, threshold, horizon, &buckets);
+
+    result.pushKV("feerate", feeRate == CFeeRate(0) ? -1.0 : ValueFromAmount(feeRate.GetFeePerK()));
+    result.pushKV("decay", buckets.decay);
+    result.pushKV("scale", (int)buckets.scale);
+    UniValue passbucket(UniValue::VOBJ);
+    passbucket.pushKV("startrange", round(buckets.pass.start));
+    passbucket.pushKV("endrange", round(buckets.pass.end));
+    passbucket.pushKV("withintarget", round(buckets.pass.withinTarget * 100.0) / 100.0);
+    passbucket.pushKV("totalconfirmed", round(buckets.pass.totalConfirmed * 100.0) / 100.0);
+    passbucket.pushKV("inmempool", round(buckets.pass.inMempool * 100.0) / 100.0);
+    passbucket.pushKV("leftmempool", round(buckets.pass.leftMempool * 100.0) / 100.0);
+    result.pushKV("pass", passbucket);
+    UniValue failbucket(UniValue::VOBJ);
+    failbucket.pushKV("startrange", round(buckets.fail.start));
+    failbucket.pushKV("endrange", round(buckets.fail.end));
+    failbucket.pushKV("withintarget", round(buckets.fail.withinTarget * 100.0) / 100.0);
+    failbucket.pushKV("totalconfirmed", round(buckets.fail.totalConfirmed * 100.0) / 100.0);
+    failbucket.pushKV("inmempool", round(buckets.fail.inMempool * 100.0) / 100.0);
+    failbucket.pushKV("leftmempool", round(buckets.fail.leftMempool * 100.0) / 100.0);
+    result.pushKV("fail", failbucket);
     return result;
 }
 
@@ -794,7 +886,8 @@ static const CRPCCommand commands[] =
 
   { "util",               "estimatefee",            &estimatefee,            true,  {"nblocks"} },
   { "util",               "estimatepriority",       &estimatepriority,       true,  {"nblocks"} },
-  { "util",               "estimatesmartfee",       &estimatesmartfee,       true,  {"nblocks"} },
+  { "util",               "estimatesmartfee",       &estimatesmartfee,       true,  {"nblocks", "conservative"} },
+  { "hidden",             "estimaterawfee",         &estimaterawfee,         true,  {"nblocks", "threshold", "horizon"} },
   { "util",               "estimatesmartpriority",  &estimatesmartpriority,  true,  {"nblocks"} },
 };
 

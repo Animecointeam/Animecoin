@@ -8,6 +8,7 @@
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
 #include "crypto/sha256.h"
+#include "fs.h"
 #include "key.h"
 #include "validation.h"
 #include "miner.h"
@@ -20,11 +21,11 @@
 #include "rpc/server.h"
 #include "rpc/register.h"
 #include "script/sigcache.h"
-#include "util.h"
+
+#include "test/testutil.h"
 
 #include <memory>
 
-#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
 // bool fUseFastIndex;
@@ -61,7 +62,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
     RegisterAllCoreRPCCommands(tableRPC);
         ClearDatadirCache();
         pathTemp = GetTempPath() / strprintf("test_animecoin_%lu_%i", (unsigned long)GetTime(), (int)(GetRand(100000)));
-        boost::filesystem::create_directories(pathTemp);
+        fs::create_directories(pathTemp);
         ForceSetArg("-datadir", pathTemp.string());
         
         // Note that because we don't bother running a scheduler thread here,
@@ -73,8 +74,8 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
         pblocktree = new CBlockTreeDB(1 << 20, true);
         pcoinsdbview = new CCoinsViewDB(1 << 23, true);
         pcoinsTip = new CCoinsViewCache(pcoinsdbview);
-        if (!InitBlockIndex(chainparams)) {
-            throw std::runtime_error("InitBlockIndex failed.");
+        if (!LoadGenesisBlock(chainparams)) {
+            throw std::runtime_error("LoadGenesisBlock failed.");
         }
         {
             CValidationState state;
@@ -102,7 +103,7 @@ TestingSetup::~TestingSetup()
         delete pcoinsTip;
         delete pcoinsdbview;
         delete pblocktree;
-        boost::filesystem::remove_all(pathTemp);
+        fs::remove_all(pathTemp);
 }
 
 TestChain100Setup::TestChain100Setup() : TestingSetup(CBaseChainParams::REGTEST)
@@ -157,10 +158,9 @@ CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(const CMutableTransaction &tx, CT
 }
 
 CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(const CTransaction &txn, CTxMemPool *pool) {
-    bool hasNoDependencies = pool ? pool->HasNoInputsOf(txn) : hadNoDependencies;
     // Hack to assume either its completely dependent on other mempool txs or not at all
-    CAmount inChainValue = hasNoDependencies ? txn.GetValueOut() : 0;
+    CAmount inChainValue = pool && pool->HasNoInputsOf(txn) ? txn.GetValueOut() : 0;
 
     return CTxMemPoolEntry(txn, nFee, nTime, dPriority, nHeight,
-                           hasNoDependencies, inChainValue, spendsCoinbase, sigOpCount);
+                           inChainValue, spendsCoinbase, sigOpCount);
 }

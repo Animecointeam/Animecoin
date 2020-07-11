@@ -50,7 +50,6 @@ public:
 
 signals:
 	void requestCheck();
-	void stopThread();
 
 public slots:
 	void setStatus(int status, const QString &message, quint64 bytesAvailable);

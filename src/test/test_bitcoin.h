@@ -2,12 +2,12 @@
 #define BITCOIN_TEST_TEST_BITCOIN_H
 
 #include "chainparamsbase.h"
+#include "fs.h"
 #include "key.h"
 #include "pubkey.h"
 #include "scheduler.h"
 #include "txdb.h"
 
-#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
 /** Basic testing setup.
@@ -27,7 +27,7 @@ class CConnman;
 class PeerLogicValidation;
 struct TestingSetup: public BasicTestingSetup {
     CCoinsViewDB *pcoinsdbview;
-    boost::filesystem::path pathTemp;
+    fs::path pathTemp;
     boost::thread_group threadGroup;
     CConnman* connman;
     CScheduler scheduler;
@@ -68,13 +68,12 @@ struct TestMemPoolEntryHelper
     int64_t nTime;
     double dPriority;
     unsigned int nHeight;
-    bool hadNoDependencies;
     bool spendsCoinbase;
     unsigned int sigOpCount;
 
     TestMemPoolEntryHelper() :
         nFee(0), nTime(0), dPriority(0.0), nHeight(1),
-        hadNoDependencies(false), spendsCoinbase(false), sigOpCount(1) { }
+        spendsCoinbase(false), sigOpCount(1) { }
 
     CTxMemPoolEntry FromTx(const CMutableTransaction &tx, CTxMemPool *pool = nullptr);
     CTxMemPoolEntry FromTx(const CTransaction &tx, CTxMemPool *pool = nullptr);
@@ -84,7 +83,6 @@ struct TestMemPoolEntryHelper
     TestMemPoolEntryHelper &Time(int64_t _time) { nTime = _time; return *this; }
     TestMemPoolEntryHelper &Priority(double _priority) { dPriority = _priority; return *this; }
     TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
-    TestMemPoolEntryHelper &HadNoDependencies(bool _hnd) { hadNoDependencies = _hnd; return *this; }
     TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
     TestMemPoolEntryHelper &SigOps(unsigned int _sigops) { sigOpCount = _sigops; return *this; }
 };

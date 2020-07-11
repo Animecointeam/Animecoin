@@ -18,6 +18,20 @@
 /** Whether to recalculate hashes on startup */
 extern bool fUseFastIndex;
 
+/**
+ * Maximum amount of time that a block timestamp is allowed to exceed the
+ * current network-adjusted time before the block will be accepted.
+ */
+static const int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
+
+/**
+ * Timestamp window used as a grace period by code that compares external
+ * timestamps (such as timestamps passed to RPCs, or wallet key creation times)
+ * to block timestamps. This should be set at least as high as
+ * MAX_FUTURE_BLOCK_TIME.
+ */
+static const int64_t TIMESTAMP_WINDOW = MAX_FUTURE_BLOCK_TIME;
+
 class CBlockFileInfo
 {
 public:
@@ -173,6 +187,9 @@ public:
     //! Byte offset within rev?????.dat where this block's undo data is stored
     unsigned int nUndoPos;
 
+    //! Total amount of work (expected number of hashes) in this block
+    arith_uint256 nBlockProof;
+
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork;
 
@@ -198,6 +215,9 @@ public:
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId;
 
+    //! (memory only) Maximum nTime in the chain upto and including this block.
+    unsigned int nTimeMax;
+
     void SetNull()
     {
         phashBlock = nullptr;
@@ -207,11 +227,13 @@ public:
         nFile = 0;
         nDataPos = 0;
         nUndoPos = 0;
+        nBlockProof = arith_uint256();
         nChainWork = arith_uint256();
         nTx = 0;
         nChainTx = 0;
         nStatus = 0;
         nSequenceId = 0;
+        nTimeMax = 0;
 
         nVersion       = 0;
         hashMerkleRoot = uint256();
@@ -277,6 +299,11 @@ public:
         return (int64_t)nTime;
     }
 
+    int64_t GetBlockTimeMax() const
+    {
+        return (int64_t)nTimeMax;
+    }
+
     enum { nMedianTimeSpan=11 };
 
     int64_t GetMedianTimePast() const
@@ -337,12 +364,15 @@ public:
 arith_uint256 GetBlockProof(const CBlockIndex& block);
 /** Return the time it would take to redo the work difference between from and to, assuming the current hashrate corresponds to the difficulty at tip, in seconds. */
 int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& from, const CBlockIndex& tip, const Consensus::Params&);
+/** Find the forking point between two chain tips. */
+const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* pb);
 
 /** Used to marshal pointers into hashes for db storage. */
 class CDiskBlockIndex : public CBlockIndex
 {
 private:
     uint256 blockHash;
+    uint256 blockProof;
 
 public:
     uint256 hashPrev;
@@ -350,6 +380,7 @@ public:
     CDiskBlockIndex() {
         hashPrev = uint256();
         blockHash = uint256();
+        blockProof = uint256();
     }
 
     explicit CDiskBlockIndex(const CBlockIndex* pindex) : CBlockIndex(*pindex) {
@@ -378,6 +409,10 @@ public:
             GetBlockHash();
         READWRITE(blockHash);
 
+        if (!ser_action.ForRead() && blockProof.IsNull())
+            GetChainWork();
+        READWRITE(blockProof);
+
         // block header
         READWRITE(this->nVersion);
         READWRITE(hashPrev);
@@ -405,6 +440,16 @@ public:
         return blockHash;
     }
 
+    uint256 GetChainWork() const
+    {
+        if (fUseFastIndex && (nTime < GetAdjustedTime() - 24 * 60 * 60) && !blockProof.IsNull()) // TODO: clock drift settings.
+            return blockProof;
+
+        CBlockIndex block;
+        block.nBits = nBits;
+        const_cast<CDiskBlockIndex*>(this)->blockProof = ArithToUint256 (GetBlockProof(block));
+        return blockProof;
+    }
 
     std::string ToString() const
     {
@@ -473,8 +518,8 @@ public:
     /** Find the last common block between this chain and a block index entry. */
     const CBlockIndex *FindFork(const CBlockIndex *pindex) const;
 
-    /** Find the most recent block with timestamp lower than the given. */
-    CBlockIndex* FindLatestBefore(int64_t nTime) const;
+    /** Find the earliest block with timestamp equal or greater than the given. */
+    CBlockIndex* FindEarliestAtLeast(int64_t nTime) const;
 };
 
 #endif // BITCOIN_CHAIN_H

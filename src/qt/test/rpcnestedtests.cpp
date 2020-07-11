@@ -6,18 +6,17 @@
 
 #include "chainparams.h"
 #include "consensus/validation.h"
+#include "fs.h"
 #include "validation.h"
 #include "rpc/register.h"
 #include "rpc/server.h"
 #include "rpcconsole.h"
-//#include "test/testutil.h"
+#include "test/testutil.h"
 #include "test/test_bitcoin.h"
 #include "univalue.h"
 #include "util.h"
 
 #include <QDir>
-
-#include <boost/filesystem.hpp>
 
 void RPCNestedTests::rpcNestedTests()
 {
@@ -80,5 +79,5 @@ void RPCNestedTests::rpcNestedTests()
     QVERIFY(result == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
 */
 
-    boost::filesystem::remove_all(boost::filesystem::path(path));
+    fs::remove_all(fs::path(path));
 }

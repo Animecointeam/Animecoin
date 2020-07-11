@@ -6,6 +6,7 @@
 #include "rpc/server.h"
 
 #include "base58.h"
+#include "fs.h"
 #include "init.h"
 #include "random.h"
 #include "sync.h"
@@ -16,12 +17,10 @@
 
 #include <univalue.h>
 
-#include <boost/filesystem.hpp>
 #include <boost/iostreams/concepts.hpp>
 #include <boost/iostreams/stream.hpp>
 #include <boost/signals2/signal.hpp>
 #include <boost/thread.hpp>
-#include <boost/algorithm/string/case_conv.hpp> // for to_upper()
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
@@ -60,12 +59,12 @@ void RPCServer::OnStopped(std::function<void ()> slot)
 
 void RPCServer::OnPreCommand(std::function<void (const CRPCCommand&)> slot)
 {
-    g_rpcSignals.PreCommand.connect(boost::bind(slot, _1));
+    g_rpcSignals.PreCommand.connect(std::bind(slot, std::placeholders::_1));
 }
 
 void RPCServer::OnPostCommand(std::function<void (const CRPCCommand&)> slot)
 {
-    g_rpcSignals.PostCommand.connect(boost::bind(slot, _1));
+    g_rpcSignals.PostCommand.connect(std::bind(slot, std::placeholders::_1));
 }
 
 void RPCTypeCheck(const UniValue& params,
@@ -79,13 +78,17 @@ void RPCTypeCheck(const UniValue& params,
             break;
 
         const UniValue& v = params[i];
-        if (!((v.type() == t) || (fAllowNull && (v.isNull()))))
-        {
-            string err = strprintf("Expected type %s, got %s",
-                                   uvTypeName(t), uvTypeName(v.type()));
-            throw JSONRPCError(RPC_TYPE_ERROR, err);
+        if (!(fAllowNull && v.isNull())) {
+            RPCTypeCheckArgument(v, t);
         }
         i++;
+    }
+}
+
+void RPCTypeCheckArgument(const UniValue& value, UniValue::VType typeExpected)
+{
+    if (value.type() != typeExpected) {
+        throw JSONRPCError(RPC_TYPE_ERROR, strprintf("Expected type %s, got %s", uvTypeName(typeExpected), uvTypeName(value.type())));
     }
 }
 
@@ -174,16 +177,20 @@ vector<unsigned char> ParseHexO(const UniValue& o, string strKey)
  * Note: This interface may still be subject to change.
  */
 
-std::string CRPCTable::help(const std::string& strCommand) const
+std::string CRPCTable::help(const std::string& strCommand, const JSONRPCRequest& helpreq) const
 {
     string strRet;
     string category;
     set<rpcfn_type> setDone;
     vector<pair<string, const CRPCCommand*> > vCommands;
 
-    for (map<string, const CRPCCommand*>::const_iterator mi = mapCommands.begin(); mi != mapCommands.end(); ++mi)
-        vCommands.push_back(make_pair(mi->second->category + mi->first, mi->second));
+    for (const auto& entry : mapCommands)
+        vCommands.push_back(make_pair(entry.second->category + entry.first, entry.second));
     sort(vCommands.begin(), vCommands.end());
+
+    JSONRPCRequest jreq(helpreq);
+    jreq.fHelp = true;
+    jreq.params = UniValue();
 
     for (const std::pair<string, const CRPCCommand*>& command : vCommands)
     {
@@ -194,10 +201,9 @@ std::string CRPCTable::help(const std::string& strCommand) const
             continue;
         if ((strCommand != "" || pcmd->category == "hidden") && strMethod != strCommand)
             continue;
+        jreq.strMethod = strMethod;
         try
         {
-            JSONRPCRequest jreq;
-            jreq.fHelp = true;
             rpcfn_type pfn = pcmd->actor;
             if (setDone.insert(pfn).second)
                 (*pfn)(jreq);
@@ -216,9 +222,7 @@ std::string CRPCTable::help(const std::string& strCommand) const
                     if (!category.empty())
                         strRet += "\n";
                     category = pcmd->category;
-                    string firstLetter = category.substr(0,1);
-                    boost::to_upper(firstLetter);
-                    strRet += "== " + firstLetter + category.substr(1) + " ==\n";
+                    strRet += "== " + Capitalize(category) + " ==\n";
                 }
             }
             strRet += strHelp + "\n";
@@ -246,7 +250,7 @@ UniValue help(const JSONRPCRequest& jsonRequest)
     if (jsonRequest.params.size() > 0)
         strCommand = jsonRequest.params[0].get_str();
 
-    return tableRPC.help(strCommand);
+    return tableRPC.help(strCommand, jsonRequest);
 }
 
 

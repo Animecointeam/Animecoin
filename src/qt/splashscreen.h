@@ -5,6 +5,7 @@
 #ifndef BITCOIN_QT_SPLASHSCREEN_H
 #define BITCOIN_QT_SPLASHSCREEN_H
 
+#include <functional>
 #include <QSplashScreen>
 
 class NetworkStyle;
@@ -33,6 +34,9 @@ public slots:
 
     /** Show message and progress */
     void showMessage(const QString &message, int alignment, const QColor &color);
+
+protected:
+    bool eventFilter(QObject * obj, QEvent * ev);
 
 private:
     /** Connect core signals to splash screen */

@@ -100,7 +100,6 @@ public slots:
 
 signals:
     // For RPC command executor
-    void stopExecutor();
     void cmdRequest(const QString &command);
 
 private:

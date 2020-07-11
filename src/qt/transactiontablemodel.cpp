@@ -29,6 +29,8 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QFuture>
 
+#include <boost/bind.hpp>
+
 #define SINGLE_THREAD_MAX_TXES_SIZE 4000
 
 // Amount column is right-aligned it contains numbers

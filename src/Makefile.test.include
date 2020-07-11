@@ -1,4 +1,4 @@
-TESTS += test/test_animecoin test/bitcoin-util-test.py
+TESTS += test/test_animecoin
 bin_PROGRAMS += test/test_animecoin
 TEST_SRCDIR = test
 TEST_BINARY=test/test_animecoin$(EXEEXT)
@@ -46,6 +46,8 @@ BITCOIN_TESTS =\
   test/base58_tests.cpp \
   test/base64_tests.cpp \
   test/bloom_tests.cpp \
+  test/bswap_tests.cpp \
+  test/checkqueue_tests.cpp \
   test/blockencodings_tests.cpp \
   test/checkblock_tests.cpp \
   test/coins_tests.cpp \
@@ -53,6 +55,7 @@ BITCOIN_TESTS =\
   test/crypto_tests.cpp \
   test/cuckoocache_tests.cpp \
   test/DoS_tests.cpp \
+  test/fs_tests.cpp \
   test/getarg_tests.cpp \
   test/hash_tests.cpp \
   test/key_tests.cpp \
@@ -84,6 +87,8 @@ BITCOIN_TESTS =\
   test/test_bitcoin.h \
   test/test_bitcoin_main.cpp \
   test/test_random.h \
+  test/testutil.cpp \
+  test/testutil.h \
   test/timedata_tests.cpp \
   test/transaction_tests.cpp \
   test/txvalidationcache_tests.cpp \
@@ -136,8 +141,12 @@ animecoin_test_clean : FORCE
 	rm -f $(CLEAN_BITCOIN_TEST) $(test_test_animecoin_OBJECTS) $(TEST_BINARY)
 
 check-local:
+	@echo "Running test/bitcoin-util-test.py..."
+	$(AM_V_at)srcdir=$(srcdir) PYTHONPATH=$(builddir)/test $(PYTHON) $(srcdir)/test/bitcoin-util-test.py
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C secp256k1 check
+if EMBEDDED_UNIVALUE
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C univalue check
+endif
 
 %.json.h: %.json
 	@$(MKDIR_P) $(@D)

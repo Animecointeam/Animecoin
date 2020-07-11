@@ -23,9 +23,9 @@ MultisigInputEntry::~MultisigInputEntry()
     delete ui;
 }
 
-void MultisigInputEntry::setModel(WalletModel *model)
+void MultisigInputEntry::setModel(WalletModel *_model)
 {
-    this->model = model;
+    this->model = _model;
     clear();
 }
 
@@ -58,7 +58,7 @@ CAmount MultisigInputEntry::getAmount()
 
     if(GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
     {
-        if(nOutput < tx.vout.size())
+        if((unsigned int) nOutput < tx.vout.size())
         {
             const CTxOut& txOut = tx.vout[nOutput];
             amount = txOut.nValue;
@@ -116,7 +116,7 @@ void MultisigInputEntry::on_transactionId_textChanged(const QString &transaction
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
         return;
 
-    for(int i = 0; i < tx.vout.size(); i++)
+    for (unsigned int i = 0; i < tx.vout.size(); i++)
     {
         QString idStr;
         idStr.setNum(i);

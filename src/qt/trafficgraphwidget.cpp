@@ -6,6 +6,7 @@
 #include "clientmodel.h"
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QColor>
 #include <QTimer>
 
@@ -139,10 +140,10 @@ void TrafficGraphWidget::updateRates()
 	}
 
 	float tmax = 0.0f;
-	foreach(float f, vSamplesIn) {
+    foreach(const float f, vSamplesIn) {
 		if(f > tmax) tmax = f;
 	}
-	foreach(float f, vSamplesOut) {
+    foreach(const float f, vSamplesOut) {
 		if(f > tmax) tmax = f;
 	}
 	fMax = tmax;
