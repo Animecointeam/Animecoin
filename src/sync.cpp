@@ -32,19 +32,22 @@ void PrintLockContention(const char* pszName, const char* pszFile, int nLine)
 //
 
 struct CLockLocation {
-    CLockLocation(const char* pszName, const char* pszFile, int nLine)
+    CLockLocation(const char* pszName, const char* pszFile, int nLine, bool fTryIn)
     {
         mutexName = pszName;
         sourceFile = pszFile;
         sourceLine = nLine;
+        fTry = fTryIn;
     }
 
     std::string ToString() const
     {
-        return mutexName + "  " + sourceFile + ":" + itostr(sourceLine);
+        return mutexName + "  " + sourceFile + ":" + itostr(sourceLine) + (fTry ? " (TRY)" : "");
     }
 
     std::string MutexName() const { return mutexName; }
+
+    bool fTry;
 
 private:
     std::string mutexName;
@@ -77,20 +80,29 @@ static void potential_deadlock_detected(const std::pair<void*, void*>& mismatch,
     LogPrintf("POTENTIAL DEADLOCK DETECTED\n");
     LogPrintf("Previous lock order was:\n");
     for (const std::pair<void*, CLockLocation> & i : s2) {
-        if (i.first == mismatch.first)
+        if (i.first == mismatch.first) {
             LogPrintf(" (1)");
-        if (i.first == mismatch.second)
+        }
+        if (i.first == mismatch.second) {
             LogPrintf(" (2)");
+        }
         LogPrintf(" %s\n", i.second.ToString());
     }
     LogPrintf("Current lock order is:\n");
     for (const std::pair<void*, CLockLocation> & i : s1) {
-        if (i.first == mismatch.first)
+        if (i.first == mismatch.first) {
             LogPrintf(" (1)");
-        if (i.first == mismatch.second)
+        }
+        if (i.first == mismatch.second) {
             LogPrintf(" (2)");
+        }
         LogPrintf(" %s\n", i.second.ToString());
     }
+    if (g_debug_lockorder_abort) {
+        fprintf(stderr, "Assertion failed: detected inconsistent lock order at %s:%i, details in debug log.\n", __FILE__, __LINE__);
+        abort();
+    }
+    throw std::logic_error("potential deadlock detected");
 }
 
 static void push_lock(void* c, const CLockLocation& locklocation, bool fTry)
@@ -102,23 +114,19 @@ static void push_lock(void* c, const CLockLocation& locklocation, bool fTry)
 
     (*lockstack).push_back(std::make_pair(c, locklocation));
 
-    if (!fTry) {
-        for (const std::pair<void*, CLockLocation> & i : (*lockstack)) {
-            if (i.first == c)
-                break;
+    for (const std::pair<void*, CLockLocation> & i : (*lockstack)) {
+        if (i.first == c)
+            break;
 
-            std::pair<void*, void*> p1 = std::make_pair(i.first, c);
-            if (lockdata.lockorders.count(p1))
-                continue;
-            lockdata.lockorders[p1] = (*lockstack);
+        std::pair<void*, void*> p1 = std::make_pair(i.first, c);
+        if (lockdata.lockorders.count(p1))
+            continue;
+        lockdata.lockorders[p1] = (*lockstack);
 
-            std::pair<void*, void*> p2 = std::make_pair(c, i.first);
-            lockdata.invlockorders.insert(p2);
-            if (lockdata.lockorders.count(p2))
-                potential_deadlock_detected(p1, lockdata.lockorders[p2], lockdata.lockorders[p1]);
-                break;
-            }
-        }
+        std::pair<void*, void*> p2 = std::make_pair(c, i.first);
+        lockdata.invlockorders.insert(p2);
+        if (lockdata.lockorders.count(p2))
+            potential_deadlock_detected(p1, lockdata.lockorders[p2], lockdata.lockorders[p1]);
     }
 }
 
@@ -129,7 +137,7 @@ static void pop_lock()
 
 void EnterCritical(const char* pszName, const char* pszFile, int nLine, void* cs, bool fTry)
 {
-    push_lock(cs, CLockLocation(pszName, pszFile, nLine), fTry);
+    push_lock(cs, CLockLocation(pszName, pszFile, nLine, fTry), fTry);
 }
 
 void LeaveCritical()
@@ -185,5 +193,7 @@ void DeleteLock(void* cs)
         lockdata.invlockorders.erase(invit++);
     }
 }
+
+bool g_debug_lockorder_abort = true;
 
 #endif /* DEBUG_LOCKORDER */
