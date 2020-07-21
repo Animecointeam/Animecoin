@@ -270,6 +270,8 @@ crypto_libanimecoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 crypto_libanimecoin_crypto_base_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
+  crypto/chacha20.h \
+  crypto/chacha20.cpp \
   crypto/sha1.cpp \
   crypto/sha256.cpp \
   crypto/sha512.cpp \
