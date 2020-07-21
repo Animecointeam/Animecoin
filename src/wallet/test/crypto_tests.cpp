@@ -2,7 +2,6 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "test/test_random.h"
 #include "utilstrencodings.h"
 #include "test/test_bitcoin.h"
 #include "wallet/crypter.h"
@@ -194,7 +193,7 @@ BOOST_AUTO_TEST_CASE(passphrase) {
     std::string hash(GetRandHash().ToString());
     std::vector<unsigned char> vchSalt(8);
     GetRandBytes(vchSalt.data(), vchSalt.size());
-    uint32_t rounds = insecure_rand();
+    uint32_t rounds = InsecureRand32();
     if (rounds > 30000)
         rounds = 30000;
     TestCrypter::TestPassphrase(vchSalt, SecureString(hash.begin(), hash.end()), rounds);
@@ -209,7 +208,7 @@ BOOST_AUTO_TEST_CASE(encrypt) {
 
     for (int i = 0; i != 100; i++)
     {
-        uint256 hash(GetRandHash());
+        uint256 hash(InsecureRand256());
         TestCrypter::TestEncrypt(crypt, std::vector<unsigned char>(hash.begin(), hash.end()));
     }
 

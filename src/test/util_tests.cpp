@@ -6,7 +6,6 @@
 
 #include "clientversion.h"
 #include "primitives/transaction.h"
-#include "test_random.h"
 #include "sync.h"
 #include "utilstrencodings.h"
 #include "utilmoneystr.h"
@@ -337,7 +336,7 @@ BOOST_AUTO_TEST_CASE(util_seed_insecure_rand)
     int i;
     int count=0;
 
-    seed_insecure_rand(true);
+    SeedInsecureRand(true);
 
     for (int mod=2;mod<11;mod++)
     {
@@ -353,7 +352,7 @@ BOOST_AUTO_TEST_CASE(util_seed_insecure_rand)
         {
             uint32_t rval;
             do{
-                rval=insecure_rand()&mask;
+                rval=InsecureRand32()&mask;
             }while(rval>=(uint32_t)mod);
             count += rval==0;
         }
