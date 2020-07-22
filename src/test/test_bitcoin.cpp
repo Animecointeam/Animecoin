@@ -29,8 +29,7 @@
 #include <boost/thread.hpp>
 
 // std::unique_ptr<CConnman> g_connman;
-uint256 insecure_rand_seed = GetRandHash();
-FastRandomContext insecure_rand_ctx(insecure_rand_seed);
+FastRandomContext insecure_rand_ctx;
 
 extern bool fPrintToConsole;
 extern void noui_connect();

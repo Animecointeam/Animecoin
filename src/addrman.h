@@ -162,6 +162,9 @@ public:
 //! ... in at least this many days
 #define ADDRMAN_MIN_FAIL_DAYS 7
 
+//! how recent a successful connection should be before we allow an address to be evicted from tried
+#define ADDRMAN_REPLACEMENT_HOURS 4
+
 //! the maximum percentage of nodes to return in a getaddr call
 #define ADDRMAN_GETADDR_MAX_PCT 23
 
@@ -172,6 +175,9 @@ public:
 #define ADDRMAN_TRIED_BUCKET_COUNT (1 << ADDRMAN_TRIED_BUCKET_COUNT_LOG2)
 #define ADDRMAN_NEW_BUCKET_COUNT (1 << ADDRMAN_NEW_BUCKET_COUNT_LOG2)
 #define ADDRMAN_BUCKET_SIZE (1 << ADDRMAN_BUCKET_SIZE_LOG2)
+
+//! the maximum number of tried addr collisions to store
+#define ADDRMAN_SET_TRIED_COLLISION_SIZE 10
 
 /**
  * Stochastical (IP) address manager
@@ -209,6 +215,9 @@ private:
     //! last time Good was called (memory only)
     int64_t nLastGood;
 
+    //! Holds addrs inserted into tried table that collide with existing entries. Test-before-evict discpline used to resolve these collisions.
+    std::set<int> m_tried_collisions;
+
 protected:
 
     //! secret key to randomize bucket select with
@@ -237,7 +246,7 @@ protected:
     void ClearNew(int nUBucket, int nUBucketPos);
 
     //! Mark an entry "good", possibly moving it from "new" to "tried".
-    void Good_(const CService &addr, int64_t nTime);
+    void Good_(const CService &addr, bool test_before_evict, int64_t time);
 
     //! Add an entry to the "new" table.
     bool Add_(const CAddress &addr, const CNetAddr& source, int64_t nTimePenalty);
@@ -248,8 +257,11 @@ protected:
     //! Select an address to connect to, if newOnly is set to true, only the new table is selected from.
     CAddrInfo Select_(bool newOnly);
 
-    //! Wraps GetRandInt to allow tests to override RandomInt and make it determinismistic.
-    virtual int RandomInt(int nMax);
+    //! See if any to-be-evicted tried table entries have been tested and if so resolve the collisions.
+    void ResolveCollisions_();
+
+    //! Return a random to-be-evicted tried table address.
+    CAddrInfo SelectTriedCollision_();
 
 #ifdef DEBUG_ADDRMAN
     //! Perform consistency check. Returns an error code or zero.
@@ -446,7 +458,7 @@ public:
     void Clear()
     {
         std::vector<int>().swap(vRandom);
-        nKey = GetRandHash();
+        nKey = insecure_rand.rand256();
         for (size_t bucket = 0; bucket < ADDRMAN_NEW_BUCKET_COUNT; bucket++) {
             for (size_t entry = 0; entry < ADDRMAN_BUCKET_SIZE; entry++) {
                 vvNew[bucket][entry] = -1;
@@ -522,11 +534,11 @@ public:
     }
 
     //! Mark an entry as accessible.
-    void Good(const CService &addr, int64_t nTime = GetAdjustedTime())
+    void Good(const CService &addr, bool test_before_evict = true, int64_t nTime = GetAdjustedTime())
     {
         LOCK(cs);
         Check();
-        Good_(addr, nTime);
+        Good_(addr, test_before_evict, nTime);
         Check();
     }
 
@@ -537,6 +549,28 @@ public:
         Check();
         Attempt_(addr, fCountFailure, nTime);
         Check();
+    }
+
+    //! See if any to-be-evicted tried table entries have been tested and if so resolve the collisions.
+    void ResolveCollisions()
+    {
+        LOCK(cs);
+        Check();
+        ResolveCollisions_();
+        Check();
+    }
+
+    //! Randomly select an address in tried that another address is attempting to evict.
+    CAddrInfo SelectTriedCollision()
+    {
+        CAddrInfo ret;
+        {
+            LOCK(cs);
+            Check();
+            ret = SelectTriedCollision_();
+            Check();
+        }
+        return ret;
     }
 
     /**
