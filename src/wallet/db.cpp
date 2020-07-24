@@ -472,15 +472,6 @@ void CDBEnv::CloseDb(const string& strFile)
     }
 }
 
-bool CDBEnv::RemoveDb(const string& strFile)
-{
-    this->CloseDb(strFile);
-
-    LOCK(cs_db);
-    int rc = dbenv->dbremove(nullptr, strFile.c_str(), nullptr, DB_AUTO_COMMIT);
-    return (rc == 0);
-}
-
 bool CDB::Rewrite(const string& strFile, const char* pszSkip)
 {
     while (true) {
