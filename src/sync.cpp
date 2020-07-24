@@ -45,8 +45,6 @@ struct CLockLocation {
         return mutexName + "  " + sourceFile + ":" + itostr(sourceLine) + (fTry ? " (TRY)" : "");
     }
 
-    std::string MutexName() const { return mutexName; }
-
     bool fTry;
 
 private:
@@ -105,7 +103,7 @@ static void potential_deadlock_detected(const std::pair<void*, void*>& mismatch,
     throw std::logic_error("potential deadlock detected");
 }
 
-static void push_lock(void* c, const CLockLocation& locklocation, bool fTry)
+static void push_lock(void* c, const CLockLocation& locklocation)
 {
     if (lockstack.get() == nullptr)
         lockstack.reset(new LockStack);
@@ -135,9 +133,9 @@ static void pop_lock()
     (*lockstack).pop_back();
 }
 
-void EnterCritical(const char* pszName, const char* pszFile, int nLine, void* cs, bool fTry)
+void EnterCritical(const char* pszName, const char* pszFile, int nLine, void* cs)
 {
-    push_lock(cs, CLockLocation(pszName, pszFile, nLine, fTry), fTry);
+    push_lock(cs, CLockLocation(pszName, pszFile, nLine, fTry));
 }
 
 void LeaveCritical()

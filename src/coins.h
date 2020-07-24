@@ -127,7 +127,6 @@ public:
 
     virtual bool GetKey(COutPoint &key) const = 0;
     virtual bool GetValue(Coin &coin) const = 0;
-    /* Don't care about GetKeySize here */
     virtual unsigned int GetValueSize() const = 0;
 
     virtual bool Valid() const = 0;

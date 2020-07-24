@@ -115,7 +115,6 @@ public:
  */
 typedef AnnotatedMixin<std::recursive_mutex> CCriticalSection;
 
-typedef CCriticalSection CDynamicCriticalSection;
 /** Wrapped mutex: supports waiting but not recursive locking */
 typedef AnnotatedMixin<std::mutex> CWaitableCriticalSection;
 
