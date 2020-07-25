@@ -443,10 +443,6 @@ static void SeedSleep(CSHA512& hasher)
 
 static void SeedStartup(CSHA512& hasher) noexcept
 {
-#ifdef WIN32
-    RAND_screen();
-#endif
-
     // Everything that the 'slow' seeder includes.
     SeedSlow(hasher);
 
