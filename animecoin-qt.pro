@@ -9,7 +9,6 @@ DEFINES += ENABLE_WALLET
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
-#CONFIG += openssl
 CONFIG += c++14
 CONFIG += object_parallel_to_source
 
@@ -46,8 +45,7 @@ QMAKE_CXXFLAGS+="-Og -march=native -ftree-vectorize -Wno-deprecated-copy"
 # or when linking against a specific BerkelyDB version: BDB_LIB_SUFFIX=-4.8
 
 # Dependency library locations can be customized with:
-#    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
-#    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
+#    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH and BDB_LIB_PATH respectively
 
 BDB_INCLUDE_PATH = /usr/include/db4.8
 BDB_LIB_SUFFIX=-4.8
@@ -122,14 +120,6 @@ isEmpty(BOOST_LIB_PATH) {
 isEmpty(BOOST_INCLUDE_PATH) {
 	macx:BOOST_INCLUDE_PATH = /opt/local/include
 	win32:BOOST_INCLUDE_PATH = F:\libs\boost_1_65_0
-}
-
-isEmpty(OPENSSL_INCLUDE_PATH) {
-	win32: OPENSSL_INCLUDE_PATH = F:\openssl-1.1.1-win64-mingw\include
-}
-
-isEmpty(OPENSSL_LIB_PATH) {
-	win32: OPENSSL_LIB_PATH = F:\openssl-1.1.1-win64-mingw\lib
 }
 
 isEmpty(MINIUPNPC_INCLUDE_PATH) {
@@ -713,10 +703,9 @@ macx:QMAKE_CXXFLAGS_THREAD += -pthread
 macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
-INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
-LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -levent -levent_pthreads
-# -lgdi32 has to happen after -lcrypto (see  #681)
+INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
+LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
+LIBS += -lz -ldb_cxx$$BDB_LIB_SUFFIX -levent -levent_pthreads
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 !windows: {
     #LIBS += -lgmp

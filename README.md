@@ -56,11 +56,12 @@ Current light mode limitations:
 - SOCKS4 support removed.
 - RPC over SSL removed (was never good, kindly use tunneling if needed).
 - Qt4 support removed (years since EOL).
+- OpenSSL dependency is gone thanks to built-in random number generator and BIP70 deprecation.
+
 
 Features in progress but not necessarily finalized before 0.10 release
 ---------------------
 - BIP-0009/0068/0112/0113 aggregation (will not be activated before BIP-0065 fork).
-- OpenSSL dependency removal.
 
 0.9.2 release notes
 ---------------------
@@ -100,15 +101,15 @@ Autotools will also build commandline utilities.
 Required libraries
 ---------------------
 - Boost
-- OpenSSL
 - Berkeley DB
-- protobuf (Animecoin 0.9 only)
 - libevent2 (since Animecoin 0.10 trunk)
 - Qt (optional if you don't need the GUI client)
 - miniupnpc (optional)
 - qrencode (optional)
 - ZeroMQ (optional)
 - univalue (optional, since 0.10; bundled version will be used unless --with-system-univalue specified)
+- protobuf (temporary, Animecoin 0.9 only)
+OpenSSL is no longer needed since 0.10, however, depending on your distribution libraries like libevent may be still linked with libssl/libcrypto.
 
 Berkeley DB notes
 ---------------------
@@ -123,14 +124,10 @@ For example: db6.3_dump wallet.dat | db4.8_load wallet.dat.new
 
 Other possible build issues
 ---------------------
-- Invalid BIGNUM conversion (from non-const to const or vice versa). Happens to old OpenSSL releases.
-Solution: adding -fpermissive to CXXFLAGS gets the job done and is widely used by other coins out there. It is strongly recommended to upgrade to a more up-to-date OpenSSL release however.
 - Undefined reference to boost::filesystem::detail::copy_file. Happens to old Boost releases.
 Solution: -DBOOST_NO_CXX11_SCOPED_ENUMS.
 - Undeclared nullptr. Happens to antique gcc releases.
 Solution: -std=gnu++11 or -std=c++11. Default since gcc 5.1.
-- Qt frontend demands -fPIC. Happens to distributions built with -reduce-relocations.
-Solution: the easiest one is probably passing -fPIC to CXXFLAGS and ./configure --disable-hardening (since hardening does -fPIE). Fixed in 0.10 trunk.
 
 Other release notes
 ---------------------
@@ -144,5 +141,4 @@ Copyright (c) 2009-2019 Bitcoin Developers
 Copyright (c) 2014-2020 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING.
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](http://www.openssl.org/).
 This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), UPnP software written by Thomas Bernard and sphlib 3.0 by Thomas Pornin.

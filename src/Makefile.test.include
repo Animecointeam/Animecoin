@@ -38,7 +38,7 @@ RAW_TEST_FILES = test/data/alertTests.raw
 GENERATED_TEST_FILES = $(JSON_TEST_FILES:.json=.json.h) $(RAW_TEST_FILES:.raw=.raw.h)
 
 BITCOIN_TESTS =\
-  test/bignum.h \
+  test/scriptnum10.h \
   test/addrman_tests.cpp \
   test/allocator_tests.cpp \
   test/arith_uint256_tests.cpp \
@@ -118,7 +118,7 @@ if ENABLE_WALLET
 test_test_animecoin_LDADD += $(LIBBITCOIN_WALLET)
 endif
 
-test_test_animecoin_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+test_test_animecoin_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(MINIUPNPC_LIBS)
 test_test_animecoin_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
 
 if ENABLE_ZMQ

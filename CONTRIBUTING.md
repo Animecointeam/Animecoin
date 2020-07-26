@@ -35,18 +35,9 @@ Boost features that should be removed soon
 
 Obsolete software features
 ---------------------
-- OpenSSL is a subject to be removed entirely. No new features should use OpenSSL.
+- OpenSSL is gone for good. No new features should use OpenSSL.
 - BIP70 is dropped by upstream and should be forgotten.
 - As a consequence, protobuf becomes an undesired dependency. New features relying on protobuf will not be accepted.
-
-Features no longer requiring OpenSSL
----------------------
-- Elliptic curve checking in the main code.
-- AES.
-
-Features still using OpenSSL
----------------------
-- RNG. Requires more code uplifting to migrate.
 
 Features that should not be backported
 ---------------------

@@ -44,10 +44,6 @@
 #include <sys/sysctl.h>
 #endif
 
-#include <openssl/err.h>
-#include <openssl/rand.h>
-#include <openssl/conf.h>
-
 static void RandFailure()
 {
     LogPrintf("Failed to read randomness, aborting\n");
@@ -336,8 +332,6 @@ void GetOSRand(unsigned char *ent32)
 #endif
 }
 
-void LockingCallbackOpenSSL(int mode, int i, const char* file, int line);
-
 namespace {
 
 class RNGState {
@@ -353,31 +347,15 @@ class RNGState {
     unsigned char m_state[32] GUARDED_BY(m_mutex) = {0};
     uint64_t m_counter GUARDED_BY(m_mutex) = 0;
     bool m_strongly_seeded GUARDED_BY(m_mutex) = false;
-    std::unique_ptr<CWaitableCriticalSection[]> m_mutex_openssl;
 
 public:
     RNGState() noexcept
     {
         InitHardwareRand();
-
-        // Init OpenSSL library multithreading support
-        m_mutex_openssl.reset(new CWaitableCriticalSection[CRYPTO_num_locks()]);
-        CRYPTO_set_locking_callback(LockingCallbackOpenSSL);
-
-        // OpenSSL can optionally load a config file which lists optional loadable modules and engines.
-        // We don't use them so we don't require the config. However some of our libs may call functions
-        // which attempt to load the config file, possibly resulting in an exit() or crash if it is missing
-        // or corrupt. Explicitly tell OpenSSL not to try to load the file. The result for our libs will be
-        // that the config appears to have been loaded and there are no modules/engines available.
-        OPENSSL_no_config();
     }
 
     ~RNGState()
     {
-        // Securely erase the memory used by the OpenSSL PRNG
-        RAND_cleanup();
-        // Shutdown OpenSSL library multithreading support
-        CRYPTO_set_locking_callback(nullptr);
     }
 
     /** Extract up to 32 bytes of entropy from the RNG state, mixing in new entropy from hasher.
@@ -413,8 +391,6 @@ public:
         memory_cleanse(buf, 64);
         return ret;
     }
-
-    CWaitableCriticalSection& GetOpenSSLMutex(int i) { return m_mutex_openssl[i]; }
 };
 
 RNGState& GetRNGState() noexcept
@@ -424,17 +400,6 @@ RNGState& GetRNGState() noexcept
     static std::vector<RNGState, secure_allocator<RNGState>> g_rng(1);
     return g_rng[0];
 }
-}
-
-void LockingCallbackOpenSSL(int mode, int i, const char* file, int line) NO_THREAD_SAFETY_ANALYSIS
-{
-    RNGState& rng = GetRNGState();
-
-    if (mode & CRYPTO_LOCK) {
-        rng.GetOpenSSLMutex(i).lock();
-    } else {
-        rng.GetOpenSSLMutex(i).unlock();
-    }
 }
 
 /* A note on the use of noexcept in the seeding functions below:
@@ -482,10 +447,6 @@ static void SeedSlow(CSHA512& hasher) noexcept
 
     // OS randomness
     GetOSRand(buffer);
-    hasher.Write(buffer, sizeof(buffer));
-
-    // OpenSSL RNG (for now)
-    RAND_bytes(buffer, sizeof(buffer));
     hasher.Write(buffer, sizeof(buffer));
 
     // High-precision timestamp.
@@ -574,14 +535,6 @@ static void ProcRand(unsigned char* out, int num, RNGLevel level)
         CSHA512 startup_hasher;
         SeedStartup(startup_hasher, rng);
         rng.MixExtract(out, num, std::move(startup_hasher), true);
-    }
-
-    // For anything but the 'fast' level, feed the resulting RNG output (after an additional hashing step) back into OpenSSL.
-    if (level != RNGLevel::FAST) {
-        unsigned char buf[64];
-        CSHA512().Write(out, num).Finalize(buf);
-        RAND_add(buf, sizeof(buf), num);
-        memory_cleanse(buf, 64);
     }
 }
 
