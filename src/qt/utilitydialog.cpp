@@ -259,7 +259,6 @@ PaperWalletDialog::PaperWalletDialog(QWidget *parent) :
 
 void PaperWalletDialog::setModel(WalletModel *_model)
 {
-    RandAddSeedSleep();
     this->model = _model;
     this->on_getNewAddress_clicked();
 }

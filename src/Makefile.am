@@ -151,6 +151,7 @@ BITCOIN_CORE_H = \
   protocol.h \
   primitives/block.h \
   random.h \
+  randomenv.h \
   reverse_iterator.h \
   reverselock.h \
   rpc/client.h \
@@ -186,6 +187,7 @@ BITCOIN_CORE_H = \
   wallet/walletdb.h \
   wallet/wallet.h \
   compat/byteswap.h \
+  compat/cpuid.h \
   compat/endian.h \
   compat/sanity.h\
   zmq/zmqabstractnotifier.h \
@@ -394,6 +396,7 @@ libanimecoin_util_a_SOURCES = \
   clientversion.cpp \
   fs.cpp \
   random.cpp \
+  randomenv.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \
   support/lockedpool.cpp \

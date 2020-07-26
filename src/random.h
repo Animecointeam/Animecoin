@@ -24,7 +24,7 @@
  *   perform 'fast' seeding, consisting of mixing in:
  *   - A stack pointer (indirectly committing to calling thread and call stack)
  *   - A high-precision timestamp (rdtsc when available, c++ high_resolution_clock otherwise)
- *   - Hardware RNG (rdrand) when available.
+ *   - 64 bits from the hardware RNG (rdrand) when available.
  *   These entropy sources are very fast, and only designed to protect against situations
  *   where a VM state restore/copy results in multiple systems with the same randomness.
  *   FastRandomContext on the other hand does not protect against this once created, but
@@ -43,13 +43,15 @@
  * - RandAddSeedSleep() seeds everything that fast seeding includes, but additionally:
  *   - A high-precision timestamp before and after sleeping 1ms.
  *   - (On Windows) Once every 10 minutes, performance monitoring data from the OS.
+ *   - Once every minute, strengthen the entropy for 10 ms using repeated SHA512.
  *   These just exploit the fact the system is idle to improve the quality of the RNG
  *   slightly.
  *
  * On first use of the RNG (regardless of what function is called first), all entropy
  * sources used in the 'slow' seeder are included, but also:
+ * - 256 bits from the hardware RNG (rdseed or rdrand) when available.
  * - (On Windows) Performance monitoring data from the OS.
- * - (On Windows) Through OpenSSL, the screen contents.
+ * - Strengthen the entropy for 100 ms using repeated SHA512.
  *
  * When mixing in new entropy, H = SHA512(entropy || old_rng_state) is computed, and
  * (up to) the first 32 bytes of H are produced as output, while the last 32 bytes
@@ -80,11 +82,11 @@ uint256 GetRandHash() noexcept;
 void GetStrongRandBytes(unsigned char* buf, int num) noexcept;
 
 /**
- * Sleep for 1ms, gather entropy from various sources, and feed them to the PRNG state.
+ * Gather entropy from various expensive sources, and feed them to the PRNG state.
  *
  * Thread-safe.
  */
-void RandAddSeedSleep();
+void RandAddPeriodic();
 
 /**
  * Fast randomness source. This is seeded once with secure random data, but

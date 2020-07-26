@@ -6,6 +6,7 @@
 #include "random.h"
 
 #include "crypto/common.h"
+#include "compat/cpuid.h"
 #include "crypto/sha512.h"
 #include "support/cleanse.h"
 #ifdef WIN32
@@ -13,14 +14,16 @@
 #include <wincrypt.h>
 #endif
 #include "serialize.h"        // for begin_ptr(vec)
-#include "sync.h"             // for WAIT_LOCK
-#include "util.h"             // for LogPrint()
+#include "sync.h"             // for Mutex
+#include "util.h"             // for LogPrintf()
 #include "utilstrencodings.h" // for GetTime()
 
 #include <stdlib.h>
 #include <limits>
 #include <chrono>
 #include <thread>
+
+#include "randomenv.h"
 
 #include <support/allocators/secure.h>
 
@@ -39,10 +42,6 @@
 #endif
 #ifdef HAVE_SYSCTL_ARND
 #include <sys/sysctl.h>
-#endif
-
-#if defined(__x86_64__) || defined(__amd64__) || defined(__i386__)
-#include <cpuid.h>
 #endif
 
 #include <openssl/err.h>
@@ -75,24 +74,109 @@ static inline int64_t GetPerformanceCounter() noexcept
 #endif
 }
 
-#if defined(__x86_64__) || defined(__amd64__) || defined(__i386__)
-static bool rdrand_supported = false;
+#ifdef HAVE_GETCPUID
+static bool g_rdrand_supported = false;
+static bool g_rdseed_supported = false;
 static constexpr uint32_t CPUID_F1_ECX_RDRAND = 0x40000000;
+static constexpr uint32_t CPUID_F7_EBX_RDSEED = 0x00040000;
+#ifdef bit_RDRND
+static_assert(CPUID_F1_ECX_RDRAND == bit_RDRND, "Unexpected value for bit_RDRND");
+#endif
+#ifdef bit_RDSEED
+static_assert(CPUID_F7_EBX_RDSEED == bit_RDSEED, "Unexpected value for bit_RDSEED");
+#endif
+
 static void InitHardwareRand()
 {
     uint32_t eax, ebx, ecx, edx;
-    if (__get_cpuid(1, &eax, &ebx, &ecx, &edx) && (ecx & CPUID_F1_ECX_RDRAND)) {
-        rdrand_supported = true;
+    GetCPUID(1, 0, eax, ebx, ecx, edx);
+    if (ecx & CPUID_F1_ECX_RDRAND) {
+        g_rdrand_supported = true;
+    }
+    GetCPUID(7, 0, eax, ebx, ecx, edx);
+    if (ebx & CPUID_F7_EBX_RDSEED) {
+        g_rdseed_supported = true;
     }
 }
 
 static void ReportHardwareRand()
 {
-    if (rdrand_supported) {
-        // This must be done in a separate function, as HWRandInit() may be indirectly called
-        // from global constructors, before logging is initialized.
+    // This must be done in a separate function, as HWRandInit() may be indirectly called
+    // from global constructors, before logging is initialized.
+    if (g_rdseed_supported) {
+        LogPrintf("Using RdSeed as additional entropy source\n");
+    }
+    if (g_rdrand_supported) {
         LogPrintf("Using RdRand as an additional entropy source\n");
     }
+}
+
+/** Read 64 bits of entropy using rdrand.
+ *
+ * Must only be called when RdRand is supported.
+ */
+static uint64_t GetRdRand() noexcept
+{
+    // RdRand may very rarely fail. Invoke it up to 10 times in a loop to reduce this risk.
+#ifdef __i386__
+    uint8_t ok;
+    uint32_t r1, r2;
+    for (int i = 0; i < 10; ++i) {
+        __asm__ volatile (".byte 0x0f, 0xc7, 0xf0; setc %1" : "=a"(r1), "=q"(ok) :: "cc"); // rdrand %eax
+        if (ok) break;
+    }
+    for (int i = 0; i < 10; ++i) {
+        __asm__ volatile (".byte 0x0f, 0xc7, 0xf0; setc %1" : "=a"(r2), "=q"(ok) :: "cc"); // rdrand %eax
+        if (ok) break;
+    }
+    return (((uint64_t)r2) << 32) | r1;
+#elif defined(__x86_64__) || defined(__amd64__)
+    uint8_t ok;
+    uint64_t r1;
+    for (int i = 0; i < 10; ++i) {
+        __asm__ volatile (".byte 0x48, 0x0f, 0xc7, 0xf0; setc %1" : "=a"(r1), "=q"(ok) :: "cc"); // rdrand %rax
+        if (ok) break;
+    }
+    return r1;
+#else
+#error "RdRand is only supported on x86 and x86_64"
+#endif
+}
+
+/** Read 64 bits of entropy using rdseed.
+ *
+ * Must only be called when RdSeed is supported.
+ */
+static uint64_t GetRdSeed() noexcept
+{
+    // RdSeed may fail when the HW RNG is overloaded. Loop indefinitely until enough entropy is gathered,
+    // but pause after every failure.
+#ifdef __i386__
+    uint8_t ok;
+    uint32_t r1, r2;
+    do {
+        __asm__ volatile (".byte 0x0f, 0xc7, 0xf8; setc %1" : "=a"(r1), "=q"(ok) :: "cc"); // rdseed %eax
+        if (ok) break;
+        __asm__ volatile ("pause");
+    } while(true);
+    do {
+        __asm__ volatile (".byte 0x0f, 0xc7, 0xf8; setc %1" : "=a"(r2), "=q"(ok) :: "cc"); // rdseed %eax
+        if (ok) break;
+        __asm__ volatile ("pause");
+    } while(true);
+    return (((uint64_t)r2) << 32) | r1;
+#elif defined(__x86_64__) || defined(__amd64__)
+    uint8_t ok;
+    uint64_t r1;
+    do {
+        __asm__ volatile (".byte 0x48, 0x0f, 0xc7, 0xf8; setc %1" : "=a"(r1), "=q"(ok) :: "cc"); // rdseed %rax
+        if (ok) break;
+        __asm__ volatile ("pause");
+    } while(true);
+    return r1;
+#else
+#error "RdSeed is only supported on x86 and x86_64"
+#endif
 }
 
 #else
@@ -105,79 +189,68 @@ static void InitHardwareRand() {}
 static void ReportHardwareRand() {}
 #endif
 
-static bool GetHardwareRand(unsigned char* ent32) noexcept {
+/** Add 64 bits of entropy gathered from hardware to hasher. Do nothing if not supported. */
+static void SeedHardwareFast(CSHA512& hasher) noexcept {
 #if defined(__x86_64__) || defined(__amd64__) || defined(__i386__)
-    if (rdrand_supported) {
-        uint8_t ok;
-        // Not all assemblers support the rdrand instruction, write it in hex.
-#ifdef __i386__
-        for (int iter = 0; iter < 4; ++iter) {
-            uint32_t r1, r2;
-            __asm__ volatile (".byte 0x0f, 0xc7, 0xf0;" // rdrand %eax
-                              ".byte 0x0f, 0xc7, 0xf2;" // rdrand %edx
-                              "setc %2" :
-                              "=a"(r1), "=d"(r2), "=q"(ok) :: "cc");
-            if (!ok) return false;
-            WriteLE32(ent32 + 8 * iter, r1);
-            WriteLE32(ent32 + 8 * iter + 4, r2);
-        }
-#else
-        uint64_t r1, r2, r3, r4;
-        __asm__ volatile (".byte 0x48, 0x0f, 0xc7, 0xf0, " // rdrand %rax
-                                "0x48, 0x0f, 0xc7, 0xf3, " // rdrand %rbx
-                                "0x48, 0x0f, 0xc7, 0xf1, " // rdrand %rcx
-                                "0x48, 0x0f, 0xc7, 0xf2; " // rdrand %rdx
-                          "setc %4" :
-                          "=a"(r1), "=b"(r2), "=c"(r3), "=d"(r4), "=q"(ok) :: "cc");
-        if (!ok) return false;
-        WriteLE64(ent32, r1);
-        WriteLE64(ent32 + 8, r2);
-        WriteLE64(ent32 + 16, r3);
-        WriteLE64(ent32 + 24, r4);
-#endif
-        return true;
+    if (g_rdrand_supported) {
+        uint64_t out = GetRdRand();
+        hasher.Write((const unsigned char*)&out, sizeof(out));
+        return;
     }
 #endif
-    return false;
 }
 
-static void RandAddSeedPerfmon(CSHA512& hasher)
-{
-
-#ifdef WIN32
-    // Don't need this on Linux, OpenSSL automatically uses /dev/urandom
-    // Seed with the entire set of perfmon data
-    std::vector<unsigned char> vData(250000, 0);
-
-    // This can take up to 2 seconds, so only do it every 10 minutes
-    static int64_t nLastPerfmon;
-    if (GetTime() < nLastPerfmon + 10 * 60)
+/** Add 256 bits of entropy gathered from hardware to hasher. Do nothing if not supported. */
+static void SeedHardwareSlow(CSHA512& hasher) noexcept {
+#if defined(__x86_64__) || defined(__amd64__) || defined(__i386__)
+    // When we want 256 bits of entropy, prefer RdSeed over RdRand, as it's
+    // guaranteed to produce independent randomness on every call.
+    if (g_rdseed_supported) {
+        for (int i = 0; i < 4; ++i) {
+            uint64_t out = GetRdSeed();
+            hasher.Write((const unsigned char*)&out, sizeof(out));
+        }
         return;
-    nLastPerfmon = GetTime();
-
-    long ret = 0;
-    unsigned long nSize = 0;
-    const size_t nMaxSize = 10000000; // Bail out at more than 10MB of performance data
-    while (true) {
-        nSize = vData.size();
-        ret = RegQueryValueExA(HKEY_PERFORMANCE_DATA, "Global", nullptr, nullptr, begin_ptr(vData), &nSize);
-        if (ret != ERROR_MORE_DATA || vData.size() >= nMaxSize)
-            break;
-        vData.resize(std::max((vData.size() * 3) / 2, nMaxSize)); // Grow size of buffer exponentially
     }
-    RegCloseKey(HKEY_PERFORMANCE_DATA);
-    if (ret == ERROR_SUCCESS) {
-        hasher.Write(vData.data(), nSize);
-        memory_cleanse(begin_ptr(vData), nSize);
-    } else {
-        // Performance data is only a best-effort attempt at improving the
-        // situation when the OS randomness (and other sources) aren't
-        // adequate. As a result, failure to read it is isn't considered critical,
-        // so we don't call RandFailure().
-        // TODO: Add logging when the logger is made functional before global
-        // constructors have been invoked.
+    // When falling back to RdRand, XOR the result of 1024 results.
+    // This guarantees a reseeding occurs between each.
+    if (g_rdrand_supported) {
+        for (int i = 0; i < 4; ++i) {
+            uint64_t out = 0;
+            for (int j = 0; j < 1024; ++j) out ^= GetRdRand();
+            hasher.Write((const unsigned char*)&out, sizeof(out));
+        }
+        return;
     }
 #endif
+}
+
+/** Use repeated SHA512 to strengthen the randomness in seed32, and feed into hasher. */
+static void Strengthen(const unsigned char (&seed)[32], int microseconds, CSHA512& hasher) noexcept
+{
+    CSHA512 inner_hasher;
+    inner_hasher.Write(seed, sizeof(seed));
+
+    // Hash loop
+    unsigned char buffer[64];
+    int64_t stop = GetTimeMicros() + microseconds;
+    do {
+        for (int i = 0; i < 1000; ++i) {
+            inner_hasher.Finalize(buffer);
+            inner_hasher.Reset();
+            inner_hasher.Write(buffer, sizeof(buffer));
+        }
+        // Benchmark operation and feed it into outer hasher.
+        int64_t perf = GetPerformanceCounter();
+        hasher.Write((const unsigned char*)&perf, sizeof(perf));
+    } while (GetTimeMicros() < stop);
+
+    // Produce output from inner state and feed it to outer hasher.
+    inner_hasher.Finalize(buffer);
+    hasher.Write(buffer, sizeof(buffer));
+    // Try to clean up.
+    inner_hasher.Reset();
+    memory_cleanse(buffer, sizeof(buffer));
 }
 
 #ifndef WIN32
@@ -394,8 +467,7 @@ static void SeedFast(CSHA512& hasher) noexcept
     hasher.Write((const unsigned char*)&ptr, sizeof(ptr));
 
     // Hardware randomness is very fast when available; use it always.
-    bool have_hw_rand = GetHardwareRand(buffer);
-    if (have_hw_rand) hasher.Write(buffer, sizeof(buffer));
+    SeedHardwareFast(hasher);
 
     // High-precision timestamp
     SeedTimestamp(hasher);
@@ -423,7 +495,17 @@ static void SeedSlow(CSHA512& hasher) noexcept
     SeedTimestamp(hasher);
 }
 
-static void SeedSleep(CSHA512& hasher)
+/** Extract entropy from rng, strengthen it, and feed it into hasher. */
+static void SeedStrengthen(CSHA512& hasher, RNGState& rng, int microseconds) noexcept
+{
+    // Generate 32 bytes of entropy from the RNG, and a copy of the entropy already in hasher.
+    unsigned char strengthen_seed[32];
+    rng.MixExtract(strengthen_seed, sizeof(strengthen_seed), CSHA512(hasher), false);
+    // Strengthen the seed, and feed it into hasher.
+    Strengthen(strengthen_seed, microseconds, hasher);
+}
+
+static void SeedPeriodic(CSHA512& hasher, RNGState& rng)
 {
     // Everything that the 'fast' seeder includes
     SeedFast(hasher);
@@ -431,29 +513,39 @@ static void SeedSleep(CSHA512& hasher)
     // High-precision timestamp
     SeedTimestamp(hasher);
 
-    // Sleep for 1ms
-    MilliSleep(1);
+    // Dynamic environment data (performance monitoring, ...)
+    auto old_size = hasher.Size();
+    RandAddDynamicEnv(hasher);
+    LogPrintf("Feeding %i bytes of dynamic environment data into RNG\n", hasher.Size() - old_size);
 
-    // High-precision timestamp after sleeping (as we commit to both the time before and after, this measures the delay)
-    SeedTimestamp(hasher);
-
-    // Windows performance monitor data (once every 10 minutes)
-    RandAddSeedPerfmon(hasher);
+    // Strengthen for 10 ms
+    SeedStrengthen(hasher, rng, 10000);
 }
 
-static void SeedStartup(CSHA512& hasher) noexcept
+static void SeedStartup(CSHA512& hasher, RNGState& rng) noexcept
 {
+    // Gather 256 bits of hardware randomness, if available
+    SeedHardwareSlow(hasher);
+
     // Everything that the 'slow' seeder includes.
     SeedSlow(hasher);
 
-    // Windows performance monitor data.
-    RandAddSeedPerfmon(hasher);
+    // Dynamic environment data (performance monitoring, ...)
+    auto old_size = hasher.Size();
+    RandAddDynamicEnv(hasher);
+
+    // Static environment data
+    RandAddStaticEnv(hasher);
+    LogPrintf("Feeding %i bytes of environment data into RNG\n", hasher.Size() - old_size);
+
+    // Strengthen for 100 ms
+    SeedStrengthen(hasher, rng, 100000);
 }
 
 enum class RNGLevel {
     FAST, //!< Automatically called by GetRandBytes
     SLOW, //!< Automatically called by GetStrongRandBytes
-    SLEEP, //!< Called by RandAddSeedSleep()
+    PERIODIC, //!< Called by RandAddPeriodic()
 };
 
 static void ProcRand(unsigned char* out, int num, RNGLevel level)
@@ -471,8 +563,8 @@ static void ProcRand(unsigned char* out, int num, RNGLevel level)
     case RNGLevel::SLOW:
         SeedSlow(hasher);
         break;
-    case RNGLevel::SLEEP:
-        SeedSleep(hasher);
+    case RNGLevel::PERIODIC:
+        SeedPeriodic(hasher, rng);
         break;
     }
 
@@ -480,7 +572,7 @@ static void ProcRand(unsigned char* out, int num, RNGLevel level)
     if (!rng.MixExtract(out, num, std::move(hasher), false)) {
         // On the first invocation, also seed with SeedStartup().
         CSHA512 startup_hasher;
-        SeedStartup(startup_hasher);
+        SeedStartup(startup_hasher, rng);
         rng.MixExtract(out, num, std::move(startup_hasher), true);
     }
 
@@ -495,7 +587,7 @@ static void ProcRand(unsigned char* out, int num, RNGLevel level)
 
 void GetRandBytes(unsigned char* buf, int num) noexcept { ProcRand(buf, num, RNGLevel::FAST); }
 void GetStrongRandBytes(unsigned char* buf, int num) noexcept { ProcRand(buf, num, RNGLevel::SLOW); }
-void RandAddSeedSleep() { ProcRand(nullptr, 0, RNGLevel::SLEEP); }
+void RandAddPeriodic() { ProcRand(nullptr, 0, RNGLevel::PERIODIC); }
 
 uint64_t GetRand(uint64_t nMax) noexcept
 {
@@ -539,7 +631,7 @@ bool Random_SanityCheck()
     uint64_t start = GetPerformanceCounter();
 
     /* This does not measure the quality of randomness, but it does test that
-     * OSRandom() overwrites all 32 bytes of the output given a maximum
+     * GetOSRand() overwrites all 32 bytes of the output given a maximum
      * number of tries.
      */
     static const ssize_t MAX_TRIES = 1024;

@@ -260,6 +260,7 @@ QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wform
 DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
     src/auxiliaryblockrequest.h \
+    src/compat/cpuid.h \
     src/crypto/aes.h \
     src/crypto/chacha20.h \
     src/fs.h \
@@ -281,6 +282,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/base58.h \
     src/checkpoints.h \
     src/compat.h \
+    src/randomenv.h \
     src/robin_hood.h \
     src/rpc/register.h \
     src/sync.h \
@@ -463,6 +465,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/editaddressdialog.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
     src/alert.cpp \
+    src/randomenv.cpp \
     src/sync.cpp \
     src/threadinterrupt.cpp \
     src/util.cpp \
