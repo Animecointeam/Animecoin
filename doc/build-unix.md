@@ -42,7 +42,6 @@ Optional dependencies:
  miniupnpc   | UPnP Support     | Firewall-jumping support
  libdb4.8    | Berkeley DB      | Wallet storage (only needed when wallet enabled)
  qt          | GUI              | GUI toolkit (only needed when GUI enabled)
- protobuf    | Payments in GUI  | Data interchange format used for payment protocol (only needed when GUI enabled)
  libqrencode | QR codes in GUI  | Optional for generating QR codes (only needed when GUI enabled)
 
 For the versions used in the release, see [release-process.md](release-process.md) under *Fetch and build inputs*.
@@ -96,17 +95,12 @@ Dependencies for the GUI: Ubuntu & Debian
 -----------------------------------------
 
 If you want to build Animecoin-Qt, make sure that the required packages for Qt development
-are installed. Either Qt 4 or Qt 5 are necessary to build the GUI.
-If both Qt 4 and Qt 5 are installed, Qt 4 will be used. Pass `--with-gui=qt5` to configure to choose Qt5.
+are installed. Qt 5 is necessary to build the GUI.
 To build without GUI pass `--without-gui`.
-
-To build with Qt 4 you need the following:
-
-    sudo apt-get install libqt4-dev libprotobuf-dev protobuf-compiler
 
 For Qt 5 you need the following:
 
-    sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
+    sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
 
 libqrencode (optional) can be installed with:
 

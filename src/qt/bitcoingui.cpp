@@ -332,7 +332,7 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     usedReceivingAddressesAction = new QAction(QIcon(":/icons/address-book"), tr("&Receiving addresses..."), this);
     usedReceivingAddressesAction->setStatusTip(tr("Show the list of used receiving addresses and labels"));
     openAction = new QAction(QIcon(":/icons/open"), tr("Open &URI..."), this);
-    openAction->setStatusTip(tr("Open a anime: URI or payment request"));
+    openAction->setStatusTip(tr("Open a anime: URI"));
     showHelpMessageAction = new QAction(QIcon(":/icons/info"), tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
     showHelpMessageAction->setStatusTip(tr("Show the Animecoin help message to get a list with possible command-line options"));

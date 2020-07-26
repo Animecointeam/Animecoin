@@ -9,10 +9,6 @@
 
 #include <QAbstractListModel>
 
-QT_BEGIN_NAMESPACE
-class QNetworkProxy;
-QT_END_NAMESPACE
-
 /** Interface from Qt to configuration data structure for Bitcoin client.
    To Qt, the options are presented as a list with the different options
    laid out vertically.
@@ -65,7 +61,6 @@ public:
     bool getMinimizeOnClose()  const { return fMinimizeOnClose; }
     int getDisplayUnit()  const { return nDisplayUnit; }
     QString getThirdPartyTxUrls()  const { return strThirdPartyTxUrls; }
-    bool getProxySettings(QNetworkProxy& proxy) const;
     bool getCoinControlFeatures()  const { return fCoinControlFeatures; }
     const QString& getOverriddenByCommandLine() { return strOverriddenByCommandLine; }
 

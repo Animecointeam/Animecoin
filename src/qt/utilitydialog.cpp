@@ -196,10 +196,6 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, bool about) :
         cursor.movePosition(QTextCursor::NextCell);
         cursor.insertText(tr("Start minimized"));
         cursor.movePosition(QTextCursor::NextCell);
-        cursor.insertText("-rootcertificates=<file>");
-        cursor.movePosition(QTextCursor::NextCell);
-        cursor.insertText(tr("Set SSL root certificates for payment request (default: -system-)"));
-        cursor.movePosition(QTextCursor::NextCell);
         cursor.insertText("-splash");
         cursor.movePosition(QTextCursor::NextCell);
         cursor.insertText(tr("Show splash screen on startup (default: 1)"));

@@ -36,7 +36,7 @@ Boost features that should be removed soon
 Obsolete software features
 ---------------------
 - OpenSSL is a subject to be removed entirely. No new features should use OpenSSL.
-- BIP70 is deprecared by the upstream. Do not waste time on any new features using BIP70.
+- BIP70 is dropped by upstream and should be forgotten.
 - As a consequence, protobuf becomes an undesired dependency. New features relying on protobuf will not be accepted.
 
 Features no longer requiring OpenSSL

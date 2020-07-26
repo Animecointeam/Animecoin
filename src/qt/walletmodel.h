@@ -9,9 +9,6 @@
 #include <config/bitcoin-config.h>
 #endif
 
-#ifdef ENABLE_BIP70
-#include "paymentrequestplus.h"
-#endif
 #include "walletmodeltransaction.h"
 
 #include "support/allocators/secure.h"
@@ -59,14 +56,10 @@ public:
     // Redeem script (used if an address is multisig address)
     QString redeemScript;
 
-#ifdef ENABLE_BIP70
-    // If from a payment request, paymentRequest.IsInitialized() will be true
-    PaymentRequestPlus paymentRequest;
-#else
-    // If building with BIP70 is disabled, keep the payment request around as
-    // serialized string to ensure load/store is lossless
+    // Keep the payment request around as a serialized string to ensure
+    // load/store is lossless.
     std::string sPaymentRequest;
-#endif
+
     // Empty if no authentication or invalid signature/cert/etc.
     QString authenticatedMerchant;
 
@@ -83,11 +76,6 @@ public:
         std::string sLabel = label.toStdString();
         std::string sMessage = message.toStdString();
         std::string sRedeemScript = redeemScript.toStdString();
-#ifdef ENABLE_BIP70
-        std::string sPaymentRequest;
-        if (!ser_action.ForRead() && paymentRequest.IsInitialized())
-            paymentRequest.SerializeToString(&sPaymentRequest);
-#endif
         std::string sAuthenticatedMerchant = authenticatedMerchant.toStdString();
 
         if(!ser_action.ForRead() && (this->nVersion == 1) && !redeemScript.isEmpty()) {
@@ -128,10 +116,6 @@ public:
 
             message = QString::fromStdString(sMessage);
             redeemScript = QString::fromStdString(sRedeemScript);
-#ifdef ENABLE_BIP70
-            if (!sPaymentRequest.empty())
-                paymentRequest.parse(QByteArray::fromRawData(sPaymentRequest.data(), sPaymentRequest.size()));
-#endif
             authenticatedMerchant = QString::fromStdString(sAuthenticatedMerchant);
         }
     }

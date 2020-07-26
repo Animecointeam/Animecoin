@@ -14,17 +14,12 @@
 #include "test/testutil.h"
 
 #ifdef ENABLE_WALLET
-#ifdef ENABLE_BIP70
-#include "paymentservertests.h"
-#endif // ENABLE_BIP70
 #include "wallettests.h"
 #endif // ENABLE_WALLET
 
 #include <QApplication>
 #include <QObject>
 #include <QTest>
-
-#include <openssl/ssl.h>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -62,18 +57,10 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setApplicationName("Animecoin-Qt-test");
 
-    SSL_library_init();
-
     URITests test1;
     if (QTest::qExec(&test1) != 0) {
         fInvalid = true;
     }
-#if defined(ENABLE_WALLET) && defined(ENABLE_BIP70)
-    PaymentServerTests test2;
-    if (QTest::qExec(&test2) != 0) {
-        fInvalid = true;
-    }
-#endif
 
     RPCNestedTests test3;
     if (QTest::qExec(&test3) != 0) {

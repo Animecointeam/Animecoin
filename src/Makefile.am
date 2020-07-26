@@ -19,7 +19,7 @@ LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
 BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
-BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS)
 
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
 BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
@@ -523,12 +523,6 @@ clean-local:
 .rc.o:
 	@test -f $(WINDRES)
 	$(AM_V_GEN) $(WINDRES) -DWINDRES_PREPROC -i $< -o $@
-
-if ENABLE_BIP70
-%.pb.cc %.pb.h: %.proto
-	@test -f $(PROTOC)
-	$(AM_V_GEN) $(PROTOC) --cpp_out=$(@D) --proto_path=$(abspath $(<D) $<)
-endif
 
 if EMBEDDED_LEVELDB
 include Makefile.leveldb.include

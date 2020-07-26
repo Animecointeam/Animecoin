@@ -18,20 +18,6 @@ greaterThan(QT_MAJOR_VERSION, 4) {
      DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
  }
 
-contains(USE_BIP70, 1) {
-    message(Building with deprecated BIP70 support)
-    PROTO_DIR = src/qt
-    include(share/qt/protobuf.pri)
-    PROTOS = src/qt/paymentrequest.proto
-    DEFINES += ENABLE_BIP70
-    HEADERS += src/qt/paymentrequestplus.h
-    SOURCES += src/qt/paymentrequestplus.cpp
-}
-else
-{
-    DEFINES += DISABLE_BIP70
-}
-
 contains(USE_ZMQ, 1) {
     message(Building with ZMQ support)
     DEFINES += ENABLE_ZMQ
@@ -726,7 +712,7 @@ macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -lprotobuf -levent -levent_pthreads
+LIBS += -lcrypto -lz -ldb_cxx$$BDB_LIB_SUFFIX -levent -levent_pthreads
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 !windows: {

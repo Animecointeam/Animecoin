@@ -102,7 +102,7 @@ Required libraries
 - Boost
 - OpenSSL
 - Berkeley DB
-- protobuf (added in 0.9, optional since 0.10)
+- protobuf (Animecoin 0.9 only)
 - libevent2 (since Animecoin 0.10 trunk)
 - Qt (optional if you don't need the GUI client)
 - miniupnpc (optional)
