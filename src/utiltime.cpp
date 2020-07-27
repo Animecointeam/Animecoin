@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,23 +9,40 @@
 
 #include "utiltime.h"
 
+#include <atomic>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread.hpp>
 
 using namespace std;
 
-static int64_t nMockTime = 0;  //! For unit testing
+static std::atomic<int64_t> nMockTime(0); //!< For unit testing
 
 int64_t GetTime()
 {
-    if (nMockTime) return nMockTime;
+    int64_t mocktime = nMockTime.load(std::memory_order_relaxed);
+    if (mocktime) return mocktime;
 
     return time(nullptr);
 }
 
+template <typename T>
+T GetTime()
+{
+    const std::chrono::seconds mocktime{nMockTime.load(std::memory_order_relaxed)};
+
+    return std::chrono::duration_cast<T>(
+        mocktime.count() ?
+            mocktime :
+            std::chrono::microseconds{GetTimeMicros()});
+}
+template std::chrono::seconds GetTime();
+template std::chrono::milliseconds GetTime();
+template std::chrono::microseconds GetTime();
+
 void SetMockTime(int64_t nMockTimeIn)
 {
-    nMockTime = nMockTimeIn;
+    nMockTime.store(nMockTimeIn, std::memory_order_relaxed);
 }
 
 int64_t GetTimeMillis()
@@ -43,7 +60,8 @@ int64_t GetTimeMicros()
 /** Return a time useful for the debug log */
 int64_t GetLogTimeMicros()
 {
-    if (nMockTime) return nMockTime*1000000;
+    int64_t mocktime = nMockTime.load(std::memory_order_relaxed);
+    if (mocktime) return mocktime*1000000;
 
     return GetTimeMicros();
 }
