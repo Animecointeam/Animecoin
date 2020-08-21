@@ -91,6 +91,51 @@ public:
 
 extern CDBEnv bitdb;
 
+/** An instance of this class represents one database.
+ * For BerkeleyDB this is just a (env, strFile) tuple.
+ **/
+class CWalletDBWrapper
+{
+    friend class CDB;
+public:
+    /** Create dummy DB handle */
+    CWalletDBWrapper(): env(nullptr)
+    {
+    }
+
+    /** Create DB handle to real database */
+    CWalletDBWrapper(CDBEnv *env_in, const std::string &strFile_in):
+        env(env_in), strFile(strFile_in)
+    {
+    }
+
+    /** Rewrite the entire database on disk, with the exception of key pszSkip if non-zero
+     */
+    bool Rewrite(const char* pszSkip=nullptr);
+
+    /** Back up the entire database to a file.
+     */
+    bool Backup(const std::string& strDest);
+
+    /** Get a name for this database, for debugging etc.
+     */
+    std::string GetName() const { return strFile; }
+
+    /** Make sure all changes are flushed to disk.
+     */
+    void Flush(bool shutdown);
+
+private:
+    /** BerkeleyDB specific */
+    CDBEnv *env;
+    std::string strFile;
+
+    /** Return whether this database handle is a dummy for testing.
+     * Only to be used at a low level, application should ideally not care
+     * about this.
+     */
+    bool IsDummy() { return env == nullptr; }
+};
 
 /** RAII class that provides access to a Berkeley database */
 class CDB
@@ -101,11 +146,12 @@ protected:
     DbTxn* activeTxn;
     bool fReadOnly;
     bool fFlushOnClose;
-
-    explicit CDB(const std::string& strFilename, const char* pszMode = "r+", bool fFlushOnCloseIn=true);
-    ~CDB() { Close(); }
+    CDBEnv *env;
 
 public:
+    explicit CDB(CWalletDBWrapper& dbw, const char* pszMode = "r+", bool fFlushOnCloseIn=true);
+    ~CDB() { Close(); }
+
     CDB(const CDB&) = delete;
     CDB& operator=(const CDB&) = delete;
 
@@ -115,13 +161,13 @@ public:
 
     /* flush the wallet passively (TRY_LOCK)
        ideal to be called periodically */
-    static bool PeriodicFlush(std::string strFile);
+    static bool PeriodicFlush(CWalletDBWrapper& dbw);
     /* verifies the database environment */
     static bool VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr);
     /* verifies the database file */
     static bool VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr, bool (*recoverFunc)(const std::string& strFile));
 
-protected:
+public:
     template <typename K, typename T>
     bool Read(const K& key, T& value)
     {
@@ -160,7 +206,7 @@ protected:
     bool Write(const K& key, const T& value, bool fOverwrite = true)
     {
         if (!pdb)
-            return false;
+            return true;
         if (fReadOnly)
             assert(!"Write called on database in read-only mode");
 
@@ -314,7 +360,7 @@ public:
         return Write(std::string("version"), nVersion);
     }
 
-    bool static Rewrite(const std::string& strFile, const char* pszSkip = nullptr);
+    bool static Rewrite(CWalletDBWrapper& dbw, const char* pszSkip = nullptr);
 };
 
 #endif // BITCOIN_DB_H

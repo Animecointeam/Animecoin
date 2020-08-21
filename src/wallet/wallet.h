@@ -651,7 +651,6 @@ private:
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
-    bool fFileBacked;
 
     std::set<int64_t> setInternalKeyPool;
     std::set<int64_t> setExternalKeyPool;
@@ -688,17 +687,33 @@ private:
     /* HD derive new child key (on internal or external chain) */
     void DeriveNewChildKey(CWalletDB &walletdb, CKeyMetadata& metadata, CKey& secret, bool internal = false);
 
+    std::unique_ptr<CWalletDBWrapper> dbw;
+
 public:
     /*
      * Main wallet lock.
-     * This lock protects all the fields added by CWallet
-     *   except for:
-     *      fFileBacked (immutable after instantiation)
-     *      strWalletFile (immutable after instantiation)
+     * This lock protects all the fields added by CWallet.
      */
     mutable CCriticalSection cs_wallet;
 
-    std::string strWalletFile;
+    /** Get database handle used by this wallet. Ideally this function would
+     * not be necessary.
+     */
+    CWalletDBWrapper& GetDBHandle()
+    {
+        return *dbw;
+    }
+
+    /** Get a name for this wallet for logging/debugging purposes.
+     */
+    std::string GetName() const
+    {
+        if (dbw) {
+            return dbw->GetName();
+        } else {
+            return "dummy";
+        }
+    }
 
     void LoadKeyPool(int64_t nIndex, const CKeyPool &keypool);
 
@@ -712,17 +727,16 @@ public:
     MasterKeyMap mapMasterKeys;
     unsigned int nMasterKeyMaxID;
 
-    CWallet()
+    // Create wallet with dummy database handle
+    CWallet(): dbw(new CWalletDBWrapper())
     {
         SetNull();
     }
 
-    CWallet(const std::string& strWalletFileIn)
+    // Create wallet with passed-in database handle
+    CWallet(std::unique_ptr<CWalletDBWrapper> dbw_in) : dbw(std::move(dbw_in))
     {
         SetNull();
-
-        strWalletFile = strWalletFileIn;
-        fFileBacked = true;
     }
 
     ~CWallet()
@@ -735,7 +749,6 @@ public:
     {
         nWalletVersion = FEATURE_BASE;
         nWalletMaxVersion = FEATURE_BASE;
-        fFileBacked = false;
         nMasterKeyMaxID = 0;
         pwalletdbEncryption = nullptr;
         nOrderPosNext = 0;
