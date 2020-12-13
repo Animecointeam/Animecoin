@@ -823,7 +823,7 @@ UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int6
                 CBitcoinAddress pubKeyAddress = CBitcoinAddress(pubKey.GetID());
 
                 // Consistency check.
-                if (!isScript && pubKeyAddress.Get() != address.Get()) {
+                if (!isScript && !(pubKeyAddress.Get() == address.Get())) {
                     throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Consistency check failed");
                 }
 
@@ -834,7 +834,7 @@ UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int6
 
                     if (ExtractDestination(script, destination)) {
                         scriptAddress = CBitcoinAddress(destination);
-                        if (scriptAddress.Get() != pubKeyAddress.Get()) {
+                        if (!(scriptAddress.Get() == pubKeyAddress.Get())) {
                             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Consistency check failed");
                         }
                     }
@@ -896,7 +896,7 @@ UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int6
                 CBitcoinAddress pubKeyAddress = CBitcoinAddress(pubKey.GetID());
 
                 // Consistency check.
-                if (!isScript && pubKeyAddress.Get() != address.Get()) {
+                if (!isScript && !(pubKeyAddress.Get() == address.Get())) {
                     throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Consistency check failed");
                 }
 
@@ -907,7 +907,7 @@ UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int6
 
                     if (ExtractDestination(script, destination)) {
                         scriptAddress = CBitcoinAddress(destination);
-                        if (scriptAddress.Get() != pubKeyAddress.Get()) {
+                        if (!(scriptAddress.Get() == pubKeyAddress.Get())) {
                             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Consistency check failed");
                         }
                     }
