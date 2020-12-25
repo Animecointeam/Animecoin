@@ -100,10 +100,6 @@ void OptionsModel::Init(bool resetSettings)
         addOverriddenOption("-spendzeroconfchange");
 #endif
 
-    // Mining
-    if (!settings.contains("nMiningIntensity"))
-        settings.setValue("bMiningIntensity", 0);
-
     // Network
     if (!settings.contains("fUseUPnP"))
         settings.setValue("fUseUPnP", DEFAULT_UPNP);
@@ -251,8 +247,6 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("nThreadsScriptVerif");
         case Listen:
             return settings.value("fListen");
-        case MiningIntensity:
-            return settings.value("nMiningIntensity");
 
         //
         case SyncMode:
@@ -400,12 +394,6 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case Listen:
             if (settings.value("fListen") != value) {
                 settings.setValue("fListen", value);
-                setRestartRequired(true);
-            }
-            break;
-        case MiningIntensity:
-            if (settings.value("nMiningIntensity") != value.toInt()) {
-                settings.setValue("nMiningIntensity", value.toInt());
                 setRestartRequired(true);
             }
             break;

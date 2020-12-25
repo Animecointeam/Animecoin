@@ -1,8 +1,8 @@
-Animecoin 0.10.0 alpha
+Animecoin 0.10.0 beta
 ====================
 ![Animecoin](https://miningbase.tk/images/coin-ANI.png)
 
-0.10 is in active development. Do not rush to build the master branch. Check out the Releases section for the current and stable source.
+Master branch is there for testers and developers. Check out the Releases section for the current and stable source.
 
 Intro
 ---------------------
@@ -40,13 +40,13 @@ Current light mode limitations:
 - Signing raw transactions is unavalable in SPV mode (there's no chainstate data to scan for inputs).
 - Operations implying rescan (such as importing keys) cannot be done in pruned and SPV modes (SPV improvements in development).
 
-0.10 pre-release notes
+0.10.0 release notes
 ---------------------
 - Faster block syncing and compact blocks support.
 - Wallet startup time reduced significantly by caching the block hashes on disk; transaction table updating is also much faster now.
 - Fee Control Features available.
 - Running wallet in SPV mode is possible now, pruned mode is available as well, more options in development.
-- A soft fork akin to BIP-0065 is prepared. Blocks of the new version are not yet generated in pre-release versions.
+- A soft fork akin to BIP-0065 is prepared. Blocks of the new version are not yet generated.
 - Initial support for the user interface to multisig capabilities.
 - Improved application design, including animecoin-tx and consensus library.
 - Tor hidden service setup automated.
@@ -57,11 +57,6 @@ Current light mode limitations:
 - RPC over SSL removed (was never good, kindly use tunneling if needed).
 - Qt4 support removed (years since EOL).
 - OpenSSL dependency is gone thanks to built-in random number generator and BIP70 deprecation.
-
-
-Features in progress but not necessarily finalized before 0.10 release
----------------------
-- BIP-0009/0068/0112/0113 aggregation (will not be activated before BIP-0065 fork).
 
 0.9.2 release notes
 ---------------------
@@ -92,11 +87,7 @@ Using autotools for commandline (MSYS2 shell in Windows case):
  - ./configure (with any options necessary)
  - make (use e.g. make -j8 for utilizing 8 CPU cores to speed up the build process)
 
-Alternatively, you may use animecoin-qt.pro for qmake / Qt Creator to build the GUI client. Adjust the library paths and prefixes as needed.
-The .pro file, however, is deprecated and may not be up to date with the latest trunk changes.
-
 You may want to use the strip utility to reduce the size of resulting executables.
-Autotools will also build commandline utilities.
 
 Required libraries
 ---------------------
@@ -109,6 +100,7 @@ Required libraries
 - ZeroMQ (optional)
 - univalue (optional, since 0.10; bundled version will be used unless --with-system-univalue specified)
 - protobuf (temporary, Animecoin 0.9 only)
+
 OpenSSL is no longer needed since 0.10, however, depending on your distribution libraries like libevent may be still linked with libssl/libcrypto.
 
 Berkeley DB notes
@@ -122,22 +114,14 @@ If you wish to convert your wallet.dat between versions, you'll need the BerkDB 
 
 For example: db6.3_dump wallet.dat | db4.8_load wallet.dat.new
 
-Other possible build issues
----------------------
-- Undefined reference to boost::filesystem::detail::copy_file. Happens to old Boost releases.
-Solution: -DBOOST_NO_CXX11_SCOPED_ENUMS.
-- Undeclared nullptr. Happens to antique gcc releases.
-Solution: -std=gnu++11 or -std=c++11. Default since gcc 5.1.
-
 Other release notes
 ---------------------
-- Translations need people to work upon.
-- Regression test network code (like testnet, but special) was added following the mainstream Bitcoin client, this remains untested so far.
 - Animecoin operates on 5 decimals internally. For the software compatibility purposes, it still accepts extra decimals via RPC, those will be rounded-to-nearest. This case inevitably violates Bitcoin (and JSON) guidelines on precision, thus it's highly recommended to configure your software for using no more than 5 decimals in Animecoin amounts whenever possible.
+- Translations need people to work upon.
 
 License
 ---------------------
-Copyright (c) 2009-2019 Bitcoin Developers
+Copyright (c) 2009-2020 Bitcoin Developers
 Copyright (c) 2014-2020 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING.
