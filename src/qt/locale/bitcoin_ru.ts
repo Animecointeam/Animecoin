@@ -2654,7 +2654,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location line="+3"/>
         <source>A complete set of block headers (about 1GiB) will be downloaded. Only the blocks that are younger than your wallet will be requested. This is very close to light client without sacrificing any decentralization or security.</source>
-        <translation>Будут скачаны все заголовки блоков (около 1 ГБ), а также блоки, сгенерировнные после создания кошелька. Это близко к лайт-клиенту, но не нарушит принципов безопасности и децентрализации.</translation>
+        <translation>Будут скачаны все заголовки блоков (около 1 ГБ), а также блоки, сгенерированные после создания кошелька. Это близко к лайт-клиенту, но не нарушит принципов безопасности и децентрализации.</translation>
     </message>
     <message>
         <location line="+3"/>
