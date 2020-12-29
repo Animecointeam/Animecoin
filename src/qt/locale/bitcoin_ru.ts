@@ -65,8 +65,12 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+57"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Block explorer&lt;/span&gt;: &lt;a href=&quot;https://explorer.miningbase.tk/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.miningbase.tk/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/auXJpYa&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/auXJpYa&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;Cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;br/&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Сайт&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Обозреватель блоков&lt;/span&gt;: &lt;a href=&quot;https://explorer.miningbase.tk/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.miningbase.tk/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/auXJpYa&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/auXJpYa&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Это экспериментальное ПО. Распространяется под лицензией MIT/X11 (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Также включает следующий код:&lt;/p&gt;&lt;p&gt;Библиотеки проекта OpenSSL (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) и криптографическое ПО, написанное Eric Young (eay@cryptsoft.com).&lt;br/&gt;ПО для работы с UPnP, написанное Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Block explorer&lt;/span&gt;: &lt;a href=&quot;https://explorer.animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/auXJpYa&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/auXJpYa&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;Cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;br/&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Сайт&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Обозреватель блоков&lt;/span&gt;: &lt;a href=&quot;https://explorer.animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/auXJpYa&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/auXJpYa&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Это экспериментальное ПО. Распространяется под лицензией MIT/X11 (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Также включает следующий код:&lt;/p&gt;&lt;p&gt;Библиотеки проекта OpenSSL (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) и криптографическое ПО, написанное Eric Young (eay@cryptsoft.com).&lt;br/&gt;ПО для работы с UPnP, написанное Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Сайт&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Обозреватель блоков&lt;/span&gt;: &lt;a href=&quot;https://explorer.animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/auXJpYa&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/auXJpYa&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Это экспериментальное ПО. Распространяется под лицензией MIT/X11 (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Также включает следующий код:&lt;/p&gt;&lt;p&gt;Библиотеки проекта OpenSSL (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) и криптографическое ПО, написанное Eric Young (eay@cryptsoft.com).&lt;br/&gt;ПО для работы с UPnP, написанное Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;Website&lt;/span&gt;: &lt;a href=&quot;https://animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Block explorer&lt;/span&gt;: &lt;a href=&quot;https://explorer.animeco.in&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://explorer.animeco.in&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Twitter&lt;/span&gt;: &lt;a href=&quot;https://twitter.com/ANIcoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://twitter.com/ANIcoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Discord&lt;/span&gt;: &lt;a href=&quot;https://discord.gg/6qh4JMj&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://discord.gg/6qh4JMj&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bitcointalk&lt;/span&gt;: &lt;a href=&quot;https://bitcointalk.org/index.php?topic=2726521&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://bitcointalk.org/index.php?topic=2726521&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Coinmarketcap&lt;/span&gt;: &lt;a href=&quot;https://coinmarketcap.com/currencies/animecoin/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://coinmarketcap.com/currencies/animecoin/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Github&lt;/span&gt;: &lt;a href=&quot;https://github.com/Animecointeam/Animecoin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Animecointeam/Animecoin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;This is experimental software. Distributed under the MIT/X11 software license (&lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://opensource.org/licenses/MIT&lt;/span&gt;&lt;/a&gt;).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This software also uses:&lt;/p&gt;&lt;p&gt;OpenSSL libraries (&lt;a href=&quot;http://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.openssl.org/&lt;/span&gt;&lt;/a&gt;) and cryptographic software written by Eric Young (eay@cryptsoft.com).&lt;br/&gt;UPnP software written by Thomas Bernard.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -5736,8 +5740,359 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Получить помощь по команде</translation>
     </message>
     <message>
+        <location filename="../bitcoinstrings.cpp" line="+21"/>
+        <source>Accept relayed transactions received from whitelisted peers even when not relaying transactions (default: %d)</source>
+        <translation>Принимать транзакции от узлов в белом списке, даже если пересылка транзакций отключена (по умолчанию: %d)</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
+        <translation>Не удаётся установить блокировку на каталог данных %s.  Возможно, %s уже работает.</translation>
+    </message>
+    <message>
+        <source>Could not locate RPC credentials. No authentication cookie could be found, and no rpcpassword is set in the configuration file (%s)</source>
+        <translation type="vanished">Пароль RPC не задан в файле конфигурации (%s), файлов cookie также не обнаружено</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
+        <translation>Определить свой IP (по умолчанию: 1 при прослушивании и если не используется -externalip или -proxy)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Distributed under the MIT/X11 software license, see the accompanying file COPYING.</source>
+        <translation>Распространяется под лицензией MIT/X11, см. приложенный файл COPYING.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Do not keep transactions in the mempool longer than &lt;n&gt; hours (default: %u)</source>
+        <translation>Держать транзакции в памяти не более &lt;n&gt; часов (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
+        <translation>Комиссия (в %s/кб) меньше этой будет считаться нулевой (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Force relay of transactions from whitelisted peers even they violate local relay policy (default: %d)</source>
+        <translation>Пересылать транзакции от узлов в белом списке, даже если они нарушают заданные ограничения (по умолчанию: %d)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)</source>
+        <translation>Если такой блок присутствует в цепочке, считать его и всех его предшественников надежными. Это позволяет ускорить проверку скрипта (0 - проверять все блоки, по умолчанию: %s, тестовая сеть: %s)</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)</source>
+        <translation>Расположение файла cookie для авторизации. Относительные пути считаются от каталога данных (по умолчанию: каталог данных)</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Maximum total fees (in %s) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions (default: %s)</source>
+        <translation>Максимальный объем (в %s) комиссии для одной транзакции, если значение будет слишком низким, большие транзакции не удастся отправить (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <source>Output only the hex-encoded transaction id of the resultant transaction.</source>
+        <translation type="vanished">Выводить только id получившейся транзакции.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation>Задано слишком мало места для блоков (минимум %d МБ).  Пожалуйста, увеличьте это значение.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>Случайные данные авторизации для соединений через прокси. Это позволяет изолировать данные Tor (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <source>Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases)</source>
+        <translation type="vanished">Принимать дополнительные параметры с устройства ввода, по одному на строку, до Ctrl-D/EOF (для конфиденциальных параметров)</translation>
+    </message>
+    <message>
+        <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>
+        <translation type="vanished">До этой версии обновить кошелек нельзя. Используйте версию 100000 или по умолчанию.</translation>
+    </message>
+    <message>
+        <location line="-64"/>
+        <source>Error loading %s: You can&apos;t enable HD on a already existing non-HD wallet</source>
+        <translation>Не удалось загрузить %s. Этот кошелек уже HD</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation>jшибка чтения %s! Все ключи прочитаны верно, но данные транзакций или записи адресной книги могут отсутствовать или быть неправильными.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Комиссия (в %s/кб) меньше этой будет считаться нулевой (для генерации) (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation>Расхождение последней синхронизации и данных на диске. Запустите -reindex или скачайте блокчейн заново</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, &gt;%u = automatically prune block files to stay under the specified target size in MiB)</source>
+        <translation>Экономить дисковое пространство за счет удаления старых блоков. Включает RPC-команду pruneblockchain и автоматическое удаление блоков, если превышено заданное место на диске в МБ. Этот режим несовсместим с -txindex и -rescan. Обратите внимание: выход из этого режима потребует скачать блокчейн заново. (По умолчанию: 0 = отключить этот режим, 1 = разрешить удаление через RPC, &gt;%u = автоматически удалять блоки)</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Сканирование возможно только на полном узле. Вам потребуется -reindex.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)</source>
+        <translation>Установить минимальную (в %s/кБ) комиссию для включения транзакции в блок (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)</source>
+        <translation>Расположение файла конфигурации. Относительные пути считаются от каталога данных (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Specify location of debug log file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)</source>
+        <translation>Расположение отладочного лога. Относительные пути считаются от каталога данных сети (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)</source>
+        <translation>Расположение файла PID. Относительные пути считаются от каталога данных сети (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <translation>Разрешить фильтрацию блоков и транзакций (bloom) (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tell other nodes to filter invs to us by our mempool min fee (default: %u)</source>
+        <translation>Запрашивать от узлов фильтрацию данных по нашей минимальной комиссии (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer&apos;s date and time being set incorrectly. Only rebuild the block database if you are sure that your computer&apos;s date and time are correct</source>
+        <translation>В базе данных обнаружен блок с датой из будущего. Возможно, дата и время на компьютере установлены неверно. В противном случае потребуется переиндексация базы данных</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>После вычета комиссии транзакция будет слишком мала для отправки</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
+        <translation>Комиссия для случаев, когда оценка комиссии недоступна.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tries to keep outbound traffic under the given target (in MiB per 24h), 0 = no limit (default: %d)</source>
+        <translation>Задать мягкое ограничение исходящего трафика (в МБ за 24 ч), 0 = без ограничений  (по умолчанию: %d)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation>Ошибка обработки блоков. Запустите -reindex-chainstate.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
+        <translation>Параметр -whitelistalwaysrelay не поддерживается, используйте -whitelistrelay и/или -whitelistforcerelay.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>Использовать UPnP для проброса порта (по умолчанию: 1, если используется прослушивание и не задан прокси)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use hierarchical deterministic key generation (HD) after bip32. Only has effect during wallet creation/first start</source>
+        <translation>Использовать HD-ключи. Имеет смысл только в момент создания кошелька</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. This option can be specified multiple times</source>
+        <translation>Логин и хеш пароля для соединений JSON-RPC. Формат для &lt;userpw&gt;: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. См. также скрипт share/rpcuser. Этот параметр можно указать несколько раз</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Wallet will not create transactions that violate mempool chain limits (default: %u</source>
+        <translation>Не создавать транзакции, которые нельзя принять в пямять  (по умолчанию: %u</translation>
+    </message>
+    <message>
+        <location line="+169"/>
+        <source>Use full block spv before validating the chain (default: %u)</source>
+        <translation>Использовать SPV-режим (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Параметры отладки/тестирования кошелька:</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>Необходимо перезаписать бумажник, перезапустите %s для завершения операции</translation>
+    </message>
+    <message>
+        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Quark Core will not work properly.</source>
+        <translation type="vanished">Внимание: убедитесь, что дата и время на Вашем компьютере выставлены верно. Если Ваши часы идут неправильно, Animecoin будет работать некорректно.</translation>
+    </message>
+    <message>
+        <location line="-327"/>
+        <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=100000 or -upgradewallet with no version specified.</source>
+        <translation>До этой версии обновить кошелек нельзя. Используйте версию 100000 или по умолчанию.</translation>
+    </message>
+    <message>
+        <location line="+175"/>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <translation>Для выхода из режима prune потребуется -reindex. Блокчейн будет скачан заново</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
+        <translation>Вам необходимо пересобрать базы данных с помощью -reindex-chainstate, чтобы изменить -txindex</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%s is set very high!</source>
+        <translation>значение %s слишком велико!</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>(default: %u)</source>
+        <translation>(по умолчанию:%u)</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Append comment to the user agent string</source>
+        <translation>Добавить комментарий к версии ПО</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>Автоматически создавать скрытый сервис Tor (по умолчанию: %d)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Cannot resolve -%s address: &apos;%s&apos;</source>
+        <translation>Не удаётся разрешить -%s адрес: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>Отправлять хеши блоков на &lt;адрес&gt;</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>Отправлять хеши транзакций на &lt;адрес&gt;</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>Отправлять содержимое блоков на &lt;адрес&gt;</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>Отправлять содержимое транзакций на &lt;адрес&gt;</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Error upgrading chainstate database</source>
+        <translation>Ошибка инициализации БД транзакций</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Error: -maxmempool must be at least %d MB</source>
+        <translation>Ошибка: -maxmempool должен превышать %d МБ</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Error: A fatal internal error occured, see debug.log for details</source>
+        <translation>Произошла неисправимая ошибка, см. файл degug.log</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Initialization sanity check failed. %s is shutting down.</source>
+        <translation>Произошла неисправимая ошибка. %s не может безопасно продолжать работу и будет закрыт.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Invalid amount for -%s=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation>Неверное количество в параметре -%s=&lt;кол-во&gt;: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation>Неверное количество в параметре -fallbackfee=&lt;кол-во&gt;: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Invalid characters in -wallet filename</source>
+        <translation>Недопустимые символы в имени файла для параметра -wallet</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation>Выделять не более &lt;n&gt; МБ пямяти под неподтвержденные транзакции (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Light client mode is incompatible with -txindex.</source>
+        <translation>Облегченные режимы не поддерживают -txindex.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Loading banlist...</source>
+        <translation>Загрузка банлиста...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Minimum bytes per sigop in transactions we relay and mine (default: %u)</source>
+        <translation>Минимум байт на sigop в транзакциях для пересылки и майнинга (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Options:</source>
-        <translation type="vanished">Опции:</translation>
+        <translation>Опции:</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Starting network threads...</source>
+        <translation>Запуск сетевых потоков...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Tor control port password (default: empty)</source>
+        <translation>Пароль для управления Tor (по умолчанию: не задан)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>Порт управления Tor (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Upgrading UTXO database</source>
+        <translation>Обновление базы транзакций</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <translation>Режим &quot;только блоки&quot; (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>ZeroMQ notification options:</source>
+        <translation>Параметры ZMQ-уведомлений:</translation>
     </message>
     <message>
         <source>Specify configuration file (default: animecoin.conf)</source>
@@ -5748,8 +6103,9 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Задать pid-файл (по умолчанию: animecoind.pid)</translation>
     </message>
     <message>
+        <location line="-39"/>
         <source>Specify data directory</source>
-        <translation type="vanished">Задать каталог данных</translation>
+        <translation>Задать каталог данных</translation>
     </message>
     <message>
         <source>Set database cache size in megabytes (default: 25)</source>
@@ -5764,12 +6120,59 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Поддерживать не более &lt;n&gt; подключений к узлам (по умолчанию: 125)</translation>
     </message>
     <message>
+        <location line="-95"/>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
-        <translation type="vanished">Подключиться к узлу, чтобы получить список адресов других участников и отключиться</translation>
+        <translation>Подключиться к узлу, чтобы получить список адресов других участников и отключиться</translation>
     </message>
     <message>
+        <location line="+66"/>
+        <source>Permit transaction replacement (default: %u)</source>
+        <translation>Разрешить замену транзакций (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Print this help message and exit</source>
+        <translation>Вывести это сообщение и завершить работу</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Print version and exit</source>
+        <translation>Вывести версию и завершить работу</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>Нельзя указывать отрицательный объем места на диске.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Pruning blockstore...</source>
+        <translation>Удаление старых блоков...</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <translation>Перестроить цепь блоков из текущих файлов blk*.dat</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Rebuild chain state from the currently indexed blocks</source>
+        <translation>Перестроить цепочку монет у имеющихся блоков</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
+        <translation>Ввиду ограничений операционной системы, -maxconnections понижено с %d до %d.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Replaying blocks...</source>
+        <translation>Обработка блоков...</translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>Specify your own public address</source>
-        <translation type="vanished">Укажите ваш собственный публичный адрес</translation>
+        <translation>Укажите ваш собственный публичный адрес</translation>
     </message>
     <message>
         <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
@@ -5832,8 +6235,9 @@ rpcpassword=%s
         <translation type="vanished">Ошибка: Невозможно принимать входящие подключения (ошибка %d)</translation>
     </message>
     <message>
+        <location line="-270"/>
         <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
-        <translation type="vanished">Выполнить команду, когда приходит сообщение о тревоге или в сети обнаружен форк (%s в команде заменяется на сообщение)</translation>
+        <translation>Выполнить команду, когда приходит сообщение о тревоге или в сети обнаружен форк (%s в команде заменяется на сообщение)</translation>
     </message>
     <message>
         <source>Fees smaller than this are considered zero fee (for transaction creation) (default:</source>
@@ -5860,56 +6264,117 @@ rpcpassword=%s
         <translation type="vanished">Выводить отладочную информацию (по умолчанию: 0, &lt;category&gt; необязательна)</translation>
     </message>
     <message>
+        <location line="+72"/>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
-        <translation type="vanished">Максимальный размер высокоприоритетных/низкокомиссионных транзакций в байтах (по умолчанию: %d)</translation>
+        <translation>Максимальный размер высокоприоритетных/низкокомиссионных транзакций в байтах (по умолчанию: %d)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
-        <translation type="vanished">Задать число потоков проверки скрипта (от %u до %d, 0=авто, &lt;0 = оставить столько ядер свободными, по умолчанию: %d)</translation>
+        <translation>Задать число потоков проверки скрипта (от %u до %d, 0=авто, &lt;0 = оставить столько ядер свободными, по умолчанию: %d)</translation>
     </message>
     <message>
         <source>Set the processor limit for when generation is on (-1 = unlimited, default: -1)</source>
         <translation type="vanished">Задать интенсивность майнинга (-1 = максимальная, по умолчанию: -1)</translation>
     </message>
     <message>
+        <location line="+31"/>
         <source>Unable to bind to %s on this computer. Animecoin is probably already running.</source>
-        <translation type="vanished">Невозможно привязаться к %s на этом компьютере.  Возможно, Animecoin уже работает.</translation>
+        <translation>Невозможно привязаться к %s на этом компьютере.  Возможно, Animecoin уже работает.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: -proxy)</source>
         <translation type="vanished">Использовать отдельный SOCKS5-прокси для доступа к скрытым сервисам Tor (по умолчанию: тот же, что и в -proxy)</translation>
     </message>
     <message>
+        <location line="+23"/>
         <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Animecoin will not work properly.</source>
-        <translation type="vanished">Внимание: убедитесь, что дата и время на Вашем компьютере выставлены верно. Если Ваши часы идут неправильно, Animecoin будет работать некорректно.</translation>
+        <translation>Внимание: убедитесь, что дата и время на Вашем компьютере выставлены верно. Если Ваши часы идут неправильно, Animecoin будет работать некорректно.</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
-        <translation type="vanished">Внимание: Сеть не согласована! Часть майнеров находится на проблемной ветке.</translation>
+        <translation>Внимание: Сеть не согласована! Часть майнеров находится на проблемной ветке.</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
+        <translation>Внимание: кошелек повреждён, данные спасены! Оригинальный %s сохранён как %s в %s; если ваш баланс или транзакции некорректны, вы должны восстановить файл из резервной копии.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
-        <translation type="vanished">Внимание: Данные нашего узла не согласуются с другими узлами! Возможно, нам (или им) нужно обновить клиент.</translation>
+        <translation>Внимание: Данные нашего узла не согласуются с другими узлами! Возможно, нам (или им) нужно обновить клиент.</translation>
     </message>
     <message>
+        <location line="+14"/>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s повреждён, спасение данных не удалось</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>-wallet parameter must only specify a filename (not a path)</source>
+        <translation>Параметр -wallet должен указывать только имя файла (без пути)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Accept command line and JSON-RPC commands</source>
-        <translation type="vanished">Принимать командную строку и команды JSON-RPC</translation>
+        <translation>Принимать командную строку и команды JSON-RPC</translation>
     </message>
     <message>
+        <location line="+7"/>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>Попытаться восстановить приватные ключи из повреждённого кошелька</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Change index out of range</source>
+        <translation>Ошибка индексации сдачи</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Error loading %s</source>
+        <translation>Ошибка при загрузке %s</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>Ошибка при загрузке %s: Бумажник поврежден</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>Ошибка загрузки %s: бумажник требует более новую версию %s</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Error loading %s: You can&apos;t disable HD on a already existing HD wallet</source>
+        <translation>Не удалось загрузить %s. Отключить HD-режим в уже созданном кошельке нельзя</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Fee (in %s/kB) to add to transactions you send (default: %s)</source>
+        <translation>Добвить комиссию (в %s/кб) ко всем отправляемым транзакциям (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
-        <translation type="vanished">Если &lt;category&gt; не указана, выводить всю отладочную информацию.</translation>
+        <translation>Если &lt;category&gt; не указана, выводить всю отладочную информацию.</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Importing...</source>
-        <translation type="vanished">Импортирование...</translation>
+        <translation>Импортирование...</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
-        <translation type="vanished">Первый блок отсутствует или неверный - указан не тот каталог блокчейна?</translation>
+        <translation>Первый блок отсутствует или неверный - указан не тот каталог блокчейна?</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Invalid -onion address: &apos;%s&apos;</source>
-        <translation type="vanished">Неверный адрес -onion: &apos;%s&apos;</translation>
+        <translation>Неверный адрес -onion: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Limit size of signature cache to &lt;n&gt; entries (default: 50000)</source>
@@ -5940,8 +6405,9 @@ rpcpassword=%s
         <translation type="vanished">Параметры RPC-клиента:</translation>
     </message>
     <message>
+        <location line="+33"/>
         <source>RPC server options:</source>
-        <translation type="vanished">Параметры RPC-сервера:</translation>
+        <translation>Параметры RPC-сервера:</translation>
     </message>
     <message>
         <source>Randomly drop 1 of every &lt;n&gt; network messages</source>
@@ -5956,8 +6422,9 @@ rpcpassword=%s
         <translation type="vanished">Периодически записывать данные кошелька на диск (по умолчанию: 1)</translation>
     </message>
     <message>
+        <location line="+10"/>
         <source>Run in the background as a daemon and accept commands</source>
-        <translation type="vanished">Запускаться в фоне как демон и принимать команды</translation>
+        <translation>Запускаться в фоне как демон и принимать команды</translation>
     </message>
     <message>
         <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
@@ -5972,28 +6439,32 @@ rpcpassword=%s
         <translation type="vanished">Послать Animecoin команду</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
-        <translation type="vanished">Установить размер кэша базы данных в мегабайтах (от %d до %d, по умолчанию: %d)</translation>
+        <translation>Установить размер кэша базы данных в мегабайтах (от %d до %d, по умолчанию: %d)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Set maximum block size in bytes (default: %d)</source>
-        <translation type="vanished">Максимальный размер блока в байтах (по умолчанию: %d)</translation>
+        <translation>Максимальный размер блока в байтах (по умолчанию: %d)</translation>
     </message>
     <message>
         <source>Sets the DB_PRIVATE flag in the wallet db environment (default: 1)</source>
         <translation type="vanished">Установить параметр DB_PRIVATE для базы данных кошелька (по умолчанию: 1)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Show all debugging options (usage: --help -help-debug)</source>
-        <translation type="vanished">Показать все параметры отладки (использование: --help -help-debug)</translation>
+        <translation>Показать все параметры отладки (использование: --help -help-debug)</translation>
     </message>
     <message>
         <source>Show benchmark information (default: 0)</source>
         <translation type="vanished">Показать результаты тестирования производительности (по умолчанию: 0)</translation>
     </message>
     <message>
+        <location line="+5"/>
         <source>Specify wallet file (within data directory)</source>
-        <translation type="vanished">Указать файл кошелька (в каталоге данных)</translation>
+        <translation>Указать файл кошелька (в каталоге данных)</translation>
     </message>
     <message>
         <source>Spend unconfirmed change when sending transactions (default: 1)</source>
@@ -6016,32 +6487,37 @@ rpcpassword=%s
         <translation type="vanished">Использовать тестовую сеть</translation>
     </message>
     <message>
+        <location line="+34"/>
         <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation type="vanished">Внимание: Параметр -benchmark устарел и больше не работает, используйте -debug=bench.</translation>
+        <translation>Внимание: Параметр -benchmark устарел и больше не работает, используйте -debug=bench.</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Warning: Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation type="vanished">Внимание: Параметр -debugnet устарел и больше не работает, используйте -debug=net.</translation>
+        <translation>Внимание: Параметр -debugnet устарел и больше не работает, используйте -debug=net.</translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
         <translation type="vanished">Вам необходимо пересобрать базы данных с помощью -reindex, чтобы изменить -txindex</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Zapping all transactions from wallet...</source>
-        <translation type="vanished">Очистка транзакций кошелька...</translation>
+        <translation>Очистка транзакций кошелька...</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>on startup</source>
-        <translation type="vanished">при запуске</translation>
+        <translation>при запуске</translation>
     </message>
     <message>
         <source>version</source>
         <translation type="vanished">версия</translation>
     </message>
     <message>
+        <location line="-149"/>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
-        <translation type="vanished">Принимать подключения извне (по умолчанию: 1, если не используется -proxy или -connect)</translation>
+        <translation>Принимать подключения извне (по умолчанию: 1, если не используется -proxy или -connect)</translation>
     </message>
     <message>
         <source>%s, you must set a rpcpassword in the configuration file:
@@ -6072,8 +6548,9 @@ rpcpassword=%s
         <translation type="vanished">Произошла ошибка при открытии на прослушивание IPv6 RCP-порта %u, возвращаемся к IPv4: %s</translation>
     </message>
     <message>
+        <location line="-199"/>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
-        <translation type="vanished">Привязаться к указанному адресу и всегда прослушивать только его. Используйте [хост]:порт для IPv6</translation>
+        <translation>Привязаться к указанному адресу и всегда прослушивать только его. Используйте [хост]:порт для IPv6</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s. Anime is probably already running.</source>
@@ -6092,8 +6569,9 @@ rpcpassword=%s
         <translation type="vanished">Выполнить команду, когда приходит сообщение о тревоге (%s в команде заменяется на сообщение)</translation>
     </message>
     <message>
+        <location line="+43"/>
         <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
-        <translation type="vanished">Выполнить команду, когда меняется транзакция в бумажнике (%s в команде заменяется на TxID)</translation>
+        <translation>Выполнить команду, когда меняется транзакция в бумажнике (%s в команде заменяется на TxID)</translation>
     </message>
     <message>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8372 or testnet: 18372)</source>
@@ -6104,8 +6582,9 @@ rpcpassword=%s
         <translation type="vanished">Максимальный размер высокоприоритетных/низкокомиссионных транзакций в байтах (по умолчанию: 27000)</translation>
     </message>
     <message>
+        <location line="+94"/>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation type="vanished">Это пре-релизная тестовая сборка - используйте на свой страх и риск - не используйте для добычи или торговых приложений</translation>
+        <translation>Это пре-релизная тестовая сборка - используйте на свой страх и риск - не используйте для добычи или торговых приложений</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -6136,8 +6615,9 @@ rpcpassword=%s
         <translation type="vanished">(по умолчанию:wallet.dat)</translation>
     </message>
     <message>
+        <location line="+60"/>
         <source>&lt;category&gt; can be:</source>
-        <translation type="vanished">возможные &lt;category&gt;:</translation>
+        <translation>возможные &lt;category&gt;:</translation>
     </message>
     <message>
         <source>Attempt to recover private keys from a corrupt wallet.dat</source>
@@ -6152,16 +6632,18 @@ rpcpassword=%s
         <translation type="vanished">RPC-клиент Animecoin</translation>
     </message>
     <message>
+        <location line="+10"/>
         <source>Block creation options:</source>
-        <translation type="vanished">Параметры создания блоков:</translation>
+        <translation>Параметры создания блоков:</translation>
     </message>
     <message>
         <source>Clear list of wallet transactions (diagnostic tool; implies -rescan)</source>
         <translation type="vanished">Очистить список транзакций в кошельке (включает -rescan)</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Connect only to the specified node(s)</source>
-        <translation type="vanished">Подключаться только к указанному узлу(ам)</translation>
+        <translation>Подключаться только к указанному узлу(ам)</translation>
     </message>
     <message>
         <source>Connect through SOCKS proxy</source>
@@ -6172,16 +6654,19 @@ rpcpassword=%s
         <translation type="vanished">Подключиться к JSON-RPC на порту &lt;port&gt; (по умолчанию: 8332 или 18332 в тестовой сети)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Connection options:</source>
-        <translation type="vanished">Параметры подключения:</translation>
+        <translation>Параметры подключения:</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Corrupted block database detected</source>
-        <translation type="vanished">БД блоков повреждена</translation>
+        <translation>БД блоков повреждена</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Debugging/Testing options:</source>
-        <translation type="vanished">Параметры отладки/тестирования:</translation>
+        <translation>Параметры отладки/тестирования:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: 0)</source>
@@ -6192,36 +6677,43 @@ rpcpassword=%s
         <translation type="vanished">Определить свой IP (по умолчанию: 1 при прослушивании и если не используется -externalip)</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Do not load the wallet and disable wallet RPC calls</source>
-        <translation type="vanished">Не загружать кошелек и не работать с кошельком по RPC</translation>
+        <translation>Не загружать кошелек и не работать с кошельком по RPC</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Do you want to rebuild the block database now?</source>
-        <translation type="vanished">Пересобрать БД блоков прямо сейчас?</translation>
+        <translation>Пересобрать БД блоков прямо сейчас?</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Error initializing block database</source>
-        <translation type="vanished">Ошибка инициализации БД блоков</translation>
+        <translation>Ошибка инициализации БД блоков</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Error initializing wallet database environment %s!</source>
-        <translation type="vanished">Ошибка инициализации окружения БД бумажника %s!</translation>
+        <translation>Ошибка инициализации окружения БД бумажника %s!</translation>
     </message>
     <message>
+        <location line="+5"/>
         <source>Error loading block database</source>
-        <translation type="vanished">Ошибка чтения базы данных блоков</translation>
+        <translation>Ошибка чтения базы данных блоков</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet requires newer version of Animecoin</source>
         <translation type="vanished">Ошибка загрузки wallet.dat: бумажник требует более новую версию Animecoin</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Error opening block database</source>
-        <translation type="vanished">Не удалось открыть БД блоков</translation>
+        <translation>Не удалось открыть БД блоков</translation>
     </message>
     <message>
+        <location line="+7"/>
         <source>Error: Disk space is low!</source>
-        <translation type="vanished">Ошибка: мало места на диске!</translation>
+        <translation>Ошибка: мало места на диске!</translation>
     </message>
     <message>
         <source>Error: Wallet locked, unable to create transaction!</source>
@@ -6232,8 +6724,9 @@ rpcpassword=%s
         <translation type="vanished">Ошибка: системная ошибка: </translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
-        <translation type="vanished">Не удалось начать прослушивание на порту. Используйте -listen=0 если вас это устраивает.</translation>
+        <translation>Не удалось начать прослушивание на порту. Используйте -listen=0 если вас это устраивает.</translation>
     </message>
     <message>
         <source>Failed to read block info</source>
@@ -6308,8 +6801,9 @@ rpcpassword=%s
         <translation type="vanished">Принимать входящие подключения на &lt;port&gt; (по умолчанию: 8333 или 18333 в тестовой сети)</translation>
     </message>
     <message>
+        <location line="+34"/>
         <source>Not enough file descriptors available.</source>
-        <translation type="vanished">Недостаточно файловых дескрипторов.</translation>
+        <translation>Недостаточно файловых дескрипторов.</translation>
     </message>
     <message>
         <source>Rebuild block chain index from current blk000??.dat files</source>
@@ -6324,24 +6818,28 @@ rpcpassword=%s
         <translation type="vanished">Задать число потоков выполнения(по умолчанию: 4)</translation>
     </message>
     <message>
+        <location line="+61"/>
         <source>Verifying blocks...</source>
-        <translation type="vanished">Проверка блоков...</translation>
+        <translation>Проверка блоков...</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Verifying wallet...</source>
-        <translation type="vanished">Проверка бумажника...</translation>
+        <translation>Проверка бумажника...</translation>
     </message>
     <message>
+        <location line="-91"/>
         <source>Imports blocks from external blk000??.dat file</source>
-        <translation type="vanished">Импортировать блоки из внешнего файла blk000??.dat</translation>
+        <translation>Импортировать блоки из внешнего файла blk000??.dat</translation>
     </message>
     <message>
         <source>Set the number of script verification threads (up to 16, 0 = auto, &lt;0 = leave that many cores free, default: 0)</source>
         <translation type="vanished">Задать число потоков проверки скрипта (вплоть до 16, 0=авто, &lt;0 = оставить столько ядер свободными, по умолчанию: 0)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Information</source>
-        <translation type="vanished">Информация</translation>
+        <translation>Информация</translation>
     </message>
     <message>
         <source>Invalid -tor address: &apos;%s&apos;</source>
@@ -6397,8 +6895,9 @@ rpcpassword=%s
         <translation type="vanished">Выбрать версию SOCKS-прокси (4-5, по умолчанию: 5)</translation>
     </message>
     <message>
+        <location line="+47"/>
         <source>Send trace/debug info to console instead of debug.log file</source>
-        <translation type="vanished">Выводить информацию трассировки/отладки на консоль вместо файла debug.log</translation>
+        <translation>Выводить информацию трассировки/отладки на консоль вместо файла debug.log</translation>
     </message>
     <message>
         <source>Send trace/debug info to debugger</source>
@@ -6413,12 +6912,14 @@ rpcpassword=%s
         <translation type="vanished">Минимальный размер блока в байтах (по умолчанию: 0)</translation>
     </message>
     <message>
+        <location line="+9"/>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
-        <translation type="vanished">Сжимать файл debug.log при запуске клиента (по умолчанию: 1, если нет -debug)</translation>
+        <translation>Сжимать файл debug.log при запуске клиента (по умолчанию: 1, если нет -debug)</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Signing transaction failed</source>
-        <translation type="vanished">Не удалось подписать транзакцию</translation>
+        <translation>Не удалось подписать транзакцию</translation>
     </message>
     <message>
         <source>Specify connection timeout in milliseconds (default: 5000)</source>
@@ -6429,16 +6930,19 @@ rpcpassword=%s
         <translation type="vanished">Системная ошибка: </translation>
     </message>
     <message>
+        <location line="+15"/>
         <source>Transaction amount too small</source>
-        <translation type="vanished">Объём транзакции слишком мал</translation>
+        <translation>Объём транзакции слишком мал</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Transaction amounts must be positive</source>
-        <translation type="vanished">Объём транзакции должен быть положителен</translation>
+        <translation>Объём транзакции должен быть положителен</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Transaction too large</source>
-        <translation type="vanished">Транзакция слишком большая</translation>
+        <translation>Транзакция слишком большая</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 0)</source>
@@ -6453,8 +6957,9 @@ rpcpassword=%s
         <translation type="vanished">Использовать прокси для скрытых сервисов (по умолчанию: тот же, что и в -proxy)</translation>
     </message>
     <message>
+        <location line="+10"/>
         <source>Username for JSON-RPC connections</source>
-        <translation type="vanished">Имя для подключений JSON-RPC</translation>
+        <translation>Имя для подключений JSON-RPC</translation>
     </message>
     <message>
         <source>Wait for RPC server to start</source>
@@ -6469,20 +6974,23 @@ rpcpassword=%s
         <translation type="vanished">Необходимо перезаписать файл кошелька, перезапустите Animecoin</translation>
     </message>
     <message>
+        <location line="+5"/>
         <source>Wallet options:</source>
-        <translation type="vanished">Параметры кошелька:</translation>
+        <translation>Параметры кошелька:</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Warning</source>
-        <translation type="vanished">Внимание</translation>
+        <translation>Внимание</translation>
     </message>
     <message>
         <source>Warning: Deprecated argument -debugnet ignored, use -debug=net</source>
         <translation type="vanished">Внимание: Параметр -debugnet устарел и больше не работает, используйте -debug=net</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Warning: This version is obsolete, upgrade required!</source>
-        <translation type="vanished">Внимание: эта версия устарела, требуется обновление!</translation>
+        <translation>Внимание: эта версия устарела, требуется обновление!</translation>
     </message>
     <message>
         <source>You need to rebuild the databases using -reindex to change -txindex</source>
@@ -6493,8 +7001,9 @@ rpcpassword=%s
         <translation type="vanished">wallet.dat повреждён, спасение данных не удалось</translation>
     </message>
     <message>
+        <location line="-64"/>
         <source>Password for JSON-RPC connections</source>
-        <translation type="vanished">Пароль для подключений JSON-RPC</translation>
+        <translation>Пароль для подключений JSON-RPC</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -6505,8 +7014,9 @@ rpcpassword=%s
         <translation type="vanished">Посылать команды узлу, запущенному на &lt;ip&gt; (по умолчанию: 127.0.0.1)</translation>
     </message>
     <message>
+        <location line="-232"/>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation type="vanished">Выполнить команду, когда появляется новый блок (%s в команде заменяется на хэш блока)</translation>
+        <translation>Выполнить команду, когда появляется новый блок (%s в команде заменяется на хэш блока)</translation>
     </message>
     <message>
         <source>Upgrade wallet to latest format</source>
@@ -6549,12 +7059,14 @@ rpcpassword=%s
         <translation type="vanished">Подключаться через socks прокси</translation>
     </message>
     <message>
+        <location line="+156"/>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
-        <translation type="vanished">Разрешить поиск в DNS для -addnode, -seednode и -connect</translation>
+        <translation>Разрешить поиск в DNS для -addnode, -seednode и -connect</translation>
     </message>
     <message>
+        <location line="+62"/>
         <source>Loading addresses...</source>
-        <translation type="vanished">Загрузка адресов...</translation>
+        <translation>Загрузка адресов...</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
@@ -6573,16 +7085,18 @@ rpcpassword=%s
         <translation type="vanished">Ошибка при загрузке wallet.dat</translation>
     </message>
     <message>
+        <location line="-11"/>
         <source>Invalid -proxy address: &apos;%s&apos;</source>
-        <translation type="vanished">Неверный адрес -proxy: &apos;%s&apos;</translation>
+        <translation>Неверный адрес -proxy: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Run a thread to flush wallet periodically (default: %u)</source>
         <translation type="vanished">Периодически записывать данные кошелька на диск (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+44"/>
         <source>Send transactions as zero-fee transactions if possible (default: %u)</source>
-        <translation type="vanished">Слать транзакции без комиссии, если возможно (по умолчанию: %u)</translation>
+        <translation>Слать транзакции без комиссии, если возможно (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Server certificate file (default: %s)</source>
@@ -6593,16 +7107,19 @@ rpcpassword=%s
         <translation type="vanished">Приватный ключ сервера (по умолчанию: %s)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Set key pool size to &lt;n&gt; (default: %u)</source>
-        <translation type="vanished">Установить размер запаса ключей в &lt;n&gt; (по умолчанию: %u)</translation>
+        <translation>Установить размер запаса ключей в &lt;n&gt; (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Set minimum block size in bytes (default: %u)</source>
-        <translation type="vanished">Минимальный размер блока в байтах (по умолчанию: %u)</translation>
+        <translation>Минимальный размер блока в байтах (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Set the number of threads to service RPC calls (default: %d)</source>
-        <translation type="vanished">Задать число потоков выполнения(по умолчанию: %d)</translation>
+        <translation>Задать число потоков выполнения(по умолчанию: %d)</translation>
     </message>
     <message>
         <source>Sets the DB_PRIVATE flag in the wallet db environment (default: %u)</source>
@@ -6613,40 +7130,52 @@ rpcpassword=%s
         <translation type="vanished">Указать конфигурационный файл (по умолчанию: %s)</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
-        <translation type="vanished">Таймаут соединения в миллисекундах (по умолчанию: %d)</translation>
+        <translation>Таймаут соединения в миллисекундах (по умолчанию: %d)</translation>
     </message>
     <message>
         <source>Specify pid file (default: %s)</source>
         <translation type="vanished">Задать pid-файл (по умолчанию: %s)</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Spend unconfirmed change when sending transactions (default: %u)</source>
-        <translation type="vanished">Тратить неподтвержденную сдачу (по умолчанию: %u)</translation>
+        <translation>Тратить неподтвержденную сдачу (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Stop running after importing blocks from disk (default: %u)</source>
         <translation type="vanished">Выйти после загрузки блоков с диска (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>This is experimental software.</source>
-        <translation type="vanished">Это экспериментальное ПО.</translation>
+        <translation>Это экспериментальное ПО.</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
-        <translation type="vanished">Порог для отключения сбойных узлов (по умолчанию: %u)</translation>
+        <translation>Порог для отключения сбойных узлов (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Transaction too large for fee policy</source>
-        <translation type="vanished">Транзакция слишком большая для текущих настроек комиссии</translation>
+        <translation>Транзакция слишком большая для текущих настроек комиссии</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Unable to bind to %s on this computer (bind returned error %s)</source>
-        <translation type="vanished">Невозможно привязаться к %s на этом компьютере (ошибка %s)</translation>
+        <translation>Невозможно привязаться к %s на этом компьютере (ошибка %s)</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation>Не удалось запустить HTTP-сервер, см. файл degug.log.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
-        <translation type="vanished">В параметре -onlynet указана неизвестная сеть: &apos;%s&apos;</translation>
+        <translation>В параметре -onlynet указана неизвестная сеть: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Unknown -socks proxy version requested: %i</source>
@@ -6669,16 +7198,19 @@ rpcpassword=%s
         <translation type="vanished">Неверное количество</translation>
     </message>
     <message>
+        <location line="-79"/>
         <source>Insufficient funds</source>
-        <translation type="vanished">Недостаточно монет</translation>
+        <translation>Недостаточно монет</translation>
     </message>
     <message>
+        <location line="+15"/>
         <source>Loading block index...</source>
-        <translation type="vanished">Загрузка индекса блоков...</translation>
+        <translation>Загрузка индекса блоков...</translation>
     </message>
     <message>
+        <location line="-65"/>
         <source>Add a node to connect to and attempt to keep the connection open</source>
-        <translation type="vanished">Добавить узел для подключения и пытаться поддерживать соединение открытым</translation>
+        <translation>Добавить узел для подключения и пытаться поддерживать соединение открытым</translation>
     </message>
     <message>
         <source>Unable to bind to %s on this computer. Anime is probably already running.</source>
@@ -6689,56 +7221,76 @@ rpcpassword=%s
         <translation type="vanished">Комиссия на килобайт, добавляемая к вашим транзакциям</translation>
     </message>
     <message>
+        <location line="+66"/>
         <source>Loading wallet...</source>
-        <translation type="vanished">Загрузка бумажника...</translation>
+        <translation>Загрузка бумажника...</translation>
     </message>
     <message>
+        <location line="-59"/>
         <source>Cannot downgrade wallet</source>
-        <translation type="vanished">Не удаётся понизить версию бумажника</translation>
+        <translation>Не удаётся понизить версию бумажника</translation>
     </message>
     <message>
+        <location line="-224"/>
         <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
-        <translation type="vanished">(1 = хранить метаданные, например владельца и содержание запроса платежа, 2 = не хранить метаданные)</translation>
+        <translation>(1 = хранить метаданные, например владельца и содержание запроса платежа, 2 = не хранить метаданные)</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation>установлено очень большое значение -maxtxfee. Это комиссия, которую вы можете заплатить при проведении транзакции.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>A fee rate (in %s/kB) that will be used when fee estimation has insufficient data (default: %s)</source>
+        <translation>Комиссия (в %s/кб) для случаев, когда оценка комиссии невозможна (по умолчанию: %s)</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
-        <translation type="vanished">Разрешить соединения JSON-RPC от указанных источников. Допустимые &lt;ip&gt;: отдельный IP (напр., 1.2.3.4), сеть/маска подсети (напр., 1.2.3.4/255.255.255.0) или сеть/подсеть (напр., 1.2.3.4/24). Этот параметр можно указать несколько раз</translation>
+        <translation>Разрешить соединения JSON-RPC от указанных источников. Допустимые &lt;ip&gt;: отдельный IP (напр., 1.2.3.4), сеть/маска подсети (напр., 1.2.3.4/255.255.255.0) или сеть/подсеть (напр., 1.2.3.4/24). Этот параметр можно указать несколько раз</translation>
     </message>
     <message>
         <source>An error occurred while setting up the RPC address %s port %u for listening: %s</source>
         <translation type="vanished">Произошла ошибка при установке RPC-адреса %s:%u для прослушивания: %s</translation>
     </message>
     <message>
+        <location line="+7"/>
         <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
-        <translation type="vanished">Привязаться к указанному адресу и разрешать узлам подключаться к нему. Используйте [хост]:порт для IPv6</translation>
+        <translation>Привязаться к указанному адресу и разрешать узлам подключаться к нему. Используйте [хост]:порт для IPv6</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
-        <translation type="vanished">Привязаться к указанному адресу для подключений JSON-RPC. Используйте [хост]:порт для IPv6. Этот параметр можно указать несколько раз (по умолчанию: привязаться ко всем сетевым интерфейсам)</translation>
+        <translation>Привязаться к указанному адресу для подключений JSON-RPC. Используйте [хост]:порт для IPv6. Этот параметр можно указать несколько раз (по умолчанию: привязаться ко всем сетевым интерфейсам)</translation>
     </message>
     <message>
         <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:%u)</source>
         <translation type="vanished">Ограничить объем транзакций без комиссии до &lt;n&gt;*1000 байт в минуту (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+10"/>
         <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
-        <translation type="vanished">Создавать новые файлы с правами по умолчанию вместо 0777 (применяется только в режиме без кошелька)</translation>
+        <translation>Создавать новые файлы с правами по умолчанию вместо 0777 (применяется только в режиме без кошелька)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
-        <translation type="vanished">Удалить из кошелька все транзакции, восстановить их можно через параметр -rescan</translation>
+        <translation>Удалить из кошелька все транзакции, восстановить их можно через параметр -rescan</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
         <translation type="vanished">Распространяется под лицензией MIT, см. приложенный файл COPYING или &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</translation>
     </message>
     <message>
+        <location line="+16"/>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
-        <translation type="vanished">Ошибка: Невозможно принимать входящие подключения (ошибка %s)</translation>
+        <translation>Ошибка: Невозможно принимать входящие подключения (ошибка %s)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Error: Unsupported argument -socks found. Setting SOCKS version isn&apos;t possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation type="vanished">Ошибка: Параметр -socks устарел и больше не работает. В текщей версии поддерживаются только прокси типа SOCKS5.</translation>
+        <translation>Ошибка: Параметр -socks устарел и больше не работает. В текщей версии поддерживаются только прокси типа SOCKS5.</translation>
     </message>
     <message>
         <source>Fees (in ANI/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
@@ -6753,44 +7305,52 @@ rpcpassword=%s
         <translation type="vanished">Выгружать лог базы данных из памяти на диск каждые &lt;n&gt; мегабайт (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+21"/>
         <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation type="vanished">Тщательность проверки блоков через -checkblocks (0-4, по умолчанию: %u)</translation>
+        <translation>Тщательность проверки блоков через -checkblocks (0-4, по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
-        <translation type="vanished">Если параметр paytxfee не задан, добавлять комиссию, достаочную для подтверждения в среднем через n блоков (по умолчанию %u)</translation>
+        <translation>Если параметр paytxfee не задан, добавлять комиссию, достаочную для подтверждения в среднем через n блоков (по умолчанию %u)</translation>
     </message>
     <message>
+        <location line="+7"/>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
-        <translation type="vanished">Некорректное значение -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (допускается не менее minrelay [%s], иначе транзакция может зависнуть)</translation>
+        <translation>Некорректное значение -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (допускается не менее minrelay [%s], иначе транзакция может зависнуть)</translation>
     </message>
     <message>
         <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
         <translation type="vanished">Вести лог приоритета транзакций и комиссии за кБ при майнинге (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
-        <translation type="vanished">Хранить полный реестр транзакций для работы RPC-вызова getrawtransaction (по умолчанию: %u)</translation>
+        <translation>Хранить полный реестр транзакций для работы RPC-вызова getrawtransaction (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
-        <translation type="vanished">Максимальный объем данных в транзакциях для пересылки и майнинга (по умолчанию: %u)</translation>
+        <translation>Максимальный объем данных в транзакциях для пересылки и майнинга (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Maximum total fees to use in a single wallet transaction, setting too low may abort large transactions (default: %s)</source>
         <translation type="vanished">Максимальный объем комиссии для одной транзакции, если значение будет слишком низким, большие транзакции не удастся отправить (по умолчанию: %s)</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
-        <translation type="vanished">Время в секундах для бана сбойных узлов (по умолчанию: %u)</translation>
+        <translation>Время в секундах для бана сбойных узлов (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
-        <translation type="vanished">Выводить отладочную информацию (по умолчанию: %u, &lt;category&gt; необязательна)</translation>
+        <translation>Выводить отладочную информацию (по умолчанию: %u, &lt;category&gt; необязательна)</translation>
     </message>
     <message>
+        <location line="+7"/>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)</source>
-        <translation type="vanished">Искать узлы с помощью DNS (по умолчанию: 1, если не указан -connect)</translation>
+        <translation>Искать узлы с помощью DNS (по умолчанию: 1, если не указан -connect)</translation>
     </message>
     <message>
         <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
@@ -6829,36 +7389,42 @@ rpcpassword=%s
 </translation>
     </message>
     <message>
+        <location line="+67"/>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
-        <translation type="vanished">Использовать отдельный SOCKS5-прокси для доступа к скрытым сервисам Tor (по умолчанию: %s)</translation>
+        <translation>Использовать отдельный SOCKS5-прокси для доступа к скрытым сервисам Tor (по умолчанию: %s)</translation>
     </message>
     <message>
         <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
         <translation type="vanished">Внимание: установлено очень большое значение -maxtxfee. Это комиссия, которую вы можете заплатить при проведении транзакции.</translation>
     </message>
     <message>
+        <location line="+23"/>
         <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
-        <translation type="vanished">Разрешать узлам подключаться с этого IP или подсети. Можно указать несколько раз.</translation>
+        <translation>Разрешать узлам подключаться с этого IP или подсети. Можно указать несколько раз.</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
-        <translation type="vanished">Эти узлы не будут баниться в случае сбоев, и их транзакции всегда будут пересылаться, даже повторно</translation>
+        <translation>Эти узлы не будут баниться в случае сбоев, и их транзакции всегда будут пересылаться, даже повторно</translation>
     </message>
     <message>
+        <location line="+10"/>
         <source>(default: %s)</source>
-        <translation type="vanished">(по умолчанию:%s)</translation>
+        <translation>(по умолчанию:%s)</translation>
     </message>
     <message>
+        <location line="+6"/>
         <source>Accept public REST requests (default: %u)</source>
-        <translation type="vanished">Разрешить публичный доступ к REST API (по умолчанию: %u)</translation>
+        <translation>Разрешить публичный доступ к REST API (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Acceptable ciphers (default: %s)</source>
         <translation type="vanished">Допустимые шифры (по умолчанию: %s)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Always query for peer addresses via DNS lookup (default: %u)</source>
-        <translation type="vanished">Всегда искать узлы с помощью DNS (по умолчанию: %u)</translation>
+        <translation>Всегда искать узлы с помощью DNS (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Cannot resolve -whitebind address: &apos;%s&apos;</source>
@@ -6869,12 +7435,14 @@ rpcpassword=%s
         <translation type="vanished">Не удаётся записать адрес по умолчанию</translation>
     </message>
     <message>
+        <location line="+9"/>
         <source>Connect through SOCKS5 proxy</source>
-        <translation type="vanished">Подключаться через SOCKS5 прокси</translation>
+        <translation>Подключаться через SOCKS5 прокси</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Copyright (C) 2009-%i The Bitcoin and Anime Developers</source>
-        <translation type="vanished">Copyright (C) 2009-%i Разработчики Bitcoin и Anime</translation>
+        <translation>Copyright (C) 2009-%i Разработчики Bitcoin и Anime</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
@@ -6885,16 +7453,19 @@ rpcpassword=%s
         <translation type="vanished">Отключить безопасный режим и блокировать события безопасного режима (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+18"/>
         <source>Error reading from database, shutting down.</source>
-        <translation type="vanished">Ошибка чтения базы данных.</translation>
+        <translation>Ошибка чтения базы данных.</translation>
     </message>
     <message>
+        <location line="+5"/>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
-        <translation type="vanished">Произошла неисправимая ошибка, см. файл degug.log</translation>
+        <translation>Произошла неисправимая ошибка, см. файл degug.log</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Error: Unsupported argument -tor found, use -onion.</source>
-        <translation type="vanished">Внимание: Параметр -tor устарел и больше не работает, используйте -onion.</translation>
+        <translation>Внимание: Параметр -tor устарел и больше не работает, используйте -onion.</translation>
     </message>
     <message>
         <source>Fee (in ANI/kB) to add to transactions you send (default: %s)</source>
@@ -6909,12 +7480,14 @@ rpcpassword=%s
         <translation type="vanished">Включить добычу монет (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>How many blocks to check at startup (default: %u, 0 = all)</source>
-        <translation type="vanished">Сколько блоков проверять при запуске (по умолчанию: %u, 0 = все)</translation>
+        <translation>Сколько блоков проверять при запуске (по умолчанию: %u, 0 = все)</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Include IP addresses in debug output (default: %u)</source>
-        <translation type="vanished">Проставлять IP-адреса в отладочной информации (по умолчанию: %u)</translation>
+        <translation>Проставлять IP-адреса в отладочной информации (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Initialization sanity check failed. Animecoin is shutting down.</source>
@@ -6925,96 +7498,170 @@ rpcpassword=%s
         <translation type="vanished">Неверное количество в параметре -maxtxfee=&lt;кол-во&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
+        <location line="+9"/>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
-        <translation type="vanished">Неверное количество в параметре -paytxfee=&lt;кол-во&gt;: &apos;%s&apos; (минимум %s)</translation>
+        <translation>Неверное количество в параметре -paytxfee=&lt;кол-во&gt;: &apos;%s&apos; (минимум %s)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
-        <translation type="vanished">В параметре -whitelist указана неверная подсеть: &apos;%s&apos;</translation>
+        <translation>В параметре -whitelist указана неверная подсеть: &apos;%s&apos;</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
-        <translation type="vanished">Держать в память не более &lt;n&gt; незаписанных транзакций (по умолчанию: %u)</translation>
+        <translation>Держать в память не более &lt;n&gt; незаписанных транзакций (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
         <translation type="vanished">Ограничить размер кеша подписей до &lt;n&gt; (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+3"/>
         <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
-        <translation type="vanished">Прослушивать подключения JSON-RPC на &lt;порту&gt; (по умолчанию: %u или для testnet: %u)</translation>
+        <translation>Прослушивать подключения JSON-RPC на &lt;порту&gt; (по умолчанию: %u или для testnet: %u)</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
-        <translation type="vanished">Принимать входящие подключения на &lt;port&gt; (по умолчанию: %u или %u в тестовой сети)</translation>
+        <translation>Принимать входящие подключения на &lt;port&gt; (по умолчанию: %u или %u в тестовой сети)</translation>
     </message>
     <message>
+        <location line="+5"/>
         <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
-        <translation type="vanished">Поддерживать не более &lt;n&gt; подключений к узлам (по умолчанию: %u)</translation>
+        <translation>Поддерживать не более &lt;n&gt; подключений к узлам (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Make the wallet broadcast transactions</source>
+        <translation>Разрешить рассылку транзакций по сети</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
-        <translation type="vanished">Максимальный размер буфера приёма на соединение, &lt;n&gt;*1000 байт (по умолчанию: %u)</translation>
+        <translation>Максимальный размер буфера приёма на соединение, &lt;n&gt;*1000 байт (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
-        <translation type="vanished">Максимальный размер буфера отправки на соединение, &lt;n&gt;*1000 байт (по умолчанию: %u)</translation>
+        <translation>Максимальный размер буфера отправки на соединение, &lt;n&gt;*1000 байт (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
-        <translation type="vanished">Для параметра -whitebind необзодимо казать порт: &apos;%s&apos;</translation>
+        <translation>Для параметра -whitebind необзодимо казать порт: &apos;%s&apos;</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Node relay options:</source>
-        <translation type="vanished">Параметры пересылки:</translation>
+        <translation>Параметры пересылки:</translation>
     </message>
     <message>
         <source>Only accept block chain matching built-in checkpoints (default: %u)</source>
         <translation type="vanished">Принимать цепь блоков, только если она соответствует встроенным контрольным точкам (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
-        <translation type="vanished">Подключаться только к узлам из сети &lt;net&gt; (ipv4, ipv6 или onion)</translation>
+        <translation>Подключаться только к узлам из сети &lt;net&gt; (ipv4, ipv6 или onion)</translation>
     </message>
     <message>
+        <location line="+4"/>
         <source>Prepend debug output with timestamp (default: %u)</source>
-        <translation type="vanished">Проставлять отметки времени в отладочной информации (по умолчанию: %u)</translation>
+        <translation>Проставлять отметки времени в отладочной информации (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>RPC support for HTTP persistent connections (default: %d)</source>
         <translation type="vanished">Поддержка постоянного HTTP-соединения для RPC (по умолчанию: %d)</translation>
     </message>
     <message>
+        <location line="+8"/>
         <source>Receive and display P2P network alerts (default: %u)</source>
-        <translation type="vanished">Принимать и показывать тревожные сигналы сети (по умолчанию: %u)</translation>
+        <translation>Принимать и показывать тревожные сигналы сети (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <source>Relay and mine data carrier transactions (default: %u)</source>
-        <translation type="vanished">Пересылать и майнить транзакции с данными (по умолчанию: %u)</translation>
+        <translation>Пересылать и майнить транзакции с данными (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+1"/>
         <source>Relay non-P2SH multisig (default: %u)</source>
-        <translation type="vanished">Пересылать multisig не в P2SH-формате (по умолчанию: %u)</translation>
+        <translation>Пересылать multisig не в P2SH-формате (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="+2"/>
+        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <translation>Перепроверить цепь блоков на предмет отсутствующих в бумажнике транзакций</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Rescanning...</source>
-        <translation type="vanished">Сканирование...</translation>
+        <translation>Сканирование...</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Send transactions with full-RBF opt-in enabled (default: %u)</source>
+        <translation>Отправлять транзакции с возможностью увеличения комиссии (по умолчанию: %u)</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>Объём транзакции слишком мал для оплаты комиссии</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The wallet will avoid paying less than the minimum relay fee.</source>
+        <translation>Избегать комиссий меньше, чем минимальная плата за пересылку.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This is the minimum transaction fee you pay on every transaction.</source>
+        <translation>Минимальная комиссия за отправку транзакции.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This is the transaction fee you will pay if you send a transaction.</source>
+        <translation>Комиссия за отправку транзакции.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Transaction has too long of a mempool chain</source>
+        <translation>У транзакции слишком большая цепочка в пямяти</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Unable to generate initial keys</source>
+        <translation>Генерация исходных ключей не удалась</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Unable to generate keys</source>
+        <translation>Генерация ключей не удалась</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>Обновить бумажник до последнего формата при запуске</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Use UPnP to map the listening port (default: %u)</source>
-        <translation type="vanished">Использовать UPnP для проброса порта (по умолчанию: %u)</translation>
+        <translation>Использовать UPnP для проброса порта (по умолчанию: %u)</translation>
     </message>
     <message>
+        <location line="-113"/>
         <source>Done loading</source>
-        <translation type="vanished">Загрузка завершена</translation>
+        <translation>Загрузка завершена</translation>
     </message>
     <message>
         <source>To use the %s option</source>
         <translation type="vanished">Чтобы использовать опцию %s</translation>
     </message>
     <message>
+        <location line="+15"/>
         <source>Error</source>
-        <translation type="vanished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
