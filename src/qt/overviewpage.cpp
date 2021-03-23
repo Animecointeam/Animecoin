@@ -15,6 +15,7 @@
 #include "walletmodel.h"
 
 #include <QAbstractItemDelegate>
+#include <QDateTime>
 #include <QPainter>
 
 #define DECORATION_SIZE 54

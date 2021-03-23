@@ -168,7 +168,7 @@ protected:
 
     StepEnabled stepEnabled() const
     {
-        StepEnabled rv = 0;
+        StepEnabled rv = StepNone;
         if (isReadOnly()) // Disable steps when AmountSpinBox is read-only
             return StepNone;
         if(text().isEmpty()) // Allow step-up with empty field
@@ -193,7 +193,7 @@ signals:
 
 BitcoinAmountField::BitcoinAmountField(QWidget *parent) :
     QWidget(parent),
-    amount(0)
+    amount(nullptr)
 {
     amount = new AmountSpinBox(this);
     amount->setLocale(QLocale::c());
