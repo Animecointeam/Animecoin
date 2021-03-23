@@ -293,20 +293,27 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 )
 CXXFLAGS="$TEMP_CXXFLAGS"
 
-TEMP_CXXFLAGS="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS $AVX2_CXXFLAGS"
-AC_MSG_CHECKING(for AVX2 intrinsics)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-    #include <stdint.h>
-    #include <immintrin.h>
-  ]],[[
-    __m256i l = _mm256_set1_epi32(0);
-    return _mm256_extract_epi32(l, 7);
-  ]])],
- [ AC_MSG_RESULT(yes); enable_avx2=yes; AC_DEFINE(ENABLE_AVX2, 1, [Define this symbol to build code that uses AVX2 intrinsics]) ],
- [ AC_MSG_RESULT(no)]
-)
-CXXFLAGS="$TEMP_CXXFLAGS"
+case $host in
+    *mingw*)
+      enable_avx2=no
+    ;;
+	*)
+		TEMP_CXXFLAGS="$CXXFLAGS"
+		CXXFLAGS="$CXXFLAGS $AVX2_CXXFLAGS"
+		AC_MSG_CHECKING(for AVX2 intrinsics)
+		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+		#include <stdint.h>
+		#include <immintrin.h>
+		]],[[
+			__m256i l = _mm256_set1_epi32(0);
+			return _mm256_extract_epi32(l, 7);
+		]])],
+		[ AC_MSG_RESULT(yes); enable_avx2=yes; AC_DEFINE(ENABLE_AVX2, 1, [Define this symbol to build code that uses AVX2 intrinsics]) ],
+		[ AC_MSG_RESULT(no)]
+		)
+		CXXFLAGS="$TEMP_CXXFLAGS"
+	;;
+esac
 
 case $host in
     *mingw*)

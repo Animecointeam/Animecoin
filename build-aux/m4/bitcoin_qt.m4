@@ -503,13 +503,13 @@ AC_DEFUN([_BITCOIN_QT_FIND_LIBS_WITHOUT_PKGCONFIG],[
              BITCOIN_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}FbSupport],[main],,BITCOIN_QT_FAIL(lib$QT_LIB_PREFIXFbSupport not found)))
              BITCOIN_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}DeviceDiscoverySupport],[main],,BITCOIN_QT_FAIL(lib$QT_LIB_PREFIXDeviceDiscoverySupport not found)))
              BITCOIN_QT_CHECK(AC_CHECK_LIB([${QT_LIB_PREFIX}AccessibilitySupport],[main],,BITCOIN_QT_FAIL(lib$QT_LIB_PREFIXAccessibilitySupport not found)))
-             QT_LIBS="$LIBS -lversion -ldwmapi -lnetapi32 -luserenv -lwtsapi32"
+             QT_LIBS="$LIBS -lversion -ldwmapi -lnetapi32 -luserenv -lwtsapi32 -lzstd"
            fi
          fi
 	   else
 	   QT_LIBS="$LIBS"
        fi
-  dnl QT_LIBS="$LIBS -lversion -ldwmapi -lnetapi32 -luserenv -lwtsapi32"
+  dnl QT_LIBS="$LIBS -lversion -ldwmapi -lnetapi32 -luserenv -lwtsapi32 -lzstd"
 
   LIBS="$TEMP_LIBS"
 

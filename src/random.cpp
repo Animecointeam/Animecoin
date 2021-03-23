@@ -15,7 +15,7 @@
 #endif
 #include "serialize.h"        // for begin_ptr(vec)
 #include "sync.h"             // for Mutex
-#include "util.h"             // for LogPrintf()
+#include "utiltime.h"             // do not call LogPrintf() from here until further util splitting
 #include "utilstrencodings.h" // for GetTime()
 
 #include <stdlib.h>
@@ -46,7 +46,9 @@
 
 static void RandFailure()
 {
+#ifndef WIN32
     LogPrintf("Failed to read randomness, aborting\n");
+#endif
     abort();
 }
 
@@ -99,12 +101,14 @@ static void ReportHardwareRand()
 {
     // This must be done in a separate function, as HWRandInit() may be indirectly called
     // from global constructors, before logging is initialized.
+#ifndef WIN32	
     if (g_rdseed_supported) {
         LogPrintf("Using RdSeed as additional entropy source\n");
     }
     if (g_rdrand_supported) {
         LogPrintf("Using RdRand as an additional entropy source\n");
     }
+#endif
 }
 
 /** Read 64 bits of entropy using rdrand.
@@ -467,7 +471,7 @@ static void SeedPeriodic(CSHA512& hasher, RNGState& rng) noexcept
     // Dynamic environment data (performance monitoring, ...)
     auto old_size = hasher.Size();
     RandAddDynamicEnv(hasher);
-    LogPrintf("Feeding %i bytes of dynamic environment data into RNG\n", hasher.Size() - old_size);
+    // LogPrintf("Feeding %i bytes of dynamic environment data into RNG\n", hasher.Size() - old_size);
 
     // Strengthen for 10 ms
     SeedStrengthen(hasher, rng, 10000);
@@ -487,7 +491,7 @@ static void SeedStartup(CSHA512& hasher, RNGState& rng) noexcept
 
     // Static environment data
     RandAddStaticEnv(hasher);
-    LogPrintf("Feeding %i bytes of environment data into RNG\n", hasher.Size() - old_size);
+    // LogPrintf("Feeding %i bytes of environment data into RNG\n", hasher.Size() - old_size);
 
     // Strengthen for 100 ms
     SeedStrengthen(hasher, rng, 100000);
