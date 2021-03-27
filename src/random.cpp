@@ -15,7 +15,11 @@
 #endif
 #include "serialize.h"        // for begin_ptr(vec)
 #include "sync.h"             // for Mutex
+#ifndef WIN32
+#include "util.h"
+#else
 #include "utiltime.h"             // do not call LogPrintf() from here until further util splitting
+#endif
 #include "utilstrencodings.h" // for GetTime()
 
 #include <stdlib.h>

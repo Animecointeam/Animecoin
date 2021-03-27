@@ -121,8 +121,8 @@ Other release notes
 
 License
 ---------------------
-Copyright (c) 2009-2020 Bitcoin Developers
-Copyright (c) 2014-2020 Animecoin Developers
+Copyright (c) 2009-2021 Bitcoin Developers
+Copyright (c) 2014-2021 Animecoin Developers
 
 Distributed under the MIT/X11 software license, see the accompanying file COPYING.
 This product includes cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), UPnP software written by Thomas Bernard and sphlib 3.0 by Thomas Pornin.
