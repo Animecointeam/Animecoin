@@ -188,7 +188,7 @@ bool Intro::pickDataDirectory()
 				TryCreateDirectory(GUIUtil::qstringToBoostPath(dataDir));
 				break;
             } catch (const fs::filesystem_error& e) {
-                QMessageBox::critical(0, tr("Animecoin"),
+                QMessageBox::critical(nullptr, tr("Animecoin"),
                     tr("Error: Specified data directory \"%1\" cannot be created.").arg(dataDir));
 				/* fall through, back to choosing screen */
 			}
@@ -254,7 +254,7 @@ void Intro::on_dataDirectory_textChanged(const QString &dataDirStr)
 
 void Intro::on_ellipsisButton_clicked()
 {
-	QString dir = QDir::toNativeSeparators(QFileDialog::getExistingDirectory(0, "Choose data directory", ui->dataDirectory->text()));
+    QString dir = QDir::toNativeSeparators(QFileDialog::getExistingDirectory(nullptr, "Choose data directory", ui->dataDirectory->text()));
 	if(!dir.isEmpty())
 		ui->dataDirectory->setText(dir);
 }

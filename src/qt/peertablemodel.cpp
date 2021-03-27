@@ -106,7 +106,7 @@ public:
         if(idx >= 0 && idx < cachedNodeStats.size()) {
             return &cachedNodeStats[idx];
         } else {
-            return 0;
+            return nullptr;
         }
     }
 };
@@ -114,7 +114,7 @@ public:
 PeerTableModel::PeerTableModel(ClientModel *parent) :
     QAbstractTableModel(parent),
     clientModel(parent),
-    timer(0)
+    timer(nullptr)
 {
     columns << tr("NodeId") << tr("Node/Service") << tr("User Agent") << tr("Ping Time");
     priv.reset(new PeerTablePriv());
@@ -198,8 +198,7 @@ QVariant PeerTableModel::headerData(int section, Qt::Orientation orientation, in
 
 Qt::ItemFlags PeerTableModel::flags(const QModelIndex &index) const
 {
-    if(!index.isValid())
-        return 0;
+    if (!index.isValid()) return Qt::NoItemFlags;
 
     Qt::ItemFlags retval = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     return retval;

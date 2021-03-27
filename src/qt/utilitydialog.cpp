@@ -390,8 +390,8 @@ void PaperWalletDialog::on_printButton_clicked()
     }
 
     // Hardcode these values
-    printer.setOrientation(QPrinter::Portrait);
-    printer.setPaperSize(QPrinter::A4);
+    printer.setPageOrientation(QPageLayout::Portrait);
+    printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setFullPage(true);
 
     QPainter painter;
@@ -403,8 +403,8 @@ void PaperWalletDialog::on_printButton_clicked()
     int walletCount = ui->walletCount->currentIndex() + 1;
     int walletsPerPage = 2;
 
-    int pageHeight = printer.pageRect().height() - PAPER_WALLET_PAGE_MARGIN;
-    int pageWidth = printer.pageRect().width() - PAPER_WALLET_PAGE_MARGIN;
+    int pageHeight = printer.pageLayout().paintRectPixels(printer.resolution()).height() - PAPER_WALLET_PAGE_MARGIN;
+    int pageWidth = printer.pageLayout().paintRectPixels(printer.resolution()).width() - PAPER_WALLET_PAGE_MARGIN;
     int walletHeight = ui->paperTemplate->height();
     int walletWidth = ui->paperTemplate->width();
     double computedWalletHeight = 0.9 * pageHeight / walletsPerPage;

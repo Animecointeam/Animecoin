@@ -5,7 +5,7 @@ define(_CLIENT_VERSION_MINOR, 10)
 define(_CLIENT_VERSION_REVISION, 0)
 define(_CLIENT_VERSION_BUILD, 0)
 define(_CLIENT_VERSION_IS_RELEASE, true)
-define(_COPYRIGHT_YEAR, 2020)
+define(_COPYRIGHT_YEAR, 2021)
 AC_INIT([Animecoin],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[animecoin@gmail.com],[animecoin])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/bitcoin-config.h])
@@ -293,20 +293,27 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 )
 CXXFLAGS="$TEMP_CXXFLAGS"
 
-TEMP_CXXFLAGS="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS $AVX2_CXXFLAGS"
-AC_MSG_CHECKING(for AVX2 intrinsics)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-    #include <stdint.h>
-    #include <immintrin.h>
-  ]],[[
-    __m256i l = _mm256_set1_epi32(0);
-    return _mm256_extract_epi32(l, 7);
-  ]])],
- [ AC_MSG_RESULT(yes); enable_avx2=yes; AC_DEFINE(ENABLE_AVX2, 1, [Define this symbol to build code that uses AVX2 intrinsics]) ],
- [ AC_MSG_RESULT(no)]
-)
-CXXFLAGS="$TEMP_CXXFLAGS"
+case $host in
+    *mingw*)
+      enable_avx2=no
+    ;;
+	*)
+		TEMP_CXXFLAGS="$CXXFLAGS"
+		CXXFLAGS="$CXXFLAGS $AVX2_CXXFLAGS"
+		AC_MSG_CHECKING(for AVX2 intrinsics)
+		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+		#include <stdint.h>
+		#include <immintrin.h>
+		]],[[
+			__m256i l = _mm256_set1_epi32(0);
+			return _mm256_extract_epi32(l, 7);
+		]])],
+		[ AC_MSG_RESULT(yes); enable_avx2=yes; AC_DEFINE(ENABLE_AVX2, 1, [Define this symbol to build code that uses AVX2 intrinsics]) ],
+		[ AC_MSG_RESULT(no)]
+		)
+		CXXFLAGS="$TEMP_CXXFLAGS"
+	;;
+esac
 
 case $host in
     *mingw*)

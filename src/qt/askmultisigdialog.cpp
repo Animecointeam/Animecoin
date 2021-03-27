@@ -2,6 +2,7 @@
 #include "newpubkeydialog.h"
 #include "ui_askmultisigdialog.h"
 #include "addresstablemodel.h"
+#include "guiutil.h"
 #include "utilstrencodings.h"
 #include "base58.h"
 #include "pubkey.h"
@@ -68,7 +69,8 @@ QString AskMultisigDialog::generateAddress(QString label)
                 nRequired = ui->signaturesRequiredSpinBox->value();
                 if (nRequired > nTotal)
                     throw std::runtime_error("Number of requires signatures must not exceed number of total pubkeys.");
-                addresses = ui->foreignAdressesEdit->toPlainText().split(QRegExp("\\W+"), QString::SkipEmptyParts);
+                //addresses = ui->foreignAdressesEdit->toPlainText().split(QRegExp("\\W+"), QString::SkipEmptyParts);
+                addresses = GUIUtil::SplitSkipEmptyParts(ui->foreignAdressesEdit->toPlainText(), QRegExp("\\W+"));
                 if (addresses.count() > nTotal)
                     throw std::runtime_error("Number of provided pubkeys exceeds number of requested total pubkeys.");
             } else {

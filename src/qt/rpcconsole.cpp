@@ -23,6 +23,7 @@
 #include <db_cxx.h>
 #endif
 
+#include <QDateTime>
 #include <QKeyEvent>
 #include <QMenu>
 #include <QScrollBar>
@@ -356,7 +357,7 @@ RPCConsole::RPCConsole(QWidget *parent) :
 
     // set library version labels
 #ifdef ENABLE_WALLET
-    ui->berkeleyDBVersion->setText(DbEnv::version(0, 0, 0));
+    ui->berkeleyDBVersion->setText(DbEnv::version(nullptr, nullptr, nullptr));
 #else
     ui->label_berkeleyDBVersion->hide();
     ui->berkeleyDBVersion->hide();

@@ -11,6 +11,7 @@
 
 #include "amount.h"
 
+#include <QDateTime>
 #include <QLabel>
 #include <QMainWindow>
 #include <QMap>
