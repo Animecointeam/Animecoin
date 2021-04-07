@@ -669,6 +669,8 @@ bool CWalletDBWrapper::Backup(const std::string& strDest)
                 // Flush log data to the dat file
                 env->CloseDb(strFile);
                 env->CheckpointLSN(strFile);
+                printf("Issuing lsn_reset for backup file portability.\n");
+                env->lsn_reset(strFile);
                 env->mapFileUseCount.erase(strFile);
 
                 // Copy wallet file
