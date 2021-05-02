@@ -45,8 +45,10 @@ static void SetMaxOpenFiles(leveldb::Options *options)
     // See bitcoin PR #12495 for further discussion.
 
     int default_open_files = options->max_open_files;
-  if (!LevelDBUsesMmap())
+#ifndef WIN32
+    if (!LevelDBUsesMmap())
         options->max_open_files = 64;
+#endif
 
     LogPrintf("LevelDB using max_open_files=%d (default=%d)\n",
              options->max_open_files, default_open_files);

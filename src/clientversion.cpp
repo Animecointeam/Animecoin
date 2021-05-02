@@ -18,7 +18,7 @@ const std::string CLIENT_NAME("Animecoin");
 /**
  * Client version number
  */
-#define CLIENT_VERSION_SUFFIX "-trunk"
+#define CLIENT_VERSION_SUFFIX "-release"
 
 
 /**
