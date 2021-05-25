@@ -450,7 +450,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
     else
     {
         ui->statusLabel->setText(tr("Transaction is NOT completely signed"));
-        ui->sendTransactionButton->setEnabled(false);
+        ui->sendTransactionButton->setEnabled(true);
     }
 }
 

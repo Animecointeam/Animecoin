@@ -1051,7 +1051,7 @@ UniValue sendmany(const JSONRPCRequest& request)
 }
 
 // Defined in rpc/misc.cpp
-extern CScript _createmultisig_redeemScript(CWallet * const pwallet, const UniValue& params);
+extern CScript _createmultisig_redeemScript(CWallet * const pwallet, const UniValue& params, const UniValue& options);
 
 UniValue addmultisigaddress(const JSONRPCRequest& request)
 {
@@ -1062,7 +1062,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
     {
-        std::string msg = "addmultisigaddress nrequired [\"key\",...] ( \"account\" )\n"
+        std::string msg = "addmultisigaddress nrequired [\"key\",...] ( { options } )\n"
             "\nAdd a nrequired-to-sign multisignature address to the wallet.\n"
             "Each key is an Animecoin address or hex-encoded public key.\n"
             "If 'account' is specified, assign address to that account.\n"
@@ -1074,7 +1074,10 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
             "       \"address\"  (string) animecoin address or hex-encoded public key\n"
             "       ...,\n"
             "     ]\n"
-            "3. \"account\"      (string, optional) An account to assign the addresses to.\n"
+            "3. options        (object, optional)\n"
+            "   {\n"
+            "     \"cltv_height\"  (numeric, optional) Minimum block height before received funds can be spent\n"
+            "   }\n"
 
             "\nResult:\n"
             "\"address\"         (string) An animecoin address associated with the keys.\n"
@@ -1091,11 +1094,30 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
     LOCK2(cs_main, pwallet->cs_wallet);
 
     std::string strAccount;
-    if (request.params.size() > 2)
-        strAccount = AccountFromValue(request.params[2]);
+    UniValue options(UniValue::VOBJ);
+    if (request.params.size() > 2 && !request.params[2].isNull()) {
+        if (request.params.type() == UniValue::VSTR) {
+            // Deprecated account parameter
+            strAccount = AccountFromValue(request.params[2].get_str());
+        } else {
+            const UniValue& optionsIn = request.params[2].get_obj();
+            std::vector<std::string> keys = optionsIn.getKeys();
+            for (const std::string& key : keys) {
+                const UniValue& val = optionsIn[key];
+                if (key == "account") {
+                    strAccount = AccountFromValue(val.get_str());
+                    continue;
+                }
+                if (key == "cltv_time") {
+                    throw std::runtime_error("cltv_time not supported");
+                }
+                options.pushKV(key, val);
+            }
+        }
+    }
 
     // Construct using pay-to-script-hash:
-    CScript inner = _createmultisig_redeemScript(pwallet, request.params);
+    CScript inner = _createmultisig_redeemScript(pwallet, request.params, options);
     CScriptID innerID(inner);
     pwallet->AddCScript(inner);
 
@@ -2641,8 +2663,8 @@ UniValue listunspent(const JSONRPCRequest& request)
         entry.pushKV("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
         entry.pushKV("amount", ValueFromAmount(out.tx->vout[out.i].nValue));
         entry.pushKV("confirmations", out.nDepth);
-        entry.pushKV("spendable", out.fSpendable);
-        entry.pushKV("solvable", out.fSolvable);
+        entry.pushKV("spendable", out.IsSpendableAfter(*chainActive.Tip(), *pwalletMain));
+        entry.pushKV("solvable", out.IsSolvableAfter(*chainActive.Tip(), *pwalletMain));
         results.push_back(entry);
     }
 

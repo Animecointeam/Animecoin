@@ -50,7 +50,8 @@ enum txnouttype
 	TX_PUBKEYHASH,
 	TX_SCRIPTHASH,
 	TX_MULTISIG,
-	TX_NULL_DATA,
+    TX_MULTISIG_CLTV1,
+    TX_NULL_DATA,
 };
 
 class CNoDestination {
@@ -77,5 +78,8 @@ bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, std::
 CScript GetScriptForDestination(const CTxDestination& dest);
 CScript GetScriptForRawPubKey(const CPubKey& pubkey);
 CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys);
+CScript GetScriptForCLTV(int nRequired, const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time);
+
+bool IsSimpleCLTV(const CScript& script, int64_t& cltv_height, int64_t& cltv_time);
 
 #endif // BITCOIN_SCRIPT_STANDARD_H
