@@ -91,6 +91,17 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00000001967a3b6a95c9265e7250f748044fea9e0c446befdebdd064c966eeba"); // 7000000
 
+        consensus.nRuleChangeActivationThreshold = 76; // 95% of
+        consensus.nMinerConfirmationWindow = 80; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+
+        // Deployment of BIP68, BIP112, and BIP113.
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 2882131200; // May 1st, 2061
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 2913667200; // May 1st, 2062
+
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
@@ -177,6 +188,17 @@ public:
         consensus.nMinimumChainWork = uint256S("0x00");
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x0000042d48638031294f0d84a027e895c1a321612dc326e6adc7a6c07deb352c");
+        consensus.nRuleChangeActivationThreshold = 60; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 80; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+
+        // Deployment of BIP68, BIP112, and BIP113.
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 2882131200; // May 1st, 2061
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 2913667200; // May 1st, 2062
+
         pchMessageStart[0] = 0x4d; //Updated for Animecoin
         pchMessageStart[1] = 0x49;
         pchMessageStart[2] = 0x4e;
@@ -244,6 +266,16 @@ public:
         consensus.nMinimumChainWork = uint256S("0x00");
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
+
+        consensus.nRuleChangeActivationThreshold = 60; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 80;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 24;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 999999999999ULL;
+
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;

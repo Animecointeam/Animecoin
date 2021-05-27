@@ -1059,6 +1059,20 @@ UniValue SoftForkDesc(const std::string &name, int version, CBlockIndex* pindex,
     return rv;
 }
 
+static UniValue BIP9SoftForkDesc(const std::string& name, const Consensus::Params& consensusParams, Consensus::DeploymentPos id)
+{
+    UniValue rv(UniValue::VOBJ);
+    rv.pushKV("id", name);
+    switch (VersionBitsTipState(consensusParams, id)) {
+    case THRESHOLD_DEFINED: rv.pushKV("status", "defined"); break;
+    case THRESHOLD_STARTED: rv.pushKV("status", "started"); break;
+    case THRESHOLD_LOCKED_IN: rv.pushKV("status", "locked_in"); break;
+    case THRESHOLD_ACTIVE: rv.pushKV("status", "active"); break;
+    case THRESHOLD_FAILED: rv.pushKV("status", "failed"); break;
+    }
+    return rv;
+}
+
 UniValue getblockchaininfo(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 0)
@@ -1086,6 +1100,12 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
             "        },\n"
             "        \"reject\": { ... }      (object) progress toward rejecting pre-softfork blocks (same fields as \"enforce\")\n"
             "     }, ...\n"
+            "  ],\n"
+            "  \"bip9_softforks\": [       (array) status of BIP9 softforks in progress\n"
+            "     {\n"
+            "        \"id\": \"xxxx\",        (string) name of the softfork\n"
+            "        \"status\": \"xxxx\",    (string) one of \"defined\", \"started\", \"lockedin\", \"active\", \"failed\"\n"
+            "     }\n"
             "  ]\n"
             "}\n"
             "\nExamples:\n"
@@ -1111,8 +1131,11 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     obj.pushKV("v113blocks",            CBlockIndex::CalcMajority(113, chainActive.Tip(), consensusParams));
     CBlockIndex* tip = chainActive.Tip();
     UniValue softforks(UniValue::VARR);
+    UniValue bip9_softforks(UniValue::VARR);
     softforks.push_back(SoftForkDesc("bip65", 113, tip, consensusParams));
+    bip9_softforks.push_back(BIP9SoftForkDesc("csv", consensusParams, Consensus::DEPLOYMENT_CSV));
     obj.pushKV("softforks",             softforks);
+    obj.pushKV("bip9_softforks", bip9_softforks);
 
     if (fPruneMode)
     {
