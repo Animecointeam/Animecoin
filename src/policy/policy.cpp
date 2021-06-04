@@ -49,7 +49,7 @@ bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType)
             return false;
         if (m < 1 || m > n)
             return false;
-    } else if (whichType == TX_MULTISIG_CLTV1) {
+    } else if (whichType == TX_TWOPARTY_CLTV) {
         return false;
     } else if (whichType == TX_NULL_DATA &&
                (!fAcceptDatacarrier || scriptPubKey.size() > nMaxDatacarrierBytes))

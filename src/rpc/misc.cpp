@@ -145,7 +145,7 @@ public:
             for (const CTxDestination& addr : addresses)
                 a.push_back(CBitcoinAddress(addr).ToString());
             obj.pushKV("addresses", a);
-            if (whichType == TX_MULTISIG || whichType == TX_MULTISIG_CLTV1)
+            if (whichType == TX_MULTISIG || whichType == TX_TWOPARTY_CLTV)
                 obj.pushKV("sigsrequired", nRequired);
         }
         return obj;

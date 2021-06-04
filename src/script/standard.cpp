@@ -30,7 +30,7 @@ const char* GetTxnOutputType(txnouttype t)
 	case TX_PUBKEYHASH: return "pubkeyhash";
 	case TX_SCRIPTHASH: return "scripthash";
 	case TX_MULTISIG: return "multisig";
-    case TX_MULTISIG_CLTV1: return "multisig_cltv1";
+    case TX_TWOPARTY_CLTV: return "twoparty_cltv";
     case TX_NULL_DATA: return "nulldata";
 	}
 	return nullptr;
@@ -54,21 +54,21 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, vector<vector<unsi
 		// Sender provides N pubkeys, receivers provides M signatures
 		mTemplates.insert(make_pair(TX_MULTISIG, CScript() << OP_SMALLINTEGER << OP_PUBKEYS << OP_SMALLINTEGER << OP_CHECKMULTISIG));
 
-        // CLTV: 2 of 2 multisig until deadline, escrow + either party is valid to spend afterwards
-        mTemplates.insert(make_pair(TX_MULTISIG_CLTV1, CScript() << OP_IF << OP_U32INT << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_PUBKEY << OP_CHECKSIGVERIFY << OP_SMALLINTEGER << OP_ELSE << OP_SMALLINTEGER << OP_ENDIF << OP_PUBKEYS << OP_SMALLINTEGER << OP_CHECKMULTISIG));
+        // Simplest CLTV: 2 signatures requried until deadline, only the first one after
+        mTemplates.insert(make_pair(TX_TWOPARTY_CLTV, CScript() << OP_IF << OP_U32INT << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_ELSE << OP_PUBKEY << OP_CHECKSIGVERIFY << OP_ENDIF << OP_PUBKEY << OP_CHECKSIG));
     }
 
     vSolutionsRet.clear();
 
     // Shortcut for pay-to-script-hash, which are more constrained than the other types:
 	// it is always OP_HASH160 20 [20 byte hash] OP_EQUAL
-	if (scriptPubKey.IsPayToScriptHash())
+    if (scriptPubKey.IsPayToScriptHash())
 	{
 		typeRet = TX_SCRIPTHASH;
 		vector<unsigned char> hashBytes(scriptPubKey.begin()+2, scriptPubKey.begin()+22);
 		vSolutionsRet.push_back(hashBytes);
 		return true;
-	}
+    }
 
     // Provably prunable, data-carrying output
     //
@@ -99,7 +99,7 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, vector<vector<unsi
 			{
 				// Found a match
 				typeRet = tplate.first;
-                if (typeRet == TX_MULTISIG || typeRet == TX_MULTISIG_CLTV1)
+                if (typeRet == TX_MULTISIG)
                 {
 					// Additional checks for TX_MULTISIG:
 					unsigned char m = vSolutionsRet.front()[0];
@@ -220,7 +220,7 @@ bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, vecto
 		return false;
 	}
 
-    if (typeRet == TX_MULTISIG || typeRet == TX_MULTISIG_CLTV1)
+    if (typeRet == TX_MULTISIG)
     {
 		nRequiredRet = vSolutions.front()[0];
 		for (unsigned int i = 1; i < vSolutions.size()-1; i++)
@@ -236,6 +236,33 @@ bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, vecto
 		if (addressRet.empty())
 			return false;
 	}
+    else if (typeRet == TX_TWOPARTY_CLTV)
+    {
+        // Seller
+        {
+            CPubKey pubKey(vSolutions[0]);
+            if (pubKey.IsValid()) {
+                CTxDestination address = pubKey.GetID();
+                addressRet.push_back(address);
+                printf ("Seller: %i\n", address);
+            }
+        }
+        // Refund
+        {
+            CPubKey pubKey(vSolutions[1]);
+            if (pubKey.IsValid()) {
+                CTxDestination address = pubKey.GetID();
+                addressRet.push_back(address);
+                printf ("Buyer: %i\n", address);
+            }
+        }
+
+        if (addressRet.empty())
+        {
+            printf ("No addresses!\n");
+            return false;
+        }
+    }
 	else
 	{
 		nRequiredRet = 1;
@@ -320,16 +347,13 @@ CScript GetScriptForCLTV(int nRequired, const std::vector<CPubKey>& keys, const 
         script << OP_IF;
         script << cltv_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP;
     }
-    script << ToByteVector(keys[0]);
-    script << OP_CHECKSIGVERIFY;
 
-    script << CScript::EncodeOP_N(1);
     script << OP_ELSE;
-    script << CScript::EncodeOP_N(2);
+    script << ToByteVector(keys[1]);
+    script << OP_CHECKSIGVERIFY;
     script << OP_ENDIF;
-    for (const CPubKey& key : keys)
-        script << ToByteVector(key);
-    script << CScript::EncodeOP_N(keys.size()) << OP_CHECKMULTISIG;
+    script << ToByteVector(keys[0]);
+    script << OP_CHECKSIG;
     return script;
 }
 

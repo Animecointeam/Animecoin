@@ -12,6 +12,8 @@
 #include "script/standard.h"
 #include "uint256.h"
 
+#include "core_io.h"
+
 using namespace std;
 
 typedef std::vector<unsigned char> valtype;
@@ -69,15 +71,19 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         return false;
 
     CKeyID keyID;
+    bool result = false;
     switch (whichTypeRet)
     {
     case TX_NONSTANDARD:
     case TX_NULL_DATA:
+        printf ("NST\n");
         return false;
     case TX_PUBKEY:
+        printf ("P2PK\n");
         keyID = CPubKey(vSolutions[0]).GetID();
         return Sign1(keyID, creator, scriptPubKey, scriptSigRet);
     case TX_PUBKEYHASH:
+        printf ("P2PKH\n");
         keyID = CKeyID(uint160(vSolutions[0]));
         if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet))
             return false;
@@ -89,12 +95,24 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         }
         return true;
     case TX_SCRIPTHASH:
-        return creator.KeyStore().GetCScript(uint160(vSolutions[0]), scriptSigRet);
+        result = creator.KeyStore().GetCScript(uint160(vSolutions[0]), scriptSigRet);
+        printf ("P2SH script %s\n", ScriptToAsmStr (scriptSigRet).c_str());
+        return result;
 
     case TX_MULTISIG:
-    case TX_MULTISIG_CLTV1:
+        printf ("MS\n");
         scriptSigRet << OP_0; // workaround CHECKMULTISIG bug
         return (SignN(vSolutions, creator, scriptPubKey, scriptSigRet));
+
+    case TX_TWOPARTY_CLTV:
+        keyID = CPubKey(vSolutions[1]).GetID();
+        if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
+            return false;
+        }
+        scriptSigRet << OP_1;
+
+        printf ("CLTV script %s\n", ScriptToAsmStr (scriptSigRet).c_str());
+        return true;
     }
     return false;
 }
@@ -148,8 +166,17 @@ bool SignSignature(const CKeyStore &keystore, const CTransaction& txFrom, CMutab
 static CScript PushAll(const vector<valtype>& values)
 {
     CScript result;
-    for (const valtype& v : values)
-        result << v;
+    for (const valtype& v : values) {
+        if (v.size() == 0) {
+            result << OP_0;
+        } else if (v.size() == 1 && v[0] >= 1 && v[0] <= 16) {
+            result << CScript::EncodeOP_N(v[0]);
+        } else if (v.size() == 1 && v[0] == 0x81) {
+            result << OP_1NEGATE;
+        } else {
+            result << v;
+        }
+    }
     return result;
 }
 
@@ -216,6 +243,7 @@ static CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatur
     {
     case TX_NONSTANDARD:
     case TX_NULL_DATA:
+    case TX_TWOPARTY_CLTV:
         // Don't know anything about this, assume bigger one is correct:
         if (sigs1.size() >= sigs2.size())
             return PushAll(sigs1);
@@ -247,7 +275,6 @@ static CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatur
             return result;
         }
     case TX_MULTISIG:
-    case TX_MULTISIG_CLTV1:
         return CombineMultisig(scriptPubKey, checker, vSolutions, sigs1, sigs2);
     }
 
