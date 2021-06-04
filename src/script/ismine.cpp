@@ -70,7 +70,6 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
         break;
     }
     case TX_MULTISIG:
-    case TX_TWOPARTY_CLTV:
     {
         // Only consider transactions "mine" if we own ALL the
         // keys involved. multi-signature transactions that are
@@ -78,6 +77,15 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
         // them) enable spend-out-from-under-you attacks, especially
         // in shared-wallet situations.
         vector<valtype> keys(vSolutions.begin()+1, vSolutions.begin()+vSolutions.size()-1);
+        if (HaveKeys(keys, keystore) == keys.size())
+            return ISMINE_SPENDABLE;
+        break;
+    }
+    case TX_TWOPARTY_CLTV:
+    {
+        // For now, only consider transactions "mine" if we own all the
+        // keys involved.
+        vector<valtype> keys(vSolutions.begin(), vSolutions.begin()+vSolutions.size());
         if (HaveKeys(keys, keystore) == keys.size())
             return ISMINE_SPENDABLE;
         break;
