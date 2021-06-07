@@ -255,6 +255,7 @@ void MultisigDialog::on_createTransactionButton_clicked()
             if(entry->validate())
             {
                 CTxIn input = entry->getInput();
+                input.nSequence = 0xfffffffe;
                 transaction.vin.push_back(input);
             }
             else
@@ -282,7 +283,7 @@ void MultisigDialog::on_createTransactionButton_clicked()
                 return;
         }
     }
-
+    transaction.nLockTime = chainActive.Height();
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
     ss << transaction;
     ui->transaction->setText(HexStr(ss.begin(), ss.end()).c_str());
@@ -323,7 +324,7 @@ void MultisigDialog::on_transaction_textChanged()
         MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
         if(entry)
         {
-            entry->setTransactionId(QString::fromStdString (HexStr(prevoutHash.GetHex())));
+            entry->setTransactionId(QString::fromStdString (prevoutHash.GetHex()));
             entry->setTransactionOutputIndex(txin.prevout.n);
         }
     }
@@ -450,7 +451,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
     else
     {
         ui->statusLabel->setText(tr("Transaction is NOT completely signed"));
-        ui->sendTransactionButton->setEnabled(true);
+        ui->sendTransactionButton->setEnabled(false);
     }
 }
 

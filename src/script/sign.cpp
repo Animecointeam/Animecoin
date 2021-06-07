@@ -72,6 +72,7 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
 
     CKeyID keyID;
     bool result = false;
+    bool route = 0;
     switch (whichTypeRet)
     {
     case TX_NONSTANDARD:
@@ -105,14 +106,35 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         return (SignN(vSolutions, creator, scriptPubKey, scriptSigRet));
 
     case TX_TWOPARTY_CLTV:
-        keyID = CPubKey(vSolutions[1]).GetID();
-        if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
-            return false;
+        result = true;
+        if (route==0)
+        {
+            keyID = CPubKey(vSolutions[1]).GetID();
+            printf("buyer key id %i\n", keyID);
+            if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
+                return false;
+            }
+            scriptSigRet << OP_1;
         }
-        scriptSigRet << OP_1;
+        else
+        {
+            keyID = CPubKey(vSolutions[1]).GetID();
+            printf("buyer key id %s\n", keyID.ToString());
+            if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
+                scriptSigRet << OP_0;
+                result = false;
+            }
+            keyID = CPubKey(vSolutions[0]).GetID();
+            printf("seller key id %s\n", keyID.ToString());
+            if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
+                scriptSigRet << OP_0;
+                result = false;
+            }
+            scriptSigRet << OP_0;
+        }
 
         printf ("CLTV script %s\n", ScriptToAsmStr (scriptSigRet).c_str());
-        return true;
+        return result;
     }
     return false;
 }
