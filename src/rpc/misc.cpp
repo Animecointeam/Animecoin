@@ -309,7 +309,14 @@ CScript _createmultisig_redeemScript(CWallet* const pwallet, const UniValue& par
     if ((cltv_height==0)&&(cltv_time==0))
         result = GetScriptForMultisig(nRequired, pubkeys);
     else
-        result = GetScriptForCLTV(nRequired, pubkeys, cltv_height, cltv_time);
+    {
+        if (pubkeys.size() == 2)
+            result = GetScriptForCLTV(pubkeys, cltv_height, cltv_time);
+        else if (pubkeys.size() == 3)
+            result = GetScriptForEscrowCLTV(pubkeys, cltv_height, cltv_time);
+        else
+            throw runtime_error("Only 2 or 3 parties are allowed in CLTV scripts currently.");
+    }
 
     if (result.size() > MAX_SCRIPT_ELEMENT_SIZE)
         throw runtime_error(

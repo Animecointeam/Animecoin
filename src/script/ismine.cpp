@@ -90,6 +90,14 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
             return ISMINE_SPENDABLE;
         break;
     }
+    case TX_ESCROW_CLTV:
+    {
+        // Skip escrow key
+        vector<valtype> keys(vSolutions.begin()+2, vSolutions.begin()+vSolutions.size()-1);
+        if (HaveKeys(keys, keystore) == keys.size())
+            return ISMINE_SPENDABLE;
+        break;
+    }
     }
 
     if (keystore.HaveWatchOnly(scriptPubKey)) {

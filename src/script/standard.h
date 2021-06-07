@@ -51,6 +51,7 @@ enum txnouttype
 	TX_SCRIPTHASH,
 	TX_MULTISIG,
     TX_TWOPARTY_CLTV,
+    TX_ESCROW_CLTV,
     TX_NULL_DATA,
 };
 
@@ -78,7 +79,8 @@ bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, std::
 CScript GetScriptForDestination(const CTxDestination& dest);
 CScript GetScriptForRawPubKey(const CPubKey& pubkey);
 CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys);
-CScript GetScriptForCLTV(int nRequired, const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time);
+CScript GetScriptForCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time);
+CScript GetScriptForEscrowCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time);
 
 bool IsSimpleCLTV(const CScript& script, int64_t& cltv_height, int64_t& cltv_time);
 

@@ -105,6 +105,27 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         scriptSigRet << OP_0; // workaround CHECKMULTISIG bug
         return (SignN(vSolutions, creator, scriptPubKey, scriptSigRet));
 
+    case TX_ESCROW_CLTV:
+        printf ("Escrow\n");
+        if (route==0)
+        {
+            scriptSigRet << OP_0; // workaround CHECKMULTISIG bug
+            keyID = CPubKey(vSolutions[0]).GetID();
+            result = Sign1(keyID, creator, scriptPubKey, scriptSigRet);
+            vector<valtype> ms_data (vSolutions.begin()+1, vSolutions.begin()+vSolutions.size());
+            result = SignN(ms_data, creator, scriptPubKey, scriptSigRet) && result;
+            scriptSigRet << OP_1;
+        }
+        else
+        {
+            scriptSigRet << OP_0; // workaround CHECKMULTISIG bug
+            result = SignN(vSolutions, creator, scriptPubKey, scriptSigRet) && result;
+            scriptSigRet << OP_0;
+        }
+        printf ("CLTV script %s\n", ScriptToAsmStr (scriptSigRet).c_str());
+
+        return result;
+
     case TX_TWOPARTY_CLTV:
         result = true;
         if (route==0)
@@ -119,17 +140,12 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         else
         {
             keyID = CPubKey(vSolutions[1]).GetID();
-            printf("buyer key id %s\n", keyID.ToString());
-            if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
-                scriptSigRet << OP_0;
-                result = false;
-            }
+            printf("buyer key id %i\n", keyID);
+            result = Sign1(keyID, creator, scriptPubKey, scriptSigRet);
+
             keyID = CPubKey(vSolutions[0]).GetID();
-            printf("seller key id %s\n", keyID.ToString());
-            if (!Sign1(keyID, creator, scriptPubKey, scriptSigRet)) {
-                scriptSigRet << OP_0;
-                result = false;
-            }
+            printf("seller key id %i\n", keyID);
+            result = !Sign1(keyID, creator, scriptPubKey, scriptSigRet) && result;
             scriptSigRet << OP_0;
         }
 

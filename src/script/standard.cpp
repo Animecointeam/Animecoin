@@ -31,6 +31,7 @@ const char* GetTxnOutputType(txnouttype t)
 	case TX_SCRIPTHASH: return "scripthash";
 	case TX_MULTISIG: return "multisig";
     case TX_TWOPARTY_CLTV: return "twoparty_cltv";
+    case TX_ESCROW_CLTV: return "escrow_cltv";
     case TX_NULL_DATA: return "nulldata";
 	}
 	return nullptr;
@@ -56,6 +57,10 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, vector<vector<unsi
 
         // Simplest CLTV: 2 signatures requried until deadline, only the first one after
         mTemplates.insert(make_pair(TX_TWOPARTY_CLTV, CScript() << OP_IF << OP_U32INT << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_ELSE << OP_PUBKEY << OP_CHECKSIGVERIFY << OP_ENDIF << OP_PUBKEY << OP_CHECKSIG));
+
+        // CLTV multisig with escrow: 2 signatures requried until deadline, escrow counts as one after
+        mTemplates.insert(make_pair(TX_ESCROW_CLTV, CScript() << OP_IF << OP_U32INT << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_PUBKEY << OP_CHECKSIGVERIFY << OP_SMALLINTEGER << OP_ELSE  << OP_SMALLINTEGER << OP_ENDIF << OP_PUBKEYS << OP_SMALLINTEGER << OP_CHECKMULTISIG));
+
     }
 
     vSolutionsRet.clear();
@@ -327,7 +332,7 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
 	return script;
 }
 
-CScript GetScriptForCLTV(int nRequired, const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time)
+CScript GetScriptForCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time)
 {
     CScript script;
 
@@ -354,6 +359,43 @@ CScript GetScriptForCLTV(int nRequired, const std::vector<CPubKey>& keys, const 
     script << OP_ENDIF;
     script << ToByteVector(keys[0]);
     script << OP_CHECKSIG;
+    return script;
+}
+
+CScript GetScriptForEscrowCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time)
+{
+    CScript script;
+
+    if (cltv_height > 0) {
+        if (cltv_time) {
+            throw std::invalid_argument("cannot lock for both height and time");
+        }
+        if (cltv_height >= LOCKTIME_THRESHOLD) {
+            throw std::invalid_argument("requested lock height is beyond locktime threshold");
+        }
+        script << OP_IF;
+        script << cltv_height << OP_CHECKLOCKTIMEVERIFY << OP_DROP;
+    } else if (cltv_time) {
+        if (cltv_time < LOCKTIME_THRESHOLD || cltv_time > std::numeric_limits<uint32_t>::max()) {
+            throw std::invalid_argument("requested lock time is outside of valid range");
+        }
+        script << OP_IF;
+        script << cltv_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP;
+    }
+
+    script << ToByteVector(keys[2]);
+    script << OP_CHECKSIGVERIFY;
+
+    script << CScript::EncodeOP_N(1);
+    script << OP_ELSE;
+    script << CScript::EncodeOP_N(2);
+    script << OP_ENDIF;
+
+    script << ToByteVector(keys[1]);
+    script << ToByteVector(keys[0]);
+
+    script << CScript::EncodeOP_N(2) << OP_CHECKMULTISIG;
+
     return script;
 }
 

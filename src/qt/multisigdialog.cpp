@@ -445,12 +445,12 @@ void MultisigDialog::on_signTransactionButton_clicked()
 
     if(fComplete)
     {
-        ui->statusLabel->setText(tr("Transaction signature is complete"));
+        ui->statusLabel->setText(tr("Transaction is ready to be sent!"));
         ui->sendTransactionButton->setEnabled(true);
     }
     else
     {
-        ui->statusLabel->setText(tr("Transaction is NOT completely signed"));
+        ui->statusLabel->setText(tr("Transaction is NOT ready (not enough signatures or too early for the refund.)"));
         ui->sendTransactionButton->setEnabled(false);
     }
 }
