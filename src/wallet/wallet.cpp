@@ -2721,7 +2721,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                     const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
                     CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
 
-                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, scriptSigRes))
+                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, scriptSigRes, 1))
                     {
                         strFailReason = _("Signing transaction failed");
                         return false;
@@ -2817,7 +2817,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
                 CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
 
-                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, SIGHASH_ALL), scriptPubKey, scriptSigRes))
+                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, SIGHASH_ALL), scriptPubKey, scriptSigRes, 1))
                 {
                     strFailReason = _("Signing transaction failed");
                     return false;

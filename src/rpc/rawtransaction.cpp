@@ -580,7 +580,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 4)
         throw runtime_error(
-                "signrawtransaction \"hexstring\" ( [{\"txid\":\"id\",\"vout\":n,\"scriptPubKey\":\"hex\",\"redeemScript\":\"hex\"},...] [\"privatekey1\",...] sighashtype )\n"
+                "signrawtransaction \"hexstring\" ( [{\"txid\":\"id\",\"vout\":n,\"scriptPubKey\":\"hex\",\"redeemScript\":\"hex\",\"route\":n},...] [\"privatekey1\",...] sighashtype )\n"
                 "\nSign inputs for raw transaction (serialized, hex-encoded).\n"
                 "The second optional argument (may be null) is an array of previous transaction outputs that\n"
             "this transaction depends on but may not yet be in the block chain.\n"
@@ -599,6 +599,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
                         "         \"vout\":n,                  (numeric, required) The output number\n"
                         "         \"scriptPubKey\": \"hex\",   (string, required) script key\n"
                         "         \"redeemScript\": \"hex\"    (string, required for P2SH) redeem script\n"
+                        "         \"route\": n                 (int) route for conditional scripts\n"
                         "       }\n"
                         "       ,...\n"
                         "    ]\n"
@@ -632,6 +633,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
     LOCK(cs_main);
 #endif
 
+    bool route = 1;
     RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VARR, UniValue::VARR, UniValue::VSTR}, true);
 
     vector<unsigned char> txData(ParseHexV(request.params[0], "argument 1"));
@@ -754,6 +756,10 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
                     CScript redeemScript(rsData.begin(), rsData.end());
                     tempKeystore.AddCScript(redeemScript);
                 }
+                UniValue r = find_value(prevOut, "route");
+                if (!r.isNull()) {
+                    route = r.getBool();
+                }
             }
         }
     }
@@ -798,7 +804,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
         txin.scriptSig.clear();
         // Only sign SIGHASH_SINGLE if there's a corresponding output:
         if (!fHashSingle || (i < mergedTx.vout.size()))
-            SignSignature(keystore, prevPubKey, mergedTx, i, nHashType);
+            SignSignature(keystore, prevPubKey, mergedTx, i, nHashType, route);
 
         // ... and merge in other signatures:
         for (const CMutableTransaction& txv : txVariants) {

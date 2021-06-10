@@ -1,4 +1,5 @@
 #include <QClipboard>
+#include <QDateTime>
 #include <QDialog>
 #include <QMessageBox>
 #include <QScrollBar>
@@ -38,6 +39,12 @@ MultisigDialog::MultisigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Mu
 
     addPubKey();
     addPubKey();
+    addParty();
+    addParty();
+    addParty();
+
+    ui->lockTimeBox->setMinimum (chainActive.Height());
+    ui->lockTimeBox->setMaximum (std::numeric_limits<int>::max());
 
     connect(ui->addPubKeyButton, SIGNAL(clicked()), this, SLOT(addPubKey()));
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
@@ -75,6 +82,12 @@ void MultisigDialog::setModel(WalletModel *_model)
             entry->setModel(_model);
     }
 
+    for(int i = 0; i < ui->partyEntries->count(); i++)
+    {
+        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->partyEntries->itemAt(i)->widget());
+        if(entry)
+            entry->setModel(_model);
+    }
 
     for(int i = 0; i < ui->inputs->count(); i++)
     {
@@ -101,6 +114,13 @@ void MultisigDialog::updateRemoveEnabled()
         MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->pubkeyEntries->itemAt(i)->widget());
         if(entry)
             entry->setRemoveEnabled(enabled);
+    }
+
+    for(int i = 0; i < ui->partyEntries->count(); i++)
+    {
+        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->partyEntries->itemAt(i)->widget());
+        if(entry)
+            entry->setRemoveEnabled(false);
     }
 
     QString maxSigsStr;
@@ -213,9 +233,14 @@ void MultisigDialog::clear()
 {
     while(ui->pubkeyEntries->count())
         delete ui->pubkeyEntries->takeAt(0)->widget();
+    while(ui->partyEntries->count())
+        delete ui->partyEntries->takeAt(0)->widget();
 
     addPubKey();
     addPubKey();
+    addParty();
+    addParty();
+    addParty();
     updateRemoveEnabled();
 }
 
@@ -230,6 +255,22 @@ MultisigAddressEntry * MultisigDialog::addPubKey()
     entry->clear();
     ui->scrollAreaWidgetContents->resize(ui->scrollAreaWidgetContents->sizeHint());
     QScrollBar *bar = ui->scrollArea->verticalScrollBar();
+    if(bar)
+        bar->setSliderPosition(bar->maximum());
+
+    return entry;
+}
+
+MultisigAddressEntry * MultisigDialog::addParty()
+{
+    MultisigAddressEntry *entry = new MultisigAddressEntry(this);
+
+    entry->setModel(model);
+    ui->partyEntries->addWidget(entry);
+    updateRemoveEnabled();
+    entry->clear();
+    ui->scrollAreaWidgetContents_4->resize(ui->scrollAreaWidgetContents_4->sizeHint());
+    QScrollBar *bar = ui->scrollArea_4->verticalScrollBar();
     if(bar)
         bar->setSliderPosition(bar->maximum());
 
@@ -420,6 +461,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
 
     // Sign what we can
     bool fComplete = true;
+    bool route = !ui->refundCheckBox->isChecked();
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++)
     {
         CTxIn& txin = mergedTx.vin[i];
@@ -431,7 +473,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
         txin.scriptSig.clear();
-        SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL);
+        SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL, route);
         txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig);
         if(!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
         {
@@ -612,3 +654,106 @@ void MultisigDialog::updateAmounts()
         ui->fee->setText(feeStr);
     }
 }
+
+void MultisigDialog::on_createContractButton_clicked()
+{
+    ui->addressLine->clear();
+    ui->scriptLine->clear();
+
+    if(!model)
+        return;
+
+    std::vector<CPubKey> pubkeys;
+
+    printf ("%i party entries \n", ui->partyEntries->count());
+    for(int i = 0; i < ui->partyEntries->count(); i++)
+    {
+        MultisigAddressEntry* entry = qobject_cast<MultisigAddressEntry*>(ui->partyEntries->itemAt(i)->widget());
+        printf ("Entry %i\n", i);
+
+        if(!entry)
+            continue;
+
+        if(!entry->validate())
+            return;
+        QString str = entry->getPubkey();
+        CPubKey vchPubKey(ParseHex(str.toStdString().c_str()));
+        if(!vchPubKey.IsFullyValid())
+            return;
+        pubkeys.push_back(vchPubKey);
+    }
+
+    if (3 != pubkeys.size())
+       return;
+
+    CScript script = GetScriptForEscrowCLTV (pubkeys, ui->lockTimeBox->value(), 0);
+    CScriptID scriptID (script);
+    CBitcoinAddress address(scriptID);
+
+    ui->addressLine->setText(address.ToString().c_str());
+    ui->scriptLine->setText(HexStr(script.begin(), script.end()).c_str());
+}
+
+
+void MultisigDialog::on_copyAddressButton_clicked()
+{
+    QApplication::clipboard()->setText(ui->addressLine->text());
+}
+
+
+void MultisigDialog::on_copyScriptButton_clicked()
+{
+    QApplication::clipboard()->setText(ui->scriptLine->text());
+}
+
+
+void MultisigDialog::on_saveScriptButton_clicked()
+{
+    if(!model)
+        return;
+
+    std::string redeemScript = ui->scriptLine->text().toStdString();
+    std::vector<unsigned char> scriptData(ParseHex(redeemScript));
+    CScript script(scriptData.begin(), scriptData.end());
+    CScriptID scriptID (script);
+
+    LOCK(pwalletMain->cs_wallet);
+    if(!pwalletMain->HaveCScript(scriptID))
+        pwalletMain->AddCScript(script);
+}
+
+
+void MultisigDialog::on_saveContractButton_clicked()
+{
+    if(!model)
+        return;
+
+    std::string redeemScript = ui->scriptLine->text().toStdString();
+    std::string address = ui->addressLine->text().toStdString();
+    std::string label("contract");
+
+    if(!model->validateAddress(QString(address.c_str())))
+        return;
+
+    std::vector<unsigned char> scriptData(ParseHex(redeemScript));
+    CScript script(scriptData.begin(), scriptData.end());
+    CScriptID scriptID (script);
+
+    LOCK(pwalletMain->cs_wallet);
+    if(!pwalletMain->HaveCScript(scriptID))
+        pwalletMain->AddCScript(script);
+    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
+        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "send");
+}
+
+
+void MultisigDialog::on_lockTimeBox_valueChanged(int arg1)
+{
+    qint64 estimated_seconds = (arg1-chainActive.Height()) * 30;
+    qint64 current_time = QDateTime::currentSecsSinceEpoch();
+    estimated_seconds+=current_time;
+    QDateTime locktime = QDateTime::fromSecsSinceEpoch(estimated_seconds);
+    QString locktime_text = tr("Estimated deadline: ")+locktime.toString(Qt::SystemLocaleLongDate);
+    ui->approxTimeLabel->setText(locktime_text);
+}
+

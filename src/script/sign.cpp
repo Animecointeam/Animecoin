@@ -62,7 +62,7 @@ static bool SignN(const vector<valtype>& multisigdata, const BaseSignatureCreato
  * Returns false if scriptPubKey could not be completely satisfied.
  */
 static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptPubKey,
-                     CScript& scriptSigRet, txnouttype& whichTypeRet)
+                     CScript& scriptSigRet, txnouttype& whichTypeRet, bool route)
 {
     scriptSigRet.clear();
 
@@ -72,7 +72,6 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
 
     CKeyID keyID;
     bool result = false;
-    bool route = 0;
     switch (whichTypeRet)
     {
     case TX_NONSTANDARD:
@@ -155,10 +154,10 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
     return false;
 }
 
-bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPubKey, CScript& scriptSig)
+bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPubKey, CScript& scriptSig, bool route)
 {
     txnouttype whichType;
-    if (!SignStep(creator, fromPubKey, scriptSig, whichType))
+    if (!SignStep(creator, fromPubKey, scriptSig, whichType, route))
         return false;
 
     if (whichType == TX_SCRIPTHASH)
@@ -170,7 +169,7 @@ bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPu
 
         txnouttype subType;
         bool fSolved =
-                SignStep(creator, subscript, scriptSig, subType) && subType != TX_SCRIPTHASH;
+                SignStep(creator, subscript, scriptSig, subType, route) && subType != TX_SCRIPTHASH;
         // Append serialized subscript whether or not it is completely signed:
         scriptSig << valtype(subscript.begin(), subscript.end());
         if (!fSolved) return false;
@@ -180,7 +179,7 @@ bool ProduceSignature(const BaseSignatureCreator& creator, const CScript& fromPu
     return VerifyScript(scriptSig, fromPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, creator.Checker());
 }
 
-bool SignSignature(const CKeyStore &keystore, const CScript& fromPubKey, CMutableTransaction& txTo, unsigned int nIn, int nHashType)
+bool SignSignature(const CKeyStore &keystore, const CScript& fromPubKey, CMutableTransaction& txTo, unsigned int nIn, int nHashType, bool route)
 {
     assert(nIn < txTo.vin.size());
     CTxIn& txin = txTo.vin[nIn];
@@ -188,17 +187,17 @@ bool SignSignature(const CKeyStore &keystore, const CScript& fromPubKey, CMutabl
     CTransaction txToConst(txTo);
     TransactionSignatureCreator creator(&keystore, &txToConst, nIn, nHashType);
 
-    return ProduceSignature(creator, fromPubKey, txin.scriptSig);
+    return ProduceSignature(creator, fromPubKey, txin.scriptSig, route);
 }
 
-bool SignSignature(const CKeyStore &keystore, const CTransaction& txFrom, CMutableTransaction& txTo, unsigned int nIn, int nHashType)
+bool SignSignature(const CKeyStore &keystore, const CTransaction& txFrom, CMutableTransaction& txTo, unsigned int nIn, int nHashType, bool route)
 {
     assert(nIn < txTo.vin.size());
     CTxIn& txin = txTo.vin[nIn];
     assert(txin.prevout.n < txFrom.vout.size());
     const CTxOut& txout = txFrom.vout[txin.prevout.n];
 
-    return SignSignature(keystore, txout.scriptPubKey, txTo, nIn, nHashType);
+    return SignSignature(keystore, txout.scriptPubKey, txTo, nIn, nHashType, route);
 }
 
 static CScript PushAll(const vector<valtype>& values)

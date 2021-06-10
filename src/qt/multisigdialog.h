@@ -1,4 +1,4 @@
-#ifndef MULTISIGDIALOG_H
+    #ifndef MULTISIGDIALOG_H
 #define MULTISIGDIALOG_H
 
 #include <QDialog>
@@ -24,7 +24,8 @@ class MultisigDialog : public QDialog
     void setModel(WalletModel *model);
 
   public slots:
-    MultisigAddressEntry * addPubKey();
+    MultisigAddressEntry* addPubKey();
+    MultisigAddressEntry* addParty();
     void clear();
     void updateRemoveEnabled();
     MultisigInputEntry * addInput();
@@ -40,6 +41,7 @@ class MultisigDialog : public QDialog
 
   private slots:
     void on_createAddressButton_clicked();
+    void on_createContractButton_clicked();
     void on_copyMultisigAddressButton_clicked();
     void on_copyRedeemScriptButton_clicked();
     void on_saveRedeemScriptButton_clicked();
@@ -55,6 +57,11 @@ class MultisigDialog : public QDialog
     void removeEntry(MultisigInputEntry *entry);
     void removeEntry(SendCoinsEntry *entry);
     void updateAmounts();
+    void on_copyAddressButton_clicked();
+    void on_copyScriptButton_clicked();
+    void on_saveScriptButton_clicked();
+    void on_saveContractButton_clicked();
+    void on_lockTimeBox_valueChanged(int arg1);
 };
 
 #endif // MULTISIGDIALOG_H
