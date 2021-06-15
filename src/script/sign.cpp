@@ -312,10 +312,8 @@ static CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatur
             return result;
         }
     case TX_MULTISIG:
-        return CombineMultisig(scriptPubKey, checker, vSolutions, sigs1, sigs2);
     case TX_ESCROW_CLTV:
-        vector<valtype> ms_data (vSolutions.begin()+1, vSolutions.begin()+vSolutions.size());
-        return CombineMultisig(scriptPubKey, checker, ms_data, sigs1, sigs2);
+        return CombineMultisig(scriptPubKey, checker, vSolutions, sigs1, sigs2);
     }
 
     return CScript();
