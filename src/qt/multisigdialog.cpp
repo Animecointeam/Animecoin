@@ -474,7 +474,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         const CScript& prevPubKey = coin.out.scriptPubKey;
         txin.scriptSig.clear();
         SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL, route);
-        txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig);
+        txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig, route);
         if(!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
         {
           fComplete = false;

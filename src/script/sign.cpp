@@ -238,6 +238,7 @@ static CScript CombineMultisig(const CScript& scriptPubKey, const BaseSignatureC
     assert(vSolutions.size() > 1);
     unsigned int nSigsRequired = vSolutions.front()[0];
     unsigned int nPubKeys = vSolutions.size()-2;
+    printf ("Multisig combining, %u solutions, %u pubkeys, %u required. \n", vSolutions.size(), nPubKeys, nSigsRequired);
     map<valtype, valtype> sigs;
     for (const valtype& sig : allsigs)
     {
@@ -274,7 +275,7 @@ static CScript CombineMultisig(const CScript& scriptPubKey, const BaseSignatureC
 
 static CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatureChecker& checker,
                                  const txnouttype txType, const vector<valtype>& vSolutions,
-                                 vector<valtype>& sigs1, vector<valtype>& sigs2)
+                                 vector<valtype>& sigs1, vector<valtype>& sigs2, bool route)
 {
     switch (txType)
     {
@@ -307,27 +308,34 @@ static CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatur
             Solver(pubKey2, txType2, vSolutions2);
             sigs1.pop_back();
             sigs2.pop_back();
-            CScript result = CombineSignatures(pubKey2, checker, txType2, vSolutions2, sigs1, sigs2);
+            CScript result = CombineSignatures(pubKey2, checker, txType2, vSolutions2, sigs1, sigs2, route);
             result << spk;
             return result;
         }
     case TX_MULTISIG:
-    case TX_ESCROW_CLTV:
         return CombineMultisig(scriptPubKey, checker, vSolutions, sigs1, sigs2);
+    case TX_ESCROW_CLTV:
+        vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
+        CScript ret = CombineMultisig(scriptPubKey, checker, ms_data, sigs1, sigs2);
+        if (route==0)
+            ret << OP_1;
+        else
+            ret << OP_0;
+        return ret;
     }
 
     return CScript();
 }
 
 CScript CombineSignatures(const CScript& scriptPubKey, const CTransaction& txTo, unsigned int nIn,
-                          const CScript& scriptSig1, const CScript& scriptSig2)
+                          const CScript& scriptSig1, const CScript& scriptSig2, bool route)
 {
     TransactionSignatureChecker checker(&txTo, nIn);
-    return CombineSignatures(scriptPubKey, checker, scriptSig1, scriptSig2);
+    return CombineSignatures(scriptPubKey, checker, scriptSig1, scriptSig2, route);
 }
 
 CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatureChecker& checker,
-                          const CScript& scriptSig1, const CScript& scriptSig2)
+                          const CScript& scriptSig1, const CScript& scriptSig2, bool route)
 {
     txnouttype txType;
     vector<vector<unsigned char> > vSolutions;
@@ -338,7 +346,7 @@ CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatureChecke
     vector<valtype> stack2;
     EvalScript(stack2, scriptSig2, SCRIPT_VERIFY_STRICTENC, BaseSignatureChecker());
 
-    return CombineSignatures(scriptPubKey, checker, txType, vSolutions, stack1, stack2);
+    return CombineSignatures(scriptPubKey, checker, txType, vSolutions, stack1, stack2, route);
 }
 
 namespace {
