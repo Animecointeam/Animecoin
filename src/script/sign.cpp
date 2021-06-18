@@ -109,16 +109,27 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         if (route==0)
         {
             scriptSigRet << OP_0; // workaround CHECKMULTISIG bug
+            vector<valtype> ms_data;
+            ms_data.push_back((vSolutions.begin()+1)[0]);
+            ms_data.push_back((vSolutions.begin()+3)[0]);
+            ms_data.push_back((vSolutions.begin()+4)[0]);
+            ms_data.push_back((vSolutions.begin()+5)[0]);
+            unsigned int nSigsRequired = ms_data.front()[0];
+            unsigned int nPubKeys = ms_data.size()-2;
+            printf ("Multisig SignN, %u solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
+            result = SignN(ms_data, creator, scriptPubKey, scriptSigRet);
             keyID = CPubKey(vSolutions[0]).GetID();
-            result = Sign1(keyID, creator, scriptPubKey, scriptSigRet);
-            vector<valtype> ms_data (vSolutions.begin()+1, vSolutions.begin()+vSolutions.size());
-            result = SignN(ms_data, creator, scriptPubKey, scriptSigRet) && result;
+            result = Sign1(keyID, creator, scriptPubKey, scriptSigRet) && result;
             scriptSigRet << OP_1;
         }
         else
         {
             scriptSigRet << OP_0; // workaround CHECKMULTISIG bug
-            result = SignN(vSolutions, creator, scriptPubKey, scriptSigRet) && result;
+            vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
+            unsigned int nSigsRequired = ms_data.front()[0];
+            unsigned int nPubKeys = ms_data.size()-2;
+            printf ("Multisig SignN, %u solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
+            result = SignN(ms_data, creator, scriptPubKey, scriptSigRet) && result;
             scriptSigRet << OP_0;
         }
         printf ("CLTV script %s\n", ScriptToAsmStr (scriptSigRet).c_str());
@@ -315,13 +326,27 @@ static CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatur
     case TX_MULTISIG:
         return CombineMultisig(scriptPubKey, checker, vSolutions, sigs1, sigs2);
     case TX_ESCROW_CLTV:
-        vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
-        CScript ret = CombineMultisig(scriptPubKey, checker, ms_data, sigs1, sigs2);
         if (route==0)
+        {
+            vector<valtype> ms_data;
+            ms_data.push_back((vSolutions.begin()+1)[0]);
+            ms_data.push_back((vSolutions.begin()+3)[0]);
+            ms_data.push_back((vSolutions.begin()+4)[0]);
+            ms_data.push_back((vSolutions.begin()+5)[0]);
+            CScript ret = CombineMultisig(scriptPubKey, checker, ms_data, sigs1, sigs2);
+            ret << sigs1[0];
             ret << OP_1;
+            printf ("Combined result: %s\n", ScriptToAsmStr (ret).c_str());
+            return ret;
+        }
         else
+        {
+            vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
+            CScript ret = CombineMultisig(scriptPubKey, checker, ms_data, sigs1, sigs2);
             ret << OP_0;
-        return ret;
+            printf ("Combined result: %s\n", ScriptToAsmStr (ret).c_str());
+            return ret;
+        }
     }
 
     return CScript();
