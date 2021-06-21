@@ -53,6 +53,8 @@ enum txnouttype
     TX_TWOPARTY_CLTV,
     TX_ESCROW_CLTV,
     TX_NULL_DATA,
+    // TX_WITNESS_V0_SCRIPTHASH,
+    // TX_WITNESS_V0_KEYHASH,
 };
 
 class CNoDestination {
@@ -81,6 +83,7 @@ CScript GetScriptForRawPubKey(const CPubKey& pubkey);
 CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys);
 CScript GetScriptForCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time);
 CScript GetScriptForEscrowCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time);
+//CScript GetScriptForWitness(const CScript& redeemscript);
 
 bool IsSimpleCLTV(const CScript& script, int64_t& cltv_height, int64_t& cltv_time);
 

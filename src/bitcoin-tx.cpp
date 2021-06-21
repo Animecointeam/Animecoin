@@ -350,6 +350,18 @@ static bool findSighashFlags(int& flags, const std::string& flagStr)
     return false;
 }
 
+static CAmount AmountFromValue(const UniValue& value)
+{
+    if (!value.isNum() && !value.isStr())
+        throw std::runtime_error("Amount is not a number or string");
+    CAmount amount;
+    if (!ParseFixedPoint(value.getValStr(), 5, &amount))
+        throw std::runtime_error("Invalid amount");
+    if (!MoneyRange(amount))
+        throw std::runtime_error("Amount out of range");
+    return amount;
+}
+
 static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
 {
     int nHashType = SIGHASH_ALL;
@@ -423,8 +435,10 @@ static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
                 }
                 Coin newcoin;
                 newcoin.out.scriptPubKey = scriptPubKey;
-                newcoin.out.nValue = 0; // we don't know the actual output value
-                // For future BIP143 patch, use newcoin.out.nValue = AmountFromValue(prevOut["amount"]);
+                newcoin.out.nValue = 0;
+                if (prevOut.exists("amount")) {
+                    newcoin.out.nValue = AmountFromValue(prevOut["amount"]);
+                }
                 newcoin.nHeight = 1;
                 view.AddCoin(out, std::move(newcoin), true);
             }
@@ -454,18 +468,21 @@ static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
             continue;
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
-		// For the future BIP143 patch, use const CAmount& amount = coin.out.nValue;
+		const CAmount& amount = coin.out.nValue;
 
-        txin.scriptSig.clear();
+        SignatureData sigdata;
+        // TODO: add route support here.
+        bool route = 1;
         // Only sign SIGHASH_SINGLE if there's a corresponding output:
         if (!fHashSingle || (i < mergedTx.vout.size()))
-            SignSignature(keystore, prevPubKey, mergedTx, i, nHashType);
+            ProduceSignature(MutableTransactionSignatureCreator(&keystore, &mergedTx, i, amount, nHashType), prevPubKey, sigdata, route);
 
         // ... and merge in other signatures:
-        for (const CTransaction& txv : txVariants) {
-            txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, txv.vin[i].scriptSig);
-        }
-        if (!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
+        for (const CTransaction& txv : txVariants)
+            sigdata = CombineSignatures(prevPubKey, MutableTransactionSignatureChecker(&mergedTx, i, amount), sigdata, DataFromTransaction(txv, i));
+        UpdateTransaction(mergedTx, i, sigdata);
+        
+        if (!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i, amount)))
             fComplete = false;
     }
 

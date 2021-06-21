@@ -459,6 +459,9 @@ void MultisigDialog::on_signTransactionButton_clicked()
     if(!ctx.isValid())
         return;
 
+    // Use CTransaction for the constant parts of the
+    // transaction to avoid rehashing.
+    const CTransaction txConst(mergedTx);
     // Sign what we can
     bool fComplete = true;
     bool route = !ui->refundCheckBox->isChecked();
@@ -472,10 +475,13 @@ void MultisigDialog::on_signTransactionButton_clicked()
             continue;
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
-        txin.scriptSig.clear();
-        SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL, route);
-        txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig, route);
-        if(!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
+        const CAmount& amount = coin.out.nValue;
+
+        SignatureData sigdata;
+        ProduceSignature(MutableTransactionSignatureCreator(pwalletMain, &mergedTx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
+        sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(tx, i));
+        UpdateTransaction(mergedTx, i, sigdata);
+        if(!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount)))
         {
           fComplete = false;
         }
