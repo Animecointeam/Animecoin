@@ -389,6 +389,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/scheduler.h \
     src/consensus/params.h \
     src/arith_uint256.h \
+    src/versionbits.h \
     src/wallet/db.h \
     src/wallet/wallet.h \
     src/wallet/walletdb.h \
@@ -559,6 +560,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/newpubkeydialog.cpp \
     src/scheduler.cpp \
     src/validation.cpp \
+    src/versionbits.cpp \
     src/wallet/db.cpp \
     src/wallet/rpcdump.cpp \
     src/wallet/rpcwallet.cpp \

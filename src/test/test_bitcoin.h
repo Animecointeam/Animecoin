@@ -8,6 +8,7 @@
 #include "random.h"
 #include "scheduler.h"
 #include "txdb.h"
+#include "txmempool.h"
 
 #include <boost/thread.hpp>
 
@@ -85,6 +86,8 @@ struct TestMemPoolEntryHelper
     unsigned int nHeight;
     bool spendsCoinbase;
     unsigned int sigOpCount;
+
+    LockPoints lp;
 
     TestMemPoolEntryHelper() :
         nFee(0), nTime(0), dPriority(0.0), nHeight(1),
