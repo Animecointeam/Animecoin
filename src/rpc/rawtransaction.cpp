@@ -598,8 +598,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
                         "         \"txid\":\"id\",             (string, required) The transaction id\n"
                         "         \"vout\":n,                  (numeric, required) The output number\n"
                         "         \"scriptPubKey\": \"hex\",   (string, required) script key\n"
-                        "         \"redeemScript\": \"hex\",   (string, required for P2SH) redeem script\n"
-                        "         \"amount\": value            (numeric, required) The amount spent\n"
+                        "         \"redeemScript\": \"hex\"    (string, required for P2SH) redeem script\n"
                         "         \"route\": n                 (int) route for conditional scripts\n"
                         "       }\n"
                         "       ,...\n"
@@ -736,9 +735,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
                 Coin newcoin;
                 newcoin.out.scriptPubKey = scriptPubKey;
                 newcoin.out.nValue = 0;
-                if (prevOut.exists("amount")) {
-                    newcoin.out.nValue = AmountFromValue(find_value(prevOut, "amount"));
-                }
+                // For a future witness patch, use newcoin.out.nValue = AmountFromValue(find_value(prevOut, "amount"));
                 newcoin.nHeight = 1;
                 view.AddCoin(out, std::move(newcoin), true);
             }
@@ -793,9 +790,6 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
 
     bool fHashSingle = ((nHashType & ~SIGHASH_ANYONECANPAY) == SIGHASH_SINGLE);
 
-    // Use CTransaction for the constant parts of the
-    // transaction to avoid rehashing.
-    const CTransaction txConst(mergedTx);
     // Sign what we can:
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++) {
         CTxIn& txin = mergedTx.vin[i];
@@ -805,21 +799,18 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
             continue;
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
-        const CAmount& amount = coin.out.nValue;
+        // For witness patch, use const CAmount& amount = coin.out.nValue;
 
-        SignatureData sigdata;
+        txin.scriptSig.clear();
         // Only sign SIGHASH_SINGLE if there's a corresponding output:
         if (!fHashSingle || (i < mergedTx.vout.size()))
-            ProduceSignature(MutableTransactionSignatureCreator(&keystore, &mergedTx, i, amount, nHashType), prevPubKey, sigdata, route);
+            SignSignature(keystore, prevPubKey, mergedTx, i, nHashType, route);
 
         // ... and merge in other signatures:
         for (const CMutableTransaction& txv : txVariants) {
-            sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(txv, i));
+            txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, txv.vin[i].scriptSig, route);
         }
-
-        UpdateTransaction(mergedTx, i, sigdata);
-
-        if (!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount)))
+        if (!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
             fComplete = false;
     }
 

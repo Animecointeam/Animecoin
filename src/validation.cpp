@@ -1111,7 +1111,7 @@ void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, int nHeight)
 
 bool CScriptCheck::operator()() {
     const CScript &scriptSig = ptxTo->vin[nIn].scriptSig;
-    if (!VerifyScript(scriptSig, scriptPubKey, nFlags, CachingTransactionSignatureChecker(ptxTo, nIn, amount, cacheStore), &error)) {
+    if (!VerifyScript(scriptSig, scriptPubKey, nFlags, CachingTransactionSignatureChecker(ptxTo, nIn, cacheStore), &error)) {
         return false;
     }
     return true;

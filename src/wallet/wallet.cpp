@@ -2719,14 +2719,12 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 for (const auto& coin : setCoins)
                 {
                     const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
-                    SignatureData sigdata;
+                    CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
 
-                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, sigdata, 1))
+                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, scriptSigRes, 1))
                     {
                         strFailReason = _("Signing transaction failed");
                         return false;
-                    } else {
-                        UpdateTransaction(txNew, nIn, sigdata);
                     }
                     nIn++;
                 }
@@ -2810,7 +2808,6 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
             }
         }
 
-        SignatureData sigdata;
         if (sign)
         {
             CTransaction txNewConst(txNew);
@@ -2820,12 +2817,12 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
                 CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
 
-                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, coin.first->vout[coin.second].nValue, SIGHASH_ALL), scriptPubKey, sigdata, 1))
+                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, SIGHASH_ALL), scriptPubKey, scriptSigRes, 1))
                 {
                     strFailReason = _("Signing transaction failed");
                     return false;
-                } else {
-                    UpdateTransaction(txNew, nIn, sigdata);
+                // } else {
+                //    UpdateTransaction(txNew, nIn, scriptSigRes);
                 }
 
                 nIn++;
