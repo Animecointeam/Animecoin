@@ -99,7 +99,7 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 2882131200; // May 1st, 2061
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1638316800; // Dec 1st, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 2913667200; // May 1st, 2062
 
         /**
@@ -196,7 +196,7 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 2882131200; // May 1st, 2061
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1638316800; // Dec 1st, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 2913667200; // May 1st, 2062
 
         pchMessageStart[0] = 0x4d; //Updated for Animecoin
