@@ -2719,13 +2719,16 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 for (const auto& coin : setCoins)
                 {
                     const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
-                    CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
-
-                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, scriptSigRes, 1))
+                    SignatureData sigdata;
+                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, sigdata, 1))
                     {
                         strFailReason = _("Signing transaction failed");
                         return false;
                     }
+                    else {
+                        UpdateTransaction(txNew, nIn, sigdata);
+                    }
+
                     nIn++;
                 }
 
@@ -2737,8 +2740,8 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 // Remove scriptSigs to eliminate the fee calculation dummy signatures
                 for (auto& vin : txNew.vin) {
                     vin.scriptSig = CScript();
-                    // vin.scriptWitness.SetNull();
                 }
+                txNew.wit.SetNull();
 
                 // Allow to override the default confirmation target over the CoinControl instance
                 int currentConfirmationTarget = nTxConfirmTarget;
@@ -2815,14 +2818,13 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
             for (const auto& coin : setCoins)
             {
                 const CScript& scriptPubKey = coin.first->vout[coin.second].scriptPubKey;
-                CScript& scriptSigRes = txNew.vin[nIn].scriptSig;
-
-                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, SIGHASH_ALL), scriptPubKey, scriptSigRes, 1))
+                SignatureData sigdata;
+                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, coin.first->vout[coin.second].nValue, SIGHASH_ALL), scriptPubKey, sigdata, 1))
                 {
                     strFailReason = _("Signing transaction failed");
                     return false;
-                // } else {
-                //    UpdateTransaction(txNew, nIn, scriptSigRes);
+                } else {
+                    UpdateTransaction(txNew, nIn, sigdata);
                 }
 
                 nIn++;
@@ -2833,8 +2835,8 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
          *static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);
 
         // Limit size
-        unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
-        if (nBytes >= MAX_STANDARD_TX_SIZE)
+        unsigned int nBytes = GetVirtualTransactionSize(txNew);
+        if (GetTransactionCost(txNew) >= MAX_STANDARD_TX_COST)
         {
             strFailReason = _("Transaction too large");
             return false;

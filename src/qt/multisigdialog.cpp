@@ -423,6 +423,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         return;
     }
     CMutableTransaction mergedTx(tx);
+    const CTransaction txv{tx};
 
     // Fetch previous transactions (inputs)
     CCoinsView viewDummy;
@@ -459,9 +460,15 @@ void MultisigDialog::on_signTransactionButton_clicked()
     if(!ctx.isValid())
         return;
 
+    // Use CTransaction for the constant parts of the
+    // transaction to avoid rehashing.
+    const CTransaction txConst(mergedTx);
+
     // Sign what we can
     bool fComplete = true;
     bool route = !ui->refundCheckBox->isChecked();
+    ScriptError serror = SCRIPT_ERR_OK;
+
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++)
     {
         CTxIn& txin = mergedTx.vin[i];
@@ -472,10 +479,14 @@ void MultisigDialog::on_signTransactionButton_clicked()
             continue;
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
-        txin.scriptSig.clear();
-        SignSignature(*pwalletMain, prevPubKey, mergedTx, i, SIGHASH_ALL, route);
-        txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, tx.vin[i].scriptSig, route);
-        if(!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
+        const CAmount& amount = coin.out.nValue;
+
+        SignatureData sigdata;
+        ProduceSignature(MutableTransactionSignatureCreator(pwalletMain, &mergedTx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
+        sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(txv, i), route);
+        UpdateTransaction(mergedTx, i, sigdata);
+
+        if (!VerifyScript(txin.scriptSig, prevPubKey, mergedTx.wit.vtxinwit.size() > i ? &mergedTx.wit.vtxinwit[i].scriptWitness : nullptr, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror))
         {
           fComplete = false;
         }
@@ -492,7 +503,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
     }
     else
     {
-        ui->statusLabel->setText(tr("Transaction is NOT ready (not enough signatures or too early for the refund.)"));
+        ui->statusLabel->setText(tr("Transaction is NOT ready: ")+QString(ScriptErrorString(serror)));
         ui->sendTransactionButton->setEnabled(false);
     }
 }

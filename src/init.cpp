@@ -482,6 +482,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-datacarriersize", strprintf(_("Maximum size of data in data carrier transactions we relay and mine (default: %u)"), MAX_OP_RETURN_RELAY));
 
     strUsage += HelpMessageGroup(_("Block creation options:"));
+    strUsage += HelpMessageOpt("-blockmaxcost=<n>", strprintf(_("Set maximum block cost (default: %d)"), DEFAULT_BLOCK_MAX_COST));
     strUsage += HelpMessageOpt("-blockminsize=<n>", strprintf(_("Set minimum block size in bytes (default: %u)"), DEFAULT_BLOCK_MIN_SIZE));
     strUsage += HelpMessageOpt("-blockmaxsize=<n>", strprintf(_("Set maximum block size in bytes (default: %d)"), DEFAULT_BLOCK_MAX_SIZE));
     strUsage += HelpMessageOpt("-blockprioritysize=<n>", strprintf(_("Set maximum size of high-priority/low-fee transactions in bytes (default: %d)"), DEFAULT_BLOCK_PRIORITY_SIZE));
@@ -1415,7 +1416,25 @@ bool AppInitMain()
                     assert(chainActive.Tip() != nullptr);
                 }
 
-                // Kindly address bitcoin#10758 #10919 for witness part.
+                if (!fReindex && !fReindexChainState) {
+                    // LoadChainTip sets chainActive based on pcoinsTip's best block
+                    if (!LoadChainTip(chainparams)) {
+                        strLoadError = _("Error initializing block database");
+                        break;
+                    }
+                    assert(chainActive.Tip() != NULL);
+                }
+
+                if (!fReset) {
+                    // Note that RewindBlockIndex MUST run even if we're about to -reindex-chainstate.
+                    // It both disconnects blocks based on chainActive, and drops block data in
+                    // mapBlockIndex based on lack of available witness data.
+                    uiInterface.InitMessage(_("Rewinding blocks..."));
+                    if (!RewindBlockIndex(chainparams)) {
+                        strLoadError = _("Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain");
+                        break;
+                    }
+                }
 
                 if (!is_coinsview_empty) {
                     uiInterface.InitMessage(_("Verifying blocks..."));
@@ -1510,6 +1529,18 @@ bool AppInitMain()
     {
         LogPrintf("Unsetting NODE_NETWORK on SPV mode\n");
         nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
+    }
+
+    if (Params().GetConsensus().vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout != 0) {
+        // Only advertize witness capabilities if they have a reasonable start time.
+        // This allows us to have the code merged without a defined softfork, by setting its
+        // end time to 0.
+        // Note that setting NODE_WITNESS is never required: the only downside from not
+        // doing so is that after activation, no upgraded nodes will fetch from you.
+        nLocalServices = ServiceFlags(nLocalServices | NODE_WITNESS);
+        // Only care about others providing witness capabilities if there is a softfork
+        // defined.
+        nRelevantServices = ServiceFlags(nRelevantServices | NODE_WITNESS);
     }
 
     // ********************************************************* Step 10: import blocks

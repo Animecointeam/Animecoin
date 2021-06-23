@@ -198,7 +198,7 @@ static void MutateTxAddInput(CMutableTransaction& tx, const std::string& strInpu
     uint256 txid(uint256S(strTxid));
 
     static const unsigned int minTxOutSz = 9;
-    static const unsigned int maxVout = MAX_BLOCK_SIZE / minTxOutSz;
+    static const unsigned int maxVout = MAX_BLOCK_BASE_SIZE / minTxOutSz;
 
     // extract and validate vout
     std::string strVout = vStrInputParts[1];
@@ -350,6 +350,18 @@ static bool findSighashFlags(int& flags, const std::string& flagStr)
     return false;
 }
 
+static CAmount AmountFromValue(const UniValue& value)
+{
+    if (!value.isNum() && !value.isStr())
+        throw std::runtime_error("Amount is not a number or string");
+    CAmount amount;
+    if (!ParseFixedPoint(value.getValStr(), 8, &amount))
+        throw std::runtime_error("Invalid amount");
+    if (!MoneyRange(amount))
+        throw std::runtime_error("Amount out of range");
+    return amount;
+}
+
 static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
 {
     int nHashType = SIGHASH_ALL;
@@ -358,12 +370,10 @@ static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
         if (!findSighashFlags(nHashType, flagStr))
             throw std::runtime_error("unknown sighash flag/sign option");
 
-    std::vector<CTransaction> txVariants;
-    txVariants.push_back(tx);
-
     // mergedTx will end up with all the signatures; it
     // starts as a clone of the raw tx:
-    CMutableTransaction mergedTx(txVariants[0]);
+    CMutableTransaction mergedTx{tx};
+    const CTransaction txv{tx};
     bool fComplete = true;
     CCoinsView viewDummy;
     CCoinsViewCache view(&viewDummy);
@@ -423,15 +433,17 @@ static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
                 }
                 Coin newcoin;
                 newcoin.out.scriptPubKey = scriptPubKey;
-                newcoin.out.nValue = 0; // we don't know the actual output value
-                // For future BIP143 patch, use newcoin.out.nValue = AmountFromValue(prevOut["amount"]);
+                newcoin.out.nValue = 0;
+                if (prevOut.exists("amount")) {
+                    newcoin.out.nValue = AmountFromValue(prevOut["amount"]);
+                }
                 newcoin.nHeight = 1;
                 view.AddCoin(out, std::move(newcoin), true);
             }
 
             // if redeemScript given and private keys given,
             // add redeemScript to the tempKeystore so it can be signed:
-            if (scriptPubKey.IsPayToScriptHash() &&
+            if ((scriptPubKey.IsPayToScriptHash() || scriptPubKey.IsPayToWitnessScriptHash()) &&
                 prevOut.exists("redeemScript")) {
                 UniValue v = prevOut["redeemScript"];
                 std::vector<unsigned char> rsData(ParseHexUV(v, "redeemScript"));
@@ -454,18 +466,19 @@ static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
             continue;
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
-		// For the future BIP143 patch, use const CAmount& amount = coin.out.nValue;
+		const CAmount& amount = coin.out.nValue;
 
-        txin.scriptSig.clear();
+        SignatureData sigdata;
         // Only sign SIGHASH_SINGLE if there's a corresponding output:
         if (!fHashSingle || (i < mergedTx.vout.size()))
-            SignSignature(keystore, prevPubKey, mergedTx, i, nHashType);
+			// TODO: add route support.
+            ProduceSignature(MutableTransactionSignatureCreator(&keystore, &mergedTx, i, amount, nHashType), prevPubKey, sigdata, 1);
 
         // ... and merge in other signatures:
-        for (const CTransaction& txv : txVariants) {
-            txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, txv.vin[i].scriptSig);
-        }
-        if (!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
+        sigdata = CombineSignatures(prevPubKey, MutableTransactionSignatureChecker(&mergedTx, i, amount), sigdata, DataFromTransaction(txv, i));
+        UpdateTransaction(mergedTx, i, sigdata);
+
+        if (!VerifyScript(txin.scriptSig, prevPubKey, mergedTx.wit.vtxinwit.size() > i ? &mergedTx.wit.vtxinwit[i].scriptWitness : NULL, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i, amount)))
             fComplete = false;
     }
 

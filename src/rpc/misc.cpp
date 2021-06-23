@@ -382,6 +382,43 @@ UniValue createmultisig(const JSONRPCRequest& request)
     return result;
 }
 
+UniValue createwitnessaddress(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 1)
+    {
+        string msg = "createwitnessaddress \"script\"\n"
+            "\nCreates a witness address for a particular script.\n"
+            "It returns a json object with the address and witness script.\n"
+
+            "\nArguments:\n"
+            "1. \"script\"       (string, required) A hex encoded script\n"
+
+            "\nResult:\n"
+            "{\n"
+            "  \"address\":\"multisigaddress\",  (string) The value of the new address (P2SH of witness script).\n"
+            "  \"witnessScript\":\"script\"      (string) The string value of the hex-encoded witness script.\n"
+            "}\n"
+        ;
+        throw runtime_error(msg);
+    }
+
+    if (!IsHex(request.params[0].get_str())) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Script must be hex-encoded");
+    }
+
+    std::vector<unsigned char> code = ParseHex(request.params[0].get_str());
+    CScript script(code.begin(), code.end());
+    CScript witscript = GetScriptForWitness(script);
+    CScriptID witscriptid(witscript);
+    CBitcoinAddress address(witscriptid);
+
+    UniValue result(UniValue::VOBJ);
+    result.pushKV("address", address.ToString());
+    result.pushKV("witnessScript", HexStr(witscript.begin(), witscript.end()));
+
+    return result;
+}
+
 UniValue verifymessage(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 3)
@@ -573,6 +610,7 @@ static const CRPCCommand commands[] =
   { "control",            "getmemoryinfo",          &getmemoryinfo,          true,  {} },
   { "util",               "validateaddress",        &validateaddress,        true,  {"address"} }, /* uses wallet if enabled */
   { "util",               "createmultisig",         &createmultisig,         true,  {"nrequired","keys","options"} },
+  { "util",               "createwitnessaddress",   &createwitnessaddress,   true,  {} },
   { "util",               "verifymessage",          &verifymessage,          true,  {"address","signature","message"} },
   { "util",               "signmessagewithprivkey", &signmessagewithprivkey, true,  {"privkey","message"} },
 

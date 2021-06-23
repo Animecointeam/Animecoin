@@ -102,6 +102,11 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1638316800; // Dec 1st, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 2913667200; // May 1st, 2062
 
+        // Deployment of SegWit (BIP141 and BIP143)
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1646092800; // Mar 1st, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 2913667200; // May 1st, 2062
+
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
@@ -199,6 +204,11 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1638316800; // Dec 1st, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 2913667200; // May 1st, 2062
 
+        // Deployment of SegWit (BIP141 and BIP143)
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1646092800; // Mar 1st, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 2913667200; // May 1st, 2062
+
         pchMessageStart[0] = 0x4d; //Updated for Animecoin
         pchMessageStart[1] = 0x49;
         pchMessageStart[2] = 0x4e;
@@ -275,6 +285,9 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 999999999999ULL;
 
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;

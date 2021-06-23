@@ -15,9 +15,9 @@
 
 #include <unordered_map>
 
-#define MIN_TRANSACTION_SIZE (::GetSerializeSize(CTransaction(), SER_NETWORK, PROTOCOL_VERSION))
+#define MIN_TRANSACTION_BASE_SIZE (::GetSerializeSize(CTransaction(), SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS))
 
-CBlockHeaderAndShortTxIDs::CBlockHeaderAndShortTxIDs(const CBlock& block) :
+CBlockHeaderAndShortTxIDs::CBlockHeaderAndShortTxIDs(const CBlock& block, bool fUseWTXID) :
         nonce(GetRand(std::numeric_limits<uint64_t>::max())),
         shorttxids(block.vtx.size() - 1), prefilledtxn(1), header(block) {
     FillShortTxIDSelector();
@@ -25,7 +25,7 @@ CBlockHeaderAndShortTxIDs::CBlockHeaderAndShortTxIDs(const CBlock& block) :
     prefilledtxn[0] = {0, block.vtx[0]};
     for (size_t i = 1; i < block.vtx.size(); i++) {
         const CTransaction& tx = *block.vtx[i];
-        shorttxids[i - 1] = GetShortID(tx.GetHash());
+        shorttxids[i - 1] = GetShortID(fUseWTXID ? tx.GetWitnessHash() : tx.GetHash());
     }
 }
 
@@ -50,7 +50,7 @@ uint64_t CBlockHeaderAndShortTxIDs::GetShortID(const uint256& txhash) const {
 ReadStatus PartiallyDownloadedBlock::InitData(const CBlockHeaderAndShortTxIDs& cmpctblock) {
     if (cmpctblock.header.IsNull() || (cmpctblock.shorttxids.empty() && cmpctblock.prefilledtxn.empty()))
         return READ_STATUS_INVALID;
-    if (cmpctblock.shorttxids.size() + cmpctblock.prefilledtxn.size() > MAX_BLOCK_SIZE / MIN_TRANSACTION_SIZE)
+    if (cmpctblock.shorttxids.size() + cmpctblock.prefilledtxn.size() > MAX_BLOCK_BASE_SIZE / MIN_TRANSACTION_BASE_SIZE)
         return READ_STATUS_INVALID;
 
     assert(header.IsNull() && txn_available.empty());

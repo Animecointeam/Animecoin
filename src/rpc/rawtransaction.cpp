@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,6 +14,7 @@
 #include "primitives/transaction.h"
 #include "rpc/server.h"
 #include "script/script.h"
+#include "script/script_error.h"
 #include "script/sign.h"
 #include "script/standard.h"
 #include "uint256.h"
@@ -58,10 +59,15 @@ void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fInclud
 void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
 {
     entry.pushKV("txid", tx.GetHash().GetHex());
+    entry.pushKV("hash", tx.GetWitnessHash().GetHex());
+    entry.pushKV("size", (int)::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION));
+    entry.pushKV("vsize", (int)::GetVirtualTransactionSize(tx));
     entry.pushKV("version", tx.nVersion);
     entry.pushKV("locktime", (int64_t)tx.nLockTime);
+
     UniValue vin(UniValue::VARR);
-    for (const CTxIn& txin : tx.vin) {
+    for (unsigned int i = 0; i < tx.vin.size(); i++) {
+        const CTxIn& txin = tx.vin[i];
         UniValue in(UniValue::VOBJ);
         if (tx.IsCoinBase())
             in.pushKV("coinbase", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
@@ -72,6 +78,17 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
             o.pushKV("asm", ScriptToAsmStr(txin.scriptSig, true));
             o.pushKV("hex", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
             in.pushKV("scriptSig", o);
+        }
+        if (!tx.wit.IsNull()) {
+            if (!tx.wit.vtxinwit[i].IsNull()) {
+                UniValue txinwitness(UniValue::VARR);
+                for (unsigned int j = 0; j < tx.wit.vtxinwit[i].scriptWitness.stack.size(); j++) {
+                    std::vector<unsigned char> item = tx.wit.vtxinwit[i].scriptWitness.stack[j];
+                    txinwitness.push_back(HexStr(item.begin(), item.end()));
+                }
+                in.pushKV("txinwitness", txinwitness);
+            }
+
         }
         in.pushKV("sequence", (int64_t)txin.nSequence);
         vin.push_back(in);
@@ -136,6 +153,9 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
                 "  \"in_active_chain\": b, (bool) Whether specified block is in the active chain or not (only present with explicit \"blockhash\" argument)\n"
                 "  \"hex\" : \"data\",       (string) The serialized, hex-encoded data for 'txid'\n"
                 "  \"txid\" : \"id\",        (string) The transaction id (same as provided)\n"
+                "  \"hash\" : \"id\",        (string) The transaction hash (differs from txid for witness transactions)\n"
+                "  \"size\" : n,             (numeric) The serialized transaction size\n"
+                "  \"vsize\" : n,            (numeric) The virtual transaction size (differs from size for witness transactions)\n"
                 "  \"version\" : n,          (numeric) The version\n"
                 "  \"locktime\" : ttt,       (numeric) The lock time\n"
                 "  \"vin\" : [               (array of json objects)\n"
@@ -147,6 +167,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
                 "         \"hex\": \"hex\"   (string) hex\n"
                 "       },\n"
                 "       \"sequence\": n      (numeric) The script sequence number\n"
+                "       \"txinwitness\": [\"hex\", ...] (array of string) hex-encoded witness data (if any)\n"
                 "     }\n"
                 "     ,...\n"
                 "  ],\n"
@@ -307,7 +328,7 @@ UniValue gettxoutproof(const JSONRPCRequest& request)
     if (ntxFound != setTxids.size())
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "(Not all) transactions not found in specified block");
 
-    CDataStream ssMB(SER_NETWORK, PROTOCOL_VERSION);
+    CDataStream ssMB(SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS);
     CMerkleBlock mb(block, setTxids);
     ssMB << mb;
     std::string strHex = HexStr(ssMB.begin(), ssMB.end());
@@ -327,7 +348,7 @@ UniValue verifytxoutproof(const JSONRPCRequest& request)
             "[\"txid\"]      (array, strings) The txid(s) which the proof commits to, or empty array if the proof is invalid\n"
         );
 
-    CDataStream ssMB(ParseHexV(request.params[0], "proof"), SER_NETWORK, PROTOCOL_VERSION);
+    CDataStream ssMB(ParseHexV(request.params[0], "proof"), SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS);
     CMerkleBlock merkleBlock;
     ssMB >> merkleBlock;
 
@@ -476,6 +497,9 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
                 "\nResult:\n"
                 "{\n"
                 "  \"txid\" : \"id\",        (string) The transaction id\n"
+                "  \"hash\" : \"id\",        (string) The transaction hash (differs from txid for witness transactions)\n"
+                "  \"size\" : n,             (numeric) The transaction size\n"
+                "  \"vsize\" : n,            (numeric) The virtual transaction size (differs from size for witness transactions)\n"
                 "  \"version\" : n,          (numeric) The version\n"
                 "  \"locktime\" : ttt,       (numeric) The lock time\n"
                 "  \"vin\" : [               (array of json objects)\n"
@@ -486,6 +510,7 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
                 "         \"asm\": \"asm\",  (string) asm\n"
                 "         \"hex\": \"hex\"   (string) hex\n"
                 "       },\n"
+                "       \"txinwitness\": [\"hex\", ...] (array of string) hex-encoded witness data (if any)\n"
                 "       \"sequence\": n     (numeric) The script sequence number\n"
                 "     }\n"
                 "     ,...\n"
@@ -520,7 +545,7 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
 
     CTransaction tx;
 
-    if (!DecodeHexTx(tx, request.params[0].get_str()))
+    if (!DecodeHexTx(tx, request.params[0].get_str(), true))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
     UniValue result(UniValue::VOBJ);
@@ -572,6 +597,18 @@ UniValue decodescript(const JSONRPCRequest& request)
     return r;
 }
 
+/** Pushes a JSON object for script verification or signing errors to vErrorsRet. */
+static void TxInErrorToJSON(const CTxIn& txin, UniValue& vErrorsRet, const std::string& strMessage)
+{
+    UniValue entry(UniValue::VOBJ);
+    entry.pushKV("txid", txin.prevout.hash.ToString());
+    entry.pushKV("vout", (uint64_t)txin.prevout.n);
+    entry.pushKV("scriptSig", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
+    entry.pushKV("sequence", (uint64_t)txin.nSequence);
+    entry.pushKV("error", strMessage);
+    vErrorsRet.push_back(entry);
+}
+
 UniValue signrawtransaction(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
@@ -598,7 +635,8 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
                         "         \"txid\":\"id\",             (string, required) The transaction id\n"
                         "         \"vout\":n,                  (numeric, required) The output number\n"
                         "         \"scriptPubKey\": \"hex\",   (string, required) script key\n"
-                        "         \"redeemScript\": \"hex\"    (string, required for P2SH) redeem script\n"
+                        "         \"redeemScript\": \"hex\",   (string, required for P2SH or P2WSH) redeem script\n"
+                        "         \"amount\": value            (numeric, required) The amount spent\n"
                         "         \"route\": n                 (int) route for conditional scripts\n"
                         "       }\n"
                         "       ,...\n"
@@ -618,8 +656,18 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
 
                         "\nResult:\n"
                         "{\n"
-                        "  \"hex\": \"value\",   (string) The raw transaction with signature(s) (hex-encoded string)\n"
-                        "  \"complete\": n       (numeric) if transaction has a complete set of signature (0 if not)\n"
+                        "  \"hex\" : \"value\",           (string) The hex-encoded raw transaction with signature(s)\n"
+                        "  \"complete\" : true|false,   (boolean) If the transaction has a complete set of signatures\n"
+                        "  \"errors\" : [                 (json array of objects) Script verification errors (if there are any)\n"
+                        "    {\n"
+                        "      \"txid\" : \"hash\",           (string) The hash of the referenced, previous transaction\n"
+                        "      \"vout\" : n,                (numeric) The index of the output to spent and used as input\n"
+                        "      \"scriptSig\" : \"hex\",       (string) The hex-encoded signature script\n"
+                        "      \"sequence\" : n,            (numeric) Script sequence number\n"
+                        "      \"error\" : \"text\"           (string) Verification or signing error related to the input\n"
+                        "    }\n"
+                        "    ,...\n"
+                        "  ]\n"
                         "}\n"
 
                         "\nExamples:\n"
@@ -656,7 +704,6 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
     // mergedTx will end up with all the signatures; it
     // starts as a clone of the rawtx:
     CMutableTransaction mergedTx(txVariants[0]);
-    bool fComplete = true;
 
     // Fetch previous transactions (inputs):
     CCoinsView viewDummy;
@@ -735,14 +782,16 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
                 Coin newcoin;
                 newcoin.out.scriptPubKey = scriptPubKey;
                 newcoin.out.nValue = 0;
-                // For a future witness patch, use newcoin.out.nValue = AmountFromValue(find_value(prevOut, "amount"));
+                if (prevOut.exists("amount")) {
+                    newcoin.out.nValue = AmountFromValue(find_value(prevOut, "amount"));
+                }
                 newcoin.nHeight = 1;
                 view.AddCoin(out, std::move(newcoin), true);
             }
 
             // if redeemScript given and not using the local wallet (private keys
             // given), add redeemScript to the tempKeystore so it can be signed:
-            if (fGivenKeys && scriptPubKey.IsPayToScriptHash()) {
+            if (fGivenKeys && (scriptPubKey.IsPayToScriptHash() || scriptPubKey.IsPayToWitnessScriptHash())) {
                 RPCTypeCheckObj(prevOut,
                     {
                         {"txid", UniValueType(UniValue::VSTR)},
@@ -790,33 +839,48 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
 
     bool fHashSingle = ((nHashType & ~SIGHASH_ANYONECANPAY) == SIGHASH_SINGLE);
 
+    // Script verification errors
+    UniValue vErrors(UniValue::VARR);
+
+    // Use CTransaction for the constant parts of the
+    // transaction to avoid rehashing.
+    const CTransaction txConst(mergedTx);
     // Sign what we can:
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++) {
         CTxIn& txin = mergedTx.vin[i];
         const Coin& coin = view.AccessCoin(txin.prevout);
         if (coin.IsSpent()) {
-            fComplete = false;
+            TxInErrorToJSON(txin, vErrors, "Input not found or already spent");
             continue;
         }
         const CScript& prevPubKey = coin.out.scriptPubKey;
-        // For witness patch, use const CAmount& amount = coin.out.nValue;
+        const CAmount& amount = coin.out.nValue;
 
-        txin.scriptSig.clear();
+        SignatureData sigdata;
         // Only sign SIGHASH_SINGLE if there's a corresponding output:
         if (!fHashSingle || (i < mergedTx.vout.size()))
-            SignSignature(keystore, prevPubKey, mergedTx, i, nHashType, route);
+            ProduceSignature(MutableTransactionSignatureCreator(&keystore, &mergedTx, i, amount, nHashType), prevPubKey, sigdata, route);
 
         // ... and merge in other signatures:
         for (const CMutableTransaction& txv : txVariants) {
-            txin.scriptSig = CombineSignatures(prevPubKey, mergedTx, i, txin.scriptSig, txv.vin[i].scriptSig, route);
+            sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(txv, i), route);
         }
-        if (!VerifyScript(txin.scriptSig, prevPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i)))
-            fComplete = false;
+
+        UpdateTransaction(mergedTx, i, sigdata);
+
+        ScriptError serror = SCRIPT_ERR_OK;
+        if (!VerifyScript(txin.scriptSig, prevPubKey, mergedTx.wit.vtxinwit.size() > i ? &mergedTx.wit.vtxinwit[i].scriptWitness : nullptr, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror)) {
+            TxInErrorToJSON(txin, vErrors, ScriptErrorString(serror));
+        }
     }
+    bool fComplete = vErrors.empty();
 
     UniValue result(UniValue::VOBJ);
     result.pushKV("hex", EncodeHexTx(mergedTx));
     result.pushKV("complete", fComplete);
+    if (!vErrors.empty()) {
+        result.pushKV("errors", vErrors);
+    }
 
     return result;
 }

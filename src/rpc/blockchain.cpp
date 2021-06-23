@@ -109,7 +109,9 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
         confirmations = chainActive.Height() - blockindex->nHeight + 1;
     result.pushKV("validated", (blockindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_SCRIPTS);
     result.pushKV("confirmations", confirmations);
+    result.pushKV("strippedsize", (int)::GetSerializeSize(block, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS));
     result.pushKV("size", (int)::GetSerializeSize(block, SER_NETWORK, PROTOCOL_VERSION));
+    result.pushKV("cost", (int)::GetBlockCost(block));
     result.pushKV("height", blockindex->nHeight);
     result.pushKV("version", block.nVersion);
     result.pushKV("merkleroot", block.hashMerkleRoot.GetHex());
@@ -700,6 +702,8 @@ UniValue getblock(const JSONRPCRequest& request)
                 "  \"hash\" : \"hash\",     (string) the block hash (same as provided)\n"
                 "  \"confirmations\" : n,   (numeric) The number of confirmations, or -1 if the block is not on the main chain\n"
                 "  \"size\" : n,            (numeric) The block size\n"
+                "  \"strippedsize\" : n,    (numeric) The block size excluding witness data\n"
+                "  \"cost\" : n             (numeric) The block cost\n"
                 "  \"height\" : n,          (numeric) The block height or index\n"
                 "  \"version\" : n,         (numeric) The block version\n"
                 "  \"merkleroot\" : \"xxxx\", (string) The merkle root\n"
@@ -1134,7 +1138,8 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     UniValue bip9_softforks(UniValue::VARR);
     softforks.push_back(SoftForkDesc("bip65", 113, tip, consensusParams));
     bip9_softforks.push_back(BIP9SoftForkDesc("csv", consensusParams, Consensus::DEPLOYMENT_CSV));
-    obj.pushKV("softforks",             softforks);
+    bip9_softforks.push_back(BIP9SoftForkDesc("segwit", consensusParams, Consensus::DEPLOYMENT_SEGWIT));
+    obj.pushKV("softforks", softforks);
     obj.pushKV("bip9_softforks", bip9_softforks);
 
     if (fPruneMode)

@@ -22,6 +22,39 @@
 #include <utility>
 #include <vector>
 
+template<typename Stream>
+class OverrideStream
+{
+    Stream* stream;
+public:
+    const int nType;
+    const int nVersion;
+
+    OverrideStream(Stream* stream_, int nType_, int nVersion_) : stream(stream_), nType(nType_), nVersion(nVersion_) {}
+
+    template<typename T>
+    OverrideStream<Stream>& operator<<(const T& obj)
+    {
+        // Serialize to this stream
+        ::Serialize(*this, obj);
+        return (*this);
+    }
+
+    template<typename T>
+    OverrideStream<Stream>& operator>>(T& obj)
+    {
+        // Unserialize from this stream
+        ::Unserialize(*this, obj);
+        return (*this);
+    }
+};
+
+template<typename S>
+OverrideStream<S> WithOrVersion(S* s, int nVersionFlag)
+{
+    return OverrideStream<S>(s, s->GetType(), s->GetVersion() | nVersionFlag);
+}
+
 /* Minimal stream for overwriting and/or appending to an existing byte vector
  *
  * The referenced vector will grow as necessary

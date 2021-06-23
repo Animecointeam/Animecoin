@@ -8,6 +8,7 @@
 #include "base58.h"
 #include "chainparams.h"
 #include "consensus/consensus.h"
+#include "consensus/params.h"
 #include "consensus/validation.h"
 #include "core_io.h"
 #include "init.h"
@@ -220,6 +221,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
             "{\n"
             "  \"blocks\": nnn,             (numeric) The current block\n"
             "  \"currentblocksize\": nnn,   (numeric) The last block size\n"
+            "  \"currentblockcost\": nnn,   (numeric) The last block cost\n"
             "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
             "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
             "  \"errors\": \"...\"            (string) Current errors\n"
@@ -238,6 +240,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("blocks",           (int)chainActive.Height());
     obj.pushKV("currentblocksize", (uint64_t)nLastBlockSize);
+    obj.pushKV("currentblockcost", (uint64_t)nLastBlockCost);
     obj.pushKV("currentblocktx",   (uint64_t)nLastBlockTx);
     obj.pushKV("difficulty",       (double)GetDifficulty());
     obj.pushKV("errors",           GetWarnings("statusbar"));
@@ -301,6 +304,15 @@ static UniValue BIP22ValidationResult(const CValidationState& state)
     return "valid?";
 }
 
+std::string gbt_vb_name(const Consensus::DeploymentPos pos) {
+    const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
+    std::string s = vbinfo.name;
+    if (!vbinfo.gbt_force) {
+        s.insert(s.begin(), '!');
+    }
+    return s;
+}
+
 UniValue getblocktemplate(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
@@ -308,7 +320,9 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 "getblocktemplate ( \"jsonrequestobject\" )\n"
                 "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
                 "It returns data needed to construct a block to work on.\n"
-                "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n"
+                "For full specification, see BIPs 22 and 9:\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki\n"
+                "    https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
 
                 "\nArguments:\n"
                 "1. template_request         (json object, optional) A json object in the following spec\n"
@@ -324,17 +338,25 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 "\nResult:\n"
                 "{\n"
                 "  \"version\" : n,                    (numeric) The block version\n"
+                "  \"rules\" : [ \"rulename\", ... ],    (array of strings) specific block rules that are to be enforced\n"
+                "  \"vbavailable\" : {                 (json object) set of pending, supported versionbit (BIP 9) softfork deployments\n"
+                "      \"rulename\" : bitnumber        (numeric) identifies the bit number as indicating acceptance and readiness for the named softfork rule\n"
+                "      ,...\n"
+                "  },\n"
+                "  \"vbrequired\" : n,                 (numeric) bit mask of versionbits the server requires set in submissions\n"
                 "  \"previousblockhash\" : \"xxxx\",    (string) The hash of current highest block\n"
                 "  \"transactions\" : [                (array) contents of non-coinbase transactions that should be included in the next block\n"
                 "      {\n"
                 "         \"data\" : \"xxxx\",          (string) transaction data encoded in hexadecimal (byte-for-byte)\n"
-                "         \"hash\" : \"xxxx\",          (string) hash/id encoded in little-endian hexadecimal\n"
+                "         \"txid\" : \"xxxx\",          (string) transaction id encoded in little-endian hexadecimal\n"
+                "         \"hash\" : \"xxxx\",          (string) hash encoded in little-endian hexadecimal (including witness data)\n"
                 "         \"depends\" : [              (array) array of numbers \n"
                 "             n                        (numeric) transactions before this one (by 1-based index in 'transactions' list) that must be present in the final block if this one is\n"
                 "             ,...\n"
                 "         ],\n"
                 "         \"fee\": n,                   (numeric) difference in value between transaction inputs and outputs (in Satoshis); for coinbase transactions, this is a negative Number of the total collected block fees (ie, not including the block subsidy); if key is not present, fee is unknown and clients MUST NOT assume there isn't one\n"
-                "         \"sigops\" : n,               (numeric) total number of SigOps, as counted for purposes of block limits; if key is not present, sigop count is unknown and clients MUST NOT assume there aren't any\n"
+                "         \"sigops\" : n,               (numeric) total SigOps cost, as counted for purposes of block limits; if key is not present, sigop cost is unknown and clients MUST NOT assume it is zero\n"
+                "         \"cost\" : n,                 (numeric) total transaction size cost, as counted for purposes of block limits\n"
                 "         \"required\" : true|false     (boolean) if provided and true, this transaction must be in the final block\n"
                 "      }\n"
                 "      ,...\n"
@@ -351,8 +373,9 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 "     ,...\n"
                 "  ],\n"
                 "  \"noncerange\" : \"00000000ffffffff\",   (string) A range of valid nonces\n"
-                "  \"sigoplimit\" : n,                 (numeric) limit of sigops in blocks\n"
+                "  \"sigoplimit\" : n,                 (numeric) cost limit of sigops in blocks\n"
                 "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
+                "  \"costlimit\" : n,                  (numeric) limit of block cost\n"
                 "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
                 "  \"bits\" : \"xxx\",                 (string) compressed target of next block\n"
                 "  \"height\" : n                      (numeric) The height of the next block\n"
@@ -367,6 +390,8 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
     std::string strMode = "template";
     UniValue lpval = NullUniValue;
+    std::set<std::string> setClientRules;
+    int64_t nMaxVersionPreVB = -1;
     if (!request.params[0].isNull())
     {
         const UniValue& oparam = request.params[0].get_obj();
@@ -409,6 +434,20 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             CValidationState state;
             TestBlockValidity(state, Params(), block, pindexPrev, false, true);
             return BIP22ValidationResult(state);
+        }
+
+        const UniValue& aClientRules = find_value(oparam, "rules");
+        if (aClientRules.isArray()) {
+            for (unsigned int i = 0; i < aClientRules.size(); ++i) {
+                const UniValue& v = aClientRules[i];
+                setClientRules.insert(v.get_str());
+            }
+        } else {
+            // NOTE: It is important that this NOT be read if versionbits is supported
+            const UniValue& uvMaxVersion = find_value(oparam, "maxversion");
+            if (uvMaxVersion.isNum()) {
+                nMaxVersionPreVB = uvMaxVersion.get_int64();
+            }
         }
     }
 
@@ -497,17 +536,21 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
         pindexPrev = pindexPrevNew;
     }
     CBlock* pblock = &pblocktemplate->block; // pointer for convenience
+    const Consensus::Params& consensusParams = Params().GetConsensus();
 
     // Update nTime
-    UpdateTime(pblock, Params().GetConsensus(), pindexPrev);
+    UpdateTime(pblock, consensusParams, pindexPrev);
     pblock->nNonce = 0;
+
+    // NOTE: If at some point we support pre-segwit miners post-segwit-activation, this needs to take segwit support into consideration
+    const bool fPreSegWit = (THRESHOLD_ACTIVE != VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_SEGWIT, versionbitscache));
 
     UniValue aCaps(UniValue::VARR); aCaps.push_back("proposal");
 
     UniValue transactions(UniValue::VARR);
     map<uint256, int64_t> setTxIndex;
     int i = 0;
-    for (const auto& it : pblock->vtx) {
+    for (auto& it : pblock->vtx) {
         const CTransaction& tx = *it;
         uint256 txHash = tx.GetHash();
         setTxIndex[txHash] = i++;
@@ -519,7 +562,8 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
         entry.pushKV("data", EncodeHexTx(tx));
 
-        entry.pushKV("hash", txHash.GetHex());
+        entry.pushKV("txid", txHash.GetHex());
+        entry.pushKV("hash", tx.GetWitnessHash().GetHex());
 
         UniValue deps(UniValue::VARR);
         for (const CTxIn& in : tx.vin)
@@ -531,7 +575,13 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
         int index_in_template = i - 1;
         entry.pushKV("fee", pblocktemplate->vTxFees[index_in_template]);
-        entry.pushKV("sigops", pblocktemplate->vTxSigOps[index_in_template]);
+        int64_t nTxSigOps = pblocktemplate->vTxSigOpsCost[index_in_template];
+        if (fPreSegWit) {
+            assert(nTxSigOps % WITNESS_SCALE_FACTOR == 0);
+            nTxSigOps /= WITNESS_SCALE_FACTOR;
+        }
+        entry.pushKV("sigops", nTxSigOps);
+        entry.pushKV("cost", GetTransactionCost(tx));
 
         transactions.push_back(entry);
     }
@@ -541,19 +591,70 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
     arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
 
-    static UniValue aMutable(UniValue::VARR);
-    if (aMutable.empty())
-    {
-        aMutable.push_back("time");
-        aMutable.push_back("transactions");
-        aMutable.push_back("prevblock");
-        // Extra GBT compatibility for miners post getwork removal.
-        aMutable.push_back("version/force");
-    }
+    UniValue aMutable(UniValue::VARR);
+    aMutable.push_back("time");
+    aMutable.push_back("transactions");
+    aMutable.push_back("prevblock");
 
     UniValue result(UniValue::VOBJ);
     result.pushKV("capabilities", aCaps);
+
+
+    UniValue aRules(UniValue::VARR);
+    UniValue vbavailable(UniValue::VOBJ);
+    for (int i = 0; i < (int)Consensus::MAX_VERSION_BITS_DEPLOYMENTS; ++i) {
+        Consensus::DeploymentPos pos = Consensus::DeploymentPos(i);
+        ThresholdState state = VersionBitsState(pindexPrev, consensusParams, pos, versionbitscache);
+        switch (state) {
+            case THRESHOLD_DEFINED:
+            case THRESHOLD_FAILED:
+                // Not exposed to GBT at all
+                break;
+            case THRESHOLD_LOCKED_IN:
+                // Ensure bit is set in block version
+                pblock->nVersion |= VersionBitsMask(consensusParams, pos);
+                // FALL THROUGH to get vbavailable set...
+            case THRESHOLD_STARTED:
+            {
+                const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
+                vbavailable.pushKV(gbt_vb_name(pos), consensusParams.vDeployments[pos].bit);
+                if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
+                    if (!vbinfo.gbt_force) {
+                        // If the client doesn't support this, don't indicate it in the [default] version
+                        pblock->nVersion &= ~VersionBitsMask(consensusParams, pos);
+                    }
+                }
+                break;
+            }
+            case THRESHOLD_ACTIVE:
+            {
+                // Add to rules only
+                const struct BIP9DeploymentInfo& vbinfo = VersionBitsDeploymentInfo[pos];
+                aRules.push_back(gbt_vb_name(pos));
+                if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
+                    // Not supported by the client; make sure it's safe to proceed
+                    if (!vbinfo.gbt_force) {
+                        // If we do anything other than throw an exception here, be sure version/force isn't sent to old clients
+                        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Support for '%s' rule requires explicit client support", vbinfo.name));
+                    }
+                }
+                break;
+            }
+        }
+    }
+
     result.pushKV("version", pblock->nVersion);
+    result.pushKV("rules", aRules);
+    result.pushKV("vbavailable", vbavailable);
+    result.pushKV("vbrequired", int(0));
+
+    if (nMaxVersionPreVB >= 113) {
+        // If VB is supported by the client, nMaxVersionPreVB is -1, so we won't get here
+        // Because BIP 34 changed how the generation transaction is serialised, we can only use version/force back to v113 blocks
+        // This is safe to do [otherwise-]unconditionally only because we are throwing an exception above if a non-force deployment gets activated
+        // Note that this can probably also be removed entirely after the first BIP9 non-force deployment (ie, probably segwit) gets activated
+        aMutable.push_back("version/force");
+    }
 
     result.pushKV("previousblockhash", pblock->hashPrevBlock.GetHex());
     result.pushKV("transactions", transactions);
@@ -564,11 +665,20 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.pushKV("mintime", (int64_t)pindexPrev->GetMedianTimePast()+1);
     result.pushKV("mutable", aMutable);
     result.pushKV("noncerange", "00000000ffffffff");
-    result.pushKV("sigoplimit", (int64_t)MAX_BLOCK_SIGOPS);
-    result.pushKV("sizelimit", (int64_t)MAX_BLOCK_SIZE);
+    int64_t nSigOpLimit = MAX_BLOCK_SIGOPS_COST;
+    if (fPreSegWit) {
+        assert(nSigOpLimit % WITNESS_SCALE_FACTOR == 0);
+        nSigOpLimit /= WITNESS_SCALE_FACTOR;
+    }
+    result.pushKV("sigoplimit", nSigOpLimit);
+    result.pushKV("sizelimit", (int64_t)MAX_BLOCK_SERIALIZED_SIZE);
+    result.pushKV("costlimit", (int64_t)MAX_BLOCK_COST);
     result.pushKV("curtime", pblock->GetBlockTime());
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));
+    if (!pblocktemplate->vchCoinbaseCommitment.empty()) {
+        result.pushKV("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end()));
+    }
 
     return result;
 }
@@ -630,6 +740,14 @@ UniValue submitblock(const JSONRPCRequest& request)
                 return "duplicate-invalid";
             // Otherwise, we might only have the header - process the block before returning
             fBlockPresent = true;
+        }
+    }
+
+    {
+        LOCK(cs_main);
+        BlockMap::iterator mi = mapBlockIndex.find(block.hashPrevBlock);
+        if (mi != mapBlockIndex.end()) {
+            UpdateUncommittedBlockStructures(block, mi->second, Params().GetConsensus());
         }
     }
 

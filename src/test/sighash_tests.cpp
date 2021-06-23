@@ -78,7 +78,7 @@ uint256 static SignatureHashOld(CScript scriptCode, const CTransaction& txTo, un
     }
 
     // Serialize and hash
-    CHashWriter ss(SER_GETHASH, 0);
+    CHashWriter ss(SER_GETHASH, SERIALIZE_TRANSACTION_NO_WITNESS);
     ss << txTmp << nHashType;
     return ss.GetHash();
 }
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(sighash_test)
 
         uint256 sh, sho;
         sho = SignatureHashOld(scriptCode, txTo, nIn, nHashType);
-        sh = SignatureHash(scriptCode, txTo, nIn, nHashType);
+        sh = SignatureHash(scriptCode, txTo, nIn, nHashType, 0, SIGVERSION_BASE);
         #if defined(PRINT_SIGHASH_JSON)
         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
         ss << txTo;
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(sighash_from_data)
           continue;
         }
 
-        sh = SignatureHash(scriptCode, tx, nIn, nHashType);
+        sh = SignatureHash(scriptCode, tx, nIn, nHashType, 0, SIGVERSION_BASE);
         BOOST_CHECK_MESSAGE(sh.GetHex() == sigHashHex, strTest);
     }
     */
