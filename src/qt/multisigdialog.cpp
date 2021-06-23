@@ -505,7 +505,15 @@ void MultisigDialog::on_signTransactionButton_clicked()
     }
     else
     {
-        ui->statusLabel->setText(tr("Transaction is NOT ready: ")+QString(ScriptErrorString(serror)));
+        QString error_message;
+        if (serror == SCRIPT_ERR_INVALID_STACK_OPERATION) {
+            error_message = tr("More signatures required.");
+        } else if (serror == SCRIPT_ERR_OK) {
+            error_message = tr("Funds already spent.");
+        } else {
+            error_message = QString(ScriptErrorString(serror));
+        }
+        ui->statusLabel->setText(tr("Transaction is NOT ready: ")+error_message);
         ui->sendTransactionButton->setEnabled(false);
     }
 }
