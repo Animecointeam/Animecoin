@@ -79,14 +79,11 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
     {
     case TX_NONSTANDARD:
     case TX_NULL_DATA:
-        printf ("NST\n");
         return false;
     case TX_PUBKEY:
-        printf ("P2PK\n");
         keyID = CPubKey(vSolutions[0]).GetID();
         return Sign1(keyID, creator, scriptPubKey, ret, sigversion);
     case TX_PUBKEYHASH:
-        printf ("P2PKH\n");
         keyID = CKeyID(uint160(vSolutions[0]));
         if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion))
             return false;
@@ -113,7 +110,6 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         return result;
 
     case TX_MULTISIG:
-        printf ("MS\n");
         ret.push_back(valtype()); // workaround CHECKMULTISIG bug
         return (SignN(vSolutions, creator, scriptPubKey, ret, sigversion));
 
@@ -157,8 +153,8 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             result = SignN(ms_data, creator, scriptPubKey, ret, sigversion) && result;
             ret.push_back(valtype());
         }
-        printf ("CLTV script ");
-        /*for (const auto& str : ret)
+        /*printf ("CLTV script ");
+        for (const auto& str : ret)
         {
             printf ("%s ", str.data());
         }
@@ -188,8 +184,8 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             ret.push_back(valtype());
         }
 
-        printf ("CLTV script ");
-        /*for (const auto& str : ret)
+        /*printf ("CLTV script ");
+        for (const auto& str : ret)
         {
             printf ("%s ", str.data());
         }

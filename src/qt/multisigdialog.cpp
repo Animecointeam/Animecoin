@@ -483,7 +483,9 @@ void MultisigDialog::on_signTransactionButton_clicked()
 
         SignatureData sigdata;
         ProduceSignature(MutableTransactionSignatureCreator(pwalletMain, &mergedTx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
-        sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(txv, i), route);
+        if (txv.vin.size() > i) {
+            sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(txv, i), route);
+        }
         UpdateTransaction(mergedTx, i, sigdata);
 
         if (!VerifyScript(txin.scriptSig, prevPubKey, mergedTx.wit.vtxinwit.size() > i ? &mergedTx.wit.vtxinwit[i].scriptWitness : nullptr, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror))
