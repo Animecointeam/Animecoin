@@ -221,7 +221,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
             "{\n"
             "  \"blocks\": nnn,             (numeric) The current block\n"
             "  \"currentblocksize\": nnn,   (numeric) The last block size\n"
-            "  \"currentblockcost\": nnn,   (numeric) The last block cost\n"
+            "  \"currentblockweight\": nnn, (numeric) The last block weight\n"
             "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
             "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
             "  \"errors\": \"...\"            (string) Current errors\n"
@@ -240,7 +240,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("blocks",           (int)chainActive.Height());
     obj.pushKV("currentblocksize", (uint64_t)nLastBlockSize);
-    obj.pushKV("currentblockcost", (uint64_t)nLastBlockCost);
+    obj.pushKV("currentblockweight", (uint64_t)nLastBlockWeight);
     obj.pushKV("currentblocktx",   (uint64_t)nLastBlockTx);
     obj.pushKV("difficulty",       (double)GetDifficulty());
     obj.pushKV("errors",           GetWarnings("statusbar"));
@@ -375,7 +375,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
                 "  \"noncerange\" : \"00000000ffffffff\",   (string) A range of valid nonces\n"
                 "  \"sigoplimit\" : n,                 (numeric) cost limit of sigops in blocks\n"
                 "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
-                "  \"costlimit\" : n,                  (numeric) limit of block cost\n"
+                "  \"weightlimit\" : n,                (numeric) limit of block weight\n"
                 "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
                 "  \"bits\" : \"xxx\",                 (string) compressed target of next block\n"
                 "  \"height\" : n                      (numeric) The height of the next block\n"
@@ -581,7 +581,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
             nTxSigOps /= WITNESS_SCALE_FACTOR;
         }
         entry.pushKV("sigops", nTxSigOps);
-        entry.pushKV("cost", GetTransactionCost(tx));
+        entry.pushKV("weight", GetTransactionWeight(tx));
 
         transactions.push_back(entry);
     }
@@ -672,7 +672,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     }
     result.pushKV("sigoplimit", nSigOpLimit);
     result.pushKV("sizelimit", (int64_t)MAX_BLOCK_SERIALIZED_SIZE);
-    result.pushKV("costlimit", (int64_t)MAX_BLOCK_COST);
+    result.pushKV("weightlimit", (int64_t)MAX_BLOCK_WEIGHT);
     result.pushKV("curtime", pblock->GetBlockTime());
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));

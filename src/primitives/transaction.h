@@ -476,7 +476,7 @@ template <typename Tx> static inline CTransactionRef MakeTransactionRef(Tx&& txI
 static inline CTransactionRef MakeTransactionRef(const CTransactionRef& txIn) { return txIn; }
 static inline CTransactionRef MakeTransactionRef(CTransactionRef&& txIn) { return std::move(txIn); }
 
-/** Compute the cost of a transaction, as defined by BIP 141 */
-int64_t GetTransactionCost(const CTransaction &tx);
+/** Compute the weight of a transaction, as defined by BIP 141 */
+int64_t GetTransactionWeight(const CTransaction &tx);
 
 #endif // BITCOIN_PRIMITIVES_TRANSACTION_H

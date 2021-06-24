@@ -179,7 +179,7 @@ typedef robin_hood::unordered_node_map<uint256, CBlockIndex*, BlockHasher> Block
 extern BlockMap mapBlockIndex;
 extern uint64_t nLastBlockTx;
 extern uint64_t nLastBlockSize;
-extern uint64_t nLastBlockCost;
+extern uint64_t nLastBlockWeight;
 extern const std::string strMessageMagic;
 extern CWaitableCriticalSection g_best_block_mutex;
 extern CConditionVariable g_best_block_cv;

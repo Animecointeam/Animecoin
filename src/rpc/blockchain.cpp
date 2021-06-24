@@ -111,7 +111,7 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
     result.pushKV("confirmations", confirmations);
     result.pushKV("strippedsize", (int)::GetSerializeSize(block, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS));
     result.pushKV("size", (int)::GetSerializeSize(block, SER_NETWORK, PROTOCOL_VERSION));
-    result.pushKV("cost", (int)::GetBlockCost(block));
+    result.pushKV("weight", (int)::GetBlockWeight(block));
     result.pushKV("height", blockindex->nHeight);
     result.pushKV("version", block.nVersion);
     result.pushKV("merkleroot", block.hashMerkleRoot.GetHex());
@@ -703,7 +703,7 @@ UniValue getblock(const JSONRPCRequest& request)
                 "  \"confirmations\" : n,   (numeric) The number of confirmations, or -1 if the block is not on the main chain\n"
                 "  \"size\" : n,            (numeric) The block size\n"
                 "  \"strippedsize\" : n,    (numeric) The block size excluding witness data\n"
-                "  \"cost\" : n             (numeric) The block cost\n"
+                "  \"weight\" : n           (numeric) The block weight (BIP 141)\n"
                 "  \"height\" : n,          (numeric) The block height or index\n"
                 "  \"version\" : n,         (numeric) The block version\n"
                 "  \"merkleroot\" : \"xxxx\", (string) The merkle root\n"
