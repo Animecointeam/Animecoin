@@ -483,7 +483,6 @@ std::string HelpMessage(HelpMessageMode mode)
 
     strUsage += HelpMessageGroup(_("Block creation options:"));
     strUsage += HelpMessageOpt("-blockmaxweight=<n>", strprintf(_("Set maximum BIP141 block weight (default: %d)"), DEFAULT_BLOCK_MAX_WEIGHT));
-    strUsage += HelpMessageOpt("-blockminsize=<n>", strprintf(_("Set minimum block size in bytes (default: %u)"), DEFAULT_BLOCK_MIN_SIZE));
     strUsage += HelpMessageOpt("-blockmaxsize=<n>", strprintf(_("Set maximum block size in bytes (default: %d)"), DEFAULT_BLOCK_MAX_SIZE));
     strUsage += HelpMessageOpt("-blockprioritysize=<n>", strprintf(_("Set maximum size of high-priority/low-fee transactions in bytes (default: %d)"), DEFAULT_BLOCK_PRIORITY_SIZE));
     strUsage += HelpMessageOpt("-blockmintxfee=<amt>", strprintf(_("Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)"), CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)));
@@ -933,6 +932,9 @@ bool AppInitParameterInteraction()
 
     if (GetBoolArg("-whitelistalwaysrelay", false))
         InitWarning(_("Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay."));
+
+    if (mapArgs.count("-blockminsize"))
+        InitWarning("Unsupported argument -blockminsize ignored.");
 
     // Checkmempool and checkblockindex default to true in regtest mode
     int ratio = std::min<int>(std::max<int>(GetArg("-checkmempool", chainparams.DefaultConsistencyChecks() ? 1 : 0), 0), 1000000);
