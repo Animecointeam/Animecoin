@@ -79,8 +79,21 @@ bool static IsCompressedOrUncompressedPubKey(const valtype &vchPubKey) {
 			return false;
 		}
 	} else {
-		  //  Non-canonical public key: neither compressed nor uncompressed
-		  return false;
+        //  Non-canonical public key: neither compressed nor uncompressed
+        return false;
+    }
+    return true;
+}
+
+bool static IsCompressedPubKey(const valtype &vchPubKey) {
+    if (vchPubKey.size() != 33) {
+        //  Non-canonical public key: invalid length for compressed key
+        return false;
+    }
+    if (vchPubKey[0] != 0x02 && vchPubKey[0] != 0x03) {
+        //  Non-canonical public key: invalid prefix for compressed key
+        return false;
+
 	}
 	return true;
 }
@@ -199,11 +212,15 @@ bool CheckSignatureEncoding(const vector<unsigned char> &vchSig, unsigned int fl
 	return true;
 }
 
-bool static CheckPubKeyEncoding(const valtype &vchSig, unsigned int flags, ScriptError* serror) {
-	if ((flags & SCRIPT_VERIFY_STRICTENC) != 0 && !IsCompressedOrUncompressedPubKey(vchSig)) {
+bool static CheckPubKeyEncoding(const valtype &vchPubKey, unsigned int flags, const SigVersion &sigversion, ScriptError* serror) {
+    if ((flags & SCRIPT_VERIFY_STRICTENC) != 0 && !IsCompressedOrUncompressedPubKey(vchPubKey)) {
 		return set_error(serror, SCRIPT_ERR_PUBKEYTYPE);
 	}
-	return true;
+    // Only compressed keys are accepted in segwit
+    if ((flags & SCRIPT_VERIFY_WITNESS_PUBKEYTYPE) != 0 && sigversion == SIGVERSION_WITNESS_V0 && !IsCompressedPubKey(vchPubKey)) {
+        return set_error(serror, SCRIPT_ERR_WITNESS_PUBKEYTYPE);
+    }
+    return true;
 }
 
 bool static CheckMinimalPush(const valtype& data, opcodetype opcode) {
@@ -873,8 +890,8 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
                         scriptCode.FindAndDelete(CScript(vchSig));
                     }
 
-					if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, serror)) {
-						//serror is set
+                    if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, sigversion, serror)) {
+                        //serror is set
 						return false;
 					}
                     bool fSuccess = checker.CheckSig(vchSig, vchPubKey, scriptCode, sigversion);
@@ -941,8 +958,8 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
 						// Note how this makes the exact order of pubkey/signature evaluation
 						// distinguishable by CHECKMULTISIG NOT if the STRICTENC flag is set.
 						// See the script_(in)valid tests for details.
-						if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, serror)) {
-							// serror is set
+                        if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, sigversion, serror)) {
+                            // serror is set
 							return false;
 						}
 
@@ -1108,9 +1125,40 @@ public:
     }
 };
 
+uint256 GetPrevoutHash(const CTransaction& txTo) {
+    CHashWriter ss(SER_GETHASH, 0);
+    for (unsigned int n = 0; n < txTo.vin.size(); n++) {
+        ss << txTo.vin[n].prevout;
+    }
+    return ss.GetHash();
+}
+
+uint256 GetSequenceHash(const CTransaction& txTo) {
+    CHashWriter ss(SER_GETHASH, 0);
+    for (unsigned int n = 0; n < txTo.vin.size(); n++) {
+        ss << txTo.vin[n].nSequence;
+    }
+    return ss.GetHash();
+}
+
+uint256 GetOutputsHash(const CTransaction& txTo) {
+    CHashWriter ss(SER_GETHASH, 0);
+    for (unsigned int n = 0; n < txTo.vout.size(); n++) {
+        ss << txTo.vout[n];
+    }
+    return ss.GetHash();
+}
+
 } // anon namespace
 
-uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsigned int nIn, int nHashType, const CAmount& amount, SigVersion sigversion)
+PrecomputedTransactionData::PrecomputedTransactionData(const CTransaction& txTo)
+{
+    hashPrevouts = GetPrevoutHash(txTo);
+    hashSequence = GetSequenceHash(txTo);
+    hashOutputs = GetOutputsHash(txTo);
+}
+
+uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsigned int nIn, int nHashType, const CAmount& amount, SigVersion sigversion, const PrecomputedTransactionData* cache)
 {
     if (sigversion == SIGVERSION_WITNESS_V0) {
         uint256 hashPrevouts;
@@ -1118,27 +1166,15 @@ uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsig
         uint256 hashOutputs;
 
         if (!(nHashType & SIGHASH_ANYONECANPAY)) {
-            CHashWriter ss(SER_GETHASH, 0);
-            for (unsigned int n = 0; n < txTo.vin.size(); n++) {
-                ss << txTo.vin[n].prevout;
-            }
-            hashPrevouts = ss.GetHash(); // TODO: cache this value for all signatures in a transaction
+            hashPrevouts = cache ? cache->hashPrevouts : GetPrevoutHash(txTo);
         }
 
         if (!(nHashType & SIGHASH_ANYONECANPAY) && (nHashType & 0x1f) != SIGHASH_SINGLE && (nHashType & 0x1f) != SIGHASH_NONE) {
-            CHashWriter ss(SER_GETHASH, 0);
-            for (unsigned int n = 0; n < txTo.vin.size(); n++) {
-                ss << txTo.vin[n].nSequence;
-            }
-            hashSequence = ss.GetHash(); // TODO: cache this value for all signatures in a transaction
+            hashSequence = cache ? cache->hashSequence : GetSequenceHash(txTo);
         }
 
         if ((nHashType & 0x1f) != SIGHASH_SINGLE && (nHashType & 0x1f) != SIGHASH_NONE) {
-            CHashWriter ss(SER_GETHASH, 0);
-            for (unsigned int n = 0; n < txTo.vout.size(); n++) {
-                ss << txTo.vout[n];
-            }
-            hashOutputs = ss.GetHash(); // TODO: cache this value for all signatures in a transaction
+            hashOutputs = cache ? cache->hashOutputs : GetOutputsHash(txTo);
         } else if ((nHashType & 0x1f) == SIGHASH_SINGLE && nIn < txTo.vout.size()) {
             CHashWriter ss(SER_GETHASH, 0);
             ss << txTo.vout[nIn];
@@ -1209,7 +1245,7 @@ bool TransactionSignatureChecker::CheckSig(const vector<unsigned char>& vchSigIn
 	int nHashType = vchSig.back();
 	vchSig.pop_back();
 
-    uint256 sighash = SignatureHash(scriptCode, *txTo, nIn, nHashType, amount, sigversion);
+    uint256 sighash = SignatureHash(scriptCode, *txTo, nIn, nHashType, amount, sigversion, this->txdata);
 
 	if (!VerifySignature(vchSig, pubkey, sighash))
 		return false;

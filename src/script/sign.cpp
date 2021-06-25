@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -24,6 +24,10 @@ bool TransactionSignatureCreator::CreateSig(std::vector<unsigned char>& vchSig, 
 {
     CKey key;
     if (!keystore->GetKey(address, key))
+        return false;
+
+    // Signing with uncompressed keys is disabled in witness scripts
+    if (sigversion == SIGVERSION_WITNESS_V0 && !key.IsCompressed())
         return false;
 
     uint256 hash = SignatureHash(scriptCode, *txTo, nIn, nHashType, amount, sigversion);
@@ -268,9 +272,7 @@ SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nI
     SignatureData data;
     assert(tx.vin.size() > nIn);
     data.scriptSig = tx.vin[nIn].scriptSig;
-    if (tx.wit.vtxinwit.size() > nIn) {
-        data.scriptWitness = tx.wit.vtxinwit[nIn].scriptWitness;
-    }
+    data.scriptWitness = tx.vin[nIn].scriptWitness;
     return data;
 }
 
@@ -278,10 +280,7 @@ void UpdateTransaction(CMutableTransaction& tx, unsigned int nIn, const Signatur
 {
     assert(tx.vin.size() > nIn);
     tx.vin[nIn].scriptSig = data.scriptSig;
-    if (!data.scriptWitness.IsNull() || tx.wit.vtxinwit.size() > nIn) {
-        tx.wit.vtxinwit.resize(tx.vin.size());
-        tx.wit.vtxinwit[nIn].scriptWitness = data.scriptWitness;
-    }
+    tx.vin[nIn].scriptWitness = data.scriptWitness;
 }
 
 bool SignSignature(const CKeyStore &keystore, const CScript& fromPubKey, CMutableTransaction& txTo, unsigned int nIn, const CAmount& amount, int nHashType, bool route)

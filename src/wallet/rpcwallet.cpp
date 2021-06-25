@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -625,10 +625,10 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated)) // *wtx.tx
+        if (wtx.IsCoinBase() || !CheckFinalTx(*wtx.tx, -1, !wtx.fValidated))
             continue;
 
-        for (const CTxOut& txout : wtx.vout)
+        for (const CTxOut& txout : wtx.tx->vout)
             if (txout.scriptPubKey == scriptPubKey)
                 if (wtx.GetDepthInMainChain() >= nMinDepth)
                     nAmount += txout.nValue;
@@ -684,10 +684,10 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated))
+        if (wtx.IsCoinBase() || !CheckFinalTx(*wtx.tx, -1, !wtx.fValidated))
             continue;
 
-        for (const CTxOut& txout : wtx.vout)
+        for (const CTxOut& txout : wtx.tx->vout)
         {
             CTxDestination address;
             if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*pwallet, address) && setAddress.count(address)) {
@@ -1134,9 +1134,12 @@ public:
 
     bool operator()(const CKeyID &keyID) {
         CPubKey pubkey;
-        if (pwalletMain && pwalletMain->GetPubKey(keyID, pubkey)) {
-            CScript basescript;
-            basescript << ToByteVector(pubkey) << OP_CHECKSIG;
+        if (pwalletMain) {
+            CScript basescript = GetScriptForDestination(keyID);
+            isminetype typ;
+            typ = IsMine(*pwalletMain, basescript, SIGVERSION_WITNESS_V0);
+            if (typ != ISMINE_SPENDABLE && typ != ISMINE_WATCH_SOLVABLE)
+                return false;
             CScript witscript = GetScriptForWitness(basescript);
             pwalletMain->AddCScript(witscript);
             result = CScriptID(witscript);
@@ -1154,6 +1157,10 @@ public:
                 result = scriptID;
                 return true;
             }
+            isminetype typ;
+            typ = IsMine(*pwalletMain, subscript, SIGVERSION_WITNESS_V0);
+            if (typ != ISMINE_SPENDABLE && typ != ISMINE_WATCH_SOLVABLE)
+                return false;
             CScript witscript = GetScriptForWitness(subscript);
             pwalletMain->AddCScript(witscript);
             result = CScriptID(witscript);
@@ -1200,7 +1207,7 @@ UniValue addwitnessaddress(const JSONRPCRequest& request)
     CTxDestination dest = address.Get();
     bool ret = boost::apply_visitor(w, dest);
     if (!ret) {
-        throw JSONRPCError(RPC_WALLET_ERROR, "Public key or redeemscript not known to wallet");
+        throw JSONRPCError(RPC_WALLET_ERROR, "Public key or redeemscript not known to wallet, or the key is uncompressed");
     }
 
     pwalletMain->SetAddressBook(w.result, "", "receive");
@@ -1244,14 +1251,14 @@ UniValue ListReceived(CWallet * const pwallet, const UniValue& params, bool fByA
     for (const std::pair<uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
 
-        if (wtx.IsCoinBase() || !CheckFinalTx(wtx, -1, !wtx.fValidated))
+        if (wtx.IsCoinBase() || !CheckFinalTx(*wtx.tx, -1, !wtx.fValidated))
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
         if (nDepth < nMinDepth)
             continue;
 
-        for (const CTxOut& txout : wtx.vout)
+        for (const CTxOut& txout : wtx.tx->vout)
         {
             CTxDestination address;
             if (!ExtractDestination(txout.scriptPubKey, address))
@@ -1983,7 +1990,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     CAmount nCredit = wtx.GetCredit(filter);
     CAmount nDebit = wtx.GetDebit(filter);
     CAmount nNet = nCredit - nDebit;
-    CAmount nFee = (wtx.IsFromMe(filter) ? wtx.GetValueOut() - nDebit : 0);
+    CAmount nFee = (wtx.IsFromMe(filter) ? wtx.tx->GetValueOut() - nDebit : 0);
 
     entry.pushKV("amount", ValueFromAmount(nNet - nFee));
     if (wtx.IsFromMe(filter))
@@ -2716,7 +2723,7 @@ UniValue listunspent(const JSONRPCRequest& request)
             continue;
 
         CTxDestination address;
-        const CScript& scriptPubKey = out.tx->vout[out.i].scriptPubKey;
+        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKey, address);
 
         if (setAddress.size() && (!fValidAddress || !setAddress.count(address)))
@@ -2743,7 +2750,7 @@ UniValue listunspent(const JSONRPCRequest& request)
         }
 
         entry.pushKV("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
-        entry.pushKV("amount", ValueFromAmount(out.tx->vout[out.i].nValue));
+        entry.pushKV("amount", ValueFromAmount(out.tx->tx->vout[out.i].nValue));
         entry.pushKV("confirmations", out.nDepth);
         entry.pushKV("spendable", out.IsSpendableAfter(*chainActive.Tip(), *pwalletMain));
         entry.pushKV("solvable", out.IsSolvableAfter(*chainActive.Tip(), *pwalletMain));
@@ -2860,14 +2867,16 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
    }
 
     // parse hex string from parameter
-    CTransaction origTx;
-    if (!DecodeHexTx(origTx,request.params[0].get_str(), true))
+   CMutableTransaction tx;
+   if (!DecodeHexTx(tx, request.params[0].get_str(), true))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
-    if (changePosition != -1 && (changePosition < 0 || (unsigned int)changePosition > origTx.vout.size()))
+   if (tx.vout.size() == 0)
+       throw JSONRPCError(RPC_INVALID_PARAMETER, "TX must have at least one output");
+
+   if (changePosition != -1 && (changePosition < 0 || (unsigned int)changePosition > tx.vout.size()))
         throw JSONRPCError(RPC_INVALID_PARAMETER, "changePosition out of bounds");
 
-    CMutableTransaction tx(origTx);
     CAmount nFeeOut;
     std::string strFailReason;
 

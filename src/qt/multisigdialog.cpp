@@ -345,12 +345,9 @@ void MultisigDialog::on_transaction_textChanged()
     // Decode the raw transaction
     std::vector<unsigned char> txData(ParseHex(ui->transaction->text().toStdString()));
     CDataStream ss(txData, SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx;
-    try
-    {
-        ss >> tx;
-    }
-    catch(std::exception &e)
+
+    CTransaction tx(deserialize, ss);
+    if (tx.IsNull())
     {
         return;
     }
@@ -413,15 +410,12 @@ void MultisigDialog::on_signTransactionButton_clicked()
     // Decode the raw transaction
     std::vector<unsigned char> txData(ParseHex(ui->transaction->text().toStdString()));
     CDataStream ss(txData, SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx;
-    try
-    {
-        ss >> tx;
-    }
-    catch(std::exception &e)
+    CTransaction tx(deserialize, ss);
+    if (tx.IsNull())
     {
         return;
     }
+
     CMutableTransaction mergedTx(tx);
     const CTransaction txv{tx};
 
@@ -488,7 +482,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         }
         UpdateTransaction(mergedTx, i, sigdata);
 
-        if (!VerifyScript(txin.scriptSig, prevPubKey, mergedTx.wit.vtxinwit.size() > i ? &mergedTx.wit.vtxinwit[i].scriptWitness : nullptr, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror))
+        if (!VerifyScript(txin.scriptSig, prevPubKey, &txin.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror))
         {
           fComplete = false;
         }
@@ -534,19 +528,15 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     // Decode the raw transaction
     std::vector<unsigned char> txData(ParseHex(ui->signedTransaction->text().toStdString()));
     CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx;
-    try
-    {
-        ssData >> tx;
-    }
-    catch(std::exception &e)
+    CTransaction tx(deserialize, ssData);
+    if (tx.IsNull())
     {
         return;
     }
     uint256 txHash = tx.GetHash();
 
     // Check if the transaction is already in the blockchain
-    CTransaction existingTx;
+    CTransactionRef  existingTx;
     uint256 blockHash;
     if(GetTransaction(txHash, existingTx, Params().GetConsensus(), blockHash))
     {

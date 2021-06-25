@@ -272,11 +272,11 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
             "3. \"label\"          (string, optional) An optional label\n"
         );
 
-    CTransaction tx;
+    CMutableTransaction tx;
     if (!DecodeHexTx(tx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
     uint256 hashTx = tx.GetHash();
-    CWalletTx wtx(pwallet,tx);
+    CWalletTx wtx(pwallet, MakeTransactionRef(std::move(tx)));
 
     CDataStream ssMB(ParseHexV(request.params[1], "proof"), SER_NETWORK, PROTOCOL_VERSION);
     CMerkleBlock merkleBlock;
@@ -313,7 +313,7 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
-    if (pwallet->IsMine(tx)) {
+    if (pwallet->IsMine(wtx)) {
         pwallet->AddToWallet(wtx, false);
         return NullUniValue;
     }

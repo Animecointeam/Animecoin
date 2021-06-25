@@ -79,16 +79,13 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
             o.pushKV("hex", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
             in.pushKV("scriptSig", o);
         }
-        if (!tx.wit.IsNull()) {
-            if (!tx.wit.vtxinwit[i].IsNull()) {
+        if (tx.HasWitness()) {
                 UniValue txinwitness(UniValue::VARR);
-                for (unsigned int j = 0; j < tx.wit.vtxinwit[i].scriptWitness.stack.size(); j++) {
-                    std::vector<unsigned char> item = tx.wit.vtxinwit[i].scriptWitness.stack[j];
+                for (unsigned int j = 0; j < tx.vin[i].scriptWitness.stack.size(); j++) {
+                    std::vector<unsigned char> item = tx.vin[i].scriptWitness.stack[j];
                     txinwitness.push_back(HexStr(item.begin(), item.end()));
                 }
                 in.pushKV("txinwitness", txinwitness);
-            }
-
         }
         in.pushKV("sequence", (int64_t)txin.nSequence);
         vin.push_back(in);
@@ -224,7 +221,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
         in_active_chain = chainActive.Contains(blockindex);
     }
 
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 hash_block;
     if (!GetTransaction(hash, tx, Params().GetConsensus(), hash_block, true, blockindex)) {
         std::string errmsg;
@@ -240,7 +237,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
         }
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, errmsg + ". Use gettransaction for wallet transactions.");
     }
-    string strHex = EncodeHexTx(tx);
+    string strHex = EncodeHexTx(*tx);
 
     if (!fVerbose) {
         return strHex;
@@ -249,7 +246,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
     UniValue result(UniValue::VOBJ);
     result.pushKV("hex", strHex);
     if (blockindex) result.pushKV("in_active_chain", in_active_chain);
-    TxToJSON(tx, hash_block, result);
+    TxToJSON(*tx, hash_block, result);
     return result;
 }
 
@@ -309,7 +306,7 @@ UniValue gettxoutproof(const JSONRPCRequest& request)
 
     if (pblockindex == nullptr)
     {
-        CTransaction tx;
+        CTransactionRef tx;
         if (!GetTransaction(oneTxid, tx, Params().GetConsensus(), hashBlock, false) || hashBlock.IsNull())
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not yet in block");
         if (!mapBlockIndex.count(hashBlock))
@@ -543,13 +540,13 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
 
     RPCTypeCheck(request.params, {UniValue::VSTR});
 
-    CTransaction tx;
+    CMutableTransaction mtx;
 
-    if (!DecodeHexTx(tx, request.params[0].get_str(), true))
+    if (!DecodeHexTx(mtx, request.params[0].get_str(), true))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
     UniValue result(UniValue::VOBJ);
-    TxToJSON(tx, uint256(), result);
+    TxToJSON(CTransaction(std::move(mtx)), uint256(), result);
 
     return result;
 }
@@ -871,7 +868,7 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
         UpdateTransaction(mergedTx, i, sigdata);
 
         ScriptError serror = SCRIPT_ERR_OK;
-        if (!VerifyScript(txin.scriptSig, prevPubKey, mergedTx.wit.vtxinwit.size() > i ? &mergedTx.wit.vtxinwit[i].scriptWitness : nullptr, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror)) {
+        if (!VerifyScript(txin.scriptSig, prevPubKey, &txin.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror)) {
             if (serror == SCRIPT_ERR_INVALID_STACK_OPERATION) {
                 // Unable to sign input and verification failed (possible attempt to partially sign).
                 TxInErrorToJSON(txin, vErrors, "Unable to sign input, invalid stack size (possibly missing key).");
@@ -920,9 +917,10 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
     RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VBOOL});
 
     // parse hex string from parameter
-    CTransaction tx;
-    if (!DecodeHexTx(tx, request.params[0].get_str()))
+    CMutableTransaction mtx;
+    if (!DecodeHexTx(mtx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+    CTransaction tx(std::move(mtx));
     uint256 hashTx = tx.GetHash();
 
     CAmount nMaxRawTxFee = maxTxFee;

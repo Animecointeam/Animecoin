@@ -53,14 +53,14 @@ CAmount MultisigInputEntry::getAmount()
 {
     CAmount amount = 0;
     int nOutput = ui->transactionOutput->currentIndex();
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 blockHash;
 
     if(GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
     {
-        if((unsigned int) nOutput < tx.vout.size())
+        if((unsigned int) nOutput < tx->vout.size())
         {
-            const CTxOut& txOut = tx.vout[nOutput];
+            const CTxOut& txOut = tx->vout[nOutput];
             amount = txOut.nValue;
         }
     }
@@ -111,16 +111,16 @@ void MultisigInputEntry::on_transactionId_textChanged(const QString &transaction
 
     // Make list of transaction outputs
     txHash = uint256S(transactionId.toStdString());
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 blockHash;
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
         return;
 
-    for (unsigned int i = 0; i < tx.vout.size(); i++)
+    for (unsigned int i = 0; i < tx->vout.size(); i++)
     {
         QString idStr;
         idStr.setNum(i);
-        const CTxOut& txOut = tx.vout[i];
+        const CTxOut& txOut = tx->vout[i];
         CAmount amount = txOut.nValue;
         QString amountStr = QString::fromStdString (FormatMoney(amount));
         CScript script = txOut.scriptPubKey;
@@ -141,11 +141,11 @@ void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
     if(ui->transactionOutput->itemText(index).isEmpty())
         return;
 
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 blockHash;
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
         return;
-    const CTxOut& txOut = tx.vout[index];
+    const CTxOut& txOut = tx->vout[index];
     CScript script = txOut.scriptPubKey;
 
     if(script.IsPayToScriptHash())
