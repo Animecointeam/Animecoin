@@ -222,7 +222,6 @@ BOOST_AUTO_TEST_CASE(GetTxSigOpCost)
         scriptWitness.stack.push_back(vector<unsigned char>(0));
         scriptWitness.stack.push_back(vector<unsigned char>(0));
         scriptWitness.stack.push_back(vector<unsigned char>(witnessScript.begin(), witnessScript.end()));
-        witness.scriptWitness = scriptWitness;
 
         BuildTxs(spendingTx, coins, creationTx, scriptPubKey, scriptSig, scriptWitness);
         assert(GetTransactionSigOpCost(CTransaction(spendingTx), coins, flags) == 2);
