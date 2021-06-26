@@ -141,7 +141,7 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             ms_data.push_back((vSolutions.begin()+5)[0]);
             unsigned int nSigsRequired = ms_data.front()[0];
             unsigned int nPubKeys = ms_data.size()-2;
-            printf ("Multisig SignN, %u solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
+            printf ("Multisig SignN, %lu solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
             result = SignN(ms_data, creator, scriptPubKey, ret, sigversion);
             keyID = CPubKey(vSolutions[0]).GetID();
             result = Sign1(keyID, creator, scriptPubKey, ret, sigversion) && result;
@@ -153,7 +153,7 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
             unsigned int nSigsRequired = ms_data.front()[0];
             unsigned int nPubKeys = ms_data.size()-2;
-            printf ("Multisig SignN, %u solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
+            printf ("Multisig SignN, %lu solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
             result = SignN(ms_data, creator, scriptPubKey, ret, sigversion) && result;
             ret.push_back(valtype());
         }
@@ -165,36 +165,6 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         printf ("\n");*/
         return result;
 
-    case TX_TWOPARTY_CLTV:
-        result = true;
-        if (route==0)
-        {
-            keyID = CPubKey(vSolutions[1]).GetID();
-            printf("buyer key id %i\n", keyID);
-            if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion)) {
-                return false;
-            }
-            ret.push_back({1});
-        }
-        else
-        {
-            keyID = CPubKey(vSolutions[1]).GetID();
-            printf("buyer key id %i\n", keyID);
-            result = Sign1(keyID, creator, scriptPubKey, ret, sigversion);
-
-            keyID = CPubKey(vSolutions[0]).GetID();
-            printf("seller key id %i\n", keyID);
-            result = !Sign1(keyID, creator, scriptPubKey, ret, sigversion) && result;
-            ret.push_back(valtype());
-        }
-
-        /*printf ("CLTV script ");
-        for (const auto& str : ret)
-        {
-            printf ("%s ", str.data());
-        }
-        printf ("\n");*/
-        return result;
     default:
         return false;
     }
@@ -327,7 +297,7 @@ static vector<valtype> CombineMultisig(const CScript& scriptPubKey, const BaseSi
     assert(vSolutions.size() > 1);
     unsigned int nSigsRequired = vSolutions.front()[0];
     unsigned int nPubKeys = vSolutions.size()-2;
-    printf ("Multisig combining, %u solutions, %u pubkeys, %u required. \n", vSolutions.size(), nPubKeys, nSigsRequired);
+    printf ("Multisig combining, %lu solutions, %u pubkeys, %u required. \n", vSolutions.size(), nPubKeys, nSigsRequired);
     map<valtype, valtype> sigs;
     for (const valtype& sig : allsigs)
     {
@@ -392,7 +362,6 @@ static Stacks CombineSignatures(const CScript& scriptPubKey, const BaseSignature
     {
     case TX_NONSTANDARD:
     case TX_NULL_DATA:
-    case TX_TWOPARTY_CLTV:
         // Don't know anything about this, assume bigger one is correct:
         if (sigs1.script.size() >= sigs2.script.size())
             return sigs1;

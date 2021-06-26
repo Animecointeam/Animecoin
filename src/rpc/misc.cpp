@@ -145,8 +145,10 @@ public:
             for (const CTxDestination& addr : addresses)
                 a.push_back(CBitcoinAddress(addr).ToString());
             obj.pushKV("addresses", a);
-            if (whichType == TX_MULTISIG || whichType == TX_TWOPARTY_CLTV)
+            if (whichType == TX_MULTISIG)
                 obj.pushKV("sigsrequired", nRequired);
+            if (whichType == TX_ESCROW_CLTV)
+                obj.pushKV("sigsrequired", 2);
         }
         return obj;
     }
@@ -310,12 +312,10 @@ CScript _createmultisig_redeemScript(CWallet* const pwallet, const UniValue& par
         result = GetScriptForMultisig(nRequired, pubkeys);
     else
     {
-        if (pubkeys.size() == 2)
-            result = GetScriptForCLTV(pubkeys, cltv_height, cltv_time);
-        else if (pubkeys.size() == 3)
+        if (pubkeys.size() == 3)
             result = GetScriptForEscrowCLTV(pubkeys, cltv_height, cltv_time);
         else
-            throw runtime_error("Only 2 or 3 parties are allowed in CLTV scripts currently.");
+            throw runtime_error("Only 3 parties are allowed in escrow scripts.");
     }
 
     if (result.size() > MAX_SCRIPT_ELEMENT_SIZE)
@@ -334,7 +334,7 @@ UniValue createmultisig(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
     {
-        string msg = "createmultisig nrequired [\"key\",...] ( { options } )\n"
+        std::string msg = "createmultisig nrequired [\"key\",...] ( { options } )\n"
             "\nCreates a multi-signature address with n signature of m keys required.\n"
             "It returns a json object with the address and redeemScript.\n"
 
@@ -348,7 +348,7 @@ UniValue createmultisig(const JSONRPCRequest& request)
             "3. options        (object, optional)\n"
             "   {\n"
             "     \"cltv_height\"  (numeric, optional) Minimum block height before received funds can be spent\n"
-            "     \"cltv_time\"    (numeric, optional) Minimum approximate time before received funds can be spent (WARNING: This version of " PACKAGE_NAME " does not support spending time-locked coins)\n"
+            "     \"cltv_time\"    (numeric, optional) Minimum approximate time before received funds can be spent (WARNING: This version of Animecoin does not support spending time-locked coins)\n"
             "   }\n"
 
             "\nResult:\n"

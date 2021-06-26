@@ -141,15 +141,6 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
             return ISMINE_SPENDABLE;
         break;
     }
-    case TX_TWOPARTY_CLTV:
-    {
-        // For now, only consider transactions "mine" if we own all the
-        // keys involved.
-        vector<valtype> keys(vSolutions.begin(), vSolutions.begin()+vSolutions.size());
-        if (HaveKeys(keys, keystore) == keys.size())
-            return ISMINE_SPENDABLE;
-        break;
-    }
     case TX_ESCROW_CLTV:
     {
         // Skip escrow key

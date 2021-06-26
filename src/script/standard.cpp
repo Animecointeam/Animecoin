@@ -30,7 +30,6 @@ const char* GetTxnOutputType(txnouttype t)
 	case TX_PUBKEYHASH: return "pubkeyhash";
 	case TX_SCRIPTHASH: return "scripthash";
 	case TX_MULTISIG: return "multisig";
-    case TX_TWOPARTY_CLTV: return "twoparty_cltv";
     case TX_ESCROW_CLTV: return "escrow_cltv";
     case TX_NULL_DATA: return "nulldata";
     case TX_WITNESS_V0_KEYHASH: return "witness_v0_keyhash";
@@ -57,12 +56,8 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, vector<vector<unsi
 		// Sender provides N pubkeys, receivers provides M signatures
 		mTemplates.insert(make_pair(TX_MULTISIG, CScript() << OP_SMALLINTEGER << OP_PUBKEYS << OP_SMALLINTEGER << OP_CHECKMULTISIG));
 
-        // Simplest CLTV: 2 signatures requried until deadline, only the first one after
-        mTemplates.insert(make_pair(TX_TWOPARTY_CLTV, CScript() << OP_IF << OP_U32INT << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_ELSE << OP_PUBKEY << OP_CHECKSIGVERIFY << OP_ENDIF << OP_PUBKEY << OP_CHECKSIG));
-
         // CLTV multisig with escrow: 2 signatures requried until deadline, escrow counts as one after
         mTemplates.insert(make_pair(TX_ESCROW_CLTV, CScript() << OP_IF << OP_U32INT << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_PUBKEY << OP_CHECKSIGVERIFY << OP_SMALLINTEGER << OP_ELSE  << OP_SMALLINTEGER << OP_ENDIF << OP_PUBKEYS << OP_SMALLINTEGER << OP_CHECKMULTISIG));
-
     }
 
     vSolutionsRet.clear();
@@ -259,33 +254,7 @@ bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, vecto
 		if (addressRet.empty())
 			return false;
 	}
-    else if (typeRet == TX_TWOPARTY_CLTV)
-    {
-        // Seller
-        {
-            CPubKey pubKey(vSolutions[0]);
-            if (pubKey.IsValid()) {
-                CTxDestination address = pubKey.GetID();
-                addressRet.push_back(address);
-                printf ("Seller: %i\n", address);
-            }
-        }
-        // Refund
-        {
-            CPubKey pubKey(vSolutions[1]);
-            if (pubKey.IsValid()) {
-                CTxDestination address = pubKey.GetID();
-                addressRet.push_back(address);
-                printf ("Buyer: %i\n", address);
-            }
-        }
 
-        if (addressRet.empty())
-        {
-            printf ("No addresses!\n");
-            return false;
-        }
-    }
 	else
 	{
 		nRequiredRet = 1;
@@ -348,36 +317,6 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
 		script << ToByteVector(key);
 	script << CScript::EncodeOP_N(keys.size()) << OP_CHECKMULTISIG;
 	return script;
-}
-
-CScript GetScriptForCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time)
-{
-    CScript script;
-
-    if (cltv_height > 0) {
-        if (cltv_time) {
-            throw std::invalid_argument("cannot lock for both height and time");
-        }
-        if (cltv_height >= LOCKTIME_THRESHOLD) {
-            throw std::invalid_argument("requested lock height is beyond locktime threshold");
-        }
-        script << OP_IF;
-        script << cltv_height << OP_CHECKLOCKTIMEVERIFY << OP_DROP;
-    } else if (cltv_time) {
-        if (cltv_time < LOCKTIME_THRESHOLD || cltv_time > std::numeric_limits<uint32_t>::max()) {
-            throw std::invalid_argument("requested lock time is outside of valid range");
-        }
-        script << OP_IF;
-        script << cltv_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP;
-    }
-
-    script << OP_ELSE;
-    script << ToByteVector(keys[1]);
-    script << OP_CHECKSIGVERIFY;
-    script << OP_ENDIF;
-    script << ToByteVector(keys[0]);
-    script << OP_CHECKSIG;
-    return script;
 }
 
 CScript GetScriptForEscrowCLTV(const std::vector<CPubKey>& keys, const int64_t cltv_height, const int64_t cltv_time)
