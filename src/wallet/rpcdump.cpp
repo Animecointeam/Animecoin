@@ -183,7 +183,7 @@ void ImportAddress(CWallet * const pwallet, const CBitcoinAddress& address, cons
     ImportScript(pwallet, script, strLabel, false);
     // add to address book or update label
     if (address.IsValid())
-        pwallet->SetAddressBook(address.Get(), strLabel, "receive");
+        pwallet->SetAddressBook(address.Get(), strLabel, "watchonly");
 }
 
 UniValue importaddress(const JSONRPCRequest& request)

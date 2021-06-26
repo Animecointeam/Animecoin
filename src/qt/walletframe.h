@@ -58,6 +58,8 @@ public slots:
     void gotoMultisigPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
+    /** Switch to watchonly page */
+    void gotoWatchCoinsPage(QString addr = "");
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /** Switch to About page */

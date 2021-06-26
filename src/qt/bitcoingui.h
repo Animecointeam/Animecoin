@@ -100,6 +100,7 @@ private:
     QAction *aboutAction;
     QAction *addressAction;
     QAction *receiveCoinsAction;
+    QAction *watchCoinsAction;
     QAction *multisigAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
@@ -203,6 +204,8 @@ private slots:
     void gotoAddressPage();
     /** Awitch to multitool page */
     void gotoMultisigPage();
+    /** Switch to watchonly page */
+    void gotoWatchCoinsPage(QString addr = "");
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /**Switch to About page */

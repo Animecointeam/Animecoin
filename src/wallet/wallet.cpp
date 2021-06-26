@@ -3350,6 +3350,45 @@ std::map<CTxDestination, CAmount> CWallet::GetAddressBalances()
     return balances;
 }
 
+std::map<CTxDestination, CAmount> CWallet::GetWatchOnlyBalances()
+{
+    map<CTxDestination, CAmount> balances;
+
+    {
+        LOCK(cs_wallet);
+        for (std::pair<uint256, CWalletTx> walletEntry : mapWallet)
+        {
+            CWalletTx *pcoin = &walletEntry.second;
+
+            if (!CheckFinalTx(*pcoin) || !pcoin->IsTrusted())
+                continue;
+
+            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
+                continue;
+
+            int nDepth = pcoin->GetDepthInMainChain();
+            if (nDepth < (pcoin->IsFromMe(ISMINE_ALL) ? 0 : 1))
+                continue;
+
+            for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++)
+            {
+                CTxDestination addr;
+                if (!IsMine(pcoin->tx->vout[i]))
+                    continue;
+                if(!ExtractDestination(pcoin->tx->vout[i].scriptPubKey, addr))
+                    continue;
+                CAmount n = IsSpent(walletEntry.first, i) ? 0 : GetCredit (pcoin->tx->vout[i], ISMINE_WATCH_ONLY);
+
+                if (!balances.count(addr))
+                    balances[addr] = 0;
+                balances[addr] += n;
+            }
+        }
+    }
+
+    return balances;
+}
+
 set< set<CTxDestination> > CWallet::GetAddressGroupings()
 {
     AssertLockHeld(cs_wallet); // mapWallet

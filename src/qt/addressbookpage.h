@@ -31,7 +31,8 @@ class AddressBookPage : public QDialog
 public:
     enum Tabs {
         SendingTab = 0,
-        ReceivingTab = 1
+        ReceivingTab = 1,
+        WatchonlyTab = 2
     };
 
     enum Mode {
@@ -49,6 +50,7 @@ public:
 public slots:
     void done(int retval);
     void reject ();
+    void activate ();
 
 private:
     Ui::AddressBookPage *ui;

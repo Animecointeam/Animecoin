@@ -64,6 +64,7 @@ private:
     QWidget *transactionsPage;
     AddressBookPage *addressPage;
     ReceiveCoinsDialog *receiveCoinsPage;
+    AddressBookPage *watchCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     MultisigDialog *multisigPage;
     TransactionView *transactionView;
@@ -82,6 +83,8 @@ public slots:
     void gotoMultisigPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
+    /** Switch to watchonly page */
+    void gotoWatchCoinsPage(QString addr = "");
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /** Switch to About page */

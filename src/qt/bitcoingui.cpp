@@ -262,17 +262,23 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(receiveCoinsAction);
+    watchCoinsAction = new QAction(QIcon(":/icons/eye"), tr("&Monitor"), this);
+    watchCoinsAction->setStatusTip(tr("Monitor contract and other people's funds."));
+    watchCoinsAction->setToolTip(watchCoinsAction->statusTip());
+    watchCoinsAction->setCheckable(true);
+    watchCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    tabGroup->addAction(watchCoinsAction);
     multisigAction = new QAction(QIcon(":/icons/send"), tr("Multitool"), this);
     multisigAction->setStatusTip(tr("Create and spend multisig scripts"));
     multisigAction->setToolTip(multisigAction->statusTip());
     multisigAction->setCheckable(true);
-    multisigAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    multisigAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
     tabGroup->addAction(multisigAction);
     historyAction = new QAction(QIcon(":/icons/history"), tr("&Transactions"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
     historyAction->setToolTip(historyAction->statusTip());
     historyAction->setCheckable(true);
-    historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
     tabGroup->addAction(historyAction);
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -284,6 +290,7 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     connect(addressAction, SIGNAL(triggered()), this, SLOT(gotoAddressPage()));
     connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
+    connect(watchCoinsAction, SIGNAL(triggered()), this, SLOT(gotoWatchCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
     connect(multisigAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
@@ -419,6 +426,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(addressAction);
         toolbar->addAction(receiveCoinsAction);
+        toolbar->addAction(watchCoinsAction);
         toolbar->addAction(multisigAction);
         toolbar->addAction(historyAction);
         toolbar->addAction(aboutAction);
@@ -646,6 +654,11 @@ void BitcoinGUI::gotoAddressPage()
 {
     addressAction->setChecked(true);
     if (walletFrame) walletFrame->gotoAddressPage();
+}
+void BitcoinGUI::gotoWatchCoinsPage(QString addr)
+{
+    watchCoinsAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoWatchCoinsPage(addr);
 }
 void BitcoinGUI::gotoSendCoinsPage(QString addr)
 {

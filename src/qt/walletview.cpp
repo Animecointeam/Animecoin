@@ -56,6 +56,7 @@ WalletView::WalletView(QWidget *parent):
     addressPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::ReceivingTab, nullptr);
     receiveCoinsPage = new ReceiveCoinsDialog();
     sendCoinsPage = new SendCoinsDialog();
+    watchCoinsPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::WatchonlyTab, nullptr);
     multisigPage = new MultisigDialog(nullptr);
     aboutPage = new AboutDialog(nullptr);
 
@@ -64,6 +65,7 @@ WalletView::WalletView(QWidget *parent):
     addWidget(addressPage);
     addWidget(receiveCoinsPage);
     addWidget(multisigPage);
+    addWidget(watchCoinsPage);
     addWidget(sendCoinsPage);
     addWidget(aboutPage);
 
@@ -76,6 +78,8 @@ WalletView::WalletView(QWidget *parent):
     // Clicking on "Export" allows to export the transaction list
     connect(exportButton, SIGNAL(clicked()), transactionView, SLOT(exportClicked()));
 
+    // Pass through messages from watchCoinsPage
+    connect(watchCoinsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from sendCoinsPage
     connect(sendCoinsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from transactionView
@@ -130,6 +134,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     overviewPage->setWalletModel(_walletModel);
     addressPage->setModel(_walletModel->getAddressTableModel());
     receiveCoinsPage->setModel(_walletModel);
+    watchCoinsPage->setModel(_walletModel->getAddressTableModel());
     sendCoinsPage->setModel(_walletModel);
     multisigPage->setModel(_walletModel);
 
@@ -192,6 +197,7 @@ void WalletView::gotoHistoryPage()
 void WalletView::gotoAddressPage()
 {
     setCurrentWidget(addressPage);
+    addressPage->activate();
 }
 
 void WalletView::gotoReceiveCoinsPage()
@@ -199,9 +205,21 @@ void WalletView::gotoReceiveCoinsPage()
     setCurrentWidget(receiveCoinsPage);
 }
 
+void WalletView::gotoWatchCoinsPage(QString addr)
+{
+    setCurrentWidget(watchCoinsPage);
+    watchCoinsPage->activate();
+
+    if (!addr.isEmpty())
+    {
+        // watchCoinsPage->setAddress(addr);
+    }
+}
+
 void WalletView::gotoSendCoinsPage(QString addr)
 {
     setCurrentWidget(sendCoinsPage);
+    //sendCoinsPage-> activate();
 
     if (!addr.isEmpty())
         sendCoinsPage->setAddress(addr);
