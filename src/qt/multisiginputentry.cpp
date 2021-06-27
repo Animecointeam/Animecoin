@@ -121,6 +121,8 @@ void MultisigInputEntry::on_transactionId_textChanged(const QString &transaction
         QString idStr;
         idStr.setNum(i);
         const CTxOut& txOut = tx->vout[i];
+        if (!txOut.scriptPubKey.IsPayToScriptHash ())
+            continue;
         CAmount amount = txOut.nValue;
         QString amountStr = QString::fromStdString (FormatMoney(amount));
         CScript script = txOut.scriptPubKey;
@@ -145,7 +147,20 @@ void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
     uint256 blockHash;
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
         return;
-    const CTxOut& txOut = tx->vout[index];
+
+    QMap <unsigned int, int> index_map;
+    unsigned int p2sh_count = 0;
+    for (int i = 0; i < tx->vout.size(); i++)
+    {
+        const CTxOut txOut = tx->vout[i];
+        if (txOut.scriptPubKey.IsPayToScriptHash ())
+        {
+            index_map.insert (p2sh_count, i);
+            ++p2sh_count;
+        }
+    }
+    const CTxOut txOut = tx->vout[index_map.value(index)];
+
     CScript script = txOut.scriptPubKey;
 
     if(script.IsPayToScriptHash())

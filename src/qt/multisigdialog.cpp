@@ -324,7 +324,12 @@ void MultisigDialog::on_createTransactionButton_clicked()
                 return;
         }
     }
+
     transaction.nLockTime = chainActive.Height();
+    size_t txSize = GetSerializeSize(transaction, SER_NETWORK, PROTOCOL_VERSION)+300;
+    CAmount fee = std::max (CWallet::GetRequiredFee (txSize), CWallet::fallbackFee.GetFee (txSize));
+    transaction.vout[0].nValue -= fee;
+
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
     ss << transaction;
     ui->transaction->setText(HexStr(ss.begin(), ss.end()).c_str());

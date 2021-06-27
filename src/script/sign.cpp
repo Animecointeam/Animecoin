@@ -104,13 +104,6 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             return true;
         }
         return false;
-        printf ("P2SH script ");
-        /*
-        for (const auto& str : ret)
-        {
-            printf ("%s ", str.data());
-        }
-        printf ("\n");*/
         return result;
 
     case TX_MULTISIG:
@@ -130,7 +123,6 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         return false;
 
     case TX_ESCROW_CLTV:
-        printf ("Escrow\n");
         if (route==0)
         {
             ret.push_back(valtype()); // workaround CHECKMULTISIG bug
@@ -139,9 +131,6 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             ms_data.push_back((vSolutions.begin()+3)[0]);
             ms_data.push_back((vSolutions.begin()+4)[0]);
             ms_data.push_back((vSolutions.begin()+5)[0]);
-            unsigned int nSigsRequired = ms_data.front()[0];
-            unsigned int nPubKeys = ms_data.size()-2;
-            printf ("Multisig SignN, %lu solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
             result = SignN(ms_data, creator, scriptPubKey, ret, sigversion);
             keyID = CPubKey(vSolutions[0]).GetID();
             result = Sign1(keyID, creator, scriptPubKey, ret, sigversion) && result;
@@ -151,18 +140,9 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         {
            ret.push_back(valtype()); // workaround CHECKMULTISIG bug
             vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
-            unsigned int nSigsRequired = ms_data.front()[0];
-            unsigned int nPubKeys = ms_data.size()-2;
-            printf ("Multisig SignN, %lu solutions, %u pubkeys, %u required. \n", ms_data.size(), nPubKeys, nSigsRequired);
             result = SignN(ms_data, creator, scriptPubKey, ret, sigversion) && result;
             ret.push_back(valtype());
         }
-        /*printf ("CLTV script ");
-        for (const auto& str : ret)
-        {
-            printf ("%s ", str.data());
-        }
-        printf ("\n");*/
         return result;
 
     default:
@@ -297,7 +277,6 @@ static vector<valtype> CombineMultisig(const CScript& scriptPubKey, const BaseSi
     assert(vSolutions.size() > 1);
     unsigned int nSigsRequired = vSolutions.front()[0];
     unsigned int nPubKeys = vSolutions.size()-2;
-    printf ("Multisig combining, %lu solutions, %u pubkeys, %u required. \n", vSolutions.size(), nPubKeys, nSigsRequired);
     map<valtype, valtype> sigs;
     for (const valtype& sig : allsigs)
     {
@@ -472,12 +451,6 @@ static Stacks CombineSignatures(const CScript& scriptPubKey, const BaseSignature
                 printf ("Escrow signature still missing.\n");
 
             ret.push_back({1});
-            /*printf ("Combined result: ");
-            for (const auto& str : ret)
-            {
-                printf ("%s ", str.data());
-            }
-            printf ("\n");*/
             return Stacks(ret);
         }
         else
@@ -485,12 +458,6 @@ static Stacks CombineSignatures(const CScript& scriptPubKey, const BaseSignature
             vector<valtype> ms_data (vSolutions.begin()+2, vSolutions.begin()+vSolutions.size());
             vector<valtype> ret = CombineMultisig(scriptPubKey, checker, ms_data, sigs1.script, sigs2.script, sigversion);
             ret.push_back(valtype());
-            /*printf ("Combined result: ");
-            for (const auto& str : ret)
-            {
-                printf ("%s ", str.data());
-            }
-            printf ("\n");*/
             return Stacks(ret);
         }
     default:
