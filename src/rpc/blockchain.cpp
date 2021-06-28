@@ -1126,7 +1126,7 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     obj.pushKV("headers",               pindexBestHeader ? pindexBestHeader->nHeight : -1);
     obj.pushKV("bestblockhash",         chainActive.Tip()->GetBlockHash().GetHex());
     obj.pushKV("difficulty",            (double)GetDifficulty());
-    obj.pushKV("verificationprogress",  Checkpoints::GuessVerificationProgress(Params().TxData(), chainActive.Tip()));
+    obj.pushKV("verificationprogress",  GuessVerificationProgress(Params().TxData(), chainActive.Tip()));
     obj.pushKV("chainwork",             chainActive.Tip()->nChainWork.GetHex());
     obj.pushKV("pruned",                fPruneMode);
 

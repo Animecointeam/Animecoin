@@ -51,6 +51,7 @@ class CScriptCheck;
 class CBlockPolicyEstimator;
 class CValidationInterface;
 class CValidationState;
+struct ChainTxData;
 class PrecomputedTransactionData;
 
 struct LockPoints;
@@ -301,6 +302,8 @@ bool GetTransaction(const uint256& hash, CTransactionRef& tx, const Consensus::P
 /** Find the best known block, and make it the tip of the block chain */
 bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, std::shared_ptr<const CBlock> pblock = std::shared_ptr<const CBlock>());
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams);
+/** Guess verification progress (as a fraction between 0.0=genesis and 1.0=current tip). */
+double GuessVerificationProgress(const ChainTxData& data, CBlockIndex* pindex);
 
 /**
  * Prune block and undo files (blk???.dat and undo???.dat) so that the disk space used is less than a user-defined target.

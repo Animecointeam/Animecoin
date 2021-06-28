@@ -2124,7 +2124,7 @@ void static UpdateTip(CBlockIndex *pindexNew, const CChainParams& chainParams) {
       chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(), chainActive.Tip()->nBits,
       log(chainActive.Tip()->nChainWork.getdouble())/log(2.0), (unsigned long)chainActive.Tip()->nChainTx,
       DateTimeStrFormat("%Y-%m-%d %H:%M:%S", chainActive.Tip()->GetBlockTime()),
-      Checkpoints::GuessVerificationProgress(chainParams.TxData(), chainActive.Tip()), pcoinsTip->DynamicMemoryUsage() * (1.0 / (1<<20)), pcoinsTip->GetCacheSize());
+              GuessVerificationProgress(chainParams.TxData(), chainActive.Tip()), pcoinsTip->DynamicMemoryUsage() * (1.0 / (1<<20)), pcoinsTip->GetCacheSize());
 
     {
         LOCK(g_best_block_mutex);
@@ -3750,7 +3750,7 @@ bool LoadChainTip(const CChainParams& chainparams)
     LogPrintf("Loaded best chain: hashBestChain=%s height=%d date=%s progress=%f\n",
         chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(),
         DateTimeStrFormat("%Y-%m-%d %H:%M:%S", chainActive.Tip()->GetBlockTime()),
-        Checkpoints::GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()));
+              GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()));
     return true;
 }
 
@@ -4624,6 +4624,24 @@ static const uint64_t MEMPOOL_DUMP_VERSION = 1;
  {
      LOCK(cs_main);
      return VersionBitsState(chainActive.Tip(), params, pos, versionbitscache);
+ }
+
+ //! Guess how far we are in the verification process at the given block index
+ double GuessVerificationProgress(const ChainTxData& data, CBlockIndex *pindex) {
+     if (pindex == nullptr)
+         return 0.0;
+
+     int64_t nNow = time(nullptr);
+
+     double fTxTotal;
+
+     if (pindex->nChainTx <= data.nTxCount) {
+         fTxTotal = data.nTxCount + (nNow - data.nTime) * data.dTxRate;
+     } else {
+         fTxTotal = pindex->nChainTx + (nNow - pindex->GetBlockTime()) * data.dTxRate;
+     }
+
+     return pindex->nChainTx / fTxTotal;
  }
 
 class CMainCleanup

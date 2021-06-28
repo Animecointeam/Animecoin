@@ -21,6 +21,7 @@
 #include "sendcoinsentry.h"
 #include "utilmoneystr.h"
 #include "wallet/wallet.h"
+#include "wallet/rpcdump.cpp"
 #include "walletmodel.h"
 
 
@@ -722,23 +723,6 @@ void MultisigDialog::on_copyScriptButton_clicked()
     QApplication::clipboard()->setText(ui->scriptLine->text());
 }
 
-
-void MultisigDialog::on_saveScriptButton_clicked()
-{
-    if(!model)
-        return;
-
-    std::string redeemScript = ui->scriptLine->text().toStdString();
-    std::vector<unsigned char> scriptData(ParseHex(redeemScript));
-    CScript script(scriptData.begin(), scriptData.end());
-    CScriptID scriptID (script);
-
-    LOCK(pwalletMain->cs_wallet);
-    if(!pwalletMain->HaveCScript(scriptID))
-        pwalletMain->AddCScript(script);
-}
-
-
 void MultisigDialog::on_saveContractButton_clicked()
 {
     if(!model)
@@ -759,7 +743,11 @@ void MultisigDialog::on_saveContractButton_clicked()
     if(!pwalletMain->HaveCScript(scriptID))
         pwalletMain->AddCScript(script);
     if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
-        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "send");
+    {
+        CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
+        ImportScript(pwalletMain, script, label, false);
+        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+    }
 }
 
 

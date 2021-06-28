@@ -527,16 +527,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="saveScriptButton">
-           <property name="text">
-            <string>Save redeem script</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="saveContractButton">
            <property name="text">
-            <string>Save address to wallet</string>
+            <string>Add contract to the wallet</string>
            </property>
           </widget>
          </item>

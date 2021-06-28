@@ -59,7 +59,6 @@ class MultisigDialog : public QDialog
     void updateAmounts();
     void on_copyAddressButton_clicked();
     void on_copyScriptButton_clicked();
-    void on_saveScriptButton_clicked();
     void on_saveContractButton_clicked();
     void on_lockTimeBox_valueChanged(int arg1);
 };

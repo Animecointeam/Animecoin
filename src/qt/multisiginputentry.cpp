@@ -58,9 +58,21 @@ CAmount MultisigInputEntry::getAmount()
 
     if(GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
     {
+        QMap <unsigned int, int> index_map;
+        unsigned int p2sh_count = 0;
+        for (int i = 0; i < tx->vout.size(); i++)
+        {
+            const CTxOut txOut = tx->vout[i];
+            if (txOut.scriptPubKey.IsPayToScriptHash ())
+            {
+                index_map.insert (p2sh_count, i);
+                ++p2sh_count;
+            }
+        }
+
         if((unsigned int) nOutput < tx->vout.size())
         {
-            const CTxOut& txOut = tx->vout[nOutput];
+            const CTxOut& txOut = tx->vout[index_map.value(nOutput)];
             amount = txOut.nValue;
         }
     }

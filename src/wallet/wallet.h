@@ -622,6 +622,8 @@ class CWallet : public CCryptoKeyStore, public CValidationInterface
 {
 private:
     static std::atomic<bool> fFlushScheduled;
+    std::atomic<bool> fAbortRescan;
+    std::atomic<bool> fScanningWallet;
 
     /**
      * Select a set of coins such that nValueRet >= nTargetValue and at least
@@ -768,6 +770,8 @@ public:
         m_max_keypool_index = 0;
         nTimeFirstKey = 0;
         fBroadcastTransactions = false;
+        fAbortRescan = false;
+        fScanningWallet = false;
         pNVSLastKnownBestHeader = nullptr;
         pNVSBestBlock = nullptr;
         spvEnabled = false;
@@ -819,6 +823,13 @@ public:
     void UnlockCoin(const COutPoint& output);
     void UnlockAllCoins();
     void ListLockedCoins(std::vector<COutPoint>& vOutpts);
+
+    /*
+     * Rescan abort properties
+     */
+    void AbortRescan() { fAbortRescan = true; }
+    bool IsAbortingRescan() { return fAbortRescan; }
+    bool IsScanning() { return fScanningWallet; }
 
     /**
      * keystore implementation
@@ -886,7 +897,7 @@ public:
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) override;
     void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew);
     void GetNonMempoolTransaction(const uint256 &hash, CTransactionRef &txsp);
-    CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
+    CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, CBlockIndex* pindexStop, bool fUpdate = false);
     void TransactionRemovedFromMempool(const CTransactionRef &ptx) override;
     void ReacceptWalletTransactions();
     void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman);
