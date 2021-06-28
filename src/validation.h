@@ -43,6 +43,7 @@
 class CBlockIndex;
 class CBlockTreeDB;
 class CChainParams;
+class CCoinsViewDB;
 class CBloomFilter;
 class CInv;
 class CConnman;
@@ -540,11 +541,14 @@ extern CChain chainActive;
 /** The currently-connected chain of PoW validated headers (protected by cs_main). */
 extern CChain headersChainActive;
 
+/** Global variable that points to the coins database (protected by cs_main) */
+extern std::unique_ptr<CCoinsViewDB> pcoinsdbview;
+
 /** Global variable that points to the active CCoinsView (protected by cs_main) */
-extern CCoinsViewCache *pcoinsTip;
+extern std::unique_ptr<CCoinsViewCache> pcoinsTip;
 
 /** Global variable that points to the active block tree (protected by cs_main) */
-extern CBlockTreeDB *pblocktree;
+extern std::unique_ptr<CBlockTreeDB> pblocktree;
 
 /**
  * Return the spend height, which is one more than the inputs.GetBestBlock().
