@@ -348,78 +348,90 @@ void MultisigDialog::on_createTransactionButton_clicked()
 
 void MultisigDialog::on_transaction_textChanged()
 {
-    while(ui->inputs->count())
-        delete ui->inputs->takeAt(0)->widget();
-    while(ui->outputs->count())
-        delete ui->outputs->takeAt(0)->widget();
-
-    if(ui->transaction->text().size() > 0)
-        ui->signTransactionButton->setEnabled(true);
-    else
-        ui->signTransactionButton->setEnabled(false);
-
     // Decode the raw transaction
     std::vector<unsigned char> txData(ParseHex(ui->transaction->text().toStdString()));
-    CDataStream ss(txData, SER_NETWORK, PROTOCOL_VERSION);
 
-    CTransaction tx(deserialize, ss);
-    if (tx.IsNull())
+    try
+    {
+        CDataStream ss(txData, SER_NETWORK, PROTOCOL_VERSION);
+        CTransaction tx = CTransaction(deserialize, ss);
+
+        if (tx.IsNull())
+        {
+            return;
+        }
+
+        // Clear the inouts and outputs
+        while(ui->inputs->count())
+            delete ui->inputs->takeAt(0)->widget();
+        while(ui->outputs->count())
+            delete ui->outputs->takeAt(0)->widget();
+
+        if(ui->transaction->text().size() > 0)
+            ui->signTransactionButton->setEnabled(true);
+        else
+            ui->signTransactionButton->setEnabled(false);
+
+        // Fill input list
+        int index = -1;
+        for (const CTxIn& txin : tx.vin)
+        {
+            uint256 prevoutHash = txin.prevout.hash;
+            addInput();
+            index++;
+            MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
+            if(entry)
+            {
+                CTransactionRef funding_tx;
+                uint256 blockHash;
+                if(GetTransaction(prevoutHash, funding_tx, Params().GetConsensus(), blockHash, true))
+                {
+                    if (!funding_tx->IsNull())
+                    {
+                        const CTxOut funding_out = funding_tx->vout[txin.prevout.n];
+                        CScript script = funding_out.scriptPubKey;
+                        if(script.IsPayToScriptHash())
+                        {
+                            CTxDestination dest;
+                            if(ExtractDestination(script, dest))
+                            {
+                                QString addressStr = QString::fromStdString(CBitcoinAddress(dest).ToString());
+                                entry->setAddress(addressStr);
+                            }
+                        }
+                    }
+                }
+                entry->setTransactionId(QString::fromStdString (prevoutHash.GetHex()));
+                entry->setTransactionOutputIndex(txin.prevout.n);
+            }
+        }
+
+        // Fill output list
+        index = -1;
+        for (const CTxOut& txout : tx.vout)
+        {
+            CScript scriptPubKey = txout.scriptPubKey;
+            CTxDestination addr;
+            ExtractDestination(scriptPubKey, addr);
+            CBitcoinAddress address(addr);
+            SendCoinsRecipient recipient;
+            recipient.address = QString(address.ToString().c_str());
+            recipient.amount = txout.nValue;
+            addOutput();
+            index++;
+            SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(index)->widget());
+            if(entry)
+            {
+                entry->setValue(recipient);
+            }
+        }
+        updateRemoveEnabled();
+    }
+    catch (const std::ios_base::failure&)
     {
         return;
     }
 
-    // Fill input list
-    int index = -1;
-    for (const CTxIn& txin : tx.vin)
-    {
-        uint256 prevoutHash = txin.prevout.hash;
-        addInput();
-        index++;
-        MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
-        if(entry)
-        {
-            CTransactionRef funding_tx;
-            uint256 blockHash;
-            if(GetTransaction(prevoutHash, funding_tx, Params().GetConsensus(), blockHash, true))
-            {
-                const CTxOut funding_out = funding_tx->vout[txin.prevout.n];
-                CScript script = funding_out.scriptPubKey;
-                if(script.IsPayToScriptHash())
-                {
-                    CTxDestination dest;
-                    if(ExtractDestination(script, dest))
-                    {
-                        QString addressStr = QString::fromStdString(CBitcoinAddress(dest).ToString());
-                        entry->setAddress(addressStr);
-                    }
-                }
-            }
-            entry->setTransactionId(QString::fromStdString (prevoutHash.GetHex()));
-            entry->setTransactionOutputIndex(txin.prevout.n);
-        }
-    }
-
-    // Fill output list
-    index = -1;
-    for (const CTxOut& txout : tx.vout)
-    {
-        CScript scriptPubKey = txout.scriptPubKey;
-        CTxDestination addr;
-        ExtractDestination(scriptPubKey, addr);
-        CBitcoinAddress address(addr);
-        SendCoinsRecipient recipient;
-        recipient.address = QString(address.ToString().c_str());
-        recipient.amount = txout.nValue;
-        addOutput();
-        index++;
-        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(index)->widget());
-        if(entry)
-        {
-            entry->setValue(recipient);
-        }
-    }
-
-    updateRemoveEnabled();
 }
 
 void MultisigDialog::on_copyTransactionButton_clicked()
@@ -603,6 +615,8 @@ void MultisigDialog::on_sendTransactionButton_clicked()
         emit message(tr("Send Raw Transaction"), tr("Network is unreachable!"), CClientUIInterface::MSG_ERROR);
         return;
     }
+
+    // Success, broadcast the transaction
     CInv inv(MSG_TX, tx.GetHash());
     g_connman->ForEachNode([&inv](CNode* pnode)
     {

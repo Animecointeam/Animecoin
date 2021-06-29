@@ -569,7 +569,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>840</width>
-                   <height>126</height>
+                   <height>142</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -654,6 +654,13 @@
                   </item>
                  </layout>
                 </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="infoLabel">
+                <property name="text">
+                 <string/>
+                </property>
                </widget>
               </item>
              </layout>
@@ -866,23 +873,6 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
-           <item>
-            <spacer name="horizontalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item>
             <widget class="QPushButton" name="signTransactionButton">
              <property name="minimumSize">
@@ -901,6 +891,9 @@
             </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11"/>
          </item>
         </layout>
        </item>
@@ -938,30 +931,6 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
-           <item>
-            <widget class="QLabel" name="statusLabel">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_7">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item>
             <widget class="QPushButton" name="sendTransactionButton">
              <property name="minimumSize">
@@ -976,6 +945,17 @@
              <property name="icon">
               <iconset resource="../bitcoin.qrc">
                <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QLabel" name="statusLabel">
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
