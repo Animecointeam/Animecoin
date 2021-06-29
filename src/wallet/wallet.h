@@ -73,6 +73,8 @@ static const bool DEFAULT_USE_HD_WALLET = true;
 static const bool DEFAULT_USE_SPV = false;
 extern const char * DEFAULT_WALLET_DAT;
 
+static const int64_t TIMESTAMP_MIN = 0;
+
 class CCoinControl;
 class COutput;
 class CReserveKey;
@@ -897,6 +899,7 @@ public:
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) override;
     void UpdatedBlockHeaderTip(bool fInitialDownload, const CBlockIndex *pindexNew);
     void GetNonMempoolTransaction(const uint256 &hash, CTransactionRef &txsp);
+    int64_t RescanFromTime(int64_t startTime, bool update);
     CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, CBlockIndex* pindexStop, bool fUpdate = false);
     void TransactionRemovedFromMempool(const CTransactionRef &ptx) override;
     void ReacceptWalletTransactions();

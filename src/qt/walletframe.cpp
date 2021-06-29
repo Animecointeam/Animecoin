@@ -134,11 +134,11 @@ void WalletFrame::gotoAddressPage()
         i.value()->gotoAddressPage();
 }
 
-void WalletFrame::gotoWatchCoinsPage(QString addr)
+void WalletFrame::gotoWatchCoinsPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoWatchCoinsPage(addr);
+        i.value()->gotoWatchCoinsPage();
 }
 
 void WalletFrame::gotoSendCoinsPage(QString addr)
@@ -148,11 +148,11 @@ void WalletFrame::gotoSendCoinsPage(QString addr)
         i.value()->gotoSendCoinsPage(addr);
 }
 
-void WalletFrame::gotoMultisigPage()
+void WalletFrame::gotoMultisigPage(QString addr)
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoMultisigPage();
+        i.value()->gotoMultisigPage(addr);
 }
 
 void WalletFrame::gotoAboutPage()

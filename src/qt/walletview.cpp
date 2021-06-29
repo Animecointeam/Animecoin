@@ -96,6 +96,9 @@ void WalletView::setBitcoinGUI(BitcoinGUI *gui)
 {
     if (gui)
     {
+        // From the watchonly context menu, go to the multisig pending tab
+        connect (watchCoinsPage, SIGNAL(unlockFunds(QString)), gui, SLOT(gotoMultisigPage(QString)));
+
         // Clicking on a transaction on the overview page simply sends you to transaction history page
         connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), gui, SLOT(gotoHistoryPage()));
 
@@ -205,29 +208,25 @@ void WalletView::gotoReceiveCoinsPage()
     setCurrentWidget(receiveCoinsPage);
 }
 
-void WalletView::gotoWatchCoinsPage(QString addr)
+void WalletView::gotoWatchCoinsPage()
 {
     setCurrentWidget(watchCoinsPage);
     watchCoinsPage->activate();
-
-    if (!addr.isEmpty())
-    {
-        // watchCoinsPage->setAddress(addr);
-    }
 }
 
 void WalletView::gotoSendCoinsPage(QString addr)
 {
     setCurrentWidget(sendCoinsPage);
-    //sendCoinsPage-> activate();
 
     if (!addr.isEmpty())
         sendCoinsPage->setAddress(addr);
 }
 
-void WalletView::gotoMultisigPage()
+void WalletView::gotoMultisigPage(QString addr)
 {
     setCurrentWidget(multisigPage);
+    if (!addr.isEmpty())
+        multisigPage->setAddress(addr);
 }
 
 void WalletView::gotoAboutPage()

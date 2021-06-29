@@ -82,6 +82,7 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
     QAction *copyLabelAction = new QAction(tr("Copy &Label"), this);
     QAction *editAction = new QAction(tr("&Edit"), this);
     deleteAction = new QAction(ui->deleteAddress->text(), this);
+    unlockAction = new QAction(tr("&Unlock contract funds"), this);
 
     // Build context menu
     contextMenu = new QMenu(this);
@@ -90,6 +91,8 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
     contextMenu->addAction(editAction);
     if((tab == SendingTab)||(tab == WatchonlyTab))
         contextMenu->addAction(deleteAction);
+    if(tab == WatchonlyTab)
+        contextMenu->addAction(unlockAction);
     contextMenu->addSeparator();
 
     // Connect signals for context menu actions
@@ -97,6 +100,17 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(onCopyLabelAction()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(onEditAction()));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(on_deleteAddress_clicked()));
+    connect(unlockAction, &QAction::triggered, [this]()
+    {
+        QTableView* table = ui->tableView;
+        QModelIndexList selection = table->selectionModel()->selectedRows(AddressTableModel::Address);
+
+        if(!selection.isEmpty())
+        {
+            // Copy first item
+            emit unlockFunds (selection.at(0).data(Qt::EditRole).toString());
+        }
+    });
 
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextualMenu(QPoint)));
 
@@ -243,7 +257,7 @@ void AddressBookPage::selectionChanged()
         case WatchonlyTab:
             ui->deleteAddress->setEnabled(true);
             ui->deleteAddress->setVisible(true);
-            deleteAction->setEnabled(false);
+            deleteAction->setEnabled(true);
             break;
         }
         ui->copyAddress->setEnabled(true);

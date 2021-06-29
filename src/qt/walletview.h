@@ -80,11 +80,11 @@ public slots:
     /** Switch to olschoold receive coins page */
     void gotoAddressPage();
     /** Switch to multisig page */
-    void gotoMultisigPage();
+    void gotoMultisigPage(QString addr = "");
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to watchonly page */
-    void gotoWatchCoinsPage(QString addr = "");
+    void gotoWatchCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /** Switch to About page */

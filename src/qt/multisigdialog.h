@@ -24,6 +24,7 @@ class MultisigDialog : public QDialog
     void setModel(WalletModel *model);
 
   public slots:
+    void setAddress (const QString& address);
     MultisigAddressEntry* addPubKey();
     MultisigAddressEntry* addParty();
     void clear();

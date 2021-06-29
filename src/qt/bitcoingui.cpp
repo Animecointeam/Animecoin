@@ -655,20 +655,20 @@ void BitcoinGUI::gotoAddressPage()
     addressAction->setChecked(true);
     if (walletFrame) walletFrame->gotoAddressPage();
 }
-void BitcoinGUI::gotoWatchCoinsPage(QString addr)
+void BitcoinGUI::gotoWatchCoinsPage()
 {
     watchCoinsAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoWatchCoinsPage(addr);
+    if (walletFrame) walletFrame->gotoWatchCoinsPage();
 }
 void BitcoinGUI::gotoSendCoinsPage(QString addr)
 {
     sendCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoSendCoinsPage(addr);
 }
-void BitcoinGUI::gotoMultisigPage()
+void BitcoinGUI::gotoMultisigPage(QString addr)
 {
     multisigAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoMultisigPage();
+    if (walletFrame) walletFrame->gotoMultisigPage(addr);
 }
 void BitcoinGUI::gotoAboutPage()
 {

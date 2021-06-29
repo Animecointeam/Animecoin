@@ -31,7 +31,8 @@ void MultisigInputEntry::setModel(WalletModel *_model)
 
 void MultisigInputEntry::clear()
 {
-    ui->transactionId->clear();
+    ui->contractAddress->clear();
+    ui->transactionIdBox->clear();
     ui->transactionOutput->clear();
     ui->redeemScript->clear();
 }
@@ -44,8 +45,7 @@ bool MultisigInputEntry::validate()
 CTxIn MultisigInputEntry::getInput()
 {
     int nOutput = ui->transactionOutput->currentIndex();
-    CTxIn input(COutPoint(txHash, nOutput));
-
+    CTxIn input(COutPoint(txHash, index_map[nOutput]));
     return input;
 }
 
@@ -58,19 +58,7 @@ CAmount MultisigInputEntry::getAmount()
 
     if(GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
     {
-        QMap <unsigned int, int> index_map;
-        unsigned int p2sh_count = 0;
-        for (int i = 0; i < tx->vout.size(); i++)
-        {
-            const CTxOut txOut = tx->vout[i];
-            if (txOut.scriptPubKey.IsPayToScriptHash ())
-            {
-                index_map.insert (p2sh_count, i);
-                ++p2sh_count;
-            }
-        }
-
-        if((unsigned int) nOutput < tx->vout.size())
+        if((unsigned int) index_map.value(nOutput) < tx->vout.size())
         {
             const CTxOut& txOut = tx->vout[index_map.value(nOutput)];
             amount = txOut.nValue;
@@ -85,24 +73,27 @@ QString MultisigInputEntry::getRedeemScript()
     return ui->redeemScript->text();
 }
 
+void MultisigInputEntry::setAddress(QString address)
+{
+     ui->contractAddress->setText(address);
+     emit on_contractAddress_textChanged(address);
+}
+
 void MultisigInputEntry::setTransactionId(QString transactionId)
 {
-    ui->transactionId->setText(transactionId);
+    int id = ui->transactionIdBox->findText(transactionId);
+    if (id != -1)
+        ui->transactionIdBox->setCurrentIndex(id);
 }
 
 void MultisigInputEntry::setTransactionOutputIndex(int index)
 {
-    ui->transactionOutput->setCurrentIndex(index);
+    ui->transactionOutput->setCurrentIndex(index_map.key(index));
 }
 
 void MultisigInputEntry::setRemoveEnabled(bool enabled)
 {
-    ui->deleteButton->setEnabled(enabled);
-}
-
-void MultisigInputEntry::on_pasteTransactionIdButton_clicked()
-{
-    ui->transactionId->setText(QApplication::clipboard()->text());
+    //ui->deleteButton->setEnabled(enabled);
 }
 
 void MultisigInputEntry::on_deleteButton_clicked()
@@ -115,41 +106,6 @@ void MultisigInputEntry::on_pasteRedeemScriptButton_clicked()
     ui->redeemScript->setText(QApplication::clipboard()->text());
 }
 
-void MultisigInputEntry::on_transactionId_textChanged(const QString &transactionId)
-{
-    ui->transactionOutput->clear();
-    if(transactionId.isEmpty())
-        return;
-
-    // Make list of transaction outputs
-    txHash = uint256S(transactionId.toStdString());
-    CTransactionRef tx;
-    uint256 blockHash;
-    if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
-        return;
-
-    for (unsigned int i = 0; i < tx->vout.size(); i++)
-    {
-        QString idStr;
-        idStr.setNum(i);
-        const CTxOut& txOut = tx->vout[i];
-        if (!txOut.scriptPubKey.IsPayToScriptHash ())
-            continue;
-        CAmount amount = txOut.nValue;
-        QString amountStr = QString::fromStdString (FormatMoney(amount));
-        CScript script = txOut.scriptPubKey;
-        CTxDestination addr;
-        if(ExtractDestination(script, addr))
-        {
-            CBitcoinAddress address(addr);
-            QString addressStr(address.ToString().c_str());
-            ui->transactionOutput->addItem(idStr + QString(" - ") + addressStr + QString(" - ") + amountStr + "ANI");
-        }
-        else
-            ui->transactionOutput->addItem(idStr + QString(" - ") + amountStr + "ANI");
-    }
-}
-
 void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
 {
     if(ui->transactionOutput->itemText(index).isEmpty())
@@ -160,17 +116,6 @@ void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
         return;
 
-    QMap <unsigned int, int> index_map;
-    unsigned int p2sh_count = 0;
-    for (int i = 0; i < tx->vout.size(); i++)
-    {
-        const CTxOut txOut = tx->vout[i];
-        if (txOut.scriptPubKey.IsPayToScriptHash ())
-        {
-            index_map.insert (p2sh_count, i);
-            ++p2sh_count;
-        }
-    }
     const CTxOut txOut = tx->vout[index_map.value(index)];
 
     CScript script = txOut.scriptPubKey;
@@ -199,3 +144,89 @@ void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
 
     emit updateAmount();
 }
+
+void MultisigInputEntry::on_contractAddress_textChanged(const QString& address_input)
+{
+    {
+        ui->transactionIdBox->clear();
+        LOCK(pwalletMain->cs_wallet);
+        for (const auto& walletEntry : pwalletMain->mapWallet)
+        {
+            QString hash = QString::fromStdString(walletEntry.first.ToString());
+            const CWalletTx* tx = &walletEntry.second;
+
+            if (!CheckFinalTx(*tx) || !tx->IsTrusted())
+                continue;
+
+            if (tx->IsCoinBase() && tx->GetBlocksToMaturity() > 0)
+                continue;
+
+            int nDepth = tx->GetDepthInMainChain();
+            if (nDepth < (tx->IsFromMe(ISMINE_ALL) ? 0 : 1))
+                continue;
+
+            bool fitting = false;
+            for (unsigned int i = 0; i < tx->tx->vout.size(); i++)
+            {
+                CTxDestination addr;
+                if (pwalletMain->IsMine(tx->tx->vout[i]) == ISMINE_WATCH_ONLY); //
+                {
+                    if (!ExtractDestination(tx->tx->vout[i].scriptPubKey, addr))
+                        continue;
+                    if (pwalletMain->IsSpent(walletEntry.first, i))
+                        continue;
+                    QString addressStr = QString::fromStdString(CBitcoinAddress(addr).ToString());
+                    if (addressStr == address_input)
+                    {
+                        fitting = true;
+                    }
+                }
+            }
+            if (fitting)
+                ui->transactionIdBox->addItem(hash);
+        }
+    }
+}
+
+
+void MultisigInputEntry::on_transactionIdBox_currentIndexChanged(const QString& transactionId)
+{
+    ui->transactionOutput->clear();
+    if(transactionId.isEmpty())
+        return;
+
+    // Make list of transaction outputs
+    txHash = uint256S(transactionId.toStdString());
+    CTransactionRef tx;
+    uint256 blockHash;
+    if(!GetTransaction(txHash, tx, Params().GetConsensus(), blockHash, true))
+        return;
+
+    index_map.clear();
+    unsigned int p2sh_count = 0;
+    for (unsigned int i = 0; i < tx->vout.size(); i++)
+    {
+        QString idStr;
+        idStr.setNum(i);
+        const CTxOut txOut = tx->vout[i];
+        if (!txOut.scriptPubKey.IsPayToScriptHash())
+            continue;
+        index_map.insert (p2sh_count, i);
+        ++p2sh_count;
+        CAmount amount = txOut.nValue;
+        QString amountStr = QString::fromStdString (FormatMoney(amount));
+        CScript script = txOut.scriptPubKey;
+        CTxDestination addr;
+        if(ExtractDestination(script, addr))
+        {
+            CBitcoinAddress address(addr);
+            QString addressStr(address.ToString().c_str());
+            ui->transactionOutput->addItem(idStr + QString(" - ") + addressStr + QString(" - ") + amountStr + "ANI");
+        }
+        else
+        {
+            ui->transactionOutput->addItem(idStr + QString(" - ") + amountStr + "ANI");
+        }
+    }
+}
+

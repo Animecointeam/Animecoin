@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabCreateAddress">
       <attribute name="title">
@@ -569,7 +569,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>840</width>
-                   <height>135</height>
+                   <height>126</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -622,7 +622,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>840</width>
-                   <height>135</height>
+                   <height>144</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">

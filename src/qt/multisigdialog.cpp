@@ -72,6 +72,16 @@ MultisigDialog::~MultisigDialog()
     delete ui;
 }
 
+void MultisigDialog::setAddress (const QString& address)
+{
+    ui->tabWidget->setCurrentIndex(2); // Spending tab.
+    MultisigInputEntry* entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(0)->widget());
+    if(entry)
+    {
+        entry->setAddress(address);
+    }
+}
+
 void MultisigDialog::setModel(WalletModel *_model)
 {
     this->model = _model;
@@ -368,6 +378,22 @@ void MultisigDialog::on_transaction_textChanged()
         MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
         if(entry)
         {
+            CTransactionRef funding_tx;
+            uint256 blockHash;
+            if(GetTransaction(prevoutHash, funding_tx, Params().GetConsensus(), blockHash, true))
+            {
+                const CTxOut funding_out = funding_tx->vout[txin.prevout.n];
+                CScript script = funding_out.scriptPubKey;
+                if(script.IsPayToScriptHash())
+                {
+                    CTxDestination dest;
+                    if(ExtractDestination(script, dest))
+                    {
+                        QString addressStr = QString::fromStdString(CBitcoinAddress(dest).ToString());
+                        entry->setAddress(addressStr);
+                    }
+                }
+            }
             entry->setTransactionId(QString::fromStdString (prevoutHash.GetHex()));
             entry->setTransactionOutputIndex(txin.prevout.n);
         }
@@ -571,7 +597,7 @@ void MultisigDialog::on_sendTransactionButton_clicked()
         emit message(tr("Send Raw Transaction"), tr("Failed to find the inputs in coin database."), CClientUIInterface::MSG_ERROR);
         return;
     }
-    //GetMainSignals().SyncTransaction(tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK, true);
+
     if(!g_connman)
     {
         emit message(tr("Send Raw Transaction"), tr("Network is unreachable!"), CClientUIInterface::MSG_ERROR);

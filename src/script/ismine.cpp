@@ -143,10 +143,10 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
     }
     case TX_ESCROW_CLTV:
     {
-        // Skip escrow key
+        //If this contract involves you, mark it as watchonly.
         vector<valtype> keys(vSolutions.begin()+2, vSolutions.begin()+vSolutions.size()-1);
-        if (HaveKeys(keys, keystore) == keys.size())
-            return ISMINE_SPENDABLE;
+        if (HaveKeys(keys, keystore) >=1)
+            return ISMINE_WATCH_ONLY;
         break;
     }
     }

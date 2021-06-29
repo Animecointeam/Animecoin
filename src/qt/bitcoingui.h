@@ -203,9 +203,9 @@ private slots:
     /** Switch to oldschool receive coins page */
     void gotoAddressPage();
     /** Awitch to multitool page */
-    void gotoMultisigPage();
+    void gotoMultisigPage(QString addr = "");
     /** Switch to watchonly page */
-    void gotoWatchCoinsPage(QString addr = "");
+    void gotoWatchCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /**Switch to About page */

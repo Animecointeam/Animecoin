@@ -61,6 +61,7 @@ private:
     QSortFilterProxyModel *proxyModel;
     QMenu *contextMenu;
     QAction *deleteAction; // to be able to explicitly disable it
+    QAction *unlockAction;
     QString newAddressToSelect;
 
 private slots:
@@ -86,6 +87,7 @@ private slots:
 
 signals:
     void sendCoins(QString addr);
+    void unlockFunds(const QString& addr);
 };
 
 #endif // BITCOIN_QT_ADDRESSBOOKPAGE_H

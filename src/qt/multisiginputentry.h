@@ -2,6 +2,7 @@
 #define MULTISIGINPUTENTRY_H
 
 #include <QFrame>
+#include <QMap>
 
 #include "amount.h"
 #include "uint256.h"
@@ -27,6 +28,7 @@ class MultisigInputEntry : public QFrame
     CTxIn getInput();
     CAmount getAmount();
     QString getRedeemScript();
+    void setAddress(QString address);
     void setTransactionId(QString transactionId);
     void setTransactionOutputIndex(int index);
 
@@ -42,13 +44,14 @@ class MultisigInputEntry : public QFrame
     Ui::MultisigInputEntry *ui;
     WalletModel *model;
     uint256 txHash;
+    QMap <unsigned int, unsigned int> index_map;
 
   private slots:
-    void on_transactionId_textChanged(const QString &transactionId);
-    void on_pasteTransactionIdButton_clicked();
     void on_deleteButton_clicked();
     void on_transactionOutput_currentIndexChanged(int index);
     void on_pasteRedeemScriptButton_clicked();
+    void on_contractAddress_textChanged(const QString& address_input);
+    void on_transactionIdBox_currentIndexChanged(const QString& transactionId);
 };
 
 #endif // MULTISIGINPUTENTRY_H
