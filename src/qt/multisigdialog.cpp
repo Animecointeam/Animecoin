@@ -361,7 +361,7 @@ void MultisigDialog::on_transaction_textChanged()
             return;
         }
 
-        // Clear the inouts and outputs
+        // Clear the inputs and outputs
         while(ui->inputs->count())
             delete ui->inputs->takeAt(0)->widget();
         while(ui->outputs->count())
@@ -622,6 +622,23 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     {
         pnode->PushInventory(inv);
     });
+
+    MultisigInputEntry* old_entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(0)->widget());
+    QString strAddress = old_entry->getAddress();
+
+    // Clear the inputs and outputs
+    while(ui->inputs->count())
+        delete ui->inputs->takeAt(0)->widget();
+    while(ui->outputs->count())
+        delete ui->outputs->takeAt(0)->widget();
+
+    auto entry = addInput();
+    entry->setAddress(strAddress);
+    addOutput();
+    ui->transaction->clear();
+    ui->signedTransaction->clear();
+    ui->signTransactionButton->setDisabled(true);
+    ui->sendTransactionButton->setDisabled(true);
 }
 
 MultisigInputEntry * MultisigDialog::addInput()

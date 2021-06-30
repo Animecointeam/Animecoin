@@ -73,6 +73,11 @@ QString MultisigInputEntry::getRedeemScript()
     return ui->redeemScript->text();
 }
 
+QString MultisigInputEntry::getAddress()
+{
+    return ui->contractAddress->text();
+}
+
 void MultisigInputEntry::setAddress(QString address)
 {
      ui->contractAddress->setText(address);

@@ -27,6 +27,7 @@ class MultisigInputEntry : public QFrame
     bool validate();
     CTxIn getInput();
     CAmount getAmount();
+    QString getAddress();
     QString getRedeemScript();
     void setAddress(QString address);
     void setTransactionId(QString transactionId);

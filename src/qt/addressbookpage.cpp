@@ -107,7 +107,6 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
 
         if(!selection.isEmpty())
         {
-            // Copy first item
             emit unlockFunds (selection.at(0).data(Qt::EditRole).toString());
         }
     });
