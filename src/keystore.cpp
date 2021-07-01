@@ -8,7 +8,7 @@
 #include "key.h"
 #include "pubkey.h"
 #include "util.h"
-
+#include "utilstrencodings.h"
 
 bool CKeyStore::AddKey(const CKey &key) {
     return AddKeyPubKey(key, key.GetPubKey());
@@ -62,6 +62,38 @@ bool CBasicKeyStore::GetCScript(const CScriptID &hash, CScript& redeemScriptOut)
         return true;
     }
     return false;
+}
+
+bool CBasicKeyStore::GetPreimage(
+    const std::vector<unsigned char>& image,
+    std::vector<unsigned char>& preimage
+) const
+{
+    LOCK(cs_KeyStore);
+
+    PreimageMap::const_iterator it = mapPreimages.find(image);
+    if (it != mapPreimages.end()) {
+        preimage = it->second;
+
+        return true;
+    }
+    return false;
+}
+
+bool CBasicKeyStore::AddPreimage(
+    const std::vector<unsigned char>& image,
+    const std::vector<unsigned char>& preimage
+)
+{
+    LOCK(cs_KeyStore);
+
+    std::string prehex = HexStr (preimage.begin(), preimage.end());
+    std::string imghex = HexStr (image.begin(), image.end());
+
+    printf ("Adding preimage %s for image %s \n", prehex.c_str(), imghex.c_str());
+    mapPreimages.emplace(image, preimage);
+    //mapPreimages[image] = preimage;
+    return true;
 }
 
 static bool ExtractPubKey(const CScript &dest, CPubKey& pubKeyOut)

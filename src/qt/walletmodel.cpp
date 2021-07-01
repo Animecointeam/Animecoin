@@ -184,10 +184,10 @@ void WalletModel::updateTransaction()
 }
 
 void WalletModel::updateAddressBook(const QString &address, const QString &label,
-        bool isMine, const QString &purpose, int status)
+        bool isMine, bool watchOnly, const QString &purpose, int status)
 {
     if(addressTableModel)
-        addressTableModel->updateEntry(address, label, isMine, purpose, status);
+        addressTableModel->updateEntry(address, label, isMine, watchOnly, purpose, status);
 }
 
 void WalletModel::updateWatchOnlyFlag(bool fHaveWatchonly)
@@ -330,7 +330,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
                 // Check if we have a new address or an updated label
                 if (mi == wallet->mapAddressBook.end())
                 {
-                    wallet->SetAddressBook(dest, strLabel, "send");
+                    // wallet->SetAddressBook(dest, strLabel, "send");
                 }
                 else if (mi->second.name != strLabel)
                 {
@@ -433,18 +433,19 @@ static void NotifyKeyStoreStatusChanged(WalletModel *walletmodel, CCryptoKeyStor
 }
 
 static void NotifyAddressBookChanged(WalletModel *walletmodel, CWallet *wallet,
-        const CTxDestination &address, const std::string &label, bool isMine,
+        const CTxDestination &address, const std::string &label, bool isMine, bool watchOnly,
         const std::string &purpose, ChangeType status)
 {
     QString strAddress = QString::fromStdString(CBitcoinAddress(address).ToString());
     QString strLabel = QString::fromStdString(label);
     QString strPurpose = QString::fromStdString(purpose);
 
-    qDebug() << "NotifyAddressBookChanged : " + strAddress + " " + strLabel + " isMine=" + QString::number(isMine) + " purpose=" + strPurpose + " status=" + QString::number(status);
+    qDebug() << "NotifyAddressBookChanged : " + strAddress + " " + strLabel + " isMine=" + QString::number(isMine) + " watchOnly=" + QString::number(watchOnly)  + " purpose=" + strPurpose + " status=" + QString::number(status);
     QMetaObject::invokeMethod(walletmodel, "updateAddressBook", Qt::QueuedConnection,
                               Q_ARG(QString, strAddress),
                               Q_ARG(QString, strLabel),
                               Q_ARG(bool, isMine),
+                              Q_ARG(bool, watchOnly),
                               Q_ARG(QString, strPurpose),
                               Q_ARG(int, status));
 }
@@ -481,7 +482,7 @@ void WalletModel::subscribeToCoreSignals()
 {
     // Connect signals to wallet
     wallet->NotifyStatusChanged.connect(boost::bind(&NotifyKeyStoreStatusChanged, this, _1));
-    wallet->NotifyAddressBookChanged.connect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6));
+    wallet->NotifyAddressBookChanged.connect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6, _7));
     wallet->NotifyTransactionChanged.connect(boost::bind(NotifyTransactionChanged, this, _1, _2, _3));
     wallet->ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
     wallet->NotifyWatchonlyChanged.connect(boost::bind(NotifyWatchonlyChanged, this, _1));
@@ -492,7 +493,7 @@ void WalletModel::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from wallet
     wallet->NotifyStatusChanged.disconnect(boost::bind(&NotifyKeyStoreStatusChanged, this, _1));
-    wallet->NotifyAddressBookChanged.disconnect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6));
+    wallet->NotifyAddressBookChanged.disconnect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6, _7));
     wallet->NotifyTransactionChanged.disconnect(boost::bind(NotifyTransactionChanged, this, _1, _2, _3));
     wallet->ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
     wallet->NotifyWatchonlyChanged.disconnect(boost::bind(NotifyWatchonlyChanged, this, _1));

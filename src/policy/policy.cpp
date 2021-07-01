@@ -46,8 +46,8 @@ bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType, const bool w
             return false;
         if (m < 1 || m > n)
             return false;
-    } else if (whichType == TX_ESCROW_CLTV) {
-        return false;
+    /*} else if (whichType == TX_ESCROW_CLTV || whichType == TX_HTLC) {
+        return false;*/
     } else if (whichType == TX_NULL_DATA &&
                (!fAcceptDatacarrier || scriptPubKey.size() > nMaxDatacarrierBytes))
           return false;

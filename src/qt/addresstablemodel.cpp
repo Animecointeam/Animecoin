@@ -58,7 +58,7 @@ struct AddressTableEntryLessThan
 };
 
 /* Determine address type from address purpose */
-static AddressTableEntry::Type translateTransactionType(const QString &strPurpose, bool isMine)
+static AddressTableEntry::Type translateTransactionType(const QString &strPurpose, bool isMine, bool watchOnly)
 {
     AddressTableEntry::Type addressType = AddressTableEntry::Hidden;
     // "refund" addresses aren't shown, and change addresses aren't in mapAddressBook at all.
@@ -69,7 +69,14 @@ static AddressTableEntry::Type translateTransactionType(const QString &strPurpos
     else if (strPurpose == "watchonly")
         addressType = AddressTableEntry::Watching;
     else if (strPurpose == "unknown" || strPurpose == "") // if purpose not set, guess
-        addressType = (isMine ? AddressTableEntry::Receiving : AddressTableEntry::Sending);
+    {
+        if (isMine&&!watchOnly)
+            addressType = AddressTableEntry::Receiving;
+        else if (isMine&&watchOnly)
+            addressType = AddressTableEntry::Watching;
+        else
+            addressType = AddressTableEntry::Sending;
+    }
     return addressType;
 }
 
@@ -94,8 +101,9 @@ public:
             {
                 const CBitcoinAddress& address =  item.first;
                 bool fMine = IsMine(*wallet, address.Get());
+                bool fWatchOnly = (IsMine(*wallet, address.Get()) == ISMINE_WATCH_ONLY ? true : false);
                 AddressTableEntry::Type addressType = translateTransactionType(
-                        QString::fromStdString(item.second.purpose), fMine);
+                        QString::fromStdString(item.second.purpose), fMine, fWatchOnly);
                 const std::string& strName = item.second.name;
 
                 const QString balance = BitcoinUnits::format (BitcoinUnit::ANI , balance_map[address.Get()], true, BitcoinUnits::separatorAlways);
@@ -114,7 +122,7 @@ public:
         std::sort(cachedAddressTable.begin(), cachedAddressTable.end(), AddressTableEntryLessThan());
     }
 
-    void updateEntry(const QString &address, const QString &label, bool isMine, const QString &purpose, int status, const QString& balance = "")
+    void updateEntry(const QString &address, const QString &label, bool isMine, bool watchOnly, const QString &purpose, int status, const QString& balance = "")
     {
         // Find address / label in model
         QList<AddressTableEntry>::iterator lower = std::lower_bound(
@@ -124,7 +132,7 @@ public:
         int lowerIndex = (lower - cachedAddressTable.begin());
         int upperIndex = (upper - cachedAddressTable.begin());
         bool inModel = (lower != upper);
-        AddressTableEntry::Type newEntryType = translateTransactionType(purpose, isMine);
+        AddressTableEntry::Type newEntryType = translateTransactionType(purpose, isMine, watchOnly);
 
         switch(status)
         {
@@ -365,10 +373,10 @@ QModelIndex AddressTableModel::index(int row, int column, const QModelIndex &par
 }
 
 void AddressTableModel::updateEntry(const QString &address,
-        const QString &label, bool isMine, const QString &purpose, int status, const QString& balance)
+        const QString &label, bool isMine, bool watchOnly, const QString &purpose, int status, const QString& balance)
 {
     // Update address book model from Animecoin core
-    priv->updateEntry(address, label, isMine, purpose, status, balance);
+    priv->updateEntry(address, label, isMine, watchOnly, purpose, status, balance);
 }
 
 QString AddressTableModel::addRow(const QString &type, const QString &label, const QString &address, const QString& balance)

@@ -3076,6 +3076,7 @@ extern UniValue importprivkey(const JSONRPCRequest& request);
 extern UniValue importaddress(const JSONRPCRequest& request);
 extern UniValue importpubkey(const JSONRPCRequest& request);
 extern UniValue dumpwallet(const JSONRPCRequest& request);
+extern UniValue importpreimage(const JSONRPCRequest& request);
 extern UniValue importwallet(const JSONRPCRequest& request);
 extern UniValue importprunedfunds(const JSONRPCRequest& request);
 extern UniValue removeprunedfunds(const JSONRPCRequest& request);
@@ -3094,6 +3095,7 @@ static const CRPCCommand commands[] =
   { "wallet",             "backupwallet",             &backupwallet,             true,   {"destination"} },
   { "wallet",             "dumpprivkey",              &dumpprivkey,              true,   {"address"}  },
   { "wallet",             "dumpwallet",               &dumpwallet,               true,   {"filename"} },
+  { "wallet",             "importpreimage",           &importpreimage,           true,   {"preimage"} },
   { "wallet",             "encryptwallet",            &encryptwallet,            true,   {"passphrase"} },
   { "wallet",             "getaccountaddress",        &getaccountaddress,        true,   {"account"} },
   { "wallet",             "getaccount",               &getaccount,               true,   {"address"} },

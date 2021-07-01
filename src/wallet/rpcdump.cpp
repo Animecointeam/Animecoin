@@ -676,6 +676,52 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     return NullUniValue;
 }
 
+UniValue importpreimage(const JSONRPCRequest& request)
+{
+    CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
+        return NullUniValue;
+
+    if (request.fHelp || request.params.size() != 1)
+        throw runtime_error(
+            "importpreimage \"data\"\n"
+            "\nImports a preimage for use in HTLC transactions. Only remains in memory.\n"
+            "\nArguments:\n"
+            "1. \"data\"    (string, required) The preimage of a SHA256 or RIPEMD160 hash\n"
+            "\nExamples:\n"
+            + HelpExampleCli("importpreimage", "\"mylittlesecret\"")
+            + HelpExampleRpc("importpreimage", "\"mylittlesecret\"")
+        );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    std::string pre_str = request.params[0].get_str();
+    std::vector<unsigned char> preimage (pre_str.begin(), pre_str.end());
+
+    // SHA256
+    {
+        std::vector<unsigned char> vch(32);
+        CSHA256 hash;
+        hash.Write(preimage.data(), preimage.size());
+        hash.Finalize(vch.data());
+
+        pwallet->AddPreimage(vch, preimage);
+    }
+
+    // RIPEMD160
+    {
+        std::vector<unsigned char> vch(20);
+        CRIPEMD160 hash;
+        hash.Write(preimage.data(), preimage.size());
+        hash.Finalize(vch.data());
+
+        pwallet->AddPreimage(vch, preimage);
+    }
+
+    return NullUniValue;
+}
+
 UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int64_t timestamp)
 {
     try {

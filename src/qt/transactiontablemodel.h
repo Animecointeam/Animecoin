@@ -105,7 +105,7 @@ public slots:
     /* New transaction, or transaction changed status */
     void updateTransaction(const QString &hash, int status, bool showTransaction);
     void updateAddressBook(const QString &address, const QString &label,
-                           bool isMine, const QString &purpose, int status);
+                           bool isMine, bool watchOnly, const QString &purpose, int status);
     void updateConfirmations();
     void updateDisplayUnit();
     /** Updates the column title to "Amount (DisplayUnit)" and emits headerDataChanged() signal for table headers to react. */

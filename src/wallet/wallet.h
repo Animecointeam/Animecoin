@@ -1033,7 +1033,7 @@ public:
      * @note called with lock cs_wallet held.
      */
     boost::signals2::signal<void (CWallet *wallet, const CTxDestination
-            &address, const std::string &label, bool isMine,
+            &address, const std::string &label, bool isMine, bool watchOnly,
             const std::string &purpose,
             ChangeType status)> NotifyAddressBookChanged;
 

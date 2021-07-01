@@ -121,6 +121,17 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
         }
         break;
     }
+    case TX_HTLC:
+    {
+        // If we own one of the keys, consider this watchonly for now.
+        vector<valtype> keys;
+        keys.push_back(vSolutions[1]);
+        keys.push_back(vSolutions[2]);
+        if (HaveKeys(keys, keystore) >=1) {
+            return ISMINE_WATCH_ONLY;
+        }
+        break;
+    }
     case TX_MULTISIG:
     {
         // Only consider transactions "mine" if we own ALL the

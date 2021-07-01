@@ -237,7 +237,7 @@ void MultisigDialog::on_saveMultisigAddressButton_clicked()
     if(!pwalletMain->HaveCScript(scriptID))
         pwalletMain->AddCScript(script);
     if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
-        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "send");
+        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
 }
 
 void MultisigDialog::clear()

@@ -178,6 +178,9 @@ enum opcodetype
 
 
     // template matching params
+    OP_BLOB20 = 0xf7,
+    OP_BLOB32 = 0xf8,
+
     OP_U32INT = 0xf9,
     OP_SMALLINTEGER = 0xfa,
     OP_PUBKEYS = 0xfb,

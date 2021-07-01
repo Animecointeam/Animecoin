@@ -233,6 +233,42 @@ UniValue validateaddress(const JSONRPCRequest& request)
     return ret;
 }
 
+void _publickey_from_string(CWallet* const pwallet, const std::string &ks, CPubKey &out)
+{
+#ifdef ENABLE_WALLET
+    // Case 1: Bitcoin address and we have full public key:
+    CBitcoinAddress address(ks);
+    if (pwallet && address.IsValid())
+    {
+        CKeyID keyID;
+        if (!address.GetKeyID(keyID))
+            throw runtime_error(
+                strprintf("%s does not refer to a key",ks));
+        CPubKey vchPubKey;
+        if (!pwallet->GetPubKey(keyID, vchPubKey))
+            throw runtime_error(
+                strprintf("no full public key for address %s",ks));
+        if (!vchPubKey.IsFullyValid())
+            throw runtime_error(" Invalid public key: "+ks);
+        out = vchPubKey;
+    }
+
+    // Case 2: hex public key
+    else
+#endif
+    if (IsHex(ks))
+    {
+        CPubKey vchPubKey(ParseHex(ks));
+        if (!vchPubKey.IsFullyValid())
+            throw runtime_error(" Invalid public key: "+ks);
+        out = vchPubKey;
+    }
+    else
+    {
+        throw runtime_error(" Invalid public key: "+ks);
+    }
+}
+
 // Needed even with !ENABLE_WALLET, to pass (ignored) pointers around
 class CWallet;
 
@@ -274,38 +310,7 @@ CScript _createmultisig_redeemScript(CWallet* const pwallet, const UniValue& par
     for (unsigned int i = 0; i < keys.size(); i++)
     {
         const std::string& ks = keys[i].get_str();
-#ifdef ENABLE_WALLET
-        // Case 1: Bitcoin address and we have full public key:
-        CBitcoinAddress address(ks);
-        if (pwallet && address.IsValid()) {
-            CKeyID keyID;
-            if (!address.GetKeyID(keyID))
-                throw runtime_error(
-                    strprintf("%s does not refer to a key",ks));
-            CPubKey vchPubKey;
-            if (!pwallet->GetPubKey(keyID, vchPubKey)) {
-                throw runtime_error(
-                    strprintf("no full public key for address %s",ks));
-            }
-            if (!vchPubKey.IsFullyValid())
-                throw runtime_error(" Invalid public key: "+ks);
-            pubkeys[i] = vchPubKey;
-        }
-
-        // Case 2: hex public key
-        else
-#endif
-        if (IsHex(ks))
-        {
-            CPubKey vchPubKey(ParseHex(ks));
-            if (!vchPubKey.IsFullyValid())
-                throw runtime_error(" Invalid public key: "+ks);
-            pubkeys[i] = vchPubKey;
-        }
-        else
-        {
-            throw runtime_error(" Invalid public key: "+ks);
-        }
+        _publickey_from_string(pwallet, ks, pubkeys[i]);
     }
     CScript result;
     if ((cltv_height==0)&&(cltv_time==0))
@@ -375,6 +380,90 @@ UniValue createmultisig(const JSONRPCRequest& request)
     CScriptID innerID(inner);
     CBitcoinAddress address(innerID);
     LogPrintf("%s %s \n", innerID.ToString(), address.ToString());
+    UniValue result(UniValue::VOBJ);
+    result.pushKV("address", address.ToString());
+    result.pushKV("redeemScript", HexStr(inner.begin(), inner.end()));
+
+    return result;
+}
+
+
+UniValue createhtlc(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
+#else
+    CWallet* const pwallet = nullptr;
+#endif
+
+    if (request.fHelp || request.params.size() != 4) {
+        string msg = "createhtlc recipient_key refund_key hash timeout\n"
+            "\nCreates an address whose funds can be unlocked with a preimage or as a refund\n"
+            "It returns a json object with the address and redeemScript.\n"
+
+            "\nArguments:\n"
+            "1. recipient_key    (string, required) The public key of the possessor of the preimage.\n"
+            "2. refund_key    (string, required) The public key of the recipient of the refund.\n"
+            "3. hash          (string, required) SHA256 or RIPEMD160 hash of the preimage.\n"
+            "4. timeout       (string, required) Timeout of the contract (denominated in blocks) relative to its placement in the blockchain\n"
+
+            "\nResult:"
+            "{\n"
+            "  \"address\":\"htlcaddress\"   (string) The value of the new HTLC address.\n"
+            "  \"redeemScript\":\"script\"   (string) The string value of the hex-encoded redemption script.\n"
+            "}\n"
+
+            "\nExamples:\n"
+            "\nPay someone for the preimage of 254e38932fdb9fc27f82aac2a5cc6d789664832383e3cf3298f8c120812712db\n"
+            + HelpExampleCli("createhtlc", "0333ffc4d18c7b2adbd1df49f5486030b0b70449c421189c2c0f8981d0da9669af 0333ffc4d18c7b2adbd1df49f5486030b0b70449c421189c2c0f8981d0da9669af 254e38932fdb9fc27f82aac2a5cc6d789664832383e3cf3298f8c120812712db 10") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("createhtlc", "0333ffc4d18c7b2adbd1df49f5486030b0b70449c421189c2c0f8981d0da9669af, 0333ffc4d18c7b2adbd1df49f5486030b0b70449c421189c2c0f8981d0da9669af, 254e38932fdb9fc27f82aac2a5cc6d789664832383e3cf3298f8c120812712db, 10")
+        ;
+
+        throw runtime_error(msg);
+    }
+
+    CPubKey seller_key;
+    CPubKey refund_key;
+    _publickey_from_string(pwallet, request.params[0].get_str(), seller_key);
+    _publickey_from_string(pwallet, request.params[1].get_str(), refund_key);
+
+    std::string hs = request.params[2].get_str();
+    std::vector<unsigned char> image;
+    opcodetype hasher;
+    if (IsHex(hs)) {
+        image = ParseHex(hs);
+
+        if (image.size() == 32) {
+            hasher = OP_SHA256;
+        } else if (image.size() == 20) {
+            hasher = OP_RIPEMD160;
+        } else {
+            throw JSONRPCError(RPC_TYPE_ERROR, "Invalid hash image length, 32 (SHA256) and 20 (RIPEMD160) accepted");
+        }
+    } else {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid hash image");
+    }
+
+    int64_t blocks;
+    // This will make request.params[3] forward compatible with '10h'/'3d' style timeout
+    // values if it is extended in the future.
+    {
+        // FIXME: This duplicates the functionality of `ParseNonRFCJSONValue` in
+        // `client`, so perhaps it should just be added to univalue itself?
+        UniValue timeout;
+        if (!timeout.read(std::string("[")+request.params[3].get_str()+std::string("]")) ||
+            !timeout.isArray() || timeout.size()!=1)
+            throw runtime_error(string("Error parsing JSON:")+request.params[3].get_str());
+
+        blocks = timeout[0].get_int64();
+    }
+
+    CScript inner = GetScriptForHTLC(seller_key, refund_key, image, blocks, hasher, OP_CHECKLOCKTIMEVERIFY);
+
+    CScriptID innerID(inner);
+    CBitcoinAddress address(innerID);
+
     UniValue result(UniValue::VOBJ);
     result.pushKV("address", address.ToString());
     result.pushKV("redeemScript", HexStr(inner.begin(), inner.end()));
@@ -573,6 +662,7 @@ static const CRPCCommand commands[] =
   { "control",            "getmemoryinfo",          &getmemoryinfo,          true,  {} },
   { "util",               "validateaddress",        &validateaddress,        true,  {"address"} }, /* uses wallet if enabled */
   { "util",               "createmultisig",         &createmultisig,         true,  {"nrequired","keys","options"} },
+  { "util",               "createhtlc",             &createhtlc,             true,  {"recepient_key","refund_key","hash","timeout"} },
   { "util",               "verifymessage",          &verifymessage,          true,  {"address","signature","message"} },
   { "util",               "signmessagewithprivkey", &signmessagewithprivkey, true,  {"privkey","message"} },
 

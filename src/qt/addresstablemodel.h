@@ -99,7 +99,7 @@ private:
 public slots:
     /* Update address list from core.
      */
-    void updateEntry(const QString &address, const QString &label, bool isMine, const QString &purpose, int status, const QString& balance = "");
+    void updateEntry(const QString &address, const QString &label, bool isMine, bool watchOnly, const QString &purpose, int status, const QString& balance = "");
 
     friend class AddressTablePriv;
 };

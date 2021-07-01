@@ -3088,7 +3088,7 @@ bool CWallet::SetAddressBook(const CTxDestination& address, const string& strNam
         if (!strPurpose.empty()) /* update purpose only if requested */
             mapAddressBook[address].purpose = strPurpose;
     }
-    NotifyAddressBookChanged(this, address, strName, ::IsMine(*this, address) != ISMINE_NO,
+    NotifyAddressBookChanged(this, address, strName, ::IsMine(*this, address) != ISMINE_NO, ::IsMine(*this, address) == ISMINE_WATCH_ONLY,
                              strPurpose, (fUpdated ? CT_UPDATED : CT_NEW) );
     if (!strPurpose.empty() && !CWalletDB(*dbw).WritePurpose(CBitcoinAddress(address).ToString(), strPurpose))
         return false;
@@ -3110,7 +3110,7 @@ bool CWallet::DelAddressBook(const CTxDestination& address)
         mapAddressBook.erase(address);
     }
 
-    NotifyAddressBookChanged(this, address, "", ::IsMine(*this, address) != ISMINE_NO, "", CT_DELETED);
+    NotifyAddressBookChanged(this, address, "", ::IsMine(*this, address) != ISMINE_NO, ::IsMine(*this, address) == ISMINE_WATCH_ONLY, "", CT_DELETED);
 
     CWalletDB(*dbw).ErasePurpose(CBitcoinAddress(address).ToString());
     return CWalletDB(*dbw).EraseName(CBitcoinAddress(address).ToString());

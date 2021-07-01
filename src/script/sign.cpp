@@ -11,6 +11,7 @@
 #include "primitives/transaction.h"
 #include "script/standard.h"
 #include "uint256.h"
+#include "utilstrencodings.h"
 
 #include "core_io.h"
 
@@ -144,6 +145,35 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             ret.push_back(valtype());
         }
         return result;
+
+    case TX_HTLC:
+        {
+            std::vector<unsigned char> image(vSolutions[0]);
+            std::vector<unsigned char> preimage;
+
+            std::string imghex = HexStr (image.begin(), image.end());
+
+            printf ("Looking for an image %s...\n", imghex.c_str());
+            if (creator.KeyStore().GetPreimage(image, preimage)) {
+                printf ("Found a preimage!\n");
+                keyID = CPubKey(vSolutions[1]).GetID();
+                if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion)) {
+                    return false;
+                }
+
+                ret.push_back(preimage);
+                ret.push_back({1});
+            } else {
+                printf ("No preimage, running refund...\n");
+                keyID = CPubKey(vSolutions[2]).GetID();
+                if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion)) {
+                    return false;
+                }
+
+                ret.push_back(valtype());
+            }
+            return true;
+        }
 
     default:
         return false;
@@ -341,6 +371,7 @@ static Stacks CombineSignatures(const CScript& scriptPubKey, const BaseSignature
     {
     case TX_NONSTANDARD:
     case TX_NULL_DATA:
+    case TX_HTLC:
         // Don't know anything about this, assume bigger one is correct:
         if (sigs1.script.size() >= sigs2.script.size())
             return sigs1;
