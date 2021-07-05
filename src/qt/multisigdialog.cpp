@@ -74,7 +74,7 @@ MultisigDialog::~MultisigDialog()
 
 void MultisigDialog::setAddress (const QString& address)
 {
-    ui->tabWidget->setCurrentIndex(2); // Spending tab.
+    ui->tabWidget->setCurrentIndex(3); // Spending tab.
     MultisigInputEntry* entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(0)->widget());
     if(entry)
     {
@@ -818,3 +818,73 @@ void MultisigDialog::on_lockTimeBox_valueChanged(int arg1)
     ui->approxTimeLabel->setText(locktime_text);
 }
 
+void MultisigDialog::on_scriptEdit_textChanged()
+{
+    if(!model)
+        return;
+
+    std::string redeemScript = ui->scriptEdit->toPlainText().toStdString();
+
+    std::vector<unsigned char> scriptData(ParseHex(redeemScript));
+    CScript script(scriptData.begin(), scriptData.end());
+
+    txnouttype whichType;
+    std::vector<std::vector<unsigned char> > vSolutions;
+    if (!Solver(script, whichType, vSolutions))
+    {
+        ui->addressLabel_2->setText ("Address: n/a");
+        ui->typeLabel->setText("This is not a valid script.");
+        return;
+    }
+
+    if (whichType == TX_MULTISIG)
+    {
+        ui->typeLabel->setText(tr("This is a usual multisig."));
+    }
+    else if (whichType == TX_ESCROW_CLTV)
+    {
+        ui->typeLabel->setText(tr("This is an escrow contract with a deadline."));
+    }
+    else if (whichType == TX_HTLC)
+    {
+        ui->typeLabel->setText(tr("This is HTLC."));
+    }
+    else
+    {
+        ui->typeLabel->setText(tr("This script is valid but not of a standard type."));
+    }
+    CScriptID scriptID (script);
+    CBitcoinAddress address(scriptID);
+
+    if(!model->validateAddress(QString(address.ToString().c_str())))
+        ui->addressLabel_2->setText ("Address: invalid address!");
+    else
+        ui->addressLabel_2->setText ("Address: " + QString::fromStdString (address.ToString ()));
+}
+
+void MultisigDialog::on_importContractButton_clicked()
+{
+    if(!model)
+        return;
+
+    std::string redeemScript = ui->scriptEdit->toPlainText().toStdString();
+    std::string label("contract");
+
+    std::vector<unsigned char> scriptData(ParseHex(redeemScript));
+    CScript script(scriptData.begin(), scriptData.end());
+    CScriptID scriptID (script);
+    CBitcoinAddress address(scriptID);
+
+    if(!model->validateAddress(QString(address.ToString().c_str())))
+        return;
+
+    LOCK(pwalletMain->cs_wallet);
+    if(!pwalletMain->HaveCScript(scriptID))
+        pwalletMain->AddCScript(script);
+    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    {
+        CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
+        ImportScript(pwalletMain, script, label, false);
+        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+    }
+}

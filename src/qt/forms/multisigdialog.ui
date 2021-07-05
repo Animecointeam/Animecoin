@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>908</width>
-    <height>576</height>
+    <width>955</width>
+    <height>572</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,8 +34,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>864</width>
-            <height>326</height>
+            <width>925</width>
+            <height>302</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -359,8 +359,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>864</width>
-            <height>367</height>
+            <width>925</width>
+            <height>347</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -537,6 +537,80 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabImport">
+      <attribute name="title">
+       <string>Import contract</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_15">
+       <item>
+        <widget class="QLabel" name="pasteLabel">
+         <property name="text">
+          <string>Paste the redeem script:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="scriptEdit"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="addressLabel_2">
+         <property name="text">
+          <string>Address: n/a</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="typeLabel">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="importContractButton">
+           <property name="minimumSize">
+            <size>
+             <width>172</width>
+             <height>29</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Import into wallet</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tabSpendFunds">
       <attribute name="title">
        <string>&amp;Spend Funds</string>
@@ -568,8 +642,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>840</width>
-                   <height>142</height>
+                   <width>905</width>
+                   <height>143</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -621,8 +695,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>840</width>
-                   <height>144</height>
+                   <width>905</width>
+                   <height>120</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">

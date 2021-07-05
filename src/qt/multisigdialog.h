@@ -62,6 +62,8 @@ class MultisigDialog : public QDialog
     void on_copyScriptButton_clicked();
     void on_saveContractButton_clicked();
     void on_lockTimeBox_valueChanged(int arg1);
+    void on_scriptEdit_textChanged();
+    void on_importContractButton_clicked();
 };
 
 #endif // MULTISIGDIALOG_H
