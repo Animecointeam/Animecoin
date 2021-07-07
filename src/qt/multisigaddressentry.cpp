@@ -71,6 +71,7 @@ void MultisigAddressEntry::on_addressBookButton_clicked()
 
     AddressBookPage dlg(AddressBookPage::ForSelection, AddressBookPage::ReceivingTab, this);
     dlg.setModel(model->getAddressTableModel());
+    dlg.activate();
     if(dlg.exec())
     {
         ui->address->setText(dlg.getReturnValue());

@@ -344,7 +344,6 @@ void AddressBookPage::reject ()
 
 void AddressBookPage::activate()
 {
-
     if (tab == WatchonlyTab)
         ui->tableView->setColumnHidden(2, false);
     else

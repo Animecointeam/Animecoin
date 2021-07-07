@@ -329,6 +329,7 @@ void WalletView::usedSendingAddresses()
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setModel(walletModel->getAddressTableModel());
     dlg->show();
+    dlg->activate();
 }
 
 void WalletView::usedReceivingAddresses()
@@ -339,6 +340,7 @@ void WalletView::usedReceivingAddresses()
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setModel(walletModel->getAddressTableModel());
     dlg->show();
+    dlg->activate();
 }
 
 void WalletView::showProgress(const QString &title, int nProgress)
