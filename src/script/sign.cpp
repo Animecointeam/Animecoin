@@ -147,6 +147,7 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         return result;
 
     case TX_HTLC:
+        if (route==1) // Secret key route.
         {
             std::vector<unsigned char> image(vSolutions[0]);
             std::vector<unsigned char> preimage;
@@ -157,21 +158,29 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             if (creator.KeyStore().GetPreimage(image, preimage)) {
                 printf ("Found a preimage!\n");
                 keyID = CPubKey(vSolutions[1]).GetID();
-                if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion)) {
+                if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion))
+                {
                     return false;
                 }
 
                 ret.push_back(preimage);
                 ret.push_back({1});
-            } else {
-                printf ("No preimage, running refund...\n");
-                keyID = CPubKey(vSolutions[2]).GetID();
-                if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion)) {
-                    return false;
-                }
-
-                ret.push_back(valtype());
             }
+            else
+            {
+                printf ("No preimage but it's not a refund...\n");
+                return false;
+            }
+        }
+        else // Reclaim route.
+        {
+            printf ("Running a refund...\n");
+            keyID = CPubKey(vSolutions[2]).GetID();
+            if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion))
+            {
+               return false;
+            }
+            ret.push_back(valtype());
             return true;
         }
 

@@ -16,6 +16,7 @@
 #include "multisigdialog.h"
 #include "policy/policy.h"
 #include "ui_multisigdialog.h"
+#include "script/ismine.h"
 #include "script/script.h"
 #include "script/sign.h"
 #include "sendcoinsentry.h"
@@ -43,9 +44,13 @@ MultisigDialog::MultisigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Mu
     addParty();
     addParty();
     addParty();
+    addHTLCParty();
+    addHTLCParty();
 
     ui->lockTimeBox->setMinimum (chainActive.Height());
     ui->lockTimeBox->setMaximum (std::numeric_limits<int>::max());
+    ui->lockTimeBoxHTLC->setMinimum (chainActive.Height());
+    ui->lockTimeBoxHTLC->setMaximum (std::numeric_limits<int>::max());
 
     connect(ui->addPubKeyButton, SIGNAL(clicked()), this, SLOT(addPubKey()));
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
@@ -74,7 +79,7 @@ MultisigDialog::~MultisigDialog()
 
 void MultisigDialog::setAddress (const QString& address)
 {
-    ui->tabWidget->setCurrentIndex(3); // Spending tab.
+    ui->tabWidget->setCurrentIndex(4); // Spending tab.
     MultisigInputEntry* entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(0)->widget());
     if(entry)
     {
@@ -96,6 +101,13 @@ void MultisigDialog::setModel(WalletModel *_model)
     for(int i = 0; i < ui->partyEntries->count(); i++)
     {
         MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->partyEntries->itemAt(i)->widget());
+        if(entry)
+            entry->setModel(_model);
+    }
+
+    for(int i = 0; i < ui->htlcPartyEntries->count(); i++)
+    {
+        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->htlcPartyEntries->itemAt(i)->widget());
         if(entry)
             entry->setModel(_model);
     }
@@ -130,6 +142,13 @@ void MultisigDialog::updateRemoveEnabled()
     for(int i = 0; i < ui->partyEntries->count(); i++)
     {
         MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->partyEntries->itemAt(i)->widget());
+        if(entry)
+            entry->setRemoveEnabled(false);
+    }
+
+    for(int i = 0; i < ui->htlcPartyEntries->count(); i++)
+    {
+        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->htlcPartyEntries->itemAt(i)->widget());
         if(entry)
             entry->setRemoveEnabled(false);
     }
@@ -246,12 +265,16 @@ void MultisigDialog::clear()
         delete ui->pubkeyEntries->takeAt(0)->widget();
     while(ui->partyEntries->count())
         delete ui->partyEntries->takeAt(0)->widget();
+    while(ui->htlcPartyEntries->count())
+        delete ui->htlcPartyEntries->takeAt(0)->widget();
 
     addPubKey();
     addPubKey();
     addParty();
     addParty();
     addParty();
+    addHTLCParty();
+    addHTLCParty();
     updateRemoveEnabled();
 }
 
@@ -272,7 +295,7 @@ MultisigAddressEntry * MultisigDialog::addPubKey()
     return entry;
 }
 
-MultisigAddressEntry * MultisigDialog::addParty()
+MultisigAddressEntry* MultisigDialog::addParty()
 {
     MultisigAddressEntry *entry = new MultisigAddressEntry(this);
 
@@ -281,7 +304,23 @@ MultisigAddressEntry * MultisigDialog::addParty()
     updateRemoveEnabled();
     entry->clear();
     ui->scrollAreaWidgetContents_4->resize(ui->scrollAreaWidgetContents_4->sizeHint());
-    QScrollBar *bar = ui->scrollArea_4->verticalScrollBar();
+    QScrollBar* bar = ui->scrollArea_4->verticalScrollBar();
+    if(bar)
+        bar->setSliderPosition(bar->maximum());
+
+    return entry;
+}
+
+MultisigAddressEntry* MultisigDialog::addHTLCParty()
+{
+    MultisigAddressEntry* entry = new MultisigAddressEntry(this);
+
+    entry->setModel(model);
+    ui->htlcPartyEntries->addWidget(entry);
+    updateRemoveEnabled();
+    entry->clear();
+    ui->scrollAreaWidgetContents_5->resize(ui->scrollAreaWidgetContents_5->sizeHint());
+    QScrollBar* bar = ui->scrollArea_5->verticalScrollBar();
     if(bar)
         bar->setSliderPosition(bar->maximum());
 
@@ -408,12 +447,22 @@ void MultisigDialog::on_transaction_textChanged()
 
         // Fill output list
         index = -1;
+        ui->infoLabel->setText("Destination includes: ");
         for (const CTxOut& txout : tx.vout)
         {
             CScript scriptPubKey = txout.scriptPubKey;
             CTxDestination addr;
             ExtractDestination(scriptPubKey, addr);
             CBitcoinAddress address(addr);
+            if (IsMine(*pwalletMain, address.Get()) == ISMINE_SPENDABLE)
+            {
+                ui->infoLabel->setText(ui->infoLabel->text()+"your address ");
+            }
+            else
+            {
+                ui->infoLabel->setText(ui->infoLabel->text()+"foreign address ");
+            }
+
             SendCoinsRecipient recipient;
             recipient.address = QString(address.ToString().c_str());
             recipient.amount = txout.nValue;
@@ -807,7 +856,6 @@ void MultisigDialog::on_saveContractButton_clicked()
     }
 }
 
-
 void MultisigDialog::on_lockTimeBox_valueChanged(int arg1)
 {
     qint64 estimated_seconds = (arg1-chainActive.Height()) * 30;
@@ -888,3 +936,117 @@ void MultisigDialog::on_importContractButton_clicked()
         pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
     }
 }
+
+void MultisigDialog::on_saveHTLCButton_clicked()
+{
+    if(!model)
+        return;
+
+    std::string redeemScript = ui->scriptLineHTLC->text().toStdString();
+    std::string address = ui->addressLineHTLC->text().toStdString();
+    std::string label("HTLC");
+
+    if(!model->validateAddress(QString(address.c_str())))
+        return;
+
+    std::vector<unsigned char> scriptData(ParseHex(redeemScript));
+    CScript script(scriptData.begin(), scriptData.end());
+    CScriptID scriptID (script);
+
+    LOCK(pwalletMain->cs_wallet);
+    if(!pwalletMain->HaveCScript(scriptID))
+        pwalletMain->AddCScript(script);
+    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    {
+        CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
+        ImportScript(pwalletMain, script, label, false);
+        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+    }
+}
+
+
+void MultisigDialog::on_copyAddressButtonHTLC_clicked()
+{
+    QApplication::clipboard()->setText(ui->addressLineHTLC->text());
+}
+
+void MultisigDialog::on_copyScriptButtonHTLC_clicked()
+{
+    QApplication::clipboard()->setText(ui->scriptLineHTLC->text());
+}
+
+void MultisigDialog::on_lockTimeBoxHTLC_valueChanged(int arg1)
+{
+    qint64 estimated_seconds = (arg1-chainActive.Height()) * 30;
+    qint64 current_time = QDateTime::currentSecsSinceEpoch();
+    estimated_seconds+=current_time;
+    QDateTime locktime = QDateTime::fromSecsSinceEpoch(estimated_seconds);
+    QString locktime_text = tr("Estimated deadline: ")+locktime.toString(Qt::SystemLocaleLongDate);
+    ui->approxTimeLabelHTLC->setText(locktime_text);
+}
+
+
+void MultisigDialog::on_createHTLCButton_clicked()
+{
+    ui->addressLineHTLC->clear();
+    ui->scriptLineHTLC->clear();
+
+    if(!model)
+        return;
+
+    std::vector<CPubKey> pubkeys;
+
+    printf ("%i party entries \n", ui->htlcPartyEntries->count());
+    for(int i = 0; i < ui->htlcPartyEntries->count(); i++)
+    {
+        MultisigAddressEntry* entry = qobject_cast<MultisigAddressEntry*>(ui->htlcPartyEntries->itemAt(i)->widget());
+        printf ("Entry %i\n", i);
+
+        if(!entry)
+            continue;
+
+        if(!entry->validate())
+            return;
+        QString str = entry->getPubkey();
+        CPubKey vchPubKey(ParseHex(str.toStdString().c_str()));
+        if(!vchPubKey.IsFullyValid())
+            return;
+        pubkeys.push_back(vchPubKey);
+    }
+
+    if (2 != pubkeys.size())
+       return;
+
+    std::string hs = ui->hashLineHTLC->text().toStdString();
+    std::vector<unsigned char> image;
+    opcodetype hasher;
+    if (IsHex(hs))
+    {
+        image = ParseHex(hs);
+
+        if (image.size() == 32)
+        {
+            hasher = OP_SHA256;
+        }
+        else if (image.size() == 20)
+        {
+            hasher = OP_RIPEMD160;
+        }
+        else
+        {
+            return;
+        }
+    }
+    else
+    {
+       return;
+    }
+
+    CScript script = GetScriptForHTLC(pubkeys[0], pubkeys[1], image, ui->lockTimeBoxHTLC->value(), hasher, OP_CHECKLOCKTIMEVERIFY);
+    CScriptID scriptID (script);
+    CBitcoinAddress address(scriptID);
+
+    ui->addressLineHTLC->setText(address.ToString().c_str());
+    ui->scriptLineHTLC->setText(HexStr(script.begin(), script.end()).c_str());
+}
+

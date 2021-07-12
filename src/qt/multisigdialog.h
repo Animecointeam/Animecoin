@@ -27,6 +27,8 @@ class MultisigDialog : public QDialog
     void setAddress (const QString& address);
     MultisigAddressEntry* addPubKey();
     MultisigAddressEntry* addParty();
+    MultisigAddressEntry* addHTLCParty();
+
     void clear();
     void updateRemoveEnabled();
     MultisigInputEntry * addInput();
@@ -37,8 +39,8 @@ class MultisigDialog : public QDialog
     void message(const QString &title, const QString &message, unsigned int style);
 
   private:
-    Ui::MultisigDialog *ui;
-    WalletModel *model;
+    Ui::MultisigDialog* ui;
+    WalletModel* model;
 
   private slots:
     void on_createAddressButton_clicked();
@@ -64,6 +66,11 @@ class MultisigDialog : public QDialog
     void on_lockTimeBox_valueChanged(int arg1);
     void on_scriptEdit_textChanged();
     void on_importContractButton_clicked();
+    void on_saveHTLCButton_clicked();
+    void on_copyAddressButtonHTLC_clicked();
+    void on_copyScriptButtonHTLC_clicked();
+    void on_lockTimeBoxHTLC_valueChanged(int arg1);
+    void on_createHTLCButton_clicked();
 };
 
 #endif // MULTISIGDIALOG_H
