@@ -154,9 +154,8 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
 
             std::string imghex = HexStr (image.begin(), image.end());
 
-            printf ("Looking for an image %s...\n", imghex.c_str());
-            if (creator.KeyStore().GetPreimage(image, preimage)) {
-                printf ("Found a preimage!\n");
+            if (creator.KeyStore().GetPreimage(image, preimage))
+            {
                 keyID = CPubKey(vSolutions[1]).GetID();
                 if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion))
                 {
@@ -168,13 +167,11 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
             }
             else
             {
-                printf ("No preimage but it's not a refund...\n");
                 return false;
             }
         }
         else // Reclaim route.
         {
-            printf ("Running a refund...\n");
             keyID = CPubKey(vSolutions[2]).GetID();
             if (!Sign1(keyID, creator, scriptPubKey, ret, sigversion))
             {

@@ -15,6 +15,7 @@
 #include "multisiginputentry.h"
 #include "multisigdialog.h"
 #include "policy/policy.h"
+#include "preimagedialog.h"
 #include "ui_multisigdialog.h"
 #include "script/ismine.h"
 #include "script/script.h"
@@ -278,17 +279,17 @@ void MultisigDialog::clear()
     updateRemoveEnabled();
 }
 
-MultisigAddressEntry * MultisigDialog::addPubKey()
+MultisigAddressEntry* MultisigDialog::addPubKey()
 {
-    MultisigAddressEntry *entry = new MultisigAddressEntry(this);
+    MultisigAddressEntry* entry = new MultisigAddressEntry(this);
 
     entry->setModel(model);
     ui->pubkeyEntries->addWidget(entry);
-    connect(entry, SIGNAL(removeEntry(MultisigAddressEntry *)), this, SLOT(removeEntry(MultisigAddressEntry *)));
+    connect(entry, SIGNAL(removeEntry(MultisigAddressEntry*)), this, SLOT(removeEntry(MultisigAddressEntry*)));
     updateRemoveEnabled();
     entry->clear();
     ui->scrollAreaWidgetContents->resize(ui->scrollAreaWidgetContents->sizeHint());
-    QScrollBar *bar = ui->scrollArea->verticalScrollBar();
+    QScrollBar* bar = ui->scrollArea->verticalScrollBar();
     if(bar)
         bar->setSliderPosition(bar->maximum());
 
@@ -340,7 +341,7 @@ void MultisigDialog::on_createTransactionButton_clicked()
     // Get inputs
     for(int i = 0; i < ui->inputs->count(); i++)
     {
-        MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
+        MultisigInputEntry* entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(i)->widget());
         if(entry)
         {
             if(entry->validate())
@@ -357,7 +358,7 @@ void MultisigDialog::on_createTransactionButton_clicked()
     // Get outputs
     for(int i = 0; i < ui->outputs->count(); i++)
     {
-        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(i)->widget());
+        SendCoinsEntry* entry = qobject_cast<SendCoinsEntry*>(ui->outputs->itemAt(i)->widget());
 
         if(entry)
         {
@@ -378,7 +379,26 @@ void MultisigDialog::on_createTransactionButton_clicked()
     transaction.nLockTime = chainActive.Height();
     size_t txSize = GetSerializeSize(transaction, SER_NETWORK, PROTOCOL_VERSION)+300;
     CAmount fee = std::max (CWallet::GetRequiredFee (txSize), CWallet::fallbackFee.GetFee (txSize));
-    transaction.vout[0].nValue -= fee;
+
+    // Calculate inputs amount
+    CAmount inputsAmount = 0;
+    for(int i = 0; i < ui->inputs->count(); i++)
+    {
+        MultisigInputEntry* entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(i)->widget());
+        if(entry)
+            inputsAmount += entry->getAmount();
+    }
+
+    // Calculate outputs amount
+    CAmount outputsAmount = 0;
+    for(int i = 0; i < ui->outputs->count(); i++)
+    {
+        SendCoinsEntry* entry = qobject_cast<SendCoinsEntry*>(ui->outputs->itemAt(i)->widget());
+        if(entry)
+            outputsAmount += entry->getValue().amount;
+    }
+    if ((inputsAmount-outputsAmount)<fee)
+        transaction.vout[0].nValue -= (fee-(inputsAmount-outputsAmount));
 
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
     ss << transaction;
@@ -418,7 +438,7 @@ void MultisigDialog::on_transaction_textChanged()
             uint256 prevoutHash = txin.prevout.hash;
             addInput();
             index++;
-            MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
+            MultisigInputEntry* entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(index)->widget());
             if(entry)
             {
                 CTransactionRef funding_tx;
@@ -530,7 +550,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
     // Add the redeem scripts to the wallet keystore
     for(int i = 0; i < ui->inputs->count(); i++)
     {
-        MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
+        MultisigInputEntry* entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
         if(entry)
         {
             QString redeemScriptStr = entry->getRedeemScript();
@@ -539,6 +559,28 @@ void MultisigDialog::on_signTransactionButton_clicked()
                 std::vector<unsigned char> scriptData(ParseHex(redeemScriptStr.toStdString()));
                 CScript redeemScript(scriptData.begin(), scriptData.end());
                 pwalletMain->AddCScript(redeemScript);
+
+                // Solve script
+                txnouttype whichType;
+                std::vector<std::vector<unsigned char> > vSolutions;
+                if (Solver(redeemScript, whichType, vSolutions))
+                {
+                    // HTLC secret code
+                    if (whichType == TX_HTLC)
+                    {
+                        std::vector<unsigned char> image(vSolutions[0]);
+                        std::string imghex = HexStr (image.begin(), image.end());
+                        std::vector<unsigned char> preimage;
+
+                        if (!pwalletMain->GetPreimage(image, preimage))
+                        {
+                            // Preimage might already be in memory. If it isn't, ask interactively.
+                            PreimageDialog pd (this, imghex);
+                            if (pd.exec() == QDialog::Rejected)
+                                return;
+                        }
+                    }
+                }
             }
         }
     }
@@ -744,7 +786,7 @@ void MultisigDialog::updateAmounts()
     CAmount inputsAmount = 0;
     for(int i = 0; i < ui->inputs->count(); i++)
     {
-        MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
+        MultisigInputEntry* entry = qobject_cast<MultisigInputEntry*>(ui->inputs->itemAt(i)->widget());
         if(entry)
             inputsAmount += entry->getAmount();
     }
@@ -755,7 +797,7 @@ void MultisigDialog::updateAmounts()
     CAmount outputsAmount = 0;
     for(int i = 0; i < ui->outputs->count(); i++)
     {
-        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(i)->widget());
+        SendCoinsEntry* entry = qobject_cast<SendCoinsEntry*>(ui->outputs->itemAt(i)->widget());
         if(entry)
             outputsAmount += entry->getValue().amount;
     }

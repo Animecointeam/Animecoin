@@ -259,6 +259,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/multisigaddressentry.h \
     src/qt/multisigdialog.h \
     src/qt/multisiginputentry.h \
+    src/qt/preimagedialog.h \
     src/qt/transactiontablemodel.h \
     src/qt/addresstablemodel.h \
     src/qt/optionsdialog.h \
@@ -447,6 +448,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/multisigaddressentry.cpp \
     src/qt/multisigdialog.cpp \
     src/qt/multisiginputentry.cpp \
+    src/qt/preimagedialog.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
     src/qt/optionsdialog.cpp \
@@ -603,6 +605,7 @@ FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/multisigaddressentry.ui \
     src/qt/forms/multisigdialog.ui \
     src/qt/forms/multisiginputentry.ui \
+    src/qt/forms/preimagedialog.ui \
     src/qt/forms/signverifymessagedialog.ui \
     src/qt/forms/aboutdialog.ui \
     src/qt/forms/editaddressdialog.ui \
