@@ -920,8 +920,8 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
     CMutableTransaction mtx;
     if (!DecodeHexTx(mtx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
-    CTransaction tx(std::move(mtx));
-    uint256 hashTx = tx.GetHash();
+    CTransactionRef tx(MakeTransactionRef(std::move(mtx)));
+    const uint256& hashTx = tx->GetHash();
 
     CAmount nMaxRawTxFee = maxTxFee;
     if (request.params.size() > 1 && request.params[1].get_bool())
@@ -931,7 +931,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
     LOCK(cs_main);
     CCoinsViewCache &view = *pcoinsTip;
     bool fHaveChain = false;
-    for (size_t o = 0; !fHaveChain && o < tx.vout.size(); o++) {
+    for (size_t o = 0; !fHaveChain && o < tx->vout.size(); o++) {
         const Coin& existingCoin = view.AccessCoin(COutPoint(hashTx, o));
         fHaveChain = !existingCoin.IsSpent();
     }
@@ -940,7 +940,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
         // push to local node and sync with wallets
         CValidationState state;
         bool fMissingInputs;
-        if (!AcceptToMemoryPool(mempool, state, tx, false, &fMissingInputs, false, nMaxRawTxFee)) {
+        if (!AcceptToMemoryPool(mempool, state, std::move(tx), false, &fMissingInputs, false, nMaxRawTxFee)) {
             if (state.IsInvalid()) {
                 throw JSONRPCError(RPC_TRANSACTION_REJECTED, strprintf("%i: %s", state.GetRejectCode(), state.GetRejectReason()));
             } else {

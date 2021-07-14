@@ -663,7 +663,9 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     // Decode the raw transaction
     std::vector<unsigned char> txData(ParseHex(ui->signedTransaction->text().toStdString()));
     CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx(deserialize, ssData);
+    CTransactionRef ptx;
+    ssData >> ptx;
+    const CTransaction& tx = *ptx;
     if (tx.IsNull())
     {
         return;
@@ -671,7 +673,7 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     uint256 txHash = tx.GetHash();
 
     // Check if the transaction is already in the blockchain
-    CTransactionRef  existingTx;
+    CTransactionRef existingTx;
     uint256 blockHash;
     if(GetTransaction(txHash, existingTx, Params().GetConsensus(), blockHash))
     {
@@ -685,7 +687,7 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     // Send the transaction to the local node
     bool fMissingInputs;
     CValidationState state;
-    if (!AcceptToMemoryPool(mempool, state, tx, false, &fMissingInputs, false, nMaxRawTxFee))
+    if (!AcceptToMemoryPool(mempool, state, ptx, false, &fMissingInputs, false, nMaxRawTxFee))
     {
         emit message(tr("Send Raw Transaction"), tr("Transaction rejected: ") + QString::fromStdString(state.GetRejectReason()), CClientUIInterface::MSG_ERROR);
         return;
