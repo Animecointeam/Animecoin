@@ -90,7 +90,7 @@ bool CBasicKeyStore::AddPreimage(
     std::string prehex = HexStr (preimage.begin(), preimage.end());
     std::string imghex = HexStr (image.begin(), image.end());
 
-    printf ("Adding preimage %s for image %s \n", prehex.c_str(), imghex.c_str());
+    //printf ("Adding preimage %s for image %s \n", prehex.c_str(), imghex.c_str());
     mapPreimages.emplace(image, preimage);
     //mapPreimages[image] = preimage;
     return true;
