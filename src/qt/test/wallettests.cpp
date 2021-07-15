@@ -26,7 +26,7 @@ namespace
 //! Press "Ok" button in message box dialog.
 void ConfirmMessage(QString* text = nullptr)
 {
-    QTimer::singleShot(0, makeCallback([text](Callback* callback) {
+    QTimer::singleShot(0, [text]() {
         for (QWidget* widget : QApplication::topLevelWidgets()) {
             if (widget->inherits("QMessageBox")) {
                 QMessageBox* messageBox = qobject_cast<QMessageBox*>(widget);
@@ -34,14 +34,13 @@ void ConfirmMessage(QString* text = nullptr)
                 messageBox->defaultButton()->click();
             }
         }
-        delete callback;
-    }), SLOT(call()));
+    });
 }
 
 //! Press "Yes" or "Cancel" buttons in modal send confirmation dialog.
 void ConfirmSend(QString* text = nullptr, bool cancel = false)
 {
-    QTimer::singleShot(0, makeCallback([text, cancel](Callback* callback) {
+    QTimer::singleShot(0, [text, cancel]() {
         for (QWidget* widget : QApplication::topLevelWidgets()) {
             if (widget->inherits("SendConfirmationDialog")) {
                 SendConfirmationDialog* dialog = qobject_cast<SendConfirmationDialog*>(widget);
