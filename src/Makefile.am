@@ -184,6 +184,7 @@ BITCOIN_CORE_H = \
   validationinterface.h \
   versionbits.h \
   wallet/crypter.h \
+  wallet/feebumper.h \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
   wallet/wallet.h \
@@ -260,6 +261,7 @@ libanimecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_wallet_a_SOURCES = \
   wallet/crypter.cpp \
   wallet/db.cpp \
+  wallet/feebumper.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \

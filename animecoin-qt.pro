@@ -392,6 +392,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/arith_uint256.h \
     src/versionbits.h \
     src/wallet/db.h \
+    src/wallet/feebumper.h \
     src/wallet/wallet.h \
     src/wallet/walletdb.h \
     src/consensus/consensus.h \
@@ -564,6 +565,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/validation.cpp \
     src/versionbits.cpp \
     src/wallet/db.cpp \
+    src/wallet/feebumper.cpp \
     src/wallet/rpcdump.cpp \
     src/wallet/rpcwallet.cpp \
     src/wallet/wallet.cpp \

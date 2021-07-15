@@ -21,6 +21,7 @@
 #include "net_processing.h"
 #include "policy/fees.h"
 #include "policy/policy.h"
+#include "policy/rbf.h"
 #include "scheduler.h"
 #include "script/script.h"
 #include "script/sign.h"
@@ -2576,7 +2577,27 @@ bool CWallet::SelectCoins(const vector<COutput>& vAvailableCoins, const CAmount&
 }
 
 
-
+bool CWallet::SignTransaction(CMutableTransaction &tx)
+{
+    // sign the new tx
+    CTransaction txNewConst(tx);
+    int nIn = 0;
+    for (auto& input : tx.vin) {
+        std::map<uint256, CWalletTx>::const_iterator mi = mapWallet.find(input.prevout.hash);
+        if(mi == mapWallet.end() || input.prevout.n >= mi->second.tx->vout.size()) {
+            return false;
+        }
+        const CScript& scriptPubKey = mi->second.tx->vout[input.prevout.n].scriptPubKey;
+        const CAmount& amount = mi->second.tx->vout[input.prevout.n].nValue;
+        SignatureData sigdata;
+        if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, amount, SIGHASH_ALL), scriptPubKey, sigdata, 1)) {
+            return false;
+        }
+        UpdateTransaction(tx, nIn, sigdata);
+        nIn++;
+    }
+    return true;
+}
 
 bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool overrideEstimatedFeeRate, const CFeeRate& specificFeeRate, int& nChangePosInOut, std::string& strFailReason, bool includeWatching, bool lockUnspents, const CTxDestination& destChange)
 {
