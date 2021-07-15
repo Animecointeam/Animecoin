@@ -675,11 +675,11 @@ bool WalletModel::abandonTransaction(uint256 hash) const
     return wallet->AbandonTransaction(hash);
 }
 
-bool WalletModel::transactionSignalsRBF(uint256 hash) const
+bool WalletModel::transactionCanBeBumped(uint256 hash) const
 {
     LOCK2(cs_main, wallet->cs_wallet);
     const CWalletTx *wtx = wallet->GetWalletTx(hash);
-    if (wtx && SignalsOptInRBF(*wtx))
+    return wtx && SignalsOptInRBF(*wtx) && !wtx->mapValue.count("replaced_by_txid");
         return true;
     return false;
 }
