@@ -8,6 +8,7 @@
 #include "net.h"
 #include "net_processing.h"
 #include "netbase.h"
+#include "policy/policy.h"
 #include "protocol.h"
 #include "sync.h"
 #include "timedata.h"
@@ -405,6 +406,7 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
             "  ,...\n"
             "  ],\n"
             "  \"relayfee\": x.xxxxxxxx,                (numeric) minimum relay fee for non-free transactions in " + CURRENCY_UNIT + "/kB\n"
+            "  \"incrementalfee\": x.xxxxxxxx,          (numeric) minimum fee increment for mempool limiting or BIP 125 replacement in " + CURRENCY_UNIT + "/kB\n"
             "  \"localaddresses\": [                    (array) list of local addresses\n"
             "  {\n"
             "    \"address\": \"xxxx\",                 (string) network address\n"
@@ -436,6 +438,7 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
     }
     obj.pushKV("networks",      GetNetworksInfo());
     obj.pushKV("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK()));
+    obj.pushKV("incrementalfee", ValueFromAmount(::incrementalRelayFee.GetFeePerK()));
     UniValue localAddresses(UniValue::VARR);
     {
         LOCK(cs_mapLocalHost);

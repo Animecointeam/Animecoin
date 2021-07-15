@@ -125,6 +125,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "setnetworkactive", 0, "state" },
     { "getmempoolancestors", 1, "verbose" },
     { "getmempooldescendants", 1, "verbose" },
+    { "bumpfee", 1, "options" },
     { "requestblocks", 1, "blockhashes" },
     { "requestblocks", 2, "pass-internally" },
     { "setautorequestblocks", 0, "state" },
