@@ -73,6 +73,7 @@ private:
     QDateTimeEdit *dateFrom;
     QDateTimeEdit *dateTo;
     QAction *abandonAction;
+    QAction *bumpFeeAction;
 
     QWidget *createDateRangeWidget();
 
@@ -95,6 +96,7 @@ private slots:
     void openThirdPartyTxUrl(QString url);
     void updateWatchOnlyColumn(bool fHaveWatchOnly);
     void abandonTx();
+    void bumpFee();
 
 signals:
     void doubleClicked(const QModelIndex&);

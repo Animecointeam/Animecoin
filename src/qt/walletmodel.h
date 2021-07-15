@@ -229,6 +229,9 @@ public:
     bool transactionCanBeAbandoned(uint256 hash) const;
     bool abandonTransaction(uint256 hash) const;
 
+    bool transactionSignalsRBF(uint256 hash) const;
+    bool bumpFee(uint256 hash);
+
     bool hdEnabled() const;
     bool spvEnabled() const;
     void setSpvEnabled(bool state);
