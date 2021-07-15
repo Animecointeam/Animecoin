@@ -2855,21 +2855,9 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                     }
                 }
                 // Fill in dummy signatures for fee calculation.
-                int nIn = 0;
-                for (const auto& coin : setCoins)
-                {
-                    const CScript& scriptPubKey = coin.first->tx->vout[coin.second].scriptPubKey;
-                    SignatureData sigdata;
-                    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, sigdata, 1))
-                    {
-                        strFailReason = _("Signing transaction failed");
-                        return false;
-                    }
-                    else {
-                        UpdateTransaction(txNew, nIn, sigdata);
-                    }
-
-                    nIn++;
+                if (!DummySignTx(txNew, setCoins)) {
+                    strFailReason = _("Signing transaction failed");
+                    return false;
                 }
 
                 unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);

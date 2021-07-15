@@ -3072,6 +3072,33 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
     return response;
 }
 
+// Calculate the size of the transaction assuming all signatures are max size
+// Use DummySignatureCreator, which inserts 72 byte signatures everywhere.
+// TODO: re-use this in CWallet::CreateTransaction (right now
+// CreateTransaction uses the constructed dummy-signed tx to do a priority
+// calculation, but we should be able to refactor after priority is removed).
+// NOTE: this requires that all inputs must be in mapWallet (eg the tx should
+// be IsAllFromMe).
+int64_t CalculateMaximumSignedTxSize(const CTransaction &tx, CWallet &wallet)
+{
+    CMutableTransaction txNew(tx);
+    std::vector<std::pair<CWalletTx *, unsigned int>> vCoins;
+    // Look up the inputs.  We should have already checked that this transaction
+    // IsAllFromMe(ISMINE_SPENDABLE), so every input should already be in our
+    // wallet, with a valid index into the vout array.
+    for (auto& input : tx.vin) {
+        const auto mi = wallet.mapWallet.find(input.prevout.hash);
+        assert(mi != wallet.mapWallet.end() && input.prevout.n < mi->second.tx->vout.size());
+        vCoins.emplace_back(std::make_pair(&(mi->second), input.prevout.n));
+    }
+    if (!wallet.DummySignTx(txNew, vCoins)) {
+        // This should never happen, because IsAllFromMe(ISMINE_SPENDABLE)
+        // implies that we can sign for every input.
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction contains inputs that cannot be signed");
+    }
+    return GetVirtualTransactionSize(txNew);
+}
+
 UniValue bumpfee(const JSONRPCRequest& request)
 {
     CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
@@ -3115,6 +3142,7 @@ UniValue bumpfee(const JSONRPCRequest& request)
             "  \"txid\":    \"value\",   (string)  The id of the new transaction\n"
             "  \"origfee\":  n,         (numeric) Fee of the replaced transaction\n"
             "  \"fee\":      n,         (numeric) Fee of the new transaction\n"
+            "  \"errors\":  [ str... ] (json array of strings) Errors encountered during processing (may be empty)\n"
             "}\n"
             "\nExamples:\n"
             "\nBump the fee, get the new transaction\'s txid\n" +
@@ -3178,9 +3206,9 @@ UniValue bumpfee(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_MISC_ERROR, "Transaction does not have a change output");
     }
 
-    // signature sizes can vary by a byte, so add 1 for each input when calculating the new fee
+    // Calculate the expected size of the new transaction.
     int64_t txSize = GetVirtualTransactionSize(*(wtx.tx));
-    const int64_t maxNewTxSize = txSize + wtx.tx->vin.size();
+    const int64_t maxNewTxSize = CalculateMaximumSignedTxSize(*wtx.tx, *pwallet);
 
     // optional parameters
     bool specifiedConfirmTarget = false;
@@ -3255,8 +3283,12 @@ UniValue bumpfee(const JSONRPCRequest& request)
         nNewFeeRate = CFeeRate(nNewFee, maxNewTxSize);
 
         // new fee rate must be at least old rate + minimum incremental relay rate
-        if (nNewFeeRate.GetFeePerK() < nOldFeeRate.GetFeePerK() + ::incrementalRelayFee.GetFeePerK()) {
-            nNewFeeRate = CFeeRate(nOldFeeRate.GetFeePerK() + ::incrementalRelayFee.GetFeePerK());
+        // walletIncrementalRelayFee.GetFeePerK() should be exact, because it's initialized
+        // in that unit (fee per kb).
+        // However, nOldFeeRate is a calculated value from the tx fee/size, so
+        // add 1 satoshi to the result, because it may have been rounded down.
+        if (nNewFeeRate.GetFeePerK() < nOldFeeRate.GetFeePerK() + 1 + walletIncrementalRelayFee.GetFeePerK()) {
+            nNewFeeRate = CFeeRate(nOldFeeRate.GetFeePerK() + 1 + walletIncrementalRelayFee.GetFeePerK());
             nNewFee = nNewFeeRate.GetFee(maxNewTxSize);
         }
     }
@@ -3312,7 +3344,7 @@ UniValue bumpfee(const JSONRPCRequest& request)
         const CScript& scriptPubKey = mi->second.tx->vout[input.prevout.n].scriptPubKey;
         const CAmount& amount = mi->second.tx->vout[input.prevout.n].nValue;
         SignatureData sigdata;
-        if (!ProduceSignature(TransactionSignatureCreator(pwallet, &txNewConst, nIn, amount, SIGHASH_ALL), scriptPubKey, sigdata, 0)) {
+        if (!ProduceSignature(TransactionSignatureCreator(pwallet, &txNewConst, nIn, amount, SIGHASH_ALL), scriptPubKey, sigdata, 1)) {
             throw JSONRPCError(RPC_WALLET_ERROR, "Can't sign transaction.");
         }
         UpdateTransaction(tx, nIn, sigdata);
@@ -3324,8 +3356,16 @@ UniValue bumpfee(const JSONRPCRequest& request)
     CWalletTx wtxBumped(pwallet, MakeTransactionRef(std::move(tx)));
     wtxBumped.mapValue["replaces_txid"] = hash.ToString();
     CValidationState state;
-    if (!pwallet->CommitTransaction(wtxBumped, reservekey, g_connman.get(), state) || !state.IsValid()) {
+    if (!pwallet->CommitTransaction(wtxBumped, reservekey, g_connman.get(), state)) {
+        // NOTE: CommitTransaction never returns false, so this should never happen.
         throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Error: The transaction was rejected! Reason given: %s", state.GetRejectReason()));
+    }
+
+    UniValue vErrors(UniValue::VARR);
+    if (state.IsInvalid()) {
+        // This can happen if the mempool rejected the transaction.  Report
+        // what happened in the "errors" response.
+        vErrors.push_back(strprintf("Error: The transaction was rejected: %s", FormatStateMessage(state)));
     }
 
     // mark the original tx as bumped
@@ -3334,13 +3374,14 @@ UniValue bumpfee(const JSONRPCRequest& request)
         // along with an exception. It would be good to return information about
         // wtxBumped to the caller even if marking the original transaction
         // replaced does not succeed for some reason.
-        throw JSONRPCError(RPC_WALLET_ERROR, "Error: Created new bumpfee transaction but could not mark the original transaction as replaced.");
+        vErrors.push_back("Error: Created new bumpfee transaction but could not mark the original transaction as replaced.");
     }
 
     UniValue result(UniValue::VOBJ);
     result.pushKV("txid", wtxBumped.GetHash().GetHex());
     result.pushKV("origfee", ValueFromAmount(nOldFee));
     result.pushKV("fee", ValueFromAmount(nNewFee));
+    result.pushKV("errors", vErrors);
 
     return result;
 }
