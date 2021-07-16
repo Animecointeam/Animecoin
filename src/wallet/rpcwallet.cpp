@@ -12,6 +12,7 @@
 #include "net_processing.h" // for fFetchBlocksWhileFetchingHeaders, consider removal?
 #include "policy/policy.h"
 #include "policy/rbf.h"
+#include "rpc/safemode.h"
 #include "rpc/server.h"
 #include "script/sign.h"
 #include "timedata.h"
@@ -432,6 +433,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     CBitcoinAddress address(request.params[0].get_str());
@@ -495,6 +497,7 @@ UniValue listaddressgroupings(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     UniValue jsonGroupings(UniValue::VARR);
@@ -608,6 +611,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     // Animecoin address
@@ -672,6 +676,7 @@ UniValue getreceivedbyaccount(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     // Minimum confirmations
@@ -751,6 +756,7 @@ UniValue getbalance(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     if (request.params.size() == 0)
@@ -785,6 +791,7 @@ UniValue getunconfirmedbalance(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     return ValueFromAmount(pwallet->GetUnconfirmedBalance());
@@ -819,6 +826,7 @@ UniValue movecmd(const JSONRPCRequest& request)
                 + HelpExampleRpc("move", "\"timotei\", \"akiko\", 0.01, 6, \"happy birthday!\"")
             );
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     std::string strFrom = AccountFromValue(request.params[0]);
@@ -879,6 +887,7 @@ UniValue sendfrom(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     std::string strAccount = AccountFromValue(request.params[0]);
@@ -959,6 +968,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     if (pwallet->GetBroadcastTransactions() && !g_connman) {
@@ -1376,6 +1386,7 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     return ListReceived(pwallet, request.params, false);
@@ -1612,6 +1623,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     std::string strAccount = "*";
@@ -1709,6 +1721,7 @@ UniValue listaccounts(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     int nMinDepth = 1;
@@ -1820,6 +1833,7 @@ UniValue listsinceblock(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     const CBlockIndex* pindex = nullptr;    // Block index of the specified block or the common ancestor, if the block provided was in a deactivated chain.
@@ -1956,6 +1970,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     uint256 hash;
@@ -2020,6 +2035,7 @@ UniValue abandontransaction(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     uint256 hash;
@@ -2459,6 +2475,7 @@ UniValue listlockunspent(const JSONRPCRequest& request)
             + HelpExampleRpc("listlockunspent", "")
         );
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     std::vector<COutPoint> vOutpts;
@@ -2547,6 +2564,7 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
+    ObserveSafeMode();
     LOCK2(cs_main, pwallet->cs_wallet);
 
     UniValue obj(UniValue::VOBJ);
@@ -2661,6 +2679,8 @@ UniValue listunspent(const JSONRPCRequest& request)
                 + HelpExampleCli("listunspent", "6 9999999 \"[\\\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\\\",\\\"Ad9gq1rYvKDiFWCQPnrXVBCZEhwmQYXNks\\\"]\"")
                 + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"AGrq2u2iB9AVZqhLVzPvqdJs2X8o41wzHJ\\\",\\\"Ad9gq1rYvKDiFWCQPnrXVBCZEhwmQYXNks\\\"]\"")
             );
+
+    ObserveSafeMode();
 
     int nMinDepth = 1;
     if (request.params.size() > 0 && !request.params[0].isNull()) {
@@ -2792,6 +2812,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             + HelpExampleCli("sendrawtransaction", "\"signedtransactionhex\"")
                             );
 
+   ObserveSafeMode();
    RPCTypeCheck(request.params, {UniValue::VSTR});
 
    // Make sure the results are valid at least up to the most recent block
@@ -3205,61 +3226,61 @@ extern UniValue importmulti(const JSONRPCRequest& request);
 extern UniValue rescanblockchain(const JSONRPCRequest& request);
 
 static const CRPCCommand commands[] =
-{ //  category              name                        actor (function)           okSafeMode
+{ //  category              name                        actor (function)           argNames
     //  --------------------- ------------------------    -----------------------    ----------
-  { "rawtransactions",    "fundrawtransaction",       &fundrawtransaction,       false,  {"hexstring","options"} },
-  { "hidden",             "resendwallettransactions", &resendwallettransactions, true,   {} },
-  { "wallet",             "abortrescan",              &abortrescan,              false,  {} },
-  { "wallet",             "abandontransaction",       &abandontransaction,       false,  {"txid"} },
-  { "wallet",             "addmultisigaddress",       &addmultisigaddress,       true,   {"nrequired","keys","account"} },
-  { "wallet",             "addwitnessaddress",        &addwitnessaddress,        true,   {"address"} },
-  { "wallet",             "backupwallet",             &backupwallet,             true,   {"destination"} },
-  { "wallet",             "bumpfee",                  &bumpfee,                  true,   {"txid", "options"} },
-  { "wallet",             "dumpprivkey",              &dumpprivkey,              true,   {"address"}  },
-  { "wallet",             "dumpwallet",               &dumpwallet,               true,   {"filename"} },
-  { "wallet",             "importpreimage",           &importpreimage,           true,   {"preimage"} },
-  { "wallet",             "encryptwallet",            &encryptwallet,            true,   {"passphrase"} },
-  { "wallet",             "getaccountaddress",        &getaccountaddress,        true,   {"account"} },
-  { "wallet",             "getaccount",               &getaccount,               true,   {"address"} },
-  { "wallet",             "getaddressesbyaccount",    &getaddressesbyaccount,    true,   {"account"} },
-  { "wallet",             "getbalance",               &getbalance,               false,  {"account","minconf","include_watchonly"} },
-  { "wallet",             "getnewaddress",            &getnewaddress,            true,   {"account"} },
-  { "wallet",             "getrawchangeaddress",      &getrawchangeaddress,      true,   {} },
-  { "wallet",             "getreceivedbyaccount",     &getreceivedbyaccount,     false,  {"account","minconf"} },
-  { "wallet",             "getreceivedbyaddress",     &getreceivedbyaddress,     false,  {"address","minconf"} },
-  { "wallet",             "gettransaction",           &gettransaction,           false,  {"txid","include_watchonly"} },
-  { "wallet",             "getunconfirmedbalance",    &getunconfirmedbalance,    false,  {} },
-  { "wallet",             "getwalletinfo",            &getwalletinfo,            false,  {} },
-  { "wallet",             "importmulti",              &importmulti,              true,   {"requests","options"} },
-  { "wallet",             "importprivkey",            &importprivkey,            true,   {"privkey","label","rescan"} },
-  { "wallet",             "importwallet",             &importwallet,             true,   {"filename"} },
-  { "wallet",             "importaddress",            &importaddress,            true,   {"address","label","rescan","p2sh"} },
-  { "wallet",             "importprunedfunds",        &importprunedfunds,        true,   {"rawtransaction","txoutproof"} },
-  { "wallet",             "importpubkey",             &importpubkey,             true,   {"pubkey","label","rescan"} },
-  { "wallet",             "keypoolrefill",            &keypoolrefill,            true,   {"newsize"} },
-  { "wallet",             "listaccounts",             &listaccounts,             false,  {"minconf","include_watchonly"} },
-  { "wallet",             "listaddressgroupings",     &listaddressgroupings,     false,  {} },
-  { "wallet",             "listlockunspent",          &listlockunspent,          false,  {} },
-  { "wallet",             "listreceivedbyaccount",    &listreceivedbyaccount,    false,  {"minconf","include_empty","include_watchonly"} },
-  { "wallet",             "listreceivedbyaddress",    &listreceivedbyaddress,    false,  {"minconf","include_empty","include_watchonly"} },
-  { "wallet",             "listsinceblock",           &listsinceblock,           false,  {"blockhash","target_confirmations","include_watchonly","include_removed"} },
-  { "wallet",             "listtransactions",         &listtransactions,         false,  {"account","count","skip","include_watchonly"} },
-  { "wallet",             "listunspent",              &listunspent,              false,  {"minconf","maxconf","addresses","include_unsafe"} },
-  { "wallet",             "lockunspent",              &lockunspent,              true,   {"unlock","transactions"} },
-  { "wallet",             "move",                     &movecmd,                  false,  {"fromaccount","toaccount","amount","minconf","comment"} },
-  { "wallet",             "sendfrom",                 &sendfrom,                 false,  {"fromaccount","toaddress","amount","minconf","comment","comment_to"} },
-  { "wallet",             "sendmany",                 &sendmany,                 false,  {"fromaccount","amounts","minconf","comment","subtractfeefrom"} },
-  { "wallet",             "sendtoaddress",            &sendtoaddress,            false,  {"address","amount","comment","comment_to","subtractfeefromamount"} },
-  { "wallet",             "setaccount",               &setaccount,               true,   {"address","account"} },
-  { "wallet",             "settxfee",                 &settxfee,                 true,   {"amount"} },
-  { "wallet",             "signmessage",              &signmessage,              true,   {"address","message"} },
-  { "wallet",             "walletlock",               &walletlock,               true,   {} },
-  { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   true,   {"oldpassphrase","newpassphrase"} },
-  { "wallet",             "walletpassphrase",         &walletpassphrase,         true,   {"passphrase","timeout"} },
-  { "wallet",             "removeprunedfunds",        &removeprunedfunds,        true,   {"txid"} },
-  { "wallet",             "rescanblockchain",         &rescanblockchain,         true,   {"start_height", "stop_height"} },
-  { "wallet",             "sethdseed",                &sethdseed,                true,   {"newkeypool","seed"} },
-  { "wallet",             "setspv",                   &setspv,                   true,   {"state"} },
+  { "rawtransactions",    "fundrawtransaction",       &fundrawtransaction,       {"hexstring","options"} },
+  { "hidden",             "resendwallettransactions", &resendwallettransactions, {} },
+  { "wallet",             "abortrescan",              &abortrescan,              {} },
+  { "wallet",             "abandontransaction",       &abandontransaction,       {"txid"} },
+  { "wallet",             "addmultisigaddress",       &addmultisigaddress,       {"nrequired","keys","account"} },
+  { "wallet",             "addwitnessaddress",        &addwitnessaddress,        {"address"} },
+  { "wallet",             "backupwallet",             &backupwallet,             {"destination"} },
+  { "wallet",             "bumpfee",                  &bumpfee,                  {"txid", "options"} },
+  { "wallet",             "dumpprivkey",              &dumpprivkey,              {"address"}  },
+  { "wallet",             "dumpwallet",               &dumpwallet,               {"filename"} },
+  { "wallet",             "importpreimage",           &importpreimage,           {"preimage"} },
+  { "wallet",             "encryptwallet",            &encryptwallet,            {"passphrase"} },
+  { "wallet",             "getaccountaddress",        &getaccountaddress,        {"account"} },
+  { "wallet",             "getaccount",               &getaccount,               {"address"} },
+  { "wallet",             "getaddressesbyaccount",    &getaddressesbyaccount,    {"account"} },
+  { "wallet",             "getbalance",               &getbalance,               {"account","minconf","include_watchonly"} },
+  { "wallet",             "getnewaddress",            &getnewaddress,            {"account"} },
+  { "wallet",             "getrawchangeaddress",      &getrawchangeaddress,      {} },
+  { "wallet",             "getreceivedbyaccount",     &getreceivedbyaccount,     {"account","minconf"} },
+  { "wallet",             "getreceivedbyaddress",     &getreceivedbyaddress,     {"address","minconf"} },
+  { "wallet",             "gettransaction",           &gettransaction,           {"txid","include_watchonly"} },
+  { "wallet",             "getunconfirmedbalance",    &getunconfirmedbalance,    {} },
+  { "wallet",             "getwalletinfo",            &getwalletinfo,            {} },
+  { "wallet",             "importmulti",              &importmulti,              {"requests","options"} },
+  { "wallet",             "importprivkey",            &importprivkey,            {"privkey","label","rescan"} },
+  { "wallet",             "importwallet",             &importwallet,             {"filename"} },
+  { "wallet",             "importaddress",            &importaddress,            {"address","label","rescan","p2sh"} },
+  { "wallet",             "importprunedfunds",        &importprunedfunds,        {"rawtransaction","txoutproof"} },
+  { "wallet",             "importpubkey",             &importpubkey,             {"pubkey","label","rescan"} },
+  { "wallet",             "keypoolrefill",            &keypoolrefill,            {"newsize"} },
+  { "wallet",             "listaccounts",             &listaccounts,             {"minconf","include_watchonly"} },
+  { "wallet",             "listaddressgroupings",     &listaddressgroupings,     {} },
+  { "wallet",             "listlockunspent",          &listlockunspent,          {} },
+  { "wallet",             "listreceivedbyaccount",    &listreceivedbyaccount,    {"minconf","include_empty","include_watchonly"} },
+  { "wallet",             "listreceivedbyaddress",    &listreceivedbyaddress,    {"minconf","include_empty","include_watchonly"} },
+  { "wallet",             "listsinceblock",           &listsinceblock,           {"blockhash","target_confirmations","include_watchonly","include_removed"} },
+  { "wallet",             "listtransactions",         &listtransactions,         {"account","count","skip","include_watchonly"} },
+  { "wallet",             "listunspent",              &listunspent,              {"minconf","maxconf","addresses","include_unsafe"} },
+  { "wallet",             "lockunspent",              &lockunspent,              {"unlock","transactions"} },
+  { "wallet",             "move",                     &movecmd,                  {"fromaccount","toaccount","amount","minconf","comment"} },
+  { "wallet",             "sendfrom",                 &sendfrom,                 {"fromaccount","toaddress","amount","minconf","comment","comment_to"} },
+  { "wallet",             "sendmany",                 &sendmany,                 {"fromaccount","amounts","minconf","comment","subtractfeefrom"} },
+  { "wallet",             "sendtoaddress",            &sendtoaddress,            {"address","amount","comment","comment_to","subtractfeefromamount"} },
+  { "wallet",             "setaccount",               &setaccount,               {"address","account"} },
+  { "wallet",             "settxfee",                 &settxfee,                 {"amount"} },
+  { "wallet",             "signmessage",              &signmessage,              {"address","message"} },
+  { "wallet",             "walletlock",               &walletlock,               {} },
+  { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   {"oldpassphrase","newpassphrase"} },
+  { "wallet",             "walletpassphrase",         &walletpassphrase,         {"passphrase","timeout"} },
+  { "wallet",             "removeprunedfunds",        &removeprunedfunds,        {"txid"} },
+  { "wallet",             "rescanblockchain",         &rescanblockchain,         {"start_height", "stop_height"} },
+  { "wallet",             "sethdseed",                &sethdseed,                {"newkeypool","seed"} },
+  { "wallet",             "setspv",                   &setspv,                   {"state"} },
 };
 
 void RegisterWalletRPCCommands(CRPCTable &t)

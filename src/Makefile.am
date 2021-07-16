@@ -157,6 +157,7 @@ BITCOIN_CORE_H = \
   rpc/client.h \
   rpc/protocol.h \
   rpc/register.h \
+  rpc/safemode.h \
   rpc/server.h \
   scheduler.h \
   script/sigcache.h \
@@ -232,6 +233,7 @@ libanimecoin_server_a_SOURCES = \
   rpc/misc.cpp \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
+  rpc/safemode.cpp \
   rpc/server.cpp \
   script/ismine.cpp \
   script/sigcache.cpp \

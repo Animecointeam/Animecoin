@@ -993,22 +993,22 @@ UniValue estimatesmartpriority(const JSONRPCRequest& request)
 }
 
 static const CRPCCommand commands[] =
-{ //  category              name                      actor (function)         okSafeMode
+{ //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
-  { "mining",             "getnetworkhashps",       &getnetworkhashps,       true,  {"nblocks","height"} },
-  { "mining",             "getmininginfo",          &getmininginfo,          true,  {} },
-  { "mining",             "prioritisetransaction",  &prioritisetransaction,  true,  {"txid","priority_delta","fee_delta"} },
-  { "mining",             "getblocktemplate",       &getblocktemplate,       true,  {"template_request"} },
-  { "mining",             "submitblock",            &submitblock,            true,  {"hexdata","parameters"} },
+  { "mining",             "getnetworkhashps",       &getnetworkhashps,       {"nblocks","height"} },
+  { "mining",             "getmininginfo",          &getmininginfo,          {} },
+  { "mining",             "prioritisetransaction",  &prioritisetransaction,  {"txid","priority_delta","fee_delta"} },
+  { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
+  { "mining",             "submitblock",            &submitblock,            {"hexdata","parameters"} },
 
-  { "generating",         "generate",               &generate,               true,  {"nblocks","maxtries"} },
-  { "generating",         "generatetoaddress",      &generatetoaddress,      true,  {"nblocks","address","maxtries"} },
+  { "generating",         "generate",               &generate,               {"nblocks","maxtries"} },
+  { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },
 
-  { "util",               "estimatefee",            &estimatefee,            true,  {"nblocks"} },
-  { "util",               "estimatepriority",       &estimatepriority,       true,  {"nblocks"} },
-  { "util",               "estimatesmartfee",       &estimatesmartfee,       true,  {"nblocks", "conservative"} },
-  { "hidden",             "estimaterawfee",         &estimaterawfee,         true,  {"nblocks", "threshold", "horizon"} },
-  { "util",               "estimatesmartpriority",  &estimatesmartpriority,  true,  {"nblocks"} },
+  { "util",               "estimatefee",            &estimatefee,            {"nblocks"} },
+  { "util",               "estimatepriority",       &estimatepriority,       {"nblocks"} },
+  { "util",               "estimatesmartfee",       &estimatesmartfee,       {"nblocks", "conservative"} },
+  { "hidden",             "estimaterawfee",         &estimaterawfee,         {"nblocks", "threshold", "horizon"} },
+  { "util",               "estimatesmartpriority",  &estimatesmartpriority,  {"nblocks"} },
 };
 
 void RegisterMiningRPCCommands(CRPCTable &t)

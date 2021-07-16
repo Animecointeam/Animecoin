@@ -6,6 +6,7 @@
 #include "rpc/server.h"
 #include "init.h"
 #include "net_processing.h" // for fAutoRequestBlocks, consider removal?
+#include "rpc/safemode.h"
 #include "script/script.h"
 #include "script/standard.h"
 #include "sync.h"
@@ -206,6 +207,7 @@ UniValue abortrescan(const JSONRPCRequest& request)
             + HelpExampleRpc("abortrescan", "")
         );
 
+    ObserveSafeMode();
     if (!pwallet->IsScanning() || pwallet->IsAbortingRescan()) return false;
     pwallet->AbortRescan();
     return true;

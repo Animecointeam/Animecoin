@@ -276,6 +276,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/randomenv.h \
     src/robin_hood.h \
     src/rpc/register.h \
+    src/rpc/safemode.h \
     src/sync.h \
     src/threadinterrupt.h \
     src/util.h \
@@ -460,6 +461,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
     src/alert.cpp \
     src/randomenv.cpp \
+    src/rpc/safemode.cpp \
     src/sync.cpp \
     src/threadinterrupt.cpp \
     src/util.cpp \

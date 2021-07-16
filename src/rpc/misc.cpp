@@ -656,20 +656,20 @@ UniValue echo(const JSONRPCRequest& request)
 }
 
 static const CRPCCommand commands[] =
-{ //  category              name                      actor (function)         okSafeMode
+{ //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
-  { "control",            "getinfo",                &getinfo,                true,  {} }, /* uses wallet if enabled */
-  { "control",            "getmemoryinfo",          &getmemoryinfo,          true,  {} },
-  { "util",               "validateaddress",        &validateaddress,        true,  {"address"} }, /* uses wallet if enabled */
-  { "util",               "createmultisig",         &createmultisig,         true,  {"nrequired","keys","options"} },
-  { "util",               "createhtlc",             &createhtlc,             true,  {"recepient_key","refund_key","hash","timeout"} },
-  { "util",               "verifymessage",          &verifymessage,          true,  {"address","signature","message"} },
-  { "util",               "signmessagewithprivkey", &signmessagewithprivkey, true,  {"privkey","message"} },
+  { "control",            "getinfo",                &getinfo,                {} }, /* uses wallet if enabled */
+  { "control",            "getmemoryinfo",          &getmemoryinfo,          {} },
+  { "util",               "validateaddress",        &validateaddress,        {"address"} }, /* uses wallet if enabled */
+  { "util",               "createmultisig",         &createmultisig,         {"nrequired","keys","options"} },
+  { "util",               "createhtlc",             &createhtlc,             {"recepient_key","refund_key","hash","timeout"} },
+  { "util",               "verifymessage",          &verifymessage,          {"address","signature","message"} },
+  { "util",               "signmessagewithprivkey", &signmessagewithprivkey, {"privkey","message"} },
 
     /* Not shown in help */
-  { "hidden",             "setmocktime",            &setmocktime,            true,  {"timestamp"}},
-  { "hidden",             "echo",                   &echo,                   true,  {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
-  { "hidden",             "echojson",               &echo,                  true,  {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
+  { "hidden",             "setmocktime",            &setmocktime,            {"timestamp"}},
+  { "hidden",             "echo",                   &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
+  { "hidden",             "echojson",               &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
 };
 
 void RegisterMiscRPCCommands(CRPCTable &t)

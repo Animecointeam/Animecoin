@@ -12,6 +12,7 @@
 #include "net.h"
 #include "policy/policy.h"
 #include "primitives/transaction.h"
+#include "rpc/safemode.h"
 #include "rpc/server.h"
 #include "script/script.h"
 #include "script/script_error.h"
@@ -978,6 +979,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
 
     std::promise<void> promise;
 
+    ObserveSafeMode();
     RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VBOOL});
 
     // parse hex string from parameter

@@ -57,11 +57,6 @@ void RPCServer::OnStopped(std::function<void ()> slot)
     g_rpcSignals.Stopped.connect(slot);
 }
 
-void RPCServer::OnPreCommand(std::function<void (const CRPCCommand&)> slot)
-{
-    g_rpcSignals.PreCommand.connect(std::bind(slot, std::placeholders::_1));
-}
-
 void RPCServer::OnPostCommand(std::function<void (const CRPCCommand&)> slot)
 {
     g_rpcSignals.PostCommand.connect(std::bind(slot, std::placeholders::_1));
@@ -271,11 +266,11 @@ UniValue stop(const JSONRPCRequest& jsonRequest)
  * Call Table
  */
 static const CRPCCommand vRPCCommands[] =
-{ //  category              name                      actor (function)         okSafe argNames
-  //  --------------------- ------------------------  -----------------------  ------ ----------
+{ //  category              name                      actor (function)         argNames
+  //  --------------------- ------------------------  -----------------------  ----------
   /* Overall control/query calls */
-  { "control",            "help",                   &help,                   true,  {"command"}  },
-  { "control",            "stop",                   &stop,                   true,  {}  },
+  { "control",            "help",                   &help,                   {"command"}  },
+  { "control",            "stop",                   &stop,                   {}  },
 };
 
 CRPCTable::CRPCTable()
