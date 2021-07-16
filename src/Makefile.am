@@ -189,6 +189,7 @@ BITCOIN_CORE_H = \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
   wallet/wallet.h \
+  warnings.h \
   compat/byteswap.h \
   compat/cpuid.h \
   compat/endian.h \
@@ -386,6 +387,7 @@ libanimecoin_common_a_SOURCES = \
   scheduler.cpp \
   script/sign.cpp \
   script/standard.cpp \
+  warnings.cpp \
   $(BITCOIN_CORE_H)
 
 # util: shared between all executables.
@@ -412,6 +414,7 @@ libanimecoin_util_a_SOURCES = \
   utilstrencodings.cpp \
   utilmoneystr.cpp \
   utiltime.cpp \
+  warnings.cpp \
   $(BITCOIN_CORE_H)
 
 if GLIBC_BACK_COMPAT

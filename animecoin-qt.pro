@@ -275,6 +275,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/compat.h \
     src/randomenv.h \
     src/robin_hood.h \
+    src/rpc/rawtransaction.h \
     src/rpc/register.h \
     src/rpc/safemode.h \
     src/sync.h \
@@ -430,7 +431,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/netaddress.h \
     src/netmessagemaker.h \
     src/script/ismine.h \
-    src/policy/rbf.h
+    src/policy/rbf.h \
+    src/warnings.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/auxiliaryblockrequest.cpp \
@@ -599,7 +601,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/netaddress.cpp \
     src/ui_interface.cpp \
     src/script/ismine.cpp \
-    src/policy/rbf.cpp
+    src/policy/rbf.cpp \
+    src/warnings.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
