@@ -520,17 +520,9 @@ void MultisigDialog::on_signTransactionButton_clicked()
     if(!model)
         return;
 
-    // Decode the raw transaction
-    std::vector<unsigned char> txData(ParseHex(ui->transaction->text().toStdString()));
-    CDataStream ss(txData, SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx(deserialize, ss);
-    if (tx.IsNull())
-    {
-        return;
-    }
-
-    CMutableTransaction mergedTx(tx);
-    const CTransaction txv{tx};
+    CMutableTransaction mtx;
+    if (!DecodeHexTx(mtx, ui->transaction->text().toStdString(), true))
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
     // Fetch previous transactions (inputs)
     CCoinsView viewDummy;
@@ -541,7 +533,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         CCoinsViewMemPool viewMempool(&viewChain, mempool);
         view.SetBackend(viewMempool); // temporarily switch cache backend to db+mempool view
 
-        for (const CTxIn& txin : mergedTx.vin) {
+        for (const CTxIn& txin : mtx.vin) {
             view.AccessCoin(txin.prevout); // Load entries from viewChain into view; can fail.
         }
         view.SetBackend(viewDummy); // switch back to avoid locking db/mempool too long
@@ -591,16 +583,16 @@ void MultisigDialog::on_signTransactionButton_clicked()
 
     // Use CTransaction for the constant parts of the
     // transaction to avoid rehashing.
-    const CTransaction txConst(mergedTx);
+    const CTransaction txConst(mtx);
 
     // Sign what we can
     bool fComplete = true;
     bool route = !ui->refundCheckBox->isChecked();
     ScriptError serror = SCRIPT_ERR_OK;
 
-    for (unsigned int i = 0; i < mergedTx.vin.size(); i++)
+    for (unsigned int i = 0; i < mtx.vin.size(); i++)
     {
-        CTxIn& txin = mergedTx.vin[i];
+        CTxIn& txin = mtx.vin[i];
         const Coin& coin = view.AccessCoin(txin.prevout);
         if (coin.IsSpent())
         {
@@ -611,11 +603,10 @@ void MultisigDialog::on_signTransactionButton_clicked()
         const CAmount& amount = coin.out.nValue;
 
         SignatureData sigdata;
-        ProduceSignature(MutableTransactionSignatureCreator(pwalletMain, &mergedTx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
-        if (txv.vin.size() > i) {
-            sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(txv, i), route);
-        }
-        UpdateTransaction(mergedTx, i, sigdata);
+        ProduceSignature(MutableTransactionSignatureCreator(pwalletMain, &mtx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
+        sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(mtx, i), route);
+
+        UpdateTransaction(mtx, i, sigdata);
 
         if (!VerifyScript(txin.scriptSig, prevPubKey, &txin.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&txConst, i, amount), &serror))
         {
@@ -624,7 +615,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
     }
 
     CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
-    ssTx << mergedTx;
+    ssTx << mtx;
     ui->signedTransaction->setText(HexStr(ssTx.begin(), ssTx.end()).c_str());
 
     if(fComplete)
