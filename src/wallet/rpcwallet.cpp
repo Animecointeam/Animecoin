@@ -3086,7 +3086,7 @@ UniValue signrawtransactionwithwallet(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw std::runtime_error(
-            "signrawtransactionwithwallet \"hexstring\" ( [{\"txid\":\"id\",\"vout\":n,\"scriptPubKey\":\"hex\",\"redeemScript\":\"hex\"},...] sighashtype )\n"
+            "signrawtransactionwithwallet \"hexstring\" ( [{\"txid\":\"id\",\"vout\":n,\"scriptPubKey\":\"hex\",\"redeemScript\":\"hex\"},\"route\":n},...] sighashtype )\n"
             "\nSign inputs for raw transaction (serialized, hex-encoded).\n"
             "The second optional argument (may be null) is an array of previous transaction outputs that\n"
             "this transaction depends on but may not yet be in the block chain.\n"
@@ -3102,6 +3102,7 @@ UniValue signrawtransactionwithwallet(const JSONRPCRequest& request)
             "         \"scriptPubKey\": \"hex\",     (string, required) script key\n"
             "         \"redeemScript\": \"hex\",     (string, required for P2SH or P2WSH) redeem script\n"
             "         \"amount\": value            (numeric, required) The amount spent\n"
+            "         \"route\": n                 (int) route for conditional scripts\n"
             "       }\n"
             "       ,...\n"
             "    ]\n"
