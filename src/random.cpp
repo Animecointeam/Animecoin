@@ -343,7 +343,7 @@ void GetOSRand(unsigned char *ent32)
 namespace {
 
 class RNGState {
-    CWaitableCriticalSection m_mutex;
+    Mutex m_mutex;
     /* The RNG state consists of 256 bits of entropy, taken from the output of
      * one operation's SHA512 output, and fed as input to the next one.
      * Carrying 256 bits of entropy should be sufficient to guarantee
