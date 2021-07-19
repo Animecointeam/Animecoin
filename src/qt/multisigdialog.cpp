@@ -678,7 +678,7 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     // Send the transaction to the local node
     bool fMissingInputs;
     CValidationState state;
-    if (!AcceptToMemoryPool(mempool, state, ptx, false, &fMissingInputs, false, nMaxRawTxFee))
+    if (!AcceptToMemoryPool(mempool, state, ptx, false, &fMissingInputs, nullptr, false, nMaxRawTxFee))
     {
         emit message(tr("Send Raw Transaction"), tr("Transaction rejected: ") + QString::fromStdString(state.GetRejectReason()), CClientUIInterface::MSG_ERROR);
         return;
