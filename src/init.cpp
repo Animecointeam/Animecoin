@@ -51,7 +51,8 @@
 #include <sys/stat.h>
 #endif
 
-#include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string.hpp>
+//#include <boost/algorithm/string/replace.hpp>
 #include <boost/thread.hpp>
 
 #if ENABLE_ZMQ
@@ -424,11 +425,13 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-limitancestorsize=<n>", strprintf("Do not accept transactions whose size with all in-mempool ancestors exceeds <n> kilobytes (default: %u)", DEFAULT_ANCESTOR_SIZE_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantcount=<n>", strprintf("Do not accept transactions if any ancestor would have <n> or more in-mempool descendants (default: %u)", DEFAULT_DESCENDANT_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantsize=<n>", strprintf("Do not accept transactions if any ancestor would have more than <n> kilobytes of in-mempool descendants (default: %u).", DEFAULT_DESCENDANT_SIZE_LIMIT));
+        strUsage += HelpMessageOpt("-bip9params=deployment:start:end", "Use given start/end times for specified bip9 deployment (regtest-only)");
         strUsage += HelpMessageOpt("-autorequestblocks", strprintf("Automatic block request, if disabled, blocks will not be requested in IBD/sync-up (default: %u)", DEFAULT_AUTOMATIC_BLOCK_REQUESTS));
     }
 
     strUsage += HelpMessageOpt("-debug=<category>", strprintf(_("Output debugging information (default: %u, supplying <category> is optional)"), 0) + ". " +
         _("If <category> is not supplied or if <category> = 1, output all debugging information.") + " " + _("<category> can be:") + " " + ListLogCategories() + ".");
+    strUsage += HelpMessageOpt("-debugexclude=<category>", strprintf(_("Exclude debugging information for a category. Can be used in conjunction with -debug=1 to output debug logs for all categories except one or more specified categories.")));
     if (showDebug)
         strUsage += HelpMessageOpt("-nodebug", "Turn off debugging messages, same as -debug=0");
     strUsage += HelpMessageOpt("-help-debug", _("Show all debugging options (usage: --help -help-debug)"));
@@ -879,7 +882,9 @@ bool AppInitParameterInteraction()
     }
 
     // Make sure enough file descriptors are available
-    int nBind = std::max(nUserBind, size_t(1));
+    int nBind = std::max(
+                (mapMultiArgs.count("-bind") ? mapMultiArgs.at("-bind").size() : 0) +
+                (mapMultiArgs.count("-whitebind") ? mapMultiArgs.at("-whitebind").size() : 0), size_t(1));
     nUserMaxConnections = GetArg("-maxconnections", DEFAULT_MAX_PEER_CONNECTIONS);
     nMaxConnections = std::max(nUserMaxConnections, 0);
 
@@ -903,10 +908,22 @@ bool AppInitParameterInteraction()
             for (const auto& cat : categories) {
                 uint32_t flag;
                 if (!GetLogCategory(&flag, &cat)) {
-                    InitWarning(strprintf(_("Unsupported logging category %s.\n"), cat));
+                    InitWarning(strprintf(_("Unsupported logging category %s=%s."), "-debug", cat));
                 }
                 logCategories |= flag;
             }
+        }
+    }
+
+    // Now remove the logging categories which were explicitly excluded
+    if (mapMultiArgs.count("-debugexclude") > 0) {
+        const std::vector<std::string>& excludedCategories = mapMultiArgs.at("-debugexclude");
+        for (const auto& cat : excludedCategories) {
+            uint32_t flag;
+            if (!GetLogCategory(&flag, &cat)) {
+                InitWarning(strprintf(_("Unsupported logging category %s=%s."), "-debugexclude", cat));
+            }
+            logCategories &= ~flag;
         }
     }
 
@@ -1061,7 +1078,41 @@ bool AppInitParameterInteraction()
     // Option to startup with mocktime set (used for regression testing):
     SetMockTime(GetArg("-mocktime", 0)); // SetMockTime(0) is a no-op
 
-    // BIP9 options should go here.
+    if (mapMultiArgs.count("-bip9params")) {
+        // Allow overriding bip9 parameters for testing
+        if (!Params().MineBlocksOnDemand()) {
+            return InitError("BIP9 parameters may only be overridden on regtest.");
+        }
+        const vector<string>& deployments = mapMultiArgs.at("-bip9params");
+        for (auto i : deployments) {
+            std::vector<std::string> vDeploymentParams;
+            boost::split(vDeploymentParams, i, boost::is_any_of(":"));
+            if (vDeploymentParams.size() != 3) {
+                return InitError("BIP9 parameters malformed, expecting deployment:start:end");
+            }
+            int64_t nStartTime, nTimeout;
+            if (!ParseInt64(vDeploymentParams[1], &nStartTime)) {
+                return InitError(strprintf("Invalid nStartTime (%s)", vDeploymentParams[1]));
+            }
+            if (!ParseInt64(vDeploymentParams[2], &nTimeout)) {
+                return InitError(strprintf("Invalid nTimeout (%s)", vDeploymentParams[2]));
+            }
+            bool found = false;
+            for (int i=0; i<(int)Consensus::MAX_VERSION_BITS_DEPLOYMENTS; ++i)
+            {
+                if (vDeploymentParams[0].compare(VersionBitsDeploymentInfo[i].name) == 0) {
+                    UpdateRegtestBIP9Parameters(Consensus::DeploymentPos(i), nStartTime, nTimeout);
+                    found = true;
+                    LogPrintf("Setting BIP9 activation parameters for %s to start=%ld, timeout=%ld\n", vDeploymentParams[0], nStartTime, nTimeout);
+                    break;
+                }
+            }
+            if (!found) {
+                return InitError(strprintf("Invalid deployment (%s)", vDeploymentParams[0]));
+            }
+        }
+    }
+
     return true;
 }
 
