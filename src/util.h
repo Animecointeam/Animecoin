@@ -43,9 +43,7 @@ public:
     boost::signals2::signal<std::string (const char* psz)> Translate;
 };
 
-extern std::map<std::string, std::string> mapArgs;
-extern std::map<std::string, std::vector<std::string> > mapMultiArgs;
-extern bool fDebug;
+extern const std::map<std::string, std::vector<std::string> >& mapMultiArgs;
 extern bool fPrintToConsole;
 extern bool fPrintToDebugLog;
 extern bool fLogTimestamps;
@@ -57,6 +55,8 @@ extern CTranslationInterface translationInterface;
 
 extern const char * const BITCOIN_CONF_FILENAME;
 extern const char * const BITCOIN_PID_FILENAME;
+
+extern std::atomic<uint32_t> logCategories;
 
 /**
  * Translation function: Call Translate signal on UI interface, which returns a boost::optional result.
@@ -71,8 +71,47 @@ inline std::string _(const char* psz)
 void SetupEnvironment();
 bool SetupNetworking();
 
+namespace BCLog {
+    enum LogFlags : uint32_t {
+        NONE        = 0,
+        NET         = (1 <<  0),
+        TOR         = (1 <<  1),
+        MEMPOOL     = (1 <<  2),
+        HTTP        = (1 <<  3),
+        BENCH       = (1 <<  4),
+        ZMQ         = (1 <<  5),
+        DB          = (1 <<  6),
+        RPC         = (1 <<  7),
+        ESTIMATEFEE = (1 <<  8),
+        ADDRMAN     = (1 <<  9),
+        SELECTCOINS = (1 << 10),
+        REINDEX     = (1 << 11),
+        CMPCTBLOCK  = (1 << 12),
+        RAND        = (1 << 13),
+        PRUNE       = (1 << 14),
+        PROXY       = (1 << 15),
+        MEMPOOLREJ  = (1 << 16),
+        LIBEVENT    = (1 << 17),
+        COINDB      = (1 << 18),
+        QT          = (1 << 19),
+        LEVELDB     = (1 << 20),
+        ALERT       = (1 << 21),
+        ALL         = ~(uint32_t)0,
+    };
+}
+
 /** Return true if log accepts specified category */
-bool LogAcceptCategory(const char* category);
+static inline bool LogAcceptCategory(uint32_t category)
+{
+    return (logCategories.load(std::memory_order_relaxed) & category) != 0;
+}
+
+/** Returns a string with the supported log categories */
+std::string ListLogCategories();
+
+/** Return true if str parses as a log category and set the flags in f */
+bool GetLogCategory(uint32_t *f, const std::string *str);
+
 /** Send a string to the log output */
 int LogPrintStr(const std::string &str);
 
@@ -126,7 +165,7 @@ fs::path GetConfigFile(const std::string& confPath);
 fs::path GetPidFile();
 void CreatePidFile(const fs::path &path, pid_t pid);
 #endif
-void ReadConfigFile(const std::string& confPath, std::map<std::string, std::string>& mapSettingsRet, std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet);
+void ReadConfigFile(const std::string& confPath);
 #ifdef WIN32
 fs::path GetSpecialFolderPath(int nFolder, bool fCreate = true);
 #endif
@@ -153,6 +192,14 @@ inline bool IsSwitchChar(char c)
     return c == '-';
 #endif
 }
+
+/**
+ * Return true if the given argument has been manually set
+ *
+ * @param strArg Argument to get (e.g. "-foo")
+ * @return true if the argument has been set
+ */
+bool IsArgSet(const std::string& strArg);
 
 /**
  * Return string argument or default value
@@ -199,7 +246,7 @@ bool SoftSetArg(const std::string& strArg, const std::string& strValue);
  */
 bool SoftSetBoolArg(const std::string& strArg, bool fValue);
 
-// Forces an arg setting. TODO: refactor args system.
+// Forces a arg setting, used only in testing
 void ForceSetArg(const std::string& strArg, const std::string& strValue);
 
 /**

@@ -87,7 +87,7 @@ static bool multiUserAuthorized(std::string strUserPass)
 
     if (mapMultiArgs.count("-rpcauth") > 0) {
         //Search for multi-user login/pass "rpcauth" from config
-        for (std::string strRPCAuth : mapMultiArgs["-rpcauth"])
+        for (std::string strRPCAuth : mapMultiArgs.at("-rpcauth"))
         {
             std::vector<std::string> vFields;
             boost::split(vFields, strRPCAuth, boost::is_any_of(":$"));
@@ -205,7 +205,7 @@ static bool HTTPReq_JSONRPC(HTTPRequest* req, const std::string &)
 
 static bool InitRPCAuthentication()
 {
-    if (mapArgs["-rpcpassword"] == "")
+    if (GetArg("-rpcpassword", "") == "")
     {
         LogPrintf("No rpcpassword set - using random cookie authentication\n");
         if (!GenerateAuthCookie(&strRPCUserColonPass)) {
@@ -216,14 +216,14 @@ static bool InitRPCAuthentication()
         }
     } else {
         LogPrintf("Config options rpcuser and rpcpassword will soon be deprecated. Locally-run instances may remove rpcuser to use cookie-based auth, or may be replaced with rpcauth. Please see share/rpcuser for rpcauth auth generation.");
-        strRPCUserColonPass = mapArgs["-rpcuser"] + ":" + mapArgs["-rpcpassword"];
+        strRPCUserColonPass = GetArg("-rpcuser", "") + ":" + GetArg("-rpcpassword", "");
     }
     return true;
 }
 
 bool StartHTTPRPC()
 {
-    LogPrint("rpc", "Starting HTTP RPC server\n");
+    LogPrint(BCLog::RPC, "Starting HTTP RPC server\n");
     if (!InitRPCAuthentication())
         return false;
 
@@ -237,12 +237,12 @@ bool StartHTTPRPC()
 
 void InterruptHTTPRPC()
 {
-    LogPrint("rpc", "Interrupting HTTP RPC server\n");
+    LogPrint(BCLog::RPC, "Interrupting HTTP RPC server\n");
 }
 
 void StopHTTPRPC()
 {
-    LogPrint("rpc", "Stopping HTTP RPC server\n");
+    LogPrint(BCLog::RPC, "Stopping HTTP RPC server\n");
     UnregisterHTTPHandler("/", true);
     if (httpRPCTimerInterface) {
         RPCUnsetTimerInterface(httpRPCTimerInterface.get());

@@ -69,7 +69,7 @@ void UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, 
 BlockAssembler::BlockAssembler(const CChainParams& _chainparams)
     : chainparams(_chainparams)
 {
-    if (mapArgs.count("-blockmintxfee")) {
+    if (IsArgSet("-blockmintxfee")) {
         CAmount n = 0;
         ParseMoney(GetArg("-blockmintxfee", ""), n);
         blockMinFeeRate = CFeeRate(n);
@@ -84,12 +84,12 @@ BlockAssembler::BlockAssembler(const CChainParams& _chainparams)
     nBlockMaxWeight = DEFAULT_BLOCK_MAX_WEIGHT;
     nBlockMaxSize = DEFAULT_BLOCK_MAX_SIZE;
     bool fWeightSet = false;
-    if (mapArgs.count("-blockmaxweight")) {
+    if (IsArgSet("-blockmaxweight")) {
         nBlockMaxWeight = GetArg("-blockmaxweight", DEFAULT_BLOCK_MAX_WEIGHT);
         nBlockMaxSize = MAX_BLOCK_SERIALIZED_SIZE;
         fWeightSet = true;
     }
-    if (mapArgs.count("-blockmaxsize")) {
+    if (IsArgSet("-blockmaxsize")) {
         nBlockMaxSize = GetArg("-blockmaxsize", DEFAULT_BLOCK_MAX_SIZE);
         if (!fWeightSet) {
             nBlockMaxWeight = nBlockMaxSize * WITNESS_SCALE_FACTOR;

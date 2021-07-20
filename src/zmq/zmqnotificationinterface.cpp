@@ -12,7 +12,7 @@
 
 void zmqError(const char *str)
 {
-    LogPrint("zmq", "Error: %s, errno=%s\n", str, zmq_strerror(errno));
+    LogPrint(BCLog::ZMQ, "Error: %s, errno=%s\n", str, zmq_strerror(errno));
 }
 
 CZMQNotificationInterface::CZMQNotificationInterface() : pcontext(nullptr)
@@ -29,7 +29,7 @@ CZMQNotificationInterface::~CZMQNotificationInterface()
     }
 }
 
-CZMQNotificationInterface* CZMQNotificationInterface::CreateWithArguments(const std::map<std::string, std::string> &args)
+CZMQNotificationInterface* CZMQNotificationInterface::Create()
 {
     CZMQNotificationInterface* notificationInterface = nullptr;
     std::map<std::string, CZMQNotifierFactory> factories;
@@ -42,11 +42,11 @@ CZMQNotificationInterface* CZMQNotificationInterface::CreateWithArguments(const 
 
     for (const auto& entry : factories)
     {
-        std::map<std::string, std::string>::const_iterator j = args.find("-zmq" + entry.first);
-        if (j!=args.end())
+        std::string arg("-zmq" + i->first);
+        if (IsArgSet(arg))
         {
             CZMQNotifierFactory factory = entry.second;
-            std::string address = j->second;
+            std::string address = GetArg(arg, "");
             CZMQAbstractNotifier *notifier = factory();
             notifier->SetType(entry.first);
             notifier->SetAddress(address);
@@ -72,7 +72,7 @@ CZMQNotificationInterface* CZMQNotificationInterface::CreateWithArguments(const 
 // Called at startup to conditionally set up ZMQ socket(s)
 bool CZMQNotificationInterface::Initialize()
 {
-    LogPrint("zmq", "Initialize notification interface\n");
+    LogPrint(BCLog::ZMQ, "Initialize notification interface\n");
     assert(!pcontext);
 
     pcontext = zmq_init(1);
@@ -89,11 +89,11 @@ bool CZMQNotificationInterface::Initialize()
         CZMQAbstractNotifier *notifier = *i;
         if (notifier->Initialize(pcontext))
         {
-            LogPrint("zmq", "  Notifier %s ready (address = %s)\n", notifier->GetType(), notifier->GetAddress());
+            LogPrint(BCLog::ZMQ, "  Notifier %s ready (address = %s)\n", notifier->GetType(), notifier->GetAddress());
         }
         else
         {
-            LogPrint("zmq", "  Notifier %s failed (address = %s)\n", notifier->GetType(), notifier->GetAddress());
+            LogPrint(BCLog::ZMQ, "  Notifier %s failed (address = %s)\n", notifier->GetType(), notifier->GetAddress());
             break;
         }
     }
@@ -110,13 +110,13 @@ bool CZMQNotificationInterface::Initialize()
 // Called during shutdown sequence
 void CZMQNotificationInterface::Shutdown()
 {
-    LogPrint("zmq", "Shutdown notification interface\n");
+    LogPrint(BCLog::ZMQ, "Shutdown notification interface\n");
     if (pcontext)
     {
         for (std::list<CZMQAbstractNotifier*>::iterator i=notifiers.begin(); i!=notifiers.end(); ++i)
         {
             CZMQAbstractNotifier *notifier = *i;
-            LogPrint("zmq", "   Shutdown notifier %s at %s\n", notifier->GetType(), notifier->GetAddress());
+            LogPrint(BCLog::ZMQ, "   Shutdown notifier %s at %s\n", notifier->GetType(), notifier->GetAddress());
             notifier->Shutdown();
         }
         zmq_ctx_destroy(pcontext);

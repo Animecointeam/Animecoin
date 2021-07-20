@@ -328,7 +328,7 @@ double TxConfirmStats::EstimateMedianVal(int confTarget, double sufficientTxVal,
         failBucket.leftMempool = failNum;
     }
 
-    LogPrint("estimatefee", "FeeEst: %d %s%.0f%% decay %.5f: feerate: %g from (%g - %g) %.2f%% %.1f/(%.1f %d mem %.1f out) Fail: (%g - %g) %.2f%% %.1f/(%.1f %d mem %.1f out)\n",
+    LogPrint(BCLog::ESTIMATEFEE, "FeeEst: %d %s%.0f%% decay %.5f: feerate: %g from (%g - %g) %.2f%% %.1f/(%.1f %d mem %.1f out) Fail: (%g - %g) %.2f%% %.1f/(%.1f %d mem %.1f out)\n",
              confTarget, requireGreater ? ">" : "<", 100.0 * successBreakPoint, decay,
              median, passBucket.start, passBucket.end,
              100 * passBucket.withinTarget / (passBucket.totalConfirmed + passBucket.inMempool + passBucket.leftMempool),
@@ -413,7 +413,7 @@ void TxConfirmStats::Read(CAutoFile& filein, int nFileVersion, size_t numBuckets
     // to match the number of confirms and buckets
     resizeInMemoryCounters(numBuckets);
 
-    LogPrint("estimatefee", "Reading estimates: %u buckets counting confirms up to %u blocks\n",
+    LogPrint(BCLog::ESTIMATEFEE, "Reading estimates: %u buckets counting confirms up to %u blocks\n",
              numBuckets, maxConfirms);
 }
 
@@ -432,7 +432,7 @@ void TxConfirmStats::removeTx(unsigned int entryHeight, unsigned int nBestSeenHe
     if (nBestSeenHeight == 0)  // the BlockPolicyEstimator hasn't seen any blocks yet
         blocksAgo = 0;
     if (blocksAgo < 0) {
-        LogPrint("estimatefee", "Blockpolicy error, blocks ago is negative for mempool tx\n");
+        LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy error, blocks ago is negative for mempool tx\n");
         return;  //This can't happen becasue we call this with our best seen height, no entries can have higher
     }
 
@@ -440,7 +440,7 @@ void TxConfirmStats::removeTx(unsigned int entryHeight, unsigned int nBestSeenHe
         if (oldUnconfTxs[bucketindex] > 0)
             oldUnconfTxs[bucketindex]--;
         else
-            LogPrint("estimatefee", "Blockpolicy error, mempool tx removed from >25 blocks,bucketIndex=%u already\n",
+            LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy error, mempool tx removed from >25 blocks,bucketIndex=%u already\n",
                      bucketindex);
     }
     else {
@@ -448,7 +448,7 @@ void TxConfirmStats::removeTx(unsigned int entryHeight, unsigned int nBestSeenHe
         if (unconfTxs[blockIndex][bucketindex] > 0)
             unconfTxs[blockIndex][bucketindex]--;
         else
-            LogPrint("estimatefee", "Blockpolicy error, mempool tx removed from blockIndex=%u,bucketIndex=%u already\n",
+            LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy error, mempool tx removed from blockIndex=%u,bucketIndex=%u already\n",
                      blockIndex, bucketindex);
     }
     if (!inBlock && (unsigned int)blocksAgo >= scale) { // Only counts as a failure if not confirmed for entire period
@@ -507,7 +507,7 @@ void CBlockPolicyEstimator::processTransaction(const CTxMemPoolEntry& entry, boo
     unsigned int txHeight = entry.GetHeight();
     uint256 hash = entry.GetTx().GetHash();
     if (mapMemPoolTxs.count(hash)) {
-        LogPrint("estimatefee", "Blockpolicy error mempool tx %s already being tracked\n",
+        LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy error mempool tx %s already being tracked\n",
                  hash.ToString().c_str());
     return;
     }
@@ -554,7 +554,7 @@ bool CBlockPolicyEstimator::processBlockTx(unsigned int nBlockHeight, const CTxM
     if (blocksToConfirm <= 0) {
         // This can't happen because we don't process transactions from a block with a height
         // lower than our greatest seen height
-        LogPrint("estimatefee", "Blockpolicy error Transaction had negative blocksToConfirm\n");
+        LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy error Transaction had negative blocksToConfirm\n");
         return false;
     }
 
@@ -604,10 +604,10 @@ void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
 
     if (firstRecordedHeight == 0 && countedTxs > 0) {
         firstRecordedHeight = nBestSeenHeight;
-        LogPrint("estimatefee", "Blockpolicy first recorded height %u\n", firstRecordedHeight);
+        LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy first recorded height %u\n", firstRecordedHeight);
     }
 
-    LogPrint("estimatefee", "Blockpolicy estimates updated by %u of %u block txs, since last block %u of %u tracked, mempool map size %u, max target %u from %s\n",
+    LogPrint(BCLog::ESTIMATEFEE, "Blockpolicy estimates updated by %u of %u block txs, since last block %u of %u tracked, mempool map size %u, max target %u from %s\n",
              countedTxs, entries.size(), trackedTxs, trackedTxs + untrackedTxs, mapMemPoolTxs.size(),
              MaxUsableEstimate(), HistoricalBlockSpan() > BlockSpan() ? "historical" : "current");
 
@@ -950,7 +950,7 @@ void CBlockPolicyEstimator::FlushUnconfirmed(CTxMemPool& pool) {
         removeTx(txid, false);
     }
     int64_t endclear = GetTimeMicros();
-    LogPrint("estimatefee", "Recorded %u unconfirmed txs from mempool in %ld micros\n",txids.size(), endclear - startclear);
+    LogPrint(BCLog::ESTIMATEFEE, "Recorded %u unconfirmed txs from mempool in %ld micros\n",txids.size(), endclear - startclear);
 }
 
 FeeFilterRounder::FeeFilterRounder(const CFeeRate& minIncrementalFee)

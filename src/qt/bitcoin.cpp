@@ -138,8 +138,11 @@ static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTrans
 void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString &msg)
 {
     Q_UNUSED(context);
-    const char *category = (type == QtDebugMsg) ? "qt" : nullptr;
-    LogPrint(category, "GUI: %s\n", msg.toStdString());
+    if (type == QtDebugMsg) {
+        LogPrint(BCLog::QT, "GUI: %s\n", msg.toStdString());
+    } else {
+        LogPrintf("GUI: %s\n", msg.toStdString());
+    }
 }
 
 /** Class encapsulating Animecoin startup and shutdown.
@@ -542,9 +545,9 @@ int main(int argc, char *argv[])
 
     // Show help message immediately after parsing command-line options (for "-lang") and setting locale,
     // but before showing splash screen.
-    if (mapArgs.count("-?") || mapArgs.count("-h") || mapArgs.count("-help") || mapArgs.count("-version"))
+    if (IsArgSet("-?") || IsArgSet("-h") || IsArgSet("-help") || IsArgSet("-version"))
     {
-        HelpMessageDialog help(nullptr, mapArgs.count("-version"));
+        HelpMessageDialog help(nullptr, IsArgSet("-version"));
         help.showOrPrint();
         return EXIT_SUCCESS;
     }
@@ -559,11 +562,11 @@ int main(int argc, char *argv[])
     if (!fs::is_directory(GetDataDir(false)))
     {
         QMessageBox::critical(nullptr, QObject::tr("Animecoin"),
-                              QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(mapArgs["-datadir"])));
+                              QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(GetArg("-datadir", ""))));
         return EXIT_FAILURE;
     }
     try {
-        ReadConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME), mapArgs, mapMultiArgs);
+        ReadConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME));
     } catch (const std::exception& e) {
         QMessageBox::critical(nullptr, QObject::tr("Animecoin"),
                               QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
@@ -623,7 +626,7 @@ int main(int argc, char *argv[])
     // Allow parameter interaction before we create the options model
     app.parameterSetup();
     // Load GUI settings from QSettings
-    app.createOptionsModel(mapArgs.count("-resetguisettings") != 0);
+    app.createOptionsModel(IsArgSet("-resetguisettings"));
 
     // Subscribe to global signals from core
     uiInterface.InitMessage.connect(InitMessage);

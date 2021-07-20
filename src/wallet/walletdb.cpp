@@ -769,7 +769,7 @@ DBErrors CWalletDB::ZapSelectTx(vector<uint256>& vTxHashIn, vector<uint256>& vTx
         }
         else if ((*it) == hash) {
             if(!EraseTx(hash)) {
-                LogPrint("db", "Transaction was found for deletion but returned database error: %s\n", hash.GetHex());
+                LogPrint(BCLog::DB, "Transaction was found for deletion but returned database error: %s\n", hash.GetHex());
                 delerror = true;
             }
             vTxHashOut.push_back(hash);

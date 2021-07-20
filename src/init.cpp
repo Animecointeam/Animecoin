@@ -293,7 +293,7 @@ void OnRPCStopped()
     uiInterface.NotifyBlockTip.disconnect(&RPCNotifyBlockChange);
     RPCNotifyBlockChange(false, nullptr);
     g_best_block_cv.notify_all();
-    LogPrint("rpc", "RPC stopped.\n");
+    LogPrint(BCLog::RPC, "RPC stopped.\n");
 }
 
 std::string HelpMessage(HelpMessageMode mode)
@@ -354,13 +354,13 @@ std::string HelpMessage(HelpMessageMode mode)
    strUsage += HelpMessageOpt("-banscore=<n>", strprintf(_("Threshold for disconnecting misbehaving peers (default: %u)"), DEFAULT_BANSCORE_THRESHOLD));
    strUsage += HelpMessageOpt("-bantime=<n>", strprintf(_("Number of seconds to keep misbehaving peers from reconnecting (default: %u)"), DEFAULT_MISBEHAVING_BANTIME));
    strUsage += HelpMessageOpt("-bind=<addr>", _("Bind to given address and always listen on it. Use [host]:port notation for IPv6"));
-   strUsage += HelpMessageOpt("-connect=<ip>", _("Connect only to the specified node(s)"));
+   strUsage += HelpMessageOpt("-connect=<ip>", _("Connect only to the specified node(s); -noconnect or -connect=0 alone to disable automatic connections"));
    strUsage += HelpMessageOpt("-discover", _("Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)"));
    strUsage += HelpMessageOpt("-dns", _("Allow DNS lookups for -addnode, -seednode and -connect") + " " + strprintf(_("(default: %u)"), DEFAULT_NAME_LOOKUP));
-   strUsage += HelpMessageOpt("-dnsseed", _("Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)"));
+   strUsage += HelpMessageOpt("-dnsseed", _("Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)"));
    strUsage += HelpMessageOpt("-externalip=<ip>", _("Specify your own public address"));
    strUsage += HelpMessageOpt("-forcednsseed", strprintf(_("Always query for peer addresses via DNS lookup (default: %u)"), DEFAULT_FORCEDNSSEED));
-   strUsage += HelpMessageOpt("-listen", _("Accept connections from outside (default: 1 if no -proxy or -connect)"));
+   strUsage += HelpMessageOpt("-listen", _("Accept connections from outside (default: 1 if no -proxy or -connect/-noconnect)"));
    strUsage += HelpMessageOpt("-listenonion", strprintf(_("Automatically create Tor hidden service (default: %d)"), DEFAULT_LISTEN_ONION));
    strUsage += HelpMessageOpt("-maxconnections=<n>", strprintf(_("Maintain at most <n> connections to peers (default: %u)"), DEFAULT_MAX_PEER_CONNECTIONS));
    strUsage += HelpMessageOpt("-maxreceivebuffer=<n>", strprintf(_("Maximum per-connection receive buffer, <n>*1000 bytes (default: %u)"), DEFAULT_MAXRECEIVEBUFFER));
@@ -426,12 +426,9 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-limitdescendantsize=<n>", strprintf("Do not accept transactions if any ancestor would have more than <n> kilobytes of in-mempool descendants (default: %u).", DEFAULT_DESCENDANT_SIZE_LIMIT));
         strUsage += HelpMessageOpt("-autorequestblocks", strprintf("Automatic block request, if disabled, blocks will not be requested in IBD/sync-up (default: %u)", DEFAULT_AUTOMATIC_BLOCK_REQUESTS));
     }
-    string debugCategories = "addrman, alert, bench, cmpctblock, coindb, db, http, libevent, lock, mempool, mempoolrej, net, proxy, prune, rand, reindex, rpc, selectcoins, tor, zmq"; // Don't translate these and qt below
 
-    if (mode == HMM_BITCOIN_QT)
-        debugCategories += ", qt";
     strUsage += HelpMessageOpt("-debug=<category>", strprintf(_("Output debugging information (default: %u, supplying <category> is optional)"), 0) + ". " +
-        _("If <category> is not supplied, output all debugging information.") + _("<category> can be:") + " " + debugCategories + ".");
+        _("If <category> is not supplied or if <category> = 1, output all debugging information.") + " " + _("<category> can be:") + " " + ListLogCategories() + ".");
     if (showDebug)
         strUsage += HelpMessageOpt("-nodebug", "Turn off debugging messages, same as -debug=0");
     strUsage += HelpMessageOpt("-help-debug", _("Show all debugging options (usage: --help -help-debug)"));
@@ -699,16 +696,16 @@ void InitParameterInteraction()
 {
     // when specifying an explicit binding address, you want to listen on it
     // even when -connect or -proxy is specified
-    if (mapArgs.count("-bind")) {
+    if (IsArgSet("-bind")) {
         if (SoftSetBoolArg("-listen", true))
             LogPrintf("%s: parameter interaction: -bind set -> setting -listen=1\n", __func__);
     }
-    if (mapArgs.count("-whitebind")) {
+    if (IsArgSet("-whitebind")) {
         if (SoftSetBoolArg("-listen", true))
             LogPrintf("%s: parameter interaction: -whitebind set -> setting -listen=1\n", __func__);
     }
 
-    if (mapArgs.count("-connect") && mapMultiArgs["-connect"].size() > 0) {
+    if (mapMultiArgs.count("-connect") && mapMultiArgs.at("-connect").size() > 0) {
         // when only connecting to trusted nodes, do not seed via DNS, or listen by default
         if (SoftSetBoolArg("-dnsseed", false))
             LogPrintf("%s: parameter interaction: -connect set -> setting -dnsseed=0\n", __func__);
@@ -716,7 +713,7 @@ void InitParameterInteraction()
             LogPrintf("%s: parameter interaction: -connect set -> setting -listen=0\n", __func__);
     }
 
-    if (mapArgs.count("-proxy")) {
+    if (IsArgSet("-proxy")) {
         // to protect privacy, do not listen by default if a default proxy server is specified
         if (SoftSetBoolArg("-listen", false))
             LogPrintf("%s: parameter interaction: -proxy set -> setting -listen=0\n", __func__);
@@ -739,7 +736,7 @@ void InitParameterInteraction()
             LogPrintf("%s: parameter interaction: -listen=0 -> setting -listenonion=0\n", __func__);
     }
 
-    if (mapArgs.count("-externalip")) {
+    if (IsArgSet("-externalip")) {
         // if an explicit public IP is specified, do not try to find others
         if (SoftSetBoolArg("-discover", false))
             LogPrintf("%s: parameter interaction: -externalip set -> setting -discover=0\n", __func__);
@@ -898,17 +895,26 @@ bool AppInitParameterInteraction()
 
     // ********************************************************* Step 3: parameter-to-internal-flags
 
-    fDebug = !mapMultiArgs["-debug"].empty();
-    // Special-case: if -debug=0/-nodebug is set, turn off debugging messages
-    const vector<string>& categories = mapMultiArgs["-debug"];
-    if (GetBoolArg("-nodebug", false) || find(categories.begin(), categories.end(), string("0")) != categories.end())
-        fDebug = false;
+    if (mapMultiArgs.count("-debug") > 0) {
+        // Special-case: if -debug=0/-nodebug is set, turn off debugging messages
+        const std::vector<std::string>& categories = mapMultiArgs.at("-debug");
+
+        if (!(GetBoolArg("-nodebug", false) || find(categories.begin(), categories.end(), std::string("0")) != categories.end())) {
+            for (const auto& cat : categories) {
+                uint32_t flag;
+                if (!GetLogCategory(&flag, &cat)) {
+                    InitWarning(strprintf(_("Unsupported logging category %s.\n"), cat));
+                }
+                logCategories |= flag;
+            }
+        }
+    }
 
     // Check for -debugnet
     if (GetBoolArg("-debugnet", false))
         InitWarning(_("Warning: Unsupported argument -debugnet ignored, use -debug=net."));
     // Check for -socks - as this is a privacy risk to continue, exit here
-    if (mapArgs.count("-socks"))
+    if (IsArgSet("-socks"))
         return InitError(_("Error: Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported."));
     // Check for -tor - as this is a privacy risk to continue, exit here
     if (GetBoolArg("-tor", false))
@@ -920,7 +926,7 @@ bool AppInitParameterInteraction()
     if (GetBoolArg("-whitelistalwaysrelay", false))
         InitWarning(_("Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay."));
 
-    if (mapArgs.count("-blockminsize"))
+    if (IsArgSet("-blockminsize"))
         InitWarning("Unsupported argument -blockminsize ignored.");
 
     // Checkmempool and checkblockindex default to true in regtest mode
@@ -937,7 +943,7 @@ bool AppInitParameterInteraction()
     else
         LogPrintf("Validating signatures for all blocks.\n");
 
-    if (mapArgs.count("-minimumchainwork")) {
+    if (IsArgSet("-minimumchainwork")) {
         const std::string minChainWorkStr = GetArg("-minimumchainwork", "");
         if (!IsHexNumber(minChainWorkStr)) {
             return InitError(strprintf("Invalid non-hex (%s) minimum chain work value specified", minChainWorkStr));
@@ -959,7 +965,7 @@ bool AppInitParameterInteraction()
 
     // incremental relay fee sets the minimimum feerate increase necessary for BIP 125 replacement in the mempool
     // and the amount the mempool min fee increases above the feerate of txs evicted due to mempool limiting.
-    if (mapArgs.count("-incrementalrelayfee"))
+    if (IsArgSet("-incrementalrelayfee"))
     {
         CAmount n = 0;
         if (!ParseMoney(GetArg("-incrementalrelayfee", ""), n))
@@ -998,10 +1004,11 @@ bool AppInitParameterInteraction()
     if (nConnectTimeout <= 0)
         nConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
 
-    if (mapArgs.count("-minrelaytxfee")) {
+    if (IsArgSet("-minrelaytxfee"))
+    {
         CAmount n = 0;
-        if (!ParseMoney(mapArgs["-minrelaytxfee"], n))
-            return InitError(AmountErrMsg("minrelaytxfee", mapArgs["-minrelaytxfee"]));
+        if (!ParseMoney(GetArg("-minrelaytxfee", ""), n))
+            return InitError(AmountErrMsg("minrelaytxfee", GetArg("-minrelaytxfee", "")));
         // High fee check is done afterward in CWallet::ParameterInteraction()
         ::minRelayTxFee = CFeeRate(n);
     } else if (incrementalRelayFee > ::minRelayTxFee) {
@@ -1012,7 +1019,7 @@ bool AppInitParameterInteraction()
 
     // Sanity check argument for min fee for including tx in block
     // TODO: Harmonize which arguments need sanity checking and where that happens
-    if (mapArgs.count("-blockmintxfee"))
+    if (IsArgSet("-blockmintxfee"))
     {
         CAmount n = 0;
         if (!ParseMoney(GetArg("-blockmintxfee", ""), n))
@@ -1021,7 +1028,7 @@ bool AppInitParameterInteraction()
 
     // Feerate used to define dust.  Shouldn't be changed lightly as old
     // implementations may inadvertently create non-standard transactions
-    if (mapArgs.count("-dustrelayfee"))
+    if (IsArgSet("-dustrelayfee"))
     {
         CAmount n = 0;
         if (!ParseMoney(GetArg("-dustrelayfee", ""), n) || 0 == n)
@@ -1108,7 +1115,7 @@ bool AppInitMain()
 #ifndef WIN32
     CreatePidFile(GetPidFile(), getpid());
 #endif
-    if (GetBoolArg("-shrinkdebugfile", !fDebug)) {
+    if (GetBoolArg("-shrinkdebugfile", logCategories != BCLog::NONE)) {
         // Do this first since it both loads a bunch of debug.log into memory,
         // and because this needs to happen before any other debug.log printing
         ShrinkDebugFile();
@@ -1189,11 +1196,13 @@ bool AppInitMain()
 
     // sanitize comments per BIP-0014, format user agent and check total size
     std::vector<string> uacomments;
-    for (string cmt : mapMultiArgs["-uacomment"])
-    {
-        if (cmt != SanitizeString(cmt, SAFE_CHARS_UA_COMMENT))
-            return InitError(strprintf("User Agent comment (%s) contains unsafe characters.", cmt));
-        uacomments.push_back(SanitizeString(cmt, SAFE_CHARS_UA_COMMENT));
+    if (mapMultiArgs.count("-uacomment")) {
+        for (string cmt : mapMultiArgs.at("-uacomment"))
+        {
+            if (cmt != SanitizeString(cmt, SAFE_CHARS_UA_COMMENT))
+                return InitError(strprintf(_("User Agent comment (%s) contains unsafe characters."), cmt));
+            uacomments.push_back(cmt);
+        }
     }
     strSubVersion = FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, uacomments);
 
@@ -1202,9 +1211,9 @@ bool AppInitMain()
             strSubVersion.size(), MAX_SUBVERSION_LENGTH));
     }
 
-    if (mapArgs.count("-onlynet")) {
+    if (mapMultiArgs.count("-onlynet")) {
         std::set<enum Network> nets;
-        for (const std::string& snet : mapMultiArgs["-onlynet"]) {
+        for (const std::string& snet : mapMultiArgs.at("-onlynet")) {
             enum Network net = ParseNetwork(snet);
             if (net == NET_UNROUTABLE)
                 return InitError(strprintf(_("Unknown network specified in -onlynet: '%s'"), snet));
@@ -1257,8 +1266,8 @@ bool AppInitMain()
     fNameLookup = GetBoolArg("-dns", DEFAULT_NAME_LOOKUP);
     fRelayTxes = !GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY);
 
-    if (mapArgs.count("-externalip")) {
-        for (const std::string& strAddr : mapMultiArgs["-externalip"]) {
+    if (mapMultiArgs.count("-externalip")) {
+        for (const std::string& strAddr : mapMultiArgs.at("-externalip")) {
             CService addrLocal;
             if (Lookup(strAddr.c_str(), addrLocal, GetListenPort(), fNameLookup) && addrLocal.IsValid())
                 AddLocal(addrLocal, LOCAL_MANUAL);
@@ -1267,11 +1276,13 @@ bool AppInitMain()
         }
     }
 
-    for (const std::string& strDest : mapMultiArgs["-seednode"])
-        connman.AddOneShot(strDest);
+    if (mapMultiArgs.count("-seednode")) {
+        for (const std::string& strDest : mapMultiArgs.at("-seednode"))
+            connman.AddOneShot(strDest);
+    }
 
 #if ENABLE_ZMQ
-    pzmqNotificationInterface = CZMQNotificationInterface::CreateWithArguments(mapArgs);
+    pzmqNotificationInterface = CZMQNotificationInterface::Create();
 
     if (pzmqNotificationInterface) {
         RegisterValidationInterface(pzmqNotificationInterface);
@@ -1280,7 +1291,7 @@ bool AppInitMain()
     uint64_t nMaxOutboundLimit = 0; //unlimited unless -maxuploadtarget is set
     uint64_t nMaxOutboundTimeframe = MAX_UPLOAD_TIMEFRAME;
 
-    if (mapArgs.count("-maxuploadtarget")) {
+    if (IsArgSet("-maxuploadtarget")) {
         nMaxOutboundLimit = GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET)*1024*1024;
     }
 
@@ -1451,7 +1462,7 @@ bool AppInitMain()
                     }
                 }
             } catch(const std::exception& e) {
-                if (fDebug) LogPrintf("%s\n", e.what());
+                LogPrintf("%s\n", e.what());
                 strLoadError = _("Error opening block database");
                 break;
             }
@@ -1547,13 +1558,13 @@ bool AppInitMain()
         fHaveGenesis = true;
     }
 
-    if (mapArgs.count("-blocknotify"))
+    if (IsArgSet("-blocknotify"))
         uiInterface.NotifyBlockTip.connect(BlockNotifyCallback);
 
     std::vector<fs::path> vImportFiles;
-    if (mapArgs.count("-loadblock"))
+    if (mapMultiArgs.count("-loadblock"))
     {
-        for (const std::string& strFile : mapMultiArgs["-loadblock"])
+        for (const std::string& strFile : mapMultiArgs.at("-loadblock"))
             vImportFiles.push_back(strFile);
     }
 
