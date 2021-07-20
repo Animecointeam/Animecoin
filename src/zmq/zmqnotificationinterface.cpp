@@ -42,7 +42,7 @@ CZMQNotificationInterface* CZMQNotificationInterface::Create()
 
     for (const auto& entry : factories)
     {
-        std::string arg("-zmq" + i->first);
+        std::string arg("-zmq" + entry.first);
         if (IsArgSet(arg))
         {
             CZMQNotifierFactory factory = entry.second;

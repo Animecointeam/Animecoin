@@ -185,8 +185,7 @@ bool TestSequenceLocks(const CTransaction &tx, int flags)
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
-    // Disable size accounting (CPFP does not support it)
-    mapArgs["-blockmaxsize"] = strprintf("%u", MAX_BLOCK_SERIALIZED_SIZE);
+    // Note that by default, these tests run with size accounting enabled.
 
 /*
     const CChainParams& chainparams = Params(CBaseChainParams::MAIN);
