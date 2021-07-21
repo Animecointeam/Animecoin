@@ -16,6 +16,7 @@
 #include "chainparams.h"
 #include "coins.h"
 #include "fs.h"
+#include "policy/feerate.h"
 #include "primitives/block.h"
 #include "primitives/transaction.h"
 #include "protocol.h" // For CMessageHeader::MessageStartChars

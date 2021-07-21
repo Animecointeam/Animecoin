@@ -5,6 +5,7 @@
 
 #include "primitives/transaction.h"
 
+#include "consensus/validation.h"
 #include "hash.h"
 #include "tinyformat.h"
 #include "utilstrencodings.h"
@@ -141,9 +142,4 @@ std::string CTransaction::ToString() const
     for (unsigned int i = 0; i < vout.size(); i++)
 		str += "    " + vout[i].ToString() + "\n";
 	return str;
-}
-
-int64_t GetTransactionWeight(const CTransaction& tx)
-{
-    return ::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * (WITNESS_SCALE_FACTOR -1) + ::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION);
 }

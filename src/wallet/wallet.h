@@ -10,6 +10,7 @@
 #include "key.h"
 #include "keystore.h"
 #include "validation.h"
+#include "policy/feerate.h"
 #include "primitives/block.h"
 #include "primitives/transaction.h"
 #include "ui_interface.h"

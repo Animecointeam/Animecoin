@@ -9,6 +9,7 @@
 #include "consensus/validation.h"
 #include "hash.h"
 #include "net_processing.h"
+#include "policy/feerate.h"
 #include "policy/policy.h"
 #include "primitives/transaction.h"
 #include "rpc/server.h"

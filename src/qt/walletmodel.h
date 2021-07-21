@@ -11,6 +11,7 @@
 
 #include "walletmodeltransaction.h"
 
+#include "serialize.h"
 #include "support/allocators/secure.h"
 
 #include <map>

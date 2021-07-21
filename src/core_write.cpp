@@ -5,7 +5,8 @@
 #include "core_io.h"
 
 #include "base58.h"
-#include "primitives/transaction.h"
+#include "consensus/consensus.h"
+#include "consensus/validation.h"
 #include "script/script.h"
 #include "script/standard.h"
 #include "serialize.h"

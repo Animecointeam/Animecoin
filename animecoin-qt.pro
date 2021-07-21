@@ -257,6 +257,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/fs.h \
     src/indirectmap.h \
     src/net_processing.h \
+    src/policy/feerate.h \
     src/qt/multisigaddressentry.h \
     src/qt/multisigdialog.h \
     src/qt/multisiginputentry.h \
@@ -450,6 +451,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/crypto/sha256_sse41.cpp \
     src/fs.cpp \
     src/net_processing.cpp \
+    src/policy/feerate.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/multisigaddressentry.cpp \
     src/qt/multisigdialog.cpp \
@@ -539,7 +541,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/utilstrencodings.cpp \
     src/core_read.cpp \
     src/core_write.cpp \
-    src/amount.cpp \
     src/pubkey.cpp \
     src/script/bitcoinconsensus.cpp \
     src/script/interpreter.cpp \

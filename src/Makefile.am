@@ -145,6 +145,7 @@ BITCOIN_CORE_H = \
   netbase.h \
   netmessagemaker.h \
   noui.h \
+  policy/feerate.h \
   policy/fees.h \
   policy/policy.h \
   policy/rbf.h \
@@ -371,7 +372,6 @@ libanimecoin_consensus_a_SOURCES = \
 libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_common_a_SOURCES = \
-  amount.cpp \
   base58.cpp \
   chainparams.cpp \
   coins.cpp \
@@ -383,6 +383,7 @@ libanimecoin_common_a_SOURCES = \
   keystore.cpp \
   netaddress.cpp \
   netbase.cpp \
+  policy/feerate.cpp \
   pow.cpp \
   primitives/block.cpp \
   protocol.cpp \

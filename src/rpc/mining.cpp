@@ -666,13 +666,18 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
     result.pushKV("mutable", aMutable);
     result.pushKV("noncerange", "00000000ffffffff");
     int64_t nSigOpLimit = MAX_BLOCK_SIGOPS_COST;
+    int64_t nSizeLimit = MAX_BLOCK_SERIALIZED_SIZE;
     if (fPreSegWit) {
         assert(nSigOpLimit % WITNESS_SCALE_FACTOR == 0);
         nSigOpLimit /= WITNESS_SCALE_FACTOR;
+        assert(nSizeLimit % WITNESS_SCALE_FACTOR == 0);
+        nSizeLimit /= WITNESS_SCALE_FACTOR;
     }
     result.pushKV("sigoplimit", nSigOpLimit);
-    result.pushKV("sizelimit", (int64_t)MAX_BLOCK_SERIALIZED_SIZE);
-    result.pushKV("weightlimit", (int64_t)MAX_BLOCK_WEIGHT);
+    result.pushKV("sizelimit", nSizeLimit);
+    if (!fPreSegWit) {
+        result.pushKV("weightlimit", (int64_t)MAX_BLOCK_WEIGHT);
+    }
     result.pushKV("curtime", pblock->GetBlockTime());
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));

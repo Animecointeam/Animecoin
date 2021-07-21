@@ -10,6 +10,7 @@
 #include "init.h"
 #include "net.h"
 #include "net_processing.h" // for fFetchBlocksWhileFetchingHeaders, consider removal?
+#include "policy/feerate.h"
 #include "policy/policy.h"
 #include "policy/rbf.h"
 #include "rpc/safemode.h"
