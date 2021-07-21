@@ -2,9 +2,9 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "consensus/tx_verify.h"
 #include "consensus/validation.h"
 #include "data/sighash.json.h"
-#include "validation.h" // For CheckTransaction
 #include "script/interpreter.h"
 #include "script/script.h"
 #include "serialize.h"

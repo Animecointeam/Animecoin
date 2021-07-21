@@ -14,6 +14,7 @@
 #include "checkpoints.h"
 #include "coincontrol.h"
 #include "consensus/consensus.h"
+#include "consensus/tx_verify.h"
 #include "consensus/validation.h"
 #include "fs.h"
 #include "init.h"
@@ -29,7 +30,7 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "utilmoneystr.h"
-#include "validation.h"
+//#include "validation.h"
 
 #include <assert.h>
 #include <future>

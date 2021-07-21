@@ -251,6 +251,7 @@ DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
     src/auxiliaryblockrequest.h \
     src/compat/cpuid.h \
+    src/consensus/tx_verify.h \
     src/crypto/aes.h \
     src/crypto/chacha20.h \
     src/fs.h \
@@ -436,6 +437,7 @@ HEADERS += src/qt/bitcoingui.h \
 
 SOURCES += src/qt/bitcoin.cpp \
     src/auxiliaryblockrequest.cpp \
+    src/consensus/tx_verify.cpp \
     src/crypto/aes.cpp \
     #src/crypto/ctaes/bench.c \
     src/crypto/chacha20.cpp \

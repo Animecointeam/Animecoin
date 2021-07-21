@@ -115,6 +115,7 @@ BITCOIN_CORE_H = \
   consensus/consensus.h \
   consensus/merkle.h \
   consensus/params.h \
+  consensus/tx_verify.h \
   core_io.h \
   core_memusage.h \
   crypto/sph_types.h \
@@ -217,6 +218,7 @@ libanimecoin_server_a_SOURCES = \
   blockencodings.cpp \
   chain.cpp \
   checkpoints.cpp \
+  consensus/tx_verify.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \
