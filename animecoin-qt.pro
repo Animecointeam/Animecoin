@@ -321,13 +321,11 @@ HEADERS += src/qt/bitcoingui.h \
     src/version.h \
     src/netbase.h \
     src/clientversion.h \
-	src/coincontrol.h \
     src/txdb.h \
     src/threadsafety.h \
     src/limitedmap.h \
     src/qt/splashscreen.h \
     src/hashblock.h \
-    src/coincontrol.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
     src/chainparams.h \
@@ -395,6 +393,506 @@ HEADERS += src/qt/bitcoingui.h \
     src/consensus/params.h \
     src/arith_uint256.h \
     src/versionbits.h \
+    src/wallet/coincontrol.h \
+    src/wallet/coincontrol.h \
+    src/wallet/db.h \
+    src/wallet/feebumper.h \
+    src/wallet/wallet.h \
+    src/wallet/walletdb.h \
+    src/consensus/consensus.h \
+    src/consensus/validation.h \
+    src/reverselock.h \
+    src/policy/fees.h \
+    src/wallet/crypter.h \
+    src/support/cleanse.h \
+    src/policy/policy.h \
+    src/validationinterface.h \
+    src/reverse_iterator.h \
+    src/torcontrol.h \
+    src/memusage.h \
+    src/core_memusage.h \
+    src/httprpc.h \
+    src/httpserver.h \
+    src/consensus/merkle.h \
+    src/prevector.h \
+    src/cuckoocache.h \
+    src/support/allocators/secure.h \
+    src/support/allocators/zeroafterfree.h \
+    src/qt/bantablemodel.h \
+    src/dbwrapper.h \
+    src/wallet/rpcwallet.h \
+    src/rpc/client.h \
+    src/rpc/protocol.h \
+    src/rpc/server.h \
+    src/crypto/ctaes/ctaes.h \
+    src/support/lockedpool.h \
+    src/compat/byteswap.h \
+    src/compat/endian.h \
+    src/blockencodings.h \
+    src/addrdb.h \
+    src/netaddress.h \
+    src/netmessagemaker.h \
+    src/script/ismine.h \
+    src/policy/rbf.h \
+    src/warnings.h
+
+SOURCES += src/qt/bitcoin.cpp \
+    src/auxiliaryblockrequest.cpp \
+    src/consensus/tx_verify.cpp \
+    src/crypto/aes.cpp \
+    #src/crypto/ctaes/bench.c \
+    src/crypto/chacha20.cpp \
+    src/crypto/ctaes/ctaes.c \
+    #src/crypto/ctaes/test.c \
+    src/crypto/sha256_avx2.cpp \
+    src/crypto/sha256_avx512.cpp \
+    src/crypto/sha256_shani.cpp \
+    src/crypto/sha256_sse4.cpp \
+    src/crypto/sha256_sse41.cpp \
+    src/fs.cpp \
+    src/net_processing.cpp \
+    src/policy/feerate.cpp \
+    src/qt/bitcoingui.cpp \
+    src/qt/multisigaddressentry.cpp \
+    src/qt/multisigdialog.cpp \
+    src/qt/multisiginputentry.cpp \
+    src/qt/preimagedialog.cpp \
+    src/qt/transactiontablemodel.cpp \
+    src/qt/addresstablemodel.cpp \
+    src/qt/optionsdialog.cpp \
+    src/qt/sendcoinsdialog.cpp \
+    src/qt/addressbookpage.cpp \
+    src/qt/signverifymessagedialog.cpp \
+    src/qt/editaddressdialog.cpp \
+    src/qt/bitcoinaddressvalidator.cpp \
+    src/alert.cpp \
+    src/randomenv.cpp \
+    src/rpc/safemode.cpp \
+    src/sync.cpp \
+    src/threadinterrupt.cpp \
+    src/util.cpp \
+    src/hash.cpp \
+    src/netbase.cpp \
+    src/key.cpp \
+    src/init.cpp \
+    src/net.cpp \
+    src/bloom.cpp \
+    src/checkpoints.cpp \
+    src/addrman.cpp \
+    src/qt/clientmodel.cpp \
+	src/qt/coincontroldialog.cpp \
+	src/qt/coincontroltreewidget.cpp \
+    src/qt/guiutil.cpp \
+    src/qt/transactionrecord.cpp \
+    src/qt/optionsmodel.cpp \
+    src/qt/transactiondesc.cpp \
+    src/qt/transactiondescdialog.cpp \
+    src/qt/bitcoinstrings.cpp \
+    src/qt/bitcoinamountfield.cpp \
+    src/keystore.cpp \
+    src/qt/transactionfilterproxy.cpp \
+    src/qt/transactionview.cpp \
+    src/qt/walletmodel.cpp \
+    src/qt/walletview.cpp \
+    src/qt/walletframe.cpp \
+    src/qt/overviewpage.cpp \
+    src/qt/csvmodelwriter.cpp \
+    src/qt/sendcoinsentry.cpp \
+    src/qt/qvalidatedlineedit.cpp \
+    src/qt/bitcoinunits.cpp \
+    src/qt/qvaluecombobox.cpp \
+    src/qt/askpassphrasedialog.cpp \
+    src/protocol.cpp \
+    src/qt/notificator.cpp \
+    src/qt/paymentserver.cpp \
+    src/qt/rpcconsole.cpp \
+    src/noui.cpp \
+    src/txdb.cpp \
+    src/qt/splashscreen.cpp \
+    src/base58.cpp \
+    src/chainparams.cpp \
+    src/miner.cpp \
+    src/coins.cpp \
+    src/qt/intro.cpp \
+    src/qt/utilitydialog.cpp \
+    src/qt/winshutdownmonitor.cpp \
+    src/qt/openuridialog.cpp \
+    src/qt/receivecoinsdialog.cpp \
+    src/qt/walletmodeltransaction.cpp \
+    src/qt/recentrequeststablemodel.cpp \
+    src/qt/trafficgraphwidget.cpp \
+    src/qt/receiverequestdialog.cpp \
+    src/qt/verticallabel.cpp \
+    src/crypto/sha512.cpp \
+    src/crypto/skein.c \
+    src/crypto/blake.c \
+    src/crypto/bmw.c \
+    src/crypto/groestl.c \
+    src/crypto/hmac_sha256.cpp \
+    src/crypto/hmac_sha512.cpp \
+    src/crypto/jh.c \
+    src/crypto/keccak.c \
+    src/crypto/rfc6979_hmac_sha256.cpp \
+    src/crypto/ripemd160.cpp \
+    src/crypto/sha1.cpp \
+    src/crypto/sha256.cpp \
+    src/random.cpp \
+    src/timedata.cpp \
+    src/utilstrencodings.cpp \
+    src/core_read.cpp \
+    src/core_write.cpp \
+    src/pubkey.cpp \
+    src/script/bitcoinconsensus.cpp \
+    src/script/interpreter.cpp \
+    src/script/script.cpp \
+    src/script/script_error.cpp \
+    src/script/sigcache.cpp \
+    src/script/sign.cpp \
+    src/script/standard.cpp \
+    src/primitives/block.cpp \
+    src/primitives/transaction.cpp \
+    src/chain.cpp \
+    src/pow.cpp \
+    src/chainparamsbase.cpp \
+    src/clientversion.cpp \
+    src/compressor.cpp \
+    src/merkleblock.cpp \
+    src/qt/networkstyle.cpp \
+    src/qt/peertablemodel.cpp \
+    src/rest.cpp \
+    src/uint256.cpp \
+    src/utilmoneystr.cpp \
+    src/utiltime.cpp \
+    src/compat/glibc_sanity.cpp \
+    src/compat/glibcxx_sanity.cpp \
+    src/compat/strnlen.cpp \
+    src/qt/askmultisigdialog.cpp \
+    src/qt/newpubkeydialog.cpp \
+    src/scheduler.cpp \
+    src/validation.cpp \
+    src/versionbits.cpp \
+    src/wallet/db.cpp \
+    src/wallet/feebumper.cpp \
+    src/wallet/rpcdump.cpp \
+    src/wallet/rpcwallet.cpp \
+    src/wallet/wallet.cpp \
+    src/wallet/walletdb.cpp \
+    src/policy/fees.cpp \
+    src/txmempool.cpp \
+    src/wallet/crypter.cpp \
+    src/support/cleanse.cpp \
+    src/validationinterface.cpp \
+    src/torcontrol.cpp \
+    src/httprpc.cpp \
+    src/httpserver.cpp \
+    src/policy/policy.cpp \
+    src/consensus/merkle.cpp \
+    src/arith_uint256.cpp \
+    src/qt/bantablemodel.cpp \
+    src/dbwrapper.cpp \
+    src/rpc/blockchain.cpp \
+    src/rpc/client.cpp \
+    src/rpc/mining.cpp \
+    src/rpc/misc.cpp \
+    src/rpc/net.cpp \
+    src/rpc/protocol.cpp \
+    src/rpc/rawtransaction.cpp \
+    src/rpc/server.cpp \
+    src/support/lockedpool.cpp \
+    src/blockencodings.cpp \
+    src/addrdb.cpp \
+    src/netaddress.cpp \
+    src/ui_interface.cpp \
+    src/script/ismine.cpp \
+    src/policy/rbf.cpp \
+    src/warnings.cpp
+
+RESOURCES += src/qt/bitcoin.qrc \
+    src/qt/bitcoin_locale.qrc
+
+FORMS += src/qt/forms/sendcoinsdialog.ui \
+    src/qt/forms/addressbookpage.ui \
+    src/qt/forms/multisigaddressentry.ui \
+    src/qt/forms/multisigdialog.ui \
+    src/qt/forms/multisiginputentry.ui \
+    src/qt/forms/preimagedialog.ui \
+    src/qt/forms/signverifymessagedialog.ui \
+    src/qt/forms/aboutdialog.ui \
+    src/qt/forms/editaddressdialog.ui \
+    src/qt/forms/transactiondescdialog.ui \
+    src/qt/forms/overviewpage.ui \
+    src/qt/forms/sendcoinsentry.ui \
+    src/qt/forms/askpassphrasedialog.ui \
+	src/qt/forms/coincontroldialog.ui \
+    src/qt/forms/rpcconsole.ui \
+    src/qt/forms/optionsdialog.ui \
+    src/qt/forms/receivecoinsdialog.ui \
+    src/qt/forms/openuridialog.ui \
+    src/qt/forms/intro.ui \
+    src/qt/forms/helpmessagedialog.ui \
+    src/qt/forms/receiverequestdialog.ui \
+    src/qt/forms/paperwalletdialog.ui \
+    src/qt/forms/askmultisigdialog.ui \
+    src/qt/forms/newpubkeydialog.ui
+
+contains(USE_QRCODE, 1) {
+HEADERS +=
+SOURCES +=
+FORMS +=
+}
+
+contains(BITCOIN_QT_TEST, 1) {
+SOURCES += src/qt/test/test_main.cpp \
+    src/qt/test/uritests.cpp
+HEADERS += src/qt/test/uritests.h
+DEPENDPATH += src/qt/test
+QT += testlib
+TARGET = bitcoin-qt_test
+DEFINES += BITCOIN_QT_TEST
+  macx: CONFIG -= app_bundle
+}
+
+CODECFORTR = UTF-8
+
+# for lrelease/lupdate
+# also add new translations to src/qt/bitcoin.qrc under translations/
+TRANSLATIONS = $$files(src/qt/locale/bitcoin_*.ts)
+
+isEmpty(QMAKE_LRELEASE) {
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
+    else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+isEmpty(QM_DIR):QM_DIR = $$PWD/src/qt/locale
+# automatically build translations, so they can be included in resource file
+TSQM.name = lrelease ${QMAKE_FILE_IN}
+TSQM.input = TRANSLATIONS
+TSQM.output = $$QM_DIR/${QMAKE_FILE_BASE}.qm
+TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_OUT}
+TSQM.CONFIG = no_link
+QMAKE_EXTRA_COMPILERS += TSQM
+
+# "Other files" to show in Qt Creator
+OTHER_FILES += README.md \
+    doc/*.rst \
+    doc/*.txt \
+    doc/*.md \
+    src/qt/res/bitcoin-qt.rc \
+    src/test/*.cpp \
+    src/test/*.h \
+    src/qt/test/*.cpp \
+    src/qt/test/*.h
+
+win32:DEFINES += WIN32
+win32:RC_FILE = src/qt/res/bitcoin-qt.rc
+
+win32:!contains(MINGW_THREAD_BUGFIX, 0) {
+    # At least qmake's win32-g++-cross profile is missing the -lmingwthrd
+    # thread-safety flag. GCC has -mthreads to enable this, but it doesn't
+    # work with static linking. -lmingwthrd must come BEFORE -lmingw, so
+    # it is prepended to QMAKE_LIBS_QT_ENTRY.
+    # It can be turned off with MINGW_THREAD_BUGFIX=0, just in case it causes
+    # any problems on some untested qmake profile now or in the future.
+    DEFINES += _MT
+    QMAKE_LIBS_QT_ENTRY = -lmingwthrd $$QMAKE_LIBS_QT_ENTRY
+}
+
+!win32:!macx {
+    DEFINES += LINUX
+    LIBS += -lrt
+    # _FILE_OFFSET_BITS=64 lets 32-bit fopen transparently support large files.
+    DEFINES += _FILE_OFFSET_BITS=64
+}
+
+macx:HEADERS += src/qt/macdockiconhandler.h \
+	src/qt/macnotificationhandler.h
+
+macx:OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm \
+	src/qt/macnotificationhandler.mm
+
+macx:LIBS += -framework Foundation -framework ApplicationServices -framework AppKit
+macx:DEFINES += MAC_OSX MSG_NOSIGNAL=0
+macx:ICON = src/qt/res/icons/bitcoin.icns
+macx:QMAKE_CFLAGS_THREAD += -pthread
+macx:QMAKE_LFLAGS_THREAD += -pthread
+macx:QMAKE_CXXFLAGS_THREAD += -pthread
+macx:QMAKE_INFO_PLIST = share/qt/Info.plist
+
+# Set libraries and includes at end, to use platform-defined defaults if not overridden
+INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
+LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
+LIBS += -lz -ldb_cxx$$BDB_LIB_SUFFIX -levent -levent_pthreads
+win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
+!windows: {
+    #LIBS += -lgmp
+} else {
+	INCLUDEPATH += $$SECP256K1_INCLUDE_PATH
+    LIBS += -L/usr/local/lib -L/usr/lib
+# -lsecp256k1
+}
+LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX -lboost_chrono$$BOOST_LIB_SUFFIX
+#win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
+#macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
+
+contains(RELEASE, 1) {
+    !win32:!macx {
+        # Linux: turn dynamic linking back on for c/c++ runtime libraries
+        LIBS += -Wl,-Bdynamic
+    }
+}
+
+!windows:!macx {
+    DEFINES += LINUX
+    LIBS += -lrt -ldl
+}
+
+system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
+DEPENDPATH += src src/qt
+HEADERS += src/qt/bitcoingui.h \
+    src/auxiliaryblockrequest.h \
+    src/compat/cpuid.h \
+    src/consensus/tx_verify.h \
+    src/crypto/aes.h \
+    src/crypto/chacha20.h \
+    src/fs.h \
+    src/indirectmap.h \
+    src/net_processing.h \
+    src/policy/feerate.h \
+    src/qt/multisigaddressentry.h \
+    src/qt/multisigdialog.h \
+    src/qt/multisiginputentry.h \
+    src/qt/preimagedialog.h \
+    src/qt/transactiontablemodel.h \
+    src/qt/addresstablemodel.h \
+    src/qt/optionsdialog.h \
+    src/qt/sendcoinsdialog.h \
+    src/qt/addressbookpage.h \
+    src/qt/signverifymessagedialog.h \
+    src/qt/editaddressdialog.h \
+    src/qt/bitcoinaddressvalidator.h \
+    src/alert.h \
+    src/addrman.h \
+    src/base58.h \
+    src/checkpoints.h \
+    src/compat.h \
+    src/randomenv.h \
+    src/robin_hood.h \
+    src/rpc/rawtransaction.h \
+    src/rpc/register.h \
+    src/rpc/safemode.h \
+    src/sync.h \
+    src/threadinterrupt.h \
+    src/util.h \
+    src/hash.h \
+    src/uint256.h \
+    src/serialize.h \
+    src/net.h \
+    src/key.h \
+    src/init.h \
+    src/bloom.h \
+    src/checkqueue.h \
+    src/qt/clientmodel.h \
+    src/qt/guiutil.h \
+    src/qt/transactionrecord.h \
+    src/qt/guiconstants.h \
+    src/qt/optionsmodel.h \
+    src/qt/transactiondesc.h \
+    src/qt/transactiondescdialog.h \
+    src/qt/bitcoinamountfield.h \
+    src/keystore.h \
+    src/qt/transactionfilterproxy.h \
+    src/qt/transactionview.h \
+    src/qt/walletmodel.h \
+    src/qt/walletview.h \
+    src/qt/walletframe.h \
+    src/qt/overviewpage.h \
+    src/qt/csvmodelwriter.h \
+    src/qt/sendcoinsentry.h \
+    src/qt/qvalidatedlineedit.h \
+    src/qt/bitcoinunits.h \
+    src/qt/qvaluecombobox.h \
+    src/qt/askpassphrasedialog.h \
+    src/protocol.h \
+    src/qt/notificator.h \
+    src/qt/paymentserver.h \
+    src/ui_interface.h \
+    src/qt/rpcconsole.h \
+    src/validation.h \
+    src/version.h \
+    src/netbase.h \
+    src/clientversion.h \
+    src/txdb.h \
+    src/threadsafety.h \
+    src/limitedmap.h \
+    src/qt/splashscreen.h \
+    src/hashblock.h \
+    src/qt/coincontroldialog.h \
+    src/qt/coincontroltreewidget.h \
+    src/chainparams.h \
+    src/miner.h \
+    src/noui.h \
+    src/coins.h \
+    src/txmempool.h \
+    src/tinyformat.h \
+    src/qt/intro.h \
+    src/qt/utilitydialog.h \
+    src/qt/winshutdownmonitor.h \
+    src/qt/openuridialog.h \
+    src/qt/receivecoinsdialog.h \
+    src/qt/walletmodeltransaction.h \
+    src/qt/recentrequeststablemodel.h \
+    src/qt/trafficgraphwidget.h \
+	src/qt/receiverequestdialog.h \
+    src/qt/verticallabel.h \
+    src/crypto/sha512.h \
+    src/crypto/sph_blake.h \
+    src/crypto/sph_bmw.h \
+    src/crypto/sph_groestl.h \
+    src/crypto/sph_jh.h \
+    src/crypto/sph_types.h \
+    src/crypto/sph_keccak.h \
+    src/crypto/sph_skein.h \
+    src/crypto/common.h \
+    src/crypto/hmac_sha256.h \
+    src/crypto/hmac_sha512.h \
+    src/crypto/rfc6979_hmac_sha256.h \
+    src/crypto/ripemd160.h \
+    src/crypto/sha1.h \
+    src/crypto/sha256.h \
+    src/streams.h \
+    src/random.h \
+    src/timedata.h \
+    src/utilstrencodings.h \
+    src/core_io.h \
+    src/amount.h \
+    src/pubkey.h \
+    src/script/bitcoinconsensus.h \
+    src/script/interpreter.h \
+    src/script/script.h \
+    src/script/script_error.h \
+    src/script/sigcache.h \
+    src/script/sign.h \
+    src/script/standard.h \
+    src/primitives/block.h \
+    src/primitives/transaction.h \
+    src/chain.h \
+    src/pow.h \
+    src/chainparamsbase.h \
+    src/chainparamsseeds.h \
+    src/compressor.h \
+    src/config/bitcoin-config.h \
+    src/merkleblock.h \
+    src/undo.h \
+    src/qt/networkstyle.h \
+    src/qt/peertablemodel.h \
+    src/utilmoneystr.h \
+    src/utiltime.h \
+    src/qt/askmultisigdialog.h \
+    src/qt/newpubkeydialog.h \
+    src/scheduler.h \
+    src/consensus/params.h \
+    src/arith_uint256.h \
+    src/versionbits.h \
+    src/wallet/coincontrol.h \
     src/wallet/db.h \
     src/wallet/feebumper.h \
     src/wallet/wallet.h \

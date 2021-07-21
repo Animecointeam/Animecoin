@@ -12,7 +12,6 @@
 #include "auxiliaryblockrequest.h"
 #include "base58.h"
 #include "checkpoints.h"
-#include "coincontrol.h"
 #include "consensus/consensus.h"
 #include "consensus/tx_verify.h"
 #include "consensus/validation.h"
@@ -30,7 +29,7 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "utilmoneystr.h"
-//#include "validation.h"
+#include "wallet/coincontrol.h"
 
 #include <assert.h>
 #include <future>

@@ -13,7 +13,6 @@
 #ifdef ENABLE_WALLET
 #include "sendcoinsdialog.h"
 #include "sendcoinsentry.h"
-#include "coincontrol.h"
 #include "coincontroldialog.h"
 #endif
 

@@ -17,10 +17,10 @@
 #include "optionsmodel.h"
 #include "walletmodel.h"
 
-#include "coincontrol.h"
 #include "policy/fees.h"
 #include "policy/policy.h"
 #include "validation.h" // For mempool
+#include "wallet/coincontrol.h"
 #include "wallet/wallet.h"
 
 #include <QApplication>

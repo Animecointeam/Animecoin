@@ -19,10 +19,10 @@
 #include "walletmodel.h"
 
 #include "base58.h"
-#include "coincontrol.h"
 #include "ui_interface.h"
 #include "validation.h" // mempool and minRelayTxFee
 #include "policy/fees.h"
+#include "wallet/coincontrol.h"
 #include "wallet/wallet.h"
 
 #include <QFontMetrics>
