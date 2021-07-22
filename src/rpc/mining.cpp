@@ -872,10 +872,10 @@ UniValue estimatesmartfee(const JSONRPCRequest& request)
     }
 
     UniValue result(UniValue::VOBJ);
-    int answerFound;
-    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocks, &answerFound, ::mempool, conservative);
+    FeeCalculation feeCalc;
+    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocks, &feeCalc, ::mempool, conservative);
     result.pushKV("feerate", feeRate == CFeeRate(0) ? -1.0 : ValueFromAmount(feeRate.GetFeePerK()));
-    result.pushKV("blocks", answerFound);
+    result.pushKV("blocks", feeCalc.returnedTarget);
     return result;
 }
 
