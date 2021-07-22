@@ -2605,7 +2605,7 @@ bool CWallet::SignTransaction(CMutableTransaction &tx)
     return true;
 }
 
-bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nChangePosInOut, std::string& strFailReason, bool lockUnspents, const std::set<int>& setSubtractFeeFromOutputs, CCoinControl coinControl, bool keepReserveKey)
+bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nChangePosInOut, std::string& strFailReason, bool lockUnspents, const std::set<int>& setSubtractFeeFromOutputs, CCoinControl coinControl)
 {
     vector<CRecipient> vecSend;
 
@@ -2627,9 +2627,13 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nC
     if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, false))
         return false;
 
-    if (nChangePosInOut != -1)
-        tx.vout.insert(tx.vout.begin() + nChangePosInOut, wtx.tx->vout[nChangePosInOut]);
 
+    if (nChangePosInOut != -1) {
+        tx.vout.insert(tx.vout.begin() + nChangePosInOut, wtx.tx->vout[nChangePosInOut]);
+        // we dont have the normal Create/Commit cycle, and dont want to risk reusing change,
+        // so just remove the key from the keypool here.
+        reservekey.KeepKey();
+    }
     // Copy output sizes from new transaction; they may have had the fee subtracted from them
     for (unsigned int idx = 0; idx < tx.vout.size(); idx++)
         tx.vout[idx].nValue = wtx.tx->vout[idx].nValue;
@@ -2648,10 +2652,6 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nC
             }
         }
     }
-
-    // optionally keep the change output key
-    if (keepReserveKey)
-        reservekey.KeepKey();
 
     return true;
 }
