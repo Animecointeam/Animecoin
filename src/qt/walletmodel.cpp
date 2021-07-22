@@ -23,6 +23,7 @@
 #include "keystore.h"
 #include "net.h" // for g_connman
 #include "net_processing.h" // for SPV state, consider improvement?
+#include "policy/fees.h"
 #include "policy/rbf.h"
 #include "sync.h"
 #include "ui_interface.h"
@@ -689,7 +690,7 @@ bool WalletModel::bumpFee(uint256 hash)
     std::unique_ptr<CFeeBumper> feeBump;
     {
         LOCK2(cs_main, wallet->cs_wallet);
-        feeBump.reset(new CFeeBumper(wallet, hash, nTxConfirmTarget, false, 0, true));
+        feeBump.reset(new CFeeBumper(wallet, hash, nTxConfirmTarget, false, 0, true, FeeEstimateMode::UNSET));
     }
     if (feeBump->getResult() != BumpFeeResult::OK)
     {
