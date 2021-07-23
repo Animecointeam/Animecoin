@@ -125,7 +125,6 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "estimatesmartfee", 1, "conservative" },
     { "estimaterawfee", 0, "nblocks" },
     { "estimaterawfee", 1, "threshold" },
-    { "estimaterawfee", 2, "horizon" },
     { "estimatesmartpriority", 0, "nblocks" },
     { "prioritisetransaction", 1, "priority_delta" },
     { "prioritisetransaction", 2, "fee_delta" },
