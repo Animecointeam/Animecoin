@@ -121,7 +121,6 @@ protected:
      * TODO: built-in miner is obsolete, those should be removed eventually.
      */
     virtual void ResetRequestCount(const uint256 &hash) {}
-    virtual void GetScriptForMining(std::shared_ptr<CReserveScript>&) {}
     /**
      * Notifies listeners that a block which builds directly on our current tip
      * has been received and connected to the headers tree, though not validated yet
@@ -176,7 +175,6 @@ public:
     void Inventory(const uint256 &);
     void Broadcast(int64_t nBestBlockTime, CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);
-    void ScriptForMining(std::shared_ptr<CReserveScript>&);
     void BlockFound(const uint256 &);
     void NewPoWValidBlock(const CBlockIndex *, const std::shared_ptr<const CBlock>&);
 };

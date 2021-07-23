@@ -28,7 +28,6 @@ struct ValidationInterfaceConnections {
     boost::signals2::scoped_connection Inventory;
     boost::signals2::scoped_connection Broadcast;
     boost::signals2::scoped_connection BlockChecked;
-    boost::signals2::scoped_connection ScriptForMining;
     boost::signals2::scoped_connection BlockFound;
     boost::signals2::scoped_connection UpdatedBlockHeaderTip;
     boost::signals2::scoped_connection NewPoWValidBlock;
@@ -46,7 +45,6 @@ struct MainSignalsInstance {
     boost::signals2::signal<void (const uint256 &)> Inventory;
     boost::signals2::signal<void (int64_t nBestBlockTime, CConnman* connman)> Broadcast;
     boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
-    boost::signals2::signal<void (std::shared_ptr<CReserveScript>&)> ScriptForMining;
     boost::signals2::signal<void (const uint256 &)> BlockFound;
     boost::signals2::signal<void (bool fInitialDownload, const CBlockIndex *)> UpdatedBlockHeaderTip;
     boost::signals2::signal<void (const CBlockIndex *, const std::shared_ptr<const CBlock>&)> NewPoWValidBlock;
@@ -110,7 +108,6 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     conns.Inventory = g_signals.m_internals->Inventory.connect(std::bind(&CValidationInterface::Inventory, pwalletIn, std::placeholders::_1));
     conns.Broadcast = g_signals.m_internals->Broadcast.connect(std::bind(&CValidationInterface::ResendWalletTransactions, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.BlockChecked = g_signals.m_internals->BlockChecked.connect(std::bind(&CValidationInterface::BlockChecked, pwalletIn, std::placeholders::_1, std::placeholders::_2));
-    conns.ScriptForMining = g_signals.m_internals->ScriptForMining.connect(std::bind(&CValidationInterface::GetScriptForMining, pwalletIn, std::placeholders::_1));
     conns.BlockFound = g_signals.m_internals->BlockFound.connect(std::bind(&CValidationInterface::ResetRequestCount, pwalletIn, std::placeholders::_1));
     conns.UpdatedBlockHeaderTip = g_signals.m_internals->UpdatedBlockHeaderTip.connect(std::bind(&CValidationInterface::UpdatedBlockHeaderTip, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.NewPoWValidBlock = g_signals.m_internals->NewPoWValidBlock.connect(std::bind(&CValidationInterface::NewPoWValidBlock, pwalletIn, std::placeholders::_1, std::placeholders::_2));
@@ -196,10 +193,6 @@ void CMainSignals::Broadcast(int64_t nBestBlockTime, CConnman* connman) {
 
 void CMainSignals::BlockChecked(const CBlock& block, const CValidationState& state) {
     m_internals->BlockChecked(block, state);
-}
-
-void CMainSignals::ScriptForMining(std::shared_ptr<CReserveScript> &script) {
-    m_internals->ScriptForMining(script);
 }
 
 void CMainSignals::BlockFound (const uint256 &hash) {

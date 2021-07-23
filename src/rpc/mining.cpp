@@ -16,6 +16,7 @@
 #include "net.h"
 #include "policy/fees.h"
 #include "pow.h"
+#include "rpc/mining.h"
 #include "rpc/server.h"
 #include "util.h"
 #include "validation.h"
@@ -27,6 +28,16 @@
 #include <univalue.h>
 
 using namespace std;
+
+unsigned int ParseConfirmTarget(const UniValue& value)
+{
+    int target = value.get_int();
+    unsigned int max_target = ::feeEstimator.HighestTargetTracked(FeeEstimateHorizon::LONG_HALFLIFE);
+    if (target < 1 || (unsigned int)target > max_target) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Invalid conf_target, must be between %u - %u", 1, max_target));
+    }
+    return (unsigned int)target;
+}
 
 /**
  * Return average network hashes per second based on the last 'lookup' blocks,
@@ -140,42 +151,6 @@ UniValue generateBlocks(std::shared_ptr<CReserveScript> coinbaseScript, int nGen
         }
     }
     return blockHashes;
-}
-
-UniValue generate(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
-            "generate nblocks ( maxtries )\n"
-            "\nMine up to nblocks blocks immediately (before the RPC call returns)\n"
-            "\nArguments:\n"
-            "1. nblocks      (numeric, required) How many blocks are generated immediately.\n"
-            "2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).\n"
-            "\nResult\n"
-            "[ blockhashes ]     (array) hashes of blocks generated\n"
-            "\nExamples:\n"
-            "\nGenerate 11 blocks\n"
-            + HelpExampleCli("generate", "11")
-        );
-
-    int nGenerate = request.params[0].get_int();
-    uint64_t nMaxTries = 1000000;
-    if (request.params.size() > 1) {
-        nMaxTries = request.params[1].get_int();
-    }
-
-    std::shared_ptr<CReserveScript> coinbaseScript;
-    GetMainSignals().ScriptForMining(coinbaseScript);
-
-    // If the keypool is exhausted, no script is returned at all.  Catch this.
-    if (!coinbaseScript)
-        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
-
-    //throw an error if no script was provided
-    if (coinbaseScript->reserveScript.empty())
-        throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
-
-    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, true);
 }
 
 UniValue generatetoaddress(const JSONRPCRequest& request)
@@ -857,7 +832,6 @@ UniValue estimatesmartfee(const JSONRPCRequest& request)
             "\n"
             "A negative value is returned if not enough transactions and blocks\n"
             "have been observed to make an estimate for any number of blocks.\n"
-            "However it will not return a value below the mempool reject fee.\n"
             "\nExample:\n"
             + HelpExampleCli("estimatesmartfee", "6")
             );
@@ -873,7 +847,7 @@ UniValue estimatesmartfee(const JSONRPCRequest& request)
 
     UniValue result(UniValue::VOBJ);
     FeeCalculation feeCalc;
-    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocks, &feeCalc, ::mempool, conservative);
+    CFeeRate feeRate = ::feeEstimator.estimateSmartFee(nBlocks, &feeCalc, conservative);
     result.pushKV("feerate", feeRate == CFeeRate(0) ? -1.0 : ValueFromAmount(feeRate.GetFeePerK()));
     result.pushKV("blocks", feeCalc.returnedTarget);
     return result;
@@ -1029,7 +1003,6 @@ static const CRPCCommand commands[] =
   { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
   { "mining",             "submitblock",            &submitblock,            {"hexdata","parameters"} },
 
-  { "generating",         "generate",               &generate,               {"nblocks","maxtries"} },
   { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },
 
   { "util",               "estimatefee",            &estimatefee,            {"nblocks"} },

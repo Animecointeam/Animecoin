@@ -25,6 +25,7 @@
 #include "clientversion.h"
 #include "init.h"
 #include "net.h"
+#include "wallet/coincontrol.h"
 
 #include <stdio.h>
 
@@ -458,10 +459,10 @@ void PaperWalletDialog::on_printButton_clicked()
         tx = new WalletModelTransaction(recipients);
 
         WalletModel::SendCoinsReturn prepareStatus;
+        CCoinControl ctrl;
         if (this->model->getOptionsModel()->getCoinControlFeatures()) // coin control enabled
-            prepareStatus = this->model->prepareTransaction(*tx, CoinControlDialog::coinControl);
-        else
-            prepareStatus = this->model->prepareTransaction(*tx);
+            ctrl = *CoinControlDialog::coinControl;
+        prepareStatus = this->model->prepareTransaction(*tx, ctrl);
 
         if (prepareStatus.status == WalletModel::InvalidAddress) {
             QMessageBox::critical(this, tr("Send Coins"), tr("The recipient address is not valid, please recheck."), QMessageBox::Ok, QMessageBox::Ok);

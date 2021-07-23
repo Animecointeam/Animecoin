@@ -12,6 +12,7 @@
 #include "rpc/server.h"
 #include "test/test_bitcoin.h"
 #include "validation.h"
+#include "wallet/coincontrol.h"
 
 #include "wallet/test/wallet_test_fixture.h"
 

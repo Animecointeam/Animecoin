@@ -13,6 +13,7 @@
 #include "policy/feerate.h"
 #include "policy/policy.h"
 #include "policy/rbf.h"
+#include "rpc/mining.h"
 #include "rpc/safemode.h"
 #include <rpc/rawtransaction.h>
 #include "rpc/server.h"
@@ -363,7 +364,7 @@ UniValue getaddressesbyaccount(const JSONRPCRequest& request)
     return ret;
 }
 
-static void SendMoney(CWallet* const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, CCoinControl* coin_control = nullptr)
+static void SendMoney(CWallet* const pwallet, const CTxDestination& address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, const CCoinControl& coin_control)
 {
     CAmount curBalance = pwallet->GetBalance();
 
@@ -473,7 +474,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     }
 
     if (request.params.size() > 6 && !request.params[6].isNull()) {
-        coin_control.nConfirmTarget = request.params[6].get_int();
+        coin_control.m_confirm_target = ParseConfirmTarget(request.params[6]);
     }
 
     if (request.params.size() > 7 && !request.params[7].isNull()) {
@@ -484,7 +485,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    SendMoney(pwallet, address.Get(), nAmount, fSubtractFeeFromAmount, wtx, &coin_control);
+    SendMoney(pwallet, address.Get(), nAmount, fSubtractFeeFromAmount, wtx, coin_control);
 
     return wtx.GetHash().GetHex();
 }
@@ -941,7 +942,8 @@ UniValue sendfrom(const JSONRPCRequest& request)
     if (nAmount > nBalance)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
 
-    SendMoney(pwallet, address.Get(), nAmount, false, wtx);
+    CCoinControl no_coin_control; // This is a deprecated API
+    SendMoney(pwallet, address.Get(), nAmount, false, wtx, no_coin_control);
 
     return wtx.GetHash().GetHex();
 }
@@ -1028,7 +1030,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     }
 
     if (request.params.size() > 6 && !request.params[6].isNull()) {
-        coin_control.nConfirmTarget = request.params[6].get_int();
+        coin_control.m_confirm_target = ParseConfirmTarget(request.params[6]);
     }
 
     if (request.params.size() > 7 && !request.params[7].isNull()) {
@@ -1080,7 +1082,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     CAmount nFeeRequired = 0;
     int nChangePosRet = -1;
     std::string strFailReason;
-    bool fCreated = pwallet->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, nChangePosRet, strFailReason, &coin_control);
+    bool fCreated = pwallet->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, nChangePosRet, strFailReason, coin_control);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
     CValidationState state;
@@ -2881,12 +2883,8 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
    pwallet->BlockUntilSyncedToCurrentChain();
 
    CCoinControl coinControl;
-   coinControl.destChange = CNoDestination();
    int changePosition = -1;
-   coinControl.fAllowWatchOnly = false;  // include watching
    bool lockUnspents = false;
-   coinControl.nFeeRate = CFeeRate(0);
-   coinControl.fOverrideFeeRate = false;
    UniValue subtractFeeFromOutputs;
    std::set<int> setSubtractFeeFromOutputs;
 
@@ -2934,7 +2932,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
 
        if (options.exists("feeRate"))
        {
-           coinControl.nFeeRate = CFeeRate(AmountFromValue(options["feeRate"]));
+           coinControl.m_feerate = CFeeRate(AmountFromValue(options["feeRate"]));
            coinControl.fOverrideFeeRate = true;
        }
 
@@ -2945,7 +2943,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
            coinControl.signalRbf = options["replaceable"].get_bool();
        }
        if (options.exists("conf_target")) {
-           coinControl.nConfirmTarget = options["conf_target"].get_int();
+           coinControl.m_confirm_target = ParseConfirmTarget(options["conf_target"]);
        }
        if (options.exists("estimate_mode")) {
            if (!FeeModeFromString(options["estimate_mode"].get_str(), coinControl.m_fee_mode)) {
@@ -3300,11 +3298,9 @@ UniValue bumpfee(const JSONRPCRequest& request)
     hash.SetHex(request.params[0].get_str());
 
     // optional parameters
-    bool ignoreGlobalPayTxFee = false;
-    int newConfirmTarget = nTxConfirmTarget;
     CAmount totalFee = 0;
-    bool replaceable = true;
-    FeeEstimateMode fee_mode = FeeEstimateMode::UNSET;
+    CCoinControl coin_control;
+    coin_control.signalRbf = true;
     if (request.params.size() > 1) {
         UniValue options = request.params[1];
         RPCTypeCheckObj(options,
@@ -3318,15 +3314,8 @@ UniValue bumpfee(const JSONRPCRequest& request)
 
         if (options.exists("confTarget") && options.exists("totalFee")) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "confTarget and totalFee options should not both be set. Please provide either a confirmation target for fee estimation or an explicit total fee for the transaction.");
-        } else if (options.exists("confTarget")) {
-            // If the user has explicitly set a confTarget in this rpc call,
-            // then override the default logic that uses the global payTxFee
-            // instead of the confirmation target.
-            ignoreGlobalPayTxFee = true;
-            newConfirmTarget = options["confTarget"].get_int();
-            if (newConfirmTarget <= 0) { // upper-bound will be checked by estimatefee/smartfee
-                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid confTarget (cannot be <= 0)");
-            }
+        } else if (options.exists("confTarget")) { // TODO: alias this to conf_target
+            coin_control.m_confirm_target = ParseConfirmTarget(options["confTarget"]);
         } else if (options.exists("totalFee")) {
             totalFee = options["totalFee"].get_int64();
             if (totalFee <= 0) {
@@ -3335,10 +3324,10 @@ UniValue bumpfee(const JSONRPCRequest& request)
         }
 
         if (options.exists("replaceable")) {
-            replaceable = options["replaceable"].get_bool();
+            coin_control.signalRbf = options["replaceable"].get_bool();
         }
         if (options.exists("estimate_mode")) {
-            if (!FeeModeFromString(options["estimate_mode"].get_str(), fee_mode)) {
+            if (!FeeModeFromString(options["estimate_mode"].get_str(), coin_control.m_fee_mode)) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid estimate_mode parameter");
             }
         }
@@ -3347,7 +3336,7 @@ UniValue bumpfee(const JSONRPCRequest& request)
     LOCK2(cs_main, pwallet->cs_wallet);
     EnsureWalletIsUnlocked(pwallet);
 
-    CFeeBumper feeBump(pwallet, hash, newConfirmTarget, ignoreGlobalPayTxFee, totalFee, replaceable, fee_mode);
+    CFeeBumper feeBump(pwallet, hash, coin_control, totalFee);
     BumpFeeResult res = feeBump.getResult();
     if (res != BumpFeeResult::OK)
     {
@@ -3389,6 +3378,51 @@ UniValue bumpfee(const JSONRPCRequest& request)
     result.push_back(errors);
 
     return result;
+}
+
+UniValue generate(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
+        throw std::runtime_error(
+            "generate nblocks ( maxtries )\n"
+            "\nMine up to nblocks blocks immediately (before the RPC call returns) to an address in the wallet.\n"
+            "\nArguments:\n"
+            "1. nblocks      (numeric, required) How many blocks are generated immediately.\n"
+            "2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).\n"
+            "\nResult:\n"
+            "[ blockhashes ]     (array) hashes of blocks generated\n"
+            "\nExamples:\n"
+            "\nGenerate 11 blocks\n"
+            + HelpExampleCli("generate", "11")
+        );
+    }
+
+    int num_generate = request.params[0].get_int();
+    uint64_t max_tries = 1000000;
+    if (request.params.size() > 1 && !request.params[1].isNull()) {
+        max_tries = request.params[1].get_int();
+    }
+
+    std::shared_ptr<CReserveScript> coinbase_script;
+    pwallet->GetScriptForMining(coinbase_script);
+
+    // If the keypool is exhausted, no script is returned at all.  Catch this.
+    if (!coinbase_script) {
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+    }
+
+    //throw an error if no script was provided
+    if (coinbase_script->reserveScript.empty()) {
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available");
+    }
+
+    return generateBlocks(coinbase_script, num_generate, max_tries, true);
 }
 
 extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp
@@ -3460,6 +3494,8 @@ static const CRPCCommand commands[] =
   { "wallet",             "rescanblockchain",         &rescanblockchain,         {"start_height", "stop_height"} },
   { "wallet",             "sethdseed",                &sethdseed,                {"newkeypool","seed"} },
   { "wallet",             "setspv",                   &setspv,                   {"state"} },
+
+  { "generating",         "generate",                 &generate,                 {"nblocks","maxtries"} },
 };
 
 void RegisterWalletRPCCommands(CRPCTable &t)

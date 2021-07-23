@@ -277,6 +277,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/compat.h \
     src/randomenv.h \
     src/robin_hood.h \
+    src/rpc/mining.h \
     src/rpc/rawtransaction.h \
     src/rpc/register.h \
     src/rpc/safemode.h \
