@@ -1528,12 +1528,12 @@ void CConnman::ProcessOneShot()
 void CConnman::ThreadOpenConnections()
 {
     // Connect to specific addresses
-    if (mapMultiArgs.count("-connect") && mapMultiArgs.at("-connect").size() > 0)
+    if (gArgs.IsArgSet("-connect") && gArgs.GetArgs("-connect").size() > 0)
     {
         for (int64_t nLoop = 0;; nLoop++)
         {
             ProcessOneShot();
-            for (const std::string& strAddr : mapMultiArgs.at("-connect"))
+            for (const std::string& strAddr : gArgs.GetArgs("-connect"))
             {
                 CAddress addr(CService(), NODE_NONE);
                 OpenNetworkConnection(addr, false, nullptr, strAddr.c_str());
@@ -1741,8 +1741,8 @@ void CConnman::ThreadOpenAddedConnections()
 {
     {
         LOCK(cs_vAddedNodes);
-        if (mapMultiArgs.count("-addnode"))
-            vAddedNodes = mapMultiArgs.at("-addnode");
+        if (gArgs.IsArgSet("-addnode"))
+            vAddedNodes = gArgs.GetArgs("-addnode");
     }
 
     while (true)
@@ -2176,7 +2176,7 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
     threadOpenAddedConnections = std::thread(&TraceThread<std::function<void()> >, "addcon", std::function<void()>(std::bind(&CConnman::ThreadOpenAddedConnections, this)));
 
     // Initiate outbound connections unless connect=0
-    if (!mapMultiArgs.count("-connect") || mapMultiArgs.at("-connect").size() != 1 || mapMultiArgs.at("-connect")[0] != "0")
+    if (!gArgs.IsArgSet("-connect") || gArgs.GetArgs("-connect").size() != 1 || gArgs.GetArgs("-connect")[0] != "0")
         threadOpenConnections = std::thread(&TraceThread<std::function<void()> >, "opencon", std::function<void()>(std::bind(&CConnman::ThreadOpenConnections, this)));
 
     // Process messages

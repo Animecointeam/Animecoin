@@ -7,7 +7,6 @@
 #include "base58.h"
 #include "consensus/validation.h"
 #include "core_io.h"
-#include "init.h"
 #include "net.h"
 #include "net_processing.h" // for fFetchBlocksWhileFetchingHeaders, consider removal?
 #include "policy/feerate.h"
@@ -26,6 +25,8 @@
 #include "wallet/feebumper.h"
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
+
+#include <init.h>
 
 #include <stdint.h>
 
