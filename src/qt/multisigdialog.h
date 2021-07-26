@@ -1,4 +1,4 @@
-    #ifndef MULTISIGDIALOG_H
+#ifndef MULTISIGDIALOG_H
 #define MULTISIGDIALOG_H
 
 #include <QDialog>
@@ -71,6 +71,7 @@ class MultisigDialog : public QDialog
     void on_copyScriptButtonHTLC_clicked();
     void on_lockTimeBoxHTLC_valueChanged(int arg1);
     void on_createHTLCButton_clicked();
+    void on_pasteImageButton_clicked();
 };
 
 #endif // MULTISIGDIALOG_H

@@ -898,7 +898,7 @@ void MultisigDialog::on_lockTimeBox_valueChanged(int arg1)
     qint64 current_time = QDateTime::currentSecsSinceEpoch();
     estimated_seconds+=current_time;
     QDateTime locktime = QDateTime::fromSecsSinceEpoch(estimated_seconds);
-    QString locktime_text = tr("Estimated deadline: ")+locktime.toString(Qt::SystemLocaleLongDate);
+    QString locktime_text = tr("Estimated deadline: ")+locktime.toString(Qt::DefaultLocaleLongDate);
     ui->approxTimeLabel->setText(locktime_text);
 }
 
@@ -1086,3 +1086,8 @@ void MultisigDialog::on_createHTLCButton_clicked()
     ui->scriptLineHTLC->setText(HexStr(script.begin(), script.end()).c_str());
 }
 
+
+void MultisigDialog::on_pasteImageButton_clicked()
+{
+    ui->hashLineHTLC->setText(QApplication::clipboard()->text());
+}
