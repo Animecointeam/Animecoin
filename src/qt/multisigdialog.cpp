@@ -22,6 +22,7 @@
 #include "script/sign.h"
 #include "sendcoinsentry.h"
 #include "utilmoneystr.h"
+#include "wallet/fees.h"
 #include "wallet/wallet.h"
 #include "wallet/rpcdump.cpp"
 #include "walletmodel.h"
@@ -381,7 +382,7 @@ void MultisigDialog::on_createTransactionButton_clicked()
     transaction.nLockTime = chainActive.Height();
     // TODO: we reserve extra 300 bytes for scriptsig, improve the calculation.
     size_t txSize = GetSerializeSize(transaction, SER_NETWORK, PROTOCOL_VERSION) + (300 * ui->inputs->count());
-    CAmount fee = std::max (CWallet::GetRequiredFee (txSize), CWallet::fallbackFee.GetFee (txSize));
+    CAmount fee = std::max (GetRequiredFee (txSize), CWallet::fallbackFee.GetFee (txSize));
 
     // Calculate inputs amount
     CAmount inputsAmount = 0;

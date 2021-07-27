@@ -542,9 +542,9 @@ TableViewLastColumnResizingFixer::TableViewLastColumnResizingFixer(QTableView* t
 #ifdef WIN32
 fs::path static StartupShortcutPath()
 {
-    if (GetBoolArg("-testnet", false))
+    if (gArgs.GetBoolArg("-testnet", false))
         return GetSpecialFolderPath(CSIDL_STARTUP) / "Animecoin (testnet).lnk";
-    else if (GetBoolArg("-regtest", false))
+    else if (gArgs.GetBoolArg("-regtest", false))
         return GetSpecialFolderPath(CSIDL_STARTUP) / "Animecoin (regtest).lnk";
 
     return GetSpecialFolderPath(CSIDL_STARTUP) / "Animecoin.lnk";
@@ -580,7 +580,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
             // Start client minimized
             QString strArgs = "-min";
             // Set -testnet /-regtest options
-            strArgs += QString::fromStdString(strprintf(" -testnet=%d -regtest=%d", GetBoolArg("-testnet", false), GetBoolArg("-regtest", false)));
+            strArgs += QString::fromStdString(strprintf(" -testnet=%d -regtest=%d", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false)));
 
             // Set the path to the shortcut target
             psl->SetPath(pszExePath);
@@ -667,13 +667,13 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         // Write a animecoin.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
-        if (GetBoolArg("-testnet", false))
+        if (gArgs.GetBoolArg("-testnet", false))
             optionFile << "Name=Animecoin (testnet)\n";
-        else if (GetBoolArg("-regtest", false))
+        else if (gArgs.GetBoolArg("-regtest", false))
             optionFile << "Name=Animecoin (regtest)\n";
         else
             optionFile << "Name=Animecoin\n";
-        optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", GetBoolArg("-testnet", false), GetBoolArg("-regtest", false));
+        optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));
 
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
