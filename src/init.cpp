@@ -862,17 +862,13 @@ bool AppInitParameterInteraction()
     }
 
     // -bind and -whitebind can't be set when not listening
-    size_t nUserBind =
-            (gArgs.IsArgSet("-bind") ? gArgs.GetArgs("-bind").size() : 0) +
-            (gArgs.IsArgSet("-whitebind") ? gArgs.GetArgs("-whitebind").size() : 0);
+    size_t nUserBind = gArgs.GetArgs("-bind").size() + gArgs.GetArgs("-whitebind").size();
     if (nUserBind != 0 && !GetBoolArg("-listen", DEFAULT_LISTEN)) {
         return InitError("Cannot set -bind or -whitebind together with -listen=0");
     }
 
     // Make sure enough file descriptors are available
-    int nBind = std::max(
-                (gArgs.IsArgSet("-bind") ? gArgs.GetArgs("-bind").size() : 0) +
-                (gArgs.IsArgSet("-whitebind") ? gArgs.GetArgs("-whitebind").size() : 0), size_t(1));
+    int nBind = std::max(nUserBind, size_t(1));
     nUserMaxConnections = GetArg("-maxconnections", DEFAULT_MAX_PEER_CONNECTIONS);
     nMaxConnections = std::max(nUserMaxConnections, 0);
 
@@ -894,9 +890,10 @@ bool AppInitParameterInteraction()
 
         if (!(GetBoolArg("-nodebug", false) || find(categories.begin(), categories.end(), std::string("0")) != categories.end())) {
             for (const auto& cat : categories) {
-                uint32_t flag;
+                uint32_t flag = 0;
                 if (!GetLogCategory(&flag, &cat)) {
                     InitWarning(strprintf(_("Unsupported logging category %s=%s."), "-debug", cat));
+                    continue;
                 }
                 logCategories |= flag;
             }
@@ -904,14 +901,13 @@ bool AppInitParameterInteraction()
     }
 
     // Now remove the logging categories which were explicitly excluded
-    if (gArgs.IsArgSet("-debugexclude")) {
-        for (const std::string& cat : gArgs.GetArgs("-debugexclude")) {
-            uint32_t flag;
-            if (!GetLogCategory(&flag, &cat)) {
-                InitWarning(strprintf(_("Unsupported logging category %s=%s."), "-debugexclude", cat));
-            }
-            logCategories &= ~flag;
+    for (const std::string& cat : gArgs.GetArgs("-debugexclude")) {
+        uint32_t flag = 0;
+        if (!GetLogCategory(&flag, &cat)) {
+            InitWarning(strprintf(_("Unsupported logging category %s=%s."), "-debugexclude", cat));
+            continue;
         }
+        logCategories &= ~flag;
     }
 
     // Check for -debugnet
@@ -1233,13 +1229,10 @@ bool AppInitMain()
 
     // sanitize comments per BIP-0014, format user agent and check total size
     std::vector<string> uacomments;
-    if (gArgs.IsArgSet("-uacomment")) {
-        for (std::string cmt : gArgs.GetArgs("-uacomment"))
-        {
-            if (cmt != SanitizeString(cmt, SAFE_CHARS_UA_COMMENT))
-                return InitError(strprintf(_("User Agent comment (%s) contains unsafe characters."), cmt));
-            uacomments.push_back(cmt);
-        }
+    for (const std::string& cmt : gArgs.GetArgs("-uacomment")) {
+        if (cmt != SanitizeString(cmt, SAFE_CHARS_UA_COMMENT))
+            return InitError(strprintf(_("User Agent comment (%s) contains unsafe characters."), cmt));
+        uacomments.push_back(cmt);
     }
     strSubVersion = FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, uacomments);
 
@@ -1303,14 +1296,12 @@ bool AppInitMain()
     fNameLookup = GetBoolArg("-dns", DEFAULT_NAME_LOOKUP);
     fRelayTxes = !GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY);
 
-    if (gArgs.IsArgSet("-externalip")) {
-        for (const std::string& strAddr : gArgs.GetArgs("-externalip")) {
-            CService addrLocal;
-            if (Lookup(strAddr.c_str(), addrLocal, GetListenPort(), fNameLookup) && addrLocal.IsValid())
-                AddLocal(addrLocal, LOCAL_MANUAL);
-            else
-                return InitError(ResolveErrMsg("externalip", strAddr));
-        }
+    for (const std::string& strAddr : gArgs.GetArgs("-externalip")) {
+        CService addrLocal;
+        if (Lookup(strAddr.c_str(), addrLocal, GetListenPort(), fNameLookup) && addrLocal.IsValid())
+            AddLocal(addrLocal, LOCAL_MANUAL);
+        else
+            return InitError(ResolveErrMsg("externalip", strAddr));
     }
 
     if (gArgs.IsArgSet("-seednode")) {
@@ -1599,10 +1590,8 @@ bool AppInitMain()
         uiInterface.NotifyBlockTip.connect(BlockNotifyCallback);
 
     std::vector<fs::path> vImportFiles;
-    if (gArgs.IsArgSet("-loadblock"))
-    {
-        for (const std::string& strFile : gArgs.GetArgs("-loadblock"))
-            vImportFiles.push_back(strFile);
+    for (const std::string& strFile : gArgs.GetArgs("-loadblock")) {
+        vImportFiles.push_back(strFile);
     }
 
     threadGroup.create_thread(std::bind(&ThreadImport, vImportFiles));
@@ -1655,36 +1644,30 @@ bool AppInitMain()
     connOptions.nMaxOutboundTimeframe = nMaxOutboundTimeframe;
     connOptions.nMaxOutboundLimit = nMaxOutboundLimit;
 
-    if (gArgs.IsArgSet("-bind")) {
-        for (const std::string& strBind : gArgs.GetArgs("-bind")) {
-            CService addrBind;
-            if (!Lookup(strBind.c_str(), addrBind, GetListenPort(), false)) {
-                return InitError(ResolveErrMsg("bind", strBind));
-            }
-            connOptions.vBinds.push_back(addrBind);
+    for (const std::string& strBind : gArgs.GetArgs("-bind")) {
+        CService addrBind;
+        if (!Lookup(strBind.c_str(), addrBind, GetListenPort(), false)) {
+            return InitError(ResolveErrMsg("bind", strBind));
         }
+        connOptions.vBinds.push_back(addrBind);
     }
-    if (gArgs.IsArgSet("-whitebind")) {
-        for (const std::string& strBind : gArgs.GetArgs("-whitebind")) {
-            CService addrBind;
-            if (!Lookup(strBind.c_str(), addrBind, 0, false)) {
-                return InitError(ResolveErrMsg("whitebind", strBind));
-            }
-            if (addrBind.GetPort() == 0) {
-                return InitError(strprintf(_("Need to specify a port with -whitebind: '%s'"), strBind));
-            }
-            connOptions.vWhiteBinds.push_back(addrBind);
+    for (const std::string& strBind : gArgs.GetArgs("-whitebind")) {
+        CService addrBind;
+        if (!Lookup(strBind.c_str(), addrBind, 0, false)) {
+            return InitError(ResolveErrMsg("whitebind", strBind));
         }
+        if (addrBind.GetPort() == 0) {
+            return InitError(strprintf(_("Need to specify a port with -whitebind: '%s'"), strBind));
+        }
+        connOptions.vWhiteBinds.push_back(addrBind);
     }
 
-    if (gArgs.IsArgSet("-whitelist")) {
-        for (const std::string& net : gArgs.GetArgs("-whitelist")) {
-            CSubNet subnet;
-            LookupSubNet(net.c_str(), subnet);
-            if (!subnet.IsValid())
-                return InitError(strprintf(_("Invalid netmask specified in -whitelist: '%s'"), net));
-            connOptions.vWhitelistedRange.push_back(subnet);
-        }
+    for (const auto& net : gArgs.GetArgs("-whitelist")) {
+        CSubNet subnet;
+        LookupSubNet(net.c_str(), subnet);
+        if (!subnet.IsValid())
+            return InitError(strprintf(_("Invalid netmask specified in -whitelist: '%s'"), net));
+        connOptions.vWhitelistedRange.push_back(subnet);
     }
 
     if (!connman.Start(scheduler, connOptions)) {
