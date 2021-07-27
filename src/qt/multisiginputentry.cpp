@@ -13,7 +13,7 @@
 #include "walletmodel.h"
 
 
-MultisigInputEntry::MultisigInputEntry(QWidget *parent) : QFrame(parent), ui(new Ui::MultisigInputEntry), model(0)
+MultisigInputEntry::MultisigInputEntry(CWallet* _pwallet, QWidget *parent) : QFrame(parent), ui(new Ui::MultisigInputEntry), model(nullptr), pwallet(_pwallet)
 {
     ui->setupUi(this);
 }
@@ -23,7 +23,7 @@ MultisigInputEntry::~MultisigInputEntry()
     delete ui;
 }
 
-void MultisigInputEntry::setModel(WalletModel *_model)
+void MultisigInputEntry::setModel(WalletModel* _model)
 {
     this->model = _model;
     clear();
@@ -137,7 +137,7 @@ void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
                 {
                     CScriptID scriptID = boost::get<CScriptID>(dest);
                     CScript redeemScript;
-                    if(pwalletMain->GetCScript(scriptID, redeemScript))
+                    if(pwallet->GetCScript(scriptID, redeemScript))
                         ui->redeemScript->setText(HexStr(redeemScript.begin(), redeemScript.end()).c_str());
                 }
         }
@@ -154,8 +154,8 @@ void MultisigInputEntry::on_contractAddress_textChanged(const QString& address_i
 {
     {
         ui->transactionIdBox->clear();
-        LOCK(pwalletMain->cs_wallet);
-        for (const auto& walletEntry : pwalletMain->mapWallet)
+        LOCK(pwallet->cs_wallet);
+        for (const auto& walletEntry : pwallet->mapWallet)
         {
             QString hash = QString::fromStdString(walletEntry.first.ToString());
             const CWalletTx* tx = &walletEntry.second;
@@ -174,11 +174,11 @@ void MultisigInputEntry::on_contractAddress_textChanged(const QString& address_i
             for (unsigned int i = 0; i < tx->tx->vout.size(); i++)
             {
                 CTxDestination addr;
-                if (pwalletMain->IsMine(tx->tx->vout[i]) == ISMINE_WATCH_ONLY); //
+                if (pwallet->IsMine(tx->tx->vout[i]) == ISMINE_WATCH_ONLY); //
                 {
                     if (!ExtractDestination(tx->tx->vout[i].scriptPubKey, addr))
                         continue;
-                    if (pwalletMain->IsSpent(walletEntry.first, i))
+                    if (pwallet->IsSpent(walletEntry.first, i))
                         continue;
                     QString addressStr = QString::fromStdString(CBitcoinAddress(addr).ToString());
                     if (addressStr == address_input)

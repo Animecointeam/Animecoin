@@ -1,13 +1,12 @@
 #include "preimagedialog.h"
 #include "ui_preimagedialog.h"
 
-#include "wallet/wallet.h"
-
 #include <QPushButton>
 
-PreimageDialog::PreimageDialog(QWidget* parent, std::string image) : QDialog(parent),
+PreimageDialog::PreimageDialog(QWidget* parent, std::string image, CWallet* _pwallet) : QDialog(parent),
     ui(new Ui::PreimageDialog)
 {
+    pwallet = _pwallet;
     ui->setupUi(this);
     image_str = image;
 
@@ -44,7 +43,7 @@ void PreimageDialog::on_lineEdit_textChanged(const QString& arg1)
         std::string hashhex = HexStr (vch.begin(), vch.end());
         if (hashhex==image_str)
         {
-            pwalletMain->AddPreimage(vch, preimage);
+            pwallet->AddPreimage(vch, preimage);
             ok_button->setEnabled(true);
         }
     }
@@ -58,7 +57,7 @@ void PreimageDialog::on_lineEdit_textChanged(const QString& arg1)
         std::string hashhex = HexStr (vch.begin(), vch.end());
         if (hashhex==image_str)
         {
-            pwalletMain->AddPreimage(vch, preimage);
+            pwallet->AddPreimage(vch, preimage);
             ok_button->setEnabled(true);
         }
     }

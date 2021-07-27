@@ -6,7 +6,7 @@
 
 #include "amount.h"
 #include "uint256.h"
-
+#include "wallet/wallet.h"
 
 class CTxIn;
 class WalletModel;
@@ -21,9 +21,9 @@ class MultisigInputEntry : public QFrame
     Q_OBJECT
 
   public:
-    explicit MultisigInputEntry(QWidget *parent = 0);
+    explicit MultisigInputEntry(CWallet* _pwallet, QWidget *parent = 0);
     ~MultisigInputEntry();
-    void setModel(WalletModel *model);
+    void setModel(WalletModel* model);
     bool validate();
     CTxIn getInput();
     CAmount getAmount();
@@ -42,8 +42,9 @@ class MultisigInputEntry : public QFrame
     void updateAmount();
 
   private:
-    Ui::MultisigInputEntry *ui;
-    WalletModel *model;
+    Ui::MultisigInputEntry* ui;
+    CWallet* pwallet;
+    WalletModel* model;
     uint256 txHash;
     QMap <unsigned int, unsigned int> index_map;
 

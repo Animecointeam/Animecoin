@@ -1,6 +1,8 @@
 #ifndef PREIMAGEDIALOG_H
 #define PREIMAGEDIALOG_H
 
+#include "wallet/wallet.h"
+
 #include <QDialog>
 
 namespace Ui {
@@ -12,7 +14,7 @@ class PreimageDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PreimageDialog(QWidget* parent, std::string image);
+    explicit PreimageDialog(QWidget* parent, std::string image, CWallet* _pwallet);
     ~PreimageDialog();
 
 private slots:
@@ -21,6 +23,7 @@ private slots:
 private:
     Ui::PreimageDialog* ui;
     std::string image_str;
+    CWallet* pwallet;
 };
 
 #endif // PREIMAGEDIALOG_H

@@ -31,6 +31,8 @@ MultisigDialog::MultisigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Mu
 {
     ui->setupUi(this);
 
+    //TODO: expose secondary wallets.
+    pwallet = vpwallets.empty() ? nullptr : vpwallets[0];
 #ifdef Q_WS_MAC // Icons on push buttons are very uncommon on Mac
     ui->addPubKeyButton->setIcon(QIcon());
     ui->clearButton->setIcon(QIcon());
@@ -94,28 +96,28 @@ void MultisigDialog::setModel(WalletModel *_model)
 
     for(int i = 0; i < ui->pubkeyEntries->count(); i++)
     {
-        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->pubkeyEntries->itemAt(i)->widget());
+        MultisigAddressEntry* entry = qobject_cast<MultisigAddressEntry *>(ui->pubkeyEntries->itemAt(i)->widget());
         if(entry)
             entry->setModel(_model);
     }
 
     for(int i = 0; i < ui->partyEntries->count(); i++)
     {
-        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->partyEntries->itemAt(i)->widget());
+        MultisigAddressEntry* entry = qobject_cast<MultisigAddressEntry *>(ui->partyEntries->itemAt(i)->widget());
         if(entry)
             entry->setModel(_model);
     }
 
     for(int i = 0; i < ui->htlcPartyEntries->count(); i++)
     {
-        MultisigAddressEntry *entry = qobject_cast<MultisigAddressEntry *>(ui->htlcPartyEntries->itemAt(i)->widget());
+        MultisigAddressEntry* entry = qobject_cast<MultisigAddressEntry *>(ui->htlcPartyEntries->itemAt(i)->widget());
         if(entry)
             entry->setModel(_model);
     }
 
     for(int i = 0; i < ui->inputs->count(); i++)
     {
-        MultisigInputEntry *entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
+        MultisigInputEntry* entry = qobject_cast<MultisigInputEntry *>(ui->inputs->itemAt(i)->widget());
         if(entry)
             entry->setModel(_model);
     }
@@ -123,7 +125,7 @@ void MultisigDialog::setModel(WalletModel *_model)
 
     for(int i = 0; i < ui->outputs->count(); i++)
     {
-        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(i)->widget());
+        SendCoinsEntry* entry = qobject_cast<SendCoinsEntry *>(ui->outputs->itemAt(i)->widget());
         if(entry)
             entry->setModel(_model);
     }
@@ -232,9 +234,9 @@ void MultisigDialog::on_saveRedeemScriptButton_clicked()
     CScript script(scriptData.begin(), scriptData.end());
     CScriptID scriptID (script);
 
-    LOCK(pwalletMain->cs_wallet);
-    if(!pwalletMain->HaveCScript(scriptID))
-        pwalletMain->AddCScript(script);
+    LOCK(pwallet->cs_wallet);
+    if(!pwallet->HaveCScript(scriptID))
+        pwallet->AddCScript(script);
 }
 
 void MultisigDialog::on_saveMultisigAddressButton_clicked()
@@ -253,11 +255,11 @@ void MultisigDialog::on_saveMultisigAddressButton_clicked()
     CScript script(scriptData.begin(), scriptData.end());
     CScriptID scriptID (script);
 
-    LOCK(pwalletMain->cs_wallet);
-    if(!pwalletMain->HaveCScript(scriptID))
-        pwalletMain->AddCScript(script);
-    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
-        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+    LOCK(pwallet->cs_wallet);
+    if(!pwallet->HaveCScript(scriptID))
+        pwallet->AddCScript(script);
+    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
+        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
 }
 
 void MultisigDialog::clear()
@@ -475,7 +477,7 @@ void MultisigDialog::on_transaction_textChanged()
             CTxDestination addr;
             ExtractDestination(scriptPubKey, addr);
             CBitcoinAddress address(addr);
-            if (IsMine(*pwalletMain, address.Get()) == ISMINE_SPENDABLE)
+            if (IsMine(*pwallet, address.Get()) == ISMINE_SPENDABLE)
             {
                 ui->infoLabel->setText(ui->infoLabel->text()+"your address ");
             }
@@ -551,7 +553,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
             {
                 std::vector<unsigned char> scriptData(ParseHex(redeemScriptStr.toStdString()));
                 CScript redeemScript(scriptData.begin(), scriptData.end());
-                pwalletMain->AddCScript(redeemScript);
+                pwallet->AddCScript(redeemScript);
 
                 // Solve script
                 txnouttype whichType;
@@ -565,10 +567,10 @@ void MultisigDialog::on_signTransactionButton_clicked()
                         std::string imghex = HexStr (image.begin(), image.end());
                         std::vector<unsigned char> preimage;
 
-                        if (!pwalletMain->GetPreimage(image, preimage))
+                        if (!pwallet->GetPreimage(image, preimage))
                         {
                             // Preimage might already be in memory. If it isn't, ask interactively.
-                            PreimageDialog pd (this, imghex);
+                            PreimageDialog pd (this, imghex, pwallet);
                             if (pd.exec() == QDialog::Rejected)
                                 return;
                         }
@@ -604,7 +606,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
         const CAmount& amount = coin.out.nValue;
 
         SignatureData sigdata;
-        ProduceSignature(MutableTransactionSignatureCreator(pwalletMain, &mtx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
+        ProduceSignature(MutableTransactionSignatureCreator(pwallet, &mtx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
         sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(mtx, i), route);
 
         UpdateTransaction(mtx, i, sigdata);
@@ -728,7 +730,7 @@ void MultisigDialog::on_sendTransactionButton_clicked()
 
 MultisigInputEntry * MultisigDialog::addInput()
 {
-    MultisigInputEntry *entry = new MultisigInputEntry(this);
+    MultisigInputEntry *entry = new MultisigInputEntry(pwallet, this);
 
     entry->setModel(model);
     ui->inputs->addWidget(entry);
@@ -881,14 +883,14 @@ void MultisigDialog::on_saveContractButton_clicked()
     CScript script(scriptData.begin(), scriptData.end());
     CScriptID scriptID (script);
 
-    LOCK(pwalletMain->cs_wallet);
-    if(!pwalletMain->HaveCScript(scriptID))
-        pwalletMain->AddCScript(script);
-    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    LOCK(pwallet->cs_wallet);
+    if(!pwallet->HaveCScript(scriptID))
+        pwallet->AddCScript(script);
+    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
     {
         CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
-        ImportScript(pwalletMain, script, label, false);
-        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+        ImportScript(pwallet, script, label, false);
+        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
     }
 }
 
@@ -962,14 +964,14 @@ void MultisigDialog::on_importContractButton_clicked()
     if(!model->validateAddress(QString(address.ToString().c_str())))
         return;
 
-    LOCK(pwalletMain->cs_wallet);
-    if(!pwalletMain->HaveCScript(scriptID))
-        pwalletMain->AddCScript(script);
-    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    LOCK(pwallet->cs_wallet);
+    if(!pwallet->HaveCScript(scriptID))
+        pwallet->AddCScript(script);
+    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
     {
         CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
-        ImportScript(pwalletMain, script, label, false);
-        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+        ImportScript(pwallet, script, label, false);
+        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
     }
 }
 
@@ -989,14 +991,14 @@ void MultisigDialog::on_saveHTLCButton_clicked()
     CScript script(scriptData.begin(), scriptData.end());
     CScriptID scriptID (script);
 
-    LOCK(pwalletMain->cs_wallet);
-    if(!pwalletMain->HaveCScript(scriptID))
-        pwalletMain->AddCScript(script);
-    if(!pwalletMain->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    LOCK(pwallet->cs_wallet);
+    if(!pwallet->HaveCScript(scriptID))
+        pwallet->AddCScript(script);
+    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
     {
         CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
-        ImportScript(pwalletMain, script, label, false);
-        pwalletMain->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+        ImportScript(pwallet, script, label, false);
+        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
     }
 }
 

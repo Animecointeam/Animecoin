@@ -41,6 +41,7 @@ class MultisigDialog : public QDialog
   private:
     Ui::MultisigDialog* ui;
     WalletModel* model;
+    CWallet* pwallet;
 
   private slots:
     void on_createAddressButton_clicked();
