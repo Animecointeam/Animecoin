@@ -39,7 +39,6 @@
 #include "validation.h"
 #ifdef ENABLE_WALLET
 #include "wallet/init.h"
-#include "wallet/wallet.h"
 #endif
 #include "warnings.h"
 
@@ -182,9 +181,7 @@ void Shutdown()
     StopHTTPServer();
 
 #ifdef ENABLE_WALLET
-    for (CWalletRef pwallet : vpwallets) {
-        pwallet->Flush(false);
-    }
+    FlushWallets();
 #endif
     MapPort(false);
 
@@ -243,9 +240,7 @@ void Shutdown()
         pblocktree.reset();
     }
 #ifdef ENABLE_WALLET
-    for (CWalletRef pwallet : vpwallets) {
-        pwallet->Flush(true);
-    }
+    StopWallets();
 #endif
 
 #if ENABLE_ZMQ
@@ -267,10 +262,7 @@ void Shutdown()
     GetMainSignals().UnregisterBackgroundSignalScheduler();
     GetMainSignals().UnregisterWithMempoolSignals(mempool);
 #ifdef ENABLE_WALLET
-    for (CWalletRef pwallet : vpwallets) {
-        delete pwallet;
-    }
-    vpwallets.clear();
+    CloseWallets();
 #endif
     globalVerifyHandle.reset();
     ECC_Stop();
@@ -1194,7 +1186,7 @@ bool AppInitMain()
      */
     RegisterAllCoreRPCCommands(tableRPC);
 #ifdef ENABLE_WALLET
-    RegisterWalletRPCCommands(tableRPC);
+    RegisterWalletRPC(tableRPC);
 #endif
 
     /* Start the RPC server already.  It will be started in "warmup" mode
@@ -1211,7 +1203,7 @@ bool AppInitMain()
 
     // ********************************************************* Step 5: verify wallet database integrity
 #ifdef ENABLE_WALLET
-    if (!WalletVerify())
+    if (!VerifyWallets())
         return false;
 #endif
     // ********************************************************* Step 6: network initialization
@@ -1538,7 +1530,7 @@ bool AppInitMain()
 
     // ********************************************************* Step 8: load wallet
 #ifdef ENABLE_WALLET
-    if (!InitLoadWallet())
+    if (!OpenWallets())
         return false;
 #else
     LogPrintf("No wallet compiled in!\n");
@@ -1681,9 +1673,7 @@ bool AppInitMain()
     uiInterface.InitMessage(_("Done loading"));
 
 #ifdef ENABLE_WALLET
-    for (CWalletRef pwallet : vpwallets) {
-        pwallet->postInitProcess(scheduler);
-    }
+    StartWallets(scheduler);
 #endif
 
     return !fRequestShutdown;
