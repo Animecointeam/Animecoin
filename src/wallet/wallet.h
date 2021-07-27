@@ -48,7 +48,8 @@ static const unsigned int DEFAULT_KEYPOOL_SIZE = 1000;
 static const CAmount DEFAULT_TRANSACTION_FEE = 0;
 //! -fallbackfee default
 static const CAmount DEFAULT_FALLBACK_FEE = 100; // Should be reverted to a higher amount like 2000 in the future possibly.
-//! -mintxfee default
+//! -m_discard_rate default
+static const CAmount DEFAULT_DISCARD_FEE = 100;//! -mintxfee default
 static const CAmount DEFAULT_TRANSACTION_MINFEE = 100;
 //! minimum recommended increment for BIP 125 replacement txs
 static const CAmount WALLET_INCREMENTAL_RELAY_FEE = 5000;
@@ -947,6 +948,7 @@ public:
 
     static CFeeRate minTxFee;
     static CFeeRate fallbackFee;
+    static CFeeRate m_discard_rate;
     /**
      * Estimate the minimum fee considering user set parameters
      * and the required fee
