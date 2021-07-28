@@ -129,9 +129,6 @@ struct FeeCalculation
     int returnedTarget = 0;
 };
 
-// QA: deprecated by upstream.
-static const double INF_PRIORITY = 1e9 * MAX_MONEY;
-
 /**
  *  We want to be able to estimate feerates that are needed on tx's to be included in
  * a certain number of blocks.  Every time a block is added to the best chain, this class records
@@ -218,20 +215,6 @@ public:
      * calculation
      */
     CFeeRate estimateRawFee(int confTarget, double successThreshold, FeeEstimateHorizon horizon, EstimationResult *result = nullptr) const;
-
-    /** Return a priority estimate.
-     *  DEPRECATED
-     *  Returns -1
-     */
-    double estimatePriority(int confTarget);
-
-    /** Estimate priority needed to get be included in a block within
-     *  confTarget blocks.
-     *  DEPRECATED
-     *  Returns -1 unless mempool is currently limited then returns INF_PRIORITY
-     *  answerFoundAtTarget is set to confTarget
-     */
-    double estimateSmartPriority(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
 
     /** Write estimation data to a file */
     bool Write(CAutoFile& fileout) const;

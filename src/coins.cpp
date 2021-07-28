@@ -245,24 +245,6 @@ bool CCoinsViewCache::HaveInputs(const CTransaction& tx) const
     return true;
 }
 
-double CCoinsViewCache::GetPriority(const CTransaction &tx, int nHeight, CAmount &inChainInputValue) const
-{
-    inChainInputValue = 0;
-    if (tx.IsCoinBase())
-        return 0.0;
-    double dResult = 0.0;
-    for (const CTxIn& txin : tx.vin)
-    {
-        const Coin& coin = AccessCoin(txin.prevout);
-        if (coin.IsSpent()) continue;
-        if (coin.nHeight <= nHeight) {
-            dResult += coin.out.nValue * (nHeight-coin.nHeight);
-            inChainInputValue += coin.out.nValue;
-        }
-    }
-    return tx.ComputePriority(dResult);
-}
-
 static const size_t MIN_TRANSACTION_OUTPUT_WEIGHT = WITNESS_SCALE_FACTOR * ::GetSerializeSize(CTxOut(), SER_NETWORK, PROTOCOL_VERSION);
 static const size_t MAX_OUTPUTS_PER_BLOCK = MAX_BLOCK_WEIGHT / MIN_TRANSACTION_OUTPUT_WEIGHT;
 
