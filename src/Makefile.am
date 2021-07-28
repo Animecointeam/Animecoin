@@ -194,6 +194,7 @@ BITCOIN_CORE_H = \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
   wallet/wallet.h \
+  wallet/coinselection.h \
   warnings.h \
   compat/byteswap.h \
   compat/cpuid.h \
@@ -269,6 +270,7 @@ endif
 libanimecoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_wallet_a_SOURCES = \
+  wallet/coinselection.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
   wallet/feebumper.cpp \
@@ -278,6 +280,7 @@ libanimecoin_wallet_a_SOURCES = \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
+  policy/rbf.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
