@@ -2544,7 +2544,7 @@ bool CWallet::SignTransaction(CMutableTransaction &tx)
         if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, amount, SIGHASH_ALL), scriptPubKey, sigdata, 1)) {
             return false;
         }
-        UpdateTransaction(tx, nIn, sigdata);
+        UpdateInput(input, sigdata);
         nIn++;
     }
     return true;
@@ -2950,7 +2950,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                     strFailReason = _("Signing transaction failed");
                     return false;
                 } else {
-                    UpdateTransaction(txNew, nIn, sigdata);
+                    UpdateInput(txNew.vin.at(nIn), sigdata);
                 }
 
                 nIn++;
