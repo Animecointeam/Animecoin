@@ -53,6 +53,7 @@ BOOST_AUTO_TEST_CASE(DoS_banning)
     dummyNode1.SetSendVersion(PROTOCOL_VERSION);
     peerLogic->InitializeNode(&dummyNode1);
     dummyNode1.nVersion = 1;
+    dummyNode1.fSuccessfullyConnected = true;
     Misbehaving(dummyNode1.GetId(), 100); // Should get banned
     peerLogic->SendMessages(&dummyNode1, interruptDummy);
     BOOST_CHECK(connman->IsBanned(addr1));
@@ -63,6 +64,7 @@ BOOST_AUTO_TEST_CASE(DoS_banning)
     dummyNode2.SetSendVersion(PROTOCOL_VERSION);
     peerLogic->InitializeNode(&dummyNode2);
     dummyNode2.nVersion = 1;
+    dummyNode2.fSuccessfullyConnected = true;
     Misbehaving(dummyNode2.GetId(), 50);
     peerLogic->SendMessages(&dummyNode2, interruptDummy);
     BOOST_CHECK(!connman->IsBanned(addr2)); // 2 not banned yet...
@@ -83,6 +85,7 @@ BOOST_AUTO_TEST_CASE(DoS_banscore)
     dummyNode1.SetSendVersion(PROTOCOL_VERSION);
     peerLogic->InitializeNode(&dummyNode1);
     dummyNode1.nVersion = 1;
+    dummyNode1.fSuccessfullyConnected = true;
     Misbehaving(dummyNode1.GetId(), 100);
     peerLogic->SendMessages(&dummyNode1, interruptDummy);
     BOOST_CHECK(!connman->IsBanned(addr1));
@@ -108,6 +111,7 @@ BOOST_AUTO_TEST_CASE(DoS_bantime)
     dummyNode.SetSendVersion(PROTOCOL_VERSION);
     peerLogic->InitializeNode(&dummyNode);
     dummyNode.nVersion = 1;
+    dummyNode1.fSuccessfullyConnected = true;
 
     Misbehaving(dummyNode.GetId(), 100);
     peerLogic->SendMessages(&dummyNode, interruptDummy);
