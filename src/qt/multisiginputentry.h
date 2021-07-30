@@ -29,8 +29,8 @@ class MultisigInputEntry : public QFrame
     CAmount getAmount();
     QString getAddress();
     QString getRedeemScript();
-    void setAddress(QString address);
-    void setTransactionId(QString transactionId);
+    void setAddress(const QString* address);
+    void setTransactionId(const QString& transactionId);
     void setTransactionOutputIndex(int index);
 
   public slots:
@@ -38,7 +38,7 @@ class MultisigInputEntry : public QFrame
     void clear();
 
   signals:
-    void removeEntry(MultisigInputEntry *entry);
+    void removeEntry(MultisigInputEntry* entry);
     void updateAmount();
 
   private:

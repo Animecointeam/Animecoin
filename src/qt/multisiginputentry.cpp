@@ -78,13 +78,13 @@ QString MultisigInputEntry::getAddress()
     return ui->contractAddress->text();
 }
 
-void MultisigInputEntry::setAddress(QString address)
+void MultisigInputEntry::setAddress(const QString& address)
 {
      ui->contractAddress->setText(address);
      emit on_contractAddress_textChanged(address);
 }
 
-void MultisigInputEntry::setTransactionId(QString transactionId)
+void MultisigInputEntry::setTransactionId(const QString& transactionId)
 {
     int id = ui->transactionIdBox->findText(transactionId);
     if (id != -1)
