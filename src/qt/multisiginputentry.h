@@ -29,7 +29,7 @@ class MultisigInputEntry : public QFrame
     CAmount getAmount();
     QString getAddress();
     QString getRedeemScript();
-    void setAddress(const QString* address);
+    void setAddress(const QString& address);
     void setTransactionId(const QString& transactionId);
     void setTransactionOutputIndex(int index);
 

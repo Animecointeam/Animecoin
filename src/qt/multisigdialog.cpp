@@ -562,7 +562,7 @@ void MultisigDialog::on_signTransactionButton_clicked()
                 if (Solver(redeemScript, whichType, vSolutions))
                 {
                     // HTLC secret code
-                    if (whichType == TX_HTLC)
+                    if ((whichType == TX_HTLC)&&(!ui->refundCheckBox->isChecked()))
                     {
                         std::vector<unsigned char> image(vSolutions[0]);
                         std::string imghex = HexStr (image.begin(), image.end());
