@@ -373,8 +373,8 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
         CNode* pnode = FindNode((CService)addrConnect);
         if (pnode)
         {
-            pnode->AddRef();
-            return pnode;
+            LogPrintf("Failed to open new connection, already connected\n");
+            return nullptr;
         }
     }
 
@@ -400,16 +400,16 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
             // In that case, drop the connection that was just created, and return the existing CNode instead.
             // Also store the name we used to connect in that CNode, so that future FindNode() calls to that
             // name catch this early.
+            LOCK(cs_vNodes);
             CNode* pnode = FindNode((CService)addrConnect);
             if (pnode)
             {
-                pnode->AddRef();
-                {
-                    LOCK(cs_vNodes);
-                    pnode->MaybeSetAddrName(std::string(pszDest));
+                if (pnode->addrName.empty()) {
+                    pnode->addrName = std::string(pszDest);
                 }
                 CloseSocket(hSocket);
-                return pnode;
+                LogPrintf("Failed to open new connection, already connected\n");
+                return nullptr;
             }
         }
 
@@ -421,12 +421,6 @@ CNode* CConnman::ConnectNode(CAddress addrConnect, const char *pszDest, bool fCo
         CAddress addr_bind = GetBindAddress(hSocket);
         CNode* pnode = new CNode(id, nLocalServices, GetBestHeight(), hSocket, addrConnect, CalculateKeyedNetGroup(addrConnect), nonce, addr_bind, pszDest ? pszDest : "", false);
         pnode->AddRef();
-        m_msgproc->InitializeNode(pnode);
-
-        {
-            LOCK(cs_vNodes);
-            vNodes.push_back(pnode);
-        }
 
         return pnode;
     } else if (!proxyConnectionFailed) {
@@ -1901,6 +1895,12 @@ bool CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
     if (manual_connection)
         pnode->m_manual_connection = true;
 
+    {
+        LOCK(cs_vNodes);
+        vNodes.push_back(pnode);
+    }
+    m_msgproc->InitializeNode(pnode);
+
     return true;
 }
 
@@ -2452,24 +2452,6 @@ void CConnman::GetNodeStats(std::vector<CNodeStats>& vstats)
     }
 }
 
-bool CConnman::DisconnectAddress(const CNetAddr& netAddr)
-{
-    if (CNode* pnode = FindNode(netAddr)) {
-        pnode->fDisconnect = true;
-        return true;
-    }
-    return false;
-}
-
-bool CConnman::DisconnectSubnet(const CSubNet& subNet)
-{
-    if (CNode* pnode = FindNode(subNet)) {
-        pnode->fDisconnect = true;
-        return true;
-    }
-    return false;
-}
-
 bool CConnman::DisconnectNode(const std::string& strNode)
 {
     if (CNode* pnode = FindNode(strNode)) {
@@ -2488,16 +2470,6 @@ bool CConnman::DisconnectNode(NodeId id)
         }
     }
     return false;
-}
-
-void CConnman::RelayTransaction(const CTransaction& tx)
-{
-    CInv inv(MSG_TX, tx.GetHash());
-    LOCK(cs_vNodes);
-    for (CNode* pnode : vNodes)
-    {
-        pnode->PushInventory(inv);
-    }
 }
 
 void CConnman::RecordBytesRecv(uint64_t bytes)
