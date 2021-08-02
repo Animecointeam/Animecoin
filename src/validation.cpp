@@ -1564,10 +1564,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         }
     }
 
-    // BIP16 didn't become active until Apr 1 2012
-    // int64_t nBIP16SwitchTime = 1333238400;
-    //bool fStrictPayToScriptHash = (pindex->GetBlockTime() >= nBIP16SwitchTime);
-    //unsigned int flags = fStrictPayToScriptHash ? SCRIPT_VERIFY_P2SH : SCRIPT_VERIFY_NONE;
     // Animecoin: BIP16 has always been there.
     unsigned int flags = SCRIPT_VERIFY_P2SH;
 
@@ -4356,6 +4352,12 @@ static const uint64_t MEMPOOL_DUMP_VERSION = 1;
      }
 
      return pindex->nChainTx / fTxTotal;
+ }
+
+ int VersionBitsTipStateSinceHeight(const Consensus::Params& params, Consensus::DeploymentPos pos)
+ {
+     LOCK(cs_main);
+     return VersionBitsStateSinceHeight(chainActive.Tip(), params, pos, versionbitscache);
  }
 
 class CMainCleanup

@@ -86,6 +86,7 @@ UniValue blockheaderToJSON(const CBlockIndex* blockindex)
     result.pushKV("confirmations", confirmations);
     result.pushKV("height", blockindex->nHeight);
     result.pushKV("version", blockindex->nVersion);
+    result.pushKV("versionHex", strprintf("%08x", blockindex->nVersion));
     result.pushKV("merkleroot", blockindex->hashMerkleRoot.GetHex());
     result.pushKV("time", (int64_t)blockindex->nTime);
     result.pushKV("nonce", (uint64_t)blockindex->nNonce);
@@ -116,6 +117,7 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
     result.pushKV("weight", (int)::GetBlockWeight(block));
     result.pushKV("height", blockindex->nHeight);
     result.pushKV("version", block.nVersion);
+    result.pushKV("versionHex", strprintf("%08x", block.nVersion));
     result.pushKV("merkleroot", block.hashMerkleRoot.GetHex());
     UniValue txs(UniValue::VARR);
     for(const auto& tx : block.vtx)
@@ -642,6 +644,7 @@ UniValue getblockheader(const JSONRPCRequest& request)
             "  \"validated\" : n,       (boolean) True if the block has been validated (for auxiliary block requests)\n"
             "  \"height\" : n,          (numeric) The block height or index\n"
             "  \"version\" : n,         (numeric) The block version\n"
+            "  \"versionHex\" : \"00000000\", (string) The block version formatted in hexadecimal\n"
             "  \"merkleroot\" : \"xxxx\", (string) The merkle root\n"
             "  \"time\" : ttt,          (numeric) The block time in seconds since epoch (Jan 1 1970 GMT)\n"
             "  \"nonce\" : n,           (numeric) The nonce\n"
@@ -704,6 +707,7 @@ UniValue getblock(const JSONRPCRequest& request)
                 "  \"weight\" : n           (numeric) The block weight (BIP 141)\n"
                 "  \"height\" : n,          (numeric) The block height or index\n"
                 "  \"version\" : n,         (numeric) The block version\n"
+                "  \"versionHex\" : \"00000000\", (string) The block version formatted in hexadecimal\n"
                 "  \"merkleroot\" : \"xxxx\", (string) The merkle root\n"
                 "  \"tx\" : [               (array of string) The transaction ids\n"
                 "     \"transactionid\"     (string) The transaction id\n"
@@ -1065,13 +1069,21 @@ static UniValue BIP9SoftForkDesc(const std::string& name, const Consensus::Param
 {
     UniValue rv(UniValue::VOBJ);
     rv.pushKV("id", name);
-    switch (VersionBitsTipState(consensusParams, id)) {
+    const ThresholdState thresholdState = VersionBitsTipState(consensusParams, id);
+    switch (thresholdState) {
     case THRESHOLD_DEFINED: rv.pushKV("status", "defined"); break;
     case THRESHOLD_STARTED: rv.pushKV("status", "started"); break;
     case THRESHOLD_LOCKED_IN: rv.pushKV("status", "locked_in"); break;
     case THRESHOLD_ACTIVE: rv.pushKV("status", "active"); break;
     case THRESHOLD_FAILED: rv.pushKV("status", "failed"); break;
     }
+    if (THRESHOLD_STARTED == thresholdState)
+    {
+        rv.pushKV("bit", consensusParams.vDeployments[id].bit);
+    }
+    rv.pushKV("startTime", consensusParams.vDeployments[id].nStartTime);
+    rv.pushKV("timeout", consensusParams.vDeployments[id].nTimeout);
+    rv.pushKV("since", VersionBitsTipStateSinceHeight(consensusParams, id));
     return rv;
 }
 
@@ -1107,6 +1119,10 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
             "     {\n"
             "        \"id\": \"xxxx\",        (string) name of the softfork\n"
             "        \"status\": \"xxxx\",    (string) one of \"defined\", \"started\", \"lockedin\", \"active\", \"failed\"\n"
+            "        \"bit\": xx,             (numeric) the bit, 0-28, in the block version field used to signal this soft fork\n"
+            "        \"startTime\": xx,       (numeric) the minimum median time past of a block at which the bit gains its meaning\n"
+            "        \"timeout\": xx,         (numeric) the median time past of a block at which the deployment is considered failed if not yet locked in\n"
+            "        \"since\": xx            (numeric) height of the first block to which the status applies\n"
             "     }\n"
             "  ]\n"
             "}\n"

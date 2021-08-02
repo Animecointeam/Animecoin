@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -30,6 +30,13 @@ public:
     bool Condition(const CBlockIndex* pindex, const Consensus::Params& params) const { return (pindex->nVersion & 0x100); }
 
     ThresholdState GetStateFor(const CBlockIndex* pindexPrev) const { return AbstractThresholdConditionChecker::GetStateFor(pindexPrev, paramsDummy, cache); }
+    int GetStateSinceHeightFor(const CBlockIndex* pindexPrev) const { return AbstractThresholdConditionChecker::GetStateSinceHeightFor(pindexPrev, paramsDummy, cache); }
+};
+
+class TestAlwaysActiveConditionChecker : public TestConditionChecker
+{
+public:
+    int64_t BeginTime(const Consensus::Params& params) const override { return Consensus::BIP9Deployment::ALWAYS_ACTIVE; }
 };
 
 #define CHECKERS 6
@@ -43,7 +50,9 @@ class VersionBitsTester
     // The first one performs all checks, the second only 50%, the third only 25%, etc...
     // This is to test whether lack of cached information leads to the same results.
     TestConditionChecker checker[CHECKERS];
-
+    // Another 6 that assume always active activation
+    TestAlwaysActiveConditionChecker checker_always[CHECKERS];
+    
     // Test counter (to identify failures)
     int num;
 
@@ -56,6 +65,7 @@ public:
         }
         for (unsigned int  i = 0; i < CHECKERS; i++) {
             checker[i] = TestConditionChecker();
+            checker_always[i] = TestAlwaysActiveConditionChecker();
         }
         vpblock.clear();
         return *this;
@@ -78,10 +88,22 @@ public:
         return *this;
     }
 
+    VersionBitsTester& TestStateSinceHeight(int height) {
+        for (int i = 0; i < CHECKERS; i++) {
+            if ((insecure_rand() & ((1 << i) - 1)) == 0) {
+                BOOST_CHECK_MESSAGE(checker[i].GetStateSinceHeightFor(vpblock.empty() ? nullptr : vpblock.back()) == height, strprintf("Test %i for StateSinceHeight", num));
+                BOOST_CHECK_MESSAGE(checker_always[i].GetStateSinceHeightFor(vpblock.empty() ? nullptr : vpblock.back()) == 0, strprintf("Test %i for StateSinceHeight (always active)", num));
+            }
+        }
+        num++;
+        return *this;
+    }
+
     VersionBitsTester& TestDefined() {
         for (int i = 0; i < CHECKERS; i++) {
             if (InsecureRandBits(i) == 0) {
                 BOOST_CHECK_MESSAGE(checker[i].GetStateFor(vpblock.empty() ? NULL : vpblock.back()) == THRESHOLD_DEFINED, strprintf("Test %i for DEFINED", num));
+                BOOST_CHECK_MESSAGE(checker_always[i].GetStateSinceHeightFor(vpblock.empty() ? nullptr : vpblock.back()) == 0, strprintf("Test %i for StateSinceHeight (always active)", num));
             }
         }
         num++;
@@ -92,6 +114,7 @@ public:
         for (int i = 0; i < CHECKERS; i++) {
             if (InsecureRandBits(i) == 0) {
                 BOOST_CHECK_MESSAGE(checker[i].GetStateFor(vpblock.empty() ? NULL : vpblock.back()) == THRESHOLD_STARTED, strprintf("Test %i for STARTED", num));
+                BOOST_CHECK_MESSAGE(checker_always[i].GetStateFor(vpblock.empty() ? nullptr : vpblock.back()) == THRESHOLD_ACTIVE, strprintf("Test %i for ACTIVE (always active)", num));
             }
         }
         num++;
@@ -102,6 +125,7 @@ public:
         for (int i = 0; i < CHECKERS; i++) {
             if (InsecureRandBits(i) == 0) {
                 BOOST_CHECK_MESSAGE(checker[i].GetStateFor(vpblock.empty() ? NULL : vpblock.back()) == THRESHOLD_LOCKED_IN, strprintf("Test %i for LOCKED_IN", num));
+                BOOST_CHECK_MESSAGE(checker_always[i].GetStateFor(vpblock.empty() ? nullptr : vpblock.back()) == THRESHOLD_ACTIVE, strprintf("Test %i for ACTIVE (always active)", num));
             }
         }
         num++;
@@ -112,6 +136,7 @@ public:
         for (int i = 0; i < CHECKERS; i++) {
             if (InsecureRandBits(i) == 0) {
                 BOOST_CHECK_MESSAGE(checker[i].GetStateFor(vpblock.empty() ? NULL : vpblock.back()) == THRESHOLD_ACTIVE, strprintf("Test %i for ACTIVE", num));
+                BOOST_CHECK_MESSAGE(checker_always[i].GetStateFor(vpblock.empty() ? nullptr : vpblock.back()) == THRESHOLD_ACTIVE, strprintf("Test %i for ACTIVE (always active)", num));
             }
         }
         num++;
@@ -122,6 +147,7 @@ public:
         for (int i = 0; i < CHECKERS; i++) {
             if (InsecureRandBits(i) == 0) {
                 BOOST_CHECK_MESSAGE(checker[i].GetStateFor(vpblock.empty() ? NULL : vpblock.back()) == THRESHOLD_FAILED, strprintf("Test %i for FAILED", num));
+                BOOST_CHECK_MESSAGE(checker_always[i].GetStateFor(vpblock.empty() ? nullptr : vpblock.back()) == THRESHOLD_ACTIVE, strprintf("Test %i for ACTIVE (always active)", num));
             }
         }
         num++;
@@ -137,53 +163,63 @@ BOOST_AUTO_TEST_CASE(versionbits_test)
 {
     for (int i = 0; i < 64; i++) {
         // DEFINED -> FAILED
-        VersionBitsTester().TestDefined()
-                           .Mine(1, TestTime(1), 0x100).TestDefined()
-                           .Mine(11, TestTime(11), 0x100).TestDefined()
-                           .Mine(989, TestTime(989), 0x100).TestDefined()
-                           .Mine(999, TestTime(20000), 0x100).TestDefined()
-                           .Mine(1000, TestTime(20000), 0x100).TestFailed()
-                           .Mine(1999, TestTime(30001), 0x100).TestFailed()
-                           .Mine(2000, TestTime(30002), 0x100).TestFailed()
-                           .Mine(2001, TestTime(30003), 0x100).TestFailed()
-                           .Mine(2999, TestTime(30004), 0x100).TestFailed()
-                           .Mine(3000, TestTime(30005), 0x100).TestFailed()
+        VersionBitsTester().TestDefined().TestStateSinceHeight(0)
+                           .Mine(1, TestTime(1), 0x100).TestDefined().TestStateSinceHeight(0)
+                           .Mine(11, TestTime(11), 0x100).TestDefined().TestStateSinceHeight(0)
+                           .Mine(989, TestTime(989), 0x100).TestDefined().TestStateSinceHeight(0)
+                           .Mine(999, TestTime(20000), 0x100).TestDefined().TestStateSinceHeight(0)
+                           .Mine(1000, TestTime(20000), 0x100).TestFailed().TestStateSinceHeight(1000)
+                           .Mine(1999, TestTime(30001), 0x100).TestFailed().TestStateSinceHeight(1000)
+                           .Mine(2000, TestTime(30002), 0x100).TestFailed().TestStateSinceHeight(1000)
+                           .Mine(2001, TestTime(30003), 0x100).TestFailed().TestStateSinceHeight(1000)
+                           .Mine(2999, TestTime(30004), 0x100).TestFailed().TestStateSinceHeight(1000)
+                           .Mine(3000, TestTime(30005), 0x100).TestFailed().TestStateSinceHeight(1000)
 
         // DEFINED -> STARTED -> FAILED
-                           .Reset().TestDefined()
-                           .Mine(1, TestTime(1), 0).TestDefined()
-                           .Mine(1000, TestTime(10000) - 1, 0x100).TestDefined() // One second more and it would be defined
-                           .Mine(2000, TestTime(10000), 0x100).TestStarted() // So that's what happens the next period
-                           .Mine(2051, TestTime(10010), 0).TestStarted() // 51 old blocks
-                           .Mine(2950, TestTime(10020), 0x100).TestStarted() // 899 new blocks
-                           .Mine(3000, TestTime(20000), 0).TestFailed() // 50 old blocks (so 899 out of the past 1000)
-                           .Mine(4000, TestTime(20010), 0x100).TestFailed()
+                           .Reset().TestDefined().TestStateSinceHeight(0)
+                           .Mine(1, TestTime(1), 0).TestDefined().TestStateSinceHeight(0)
+                           .Mine(1000, TestTime(10000) - 1, 0x100).TestDefined().TestStateSinceHeight(0) // One second more and it would be defined
+                           .Mine(2000, TestTime(10000), 0x100).TestStarted().TestStateSinceHeight(2000) // So that's what happens the next period
+                           .Mine(2051, TestTime(10010), 0).TestStarted().TestStateSinceHeight(2000) // 51 old blocks
+                           .Mine(2950, TestTime(10020), 0x100).TestStarted().TestStateSinceHeight(2000) // 899 new blocks
+                           .Mine(3000, TestTime(20000), 0).TestFailed().TestStateSinceHeight(3000) // 50 old blocks (so 899 out of the past 1000)
+                           .Mine(4000, TestTime(20010), 0x100).TestFailed().TestStateSinceHeight(3000)
 
         // DEFINED -> STARTED -> FAILED while threshold reached
-                           .Reset().TestDefined()
-                           .Mine(1, TestTime(1), 0).TestDefined()
-                           .Mine(1000, TestTime(10000) - 1, 0x101).TestDefined() // One second more and it would be defined
-                           .Mine(2000, TestTime(10000), 0x101).TestStarted() // So that's what happens the next period
-                           .Mine(2999, TestTime(30000), 0x100).TestStarted() // 999 new blocks
-                           .Mine(3000, TestTime(30000), 0x100).TestFailed() // 1 new block (so 1000 out of the past 1000 are new)
-                           .Mine(3999, TestTime(30001), 0).TestFailed()
-                           .Mine(4000, TestTime(30002), 0).TestFailed()
-                           .Mine(14333, TestTime(30003), 0).TestFailed()
-                           .Mine(24000, TestTime(40000), 0).TestFailed()
+                           .Reset().TestDefined().TestStateSinceHeight(0)
+                           .Mine(1, TestTime(1), 0).TestDefined().TestStateSinceHeight(0)
+                           .Mine(1000, TestTime(10000) - 1, 0x101).TestDefined().TestStateSinceHeight(0) // One second more and it would be defined
+                           .Mine(2000, TestTime(10000), 0x101).TestStarted().TestStateSinceHeight(2000) // So that's what happens the next period
+                           .Mine(2999, TestTime(30000), 0x100).TestStarted().TestStateSinceHeight(2000) // 999 new blocks
+                           .Mine(3000, TestTime(30000), 0x100).TestFailed().TestStateSinceHeight(3000) // 1 new block (so 1000 out of the past 1000 are new)
+                           .Mine(3999, TestTime(30001), 0).TestFailed().TestStateSinceHeight(3000)
+                           .Mine(4000, TestTime(30002), 0).TestFailed().TestStateSinceHeight(3000)
+                           .Mine(14333, TestTime(30003), 0).TestFailed().TestStateSinceHeight(3000)
+                           .Mine(24000, TestTime(40000), 0).TestFailed().TestStateSinceHeight(3000)
 
         // DEFINED -> STARTED -> LOCKEDIN at the last minute -> ACTIVE
-                           .Reset().TestDefined()
-                           .Mine(1, TestTime(1), 0).TestDefined()
-                           .Mine(1000, TestTime(10000) - 1, 0x101).TestDefined() // One second more and it would be defined
-                           .Mine(2000, TestTime(10000), 0x101).TestStarted() // So that's what happens the next period
-                           .Mine(2050, TestTime(10010), 0x200).TestStarted() // 50 old blocks
-                           .Mine(2950, TestTime(10020), 0x100).TestStarted() // 900 new blocks
-                           .Mine(2999, TestTime(19999), 0x200).TestStarted() // 49 old blocks
-                           .Mine(3000, TestTime(29999), 0x200).TestLockedIn() // 1 old block (so 900 out of the past 1000)
-                           .Mine(3999, TestTime(30001), 0).TestLockedIn()
-                           .Mine(4000, TestTime(30002), 0).TestActive()
-                           .Mine(14333, TestTime(30003), 0).TestActive()
-                           .Mine(24000, TestTime(40000), 0).TestActive();
+                           .Mine(1, TestTime(1), 0).TestDefined().TestStateSinceHeight(0)
+                           .Mine(1000, TestTime(10000) - 1, 0x101).TestDefined().TestStateSinceHeight(0) // One second more and it would be defined
+                           .Mine(2000, TestTime(10000), 0x101).TestStarted().TestStateSinceHeight(2000) // So that's what happens the next period
+                           .Mine(2050, TestTime(10010), 0x200).TestStarted().TestStateSinceHeight(2000) // 50 old blocks
+                           .Mine(2950, TestTime(10020), 0x100).TestStarted().TestStateSinceHeight(2000) // 900 new blocks
+                           .Mine(2999, TestTime(19999), 0x200).TestStarted().TestStateSinceHeight(2000) // 49 old blocks
+                           .Mine(3000, TestTime(29999), 0x200).TestLockedIn().TestStateSinceHeight(3000) // 1 old block (so 900 out of the past 1000)
+                           .Mine(3999, TestTime(30001), 0).TestLockedIn().TestStateSinceHeight(3000)
+                           .Mine(4000, TestTime(30002), 0).TestActive().TestStateSinceHeight(4000)
+                           .Mine(14333, TestTime(30003), 0).TestActive().TestStateSinceHeight(4000)
+                           .Mine(24000, TestTime(40000), 0).TestActive().TestStateSinceHeight(4000)
+
+        // DEFINED multiple periods -> STARTED multiple periods -> FAILED
+                           .Reset().TestDefined().TestStateSinceHeight(0)
+                           .Mine(999, TestTime(999), 0).TestDefined().TestStateSinceHeight(0)
+                           .Mine(1000, TestTime(1000), 0).TestDefined().TestStateSinceHeight(0)
+                           .Mine(2000, TestTime(2000), 0).TestDefined().TestStateSinceHeight(0)
+                           .Mine(3000, TestTime(10000), 0).TestStarted().TestStateSinceHeight(3000)
+                           .Mine(4000, TestTime(10000), 0).TestStarted().TestStateSinceHeight(3000)
+                           .Mine(5000, TestTime(10000), 0).TestStarted().TestStateSinceHeight(3000)
+                           .Mine(6000, TestTime(20000), 0).TestFailed().TestStateSinceHeight(6000)
+                           .Mine(7000, TestTime(20000), 0x100).TestFailed().TestStateSinceHeight(6000);
     }
 
     // Sanity checks of version bit deployments

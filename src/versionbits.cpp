@@ -28,6 +28,11 @@ ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex*
     int64_t nTimeStart = BeginTime(params);
     int64_t nTimeTimeout = EndTime(params);
 
+    // Check if this deployment is always active.
+    if (nTimeStart == Consensus::BIP9Deployment::ALWAYS_ACTIVE) {
+        return THRESHOLD_ACTIVE;
+    }
+
     // A block's state is always the same as that of the first of its period, so it is computed based on a pindexPrev whose height equals a multiple of nPeriod - 1.
     if (pindexPrev != nullptr) {
         pindexPrev = pindexPrev->GetAncestor(pindexPrev->nHeight - ((pindexPrev->nHeight + 1) % nPeriod));
@@ -105,6 +110,41 @@ ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex*
     return state;
 }
 
+int AbstractThresholdConditionChecker::GetStateSinceHeightFor(const CBlockIndex* pindexPrev, const Consensus::Params& params, ThresholdConditionCache& cache) const
+{
+    int64_t start_time = BeginTime(params);
+    if (start_time == Consensus::BIP9Deployment::ALWAYS_ACTIVE) {
+        return 0;
+    }
+
+    const ThresholdState initialState = GetStateFor(pindexPrev, params, cache);
+
+    // BIP 9 about state DEFINED: "The genesis block is by definition in this state for each deployment."
+    if (initialState == THRESHOLD_DEFINED) {
+        return 0;
+    }
+
+    const int nPeriod = Period(params);
+
+    // A block's state is always the same as that of the first of its period, so it is computed based on a pindexPrev whose height equals a multiple of nPeriod - 1.
+    // To ease understanding of the following height calculation, it helps to remember that
+    // right now pindexPrev points to the block prior to the block that we are computing for, thus:
+    // if we are computing for the last block of a period, then pindexPrev points to the second to last block of the period, and
+    // if we are computing for the first block of a period, then pindexPrev points to the last block of the previous period.
+    // The parent of the genesis block is represented by NULL.
+    pindexPrev = pindexPrev->GetAncestor(pindexPrev->nHeight - ((pindexPrev->nHeight + 1) % nPeriod));
+
+    const CBlockIndex* previousPeriodParent = pindexPrev->GetAncestor(pindexPrev->nHeight - nPeriod);
+
+    while (previousPeriodParent != nullptr && GetStateFor(previousPeriodParent, params, cache) == initialState) {
+        pindexPrev = previousPeriodParent;
+        previousPeriodParent = pindexPrev->GetAncestor(pindexPrev->nHeight - nPeriod);
+    }
+
+    // Adjust the result because right now we point to the parent block.
+    return pindexPrev->nHeight + 1;
+}
+
 namespace
 {
 /**
@@ -135,6 +175,11 @@ public:
 ThresholdState VersionBitsState(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache)
 {
     return VersionBitsConditionChecker(pos).GetStateFor(pindexPrev, params, cache.caches[pos]);
+}
+
+int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache)
+{
+    return VersionBitsConditionChecker(pos).GetStateSinceHeightFor(pindexPrev, params, cache.caches[pos]);
 }
 
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos)
