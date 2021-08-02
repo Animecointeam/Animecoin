@@ -1730,8 +1730,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
 
         LOCK(cs_main);
 
-        std::vector<CInv> vToFetch;
-
         uint32_t nFetchFlags = GetFetchFlags(pfrom);
 
         for (unsigned int nInv = 0; nInv < vInv.size(); nInv++)
@@ -1791,9 +1789,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             // Track requests for our stuff
             GetMainSignals().Inventory(inv.hash);
         }
-
-        if (!vToFetch.empty())
-            connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::GETDATA, vToFetch));
     }
 
 
@@ -2874,7 +2869,7 @@ bool PeerLogicValidation::ProcessMessages(CNode* pfrom, std::atomic<bool>& inter
         return fMoreWork;
 }
 
-void PeerLogicValidation::ConsiderEviction(CNode *pto, int64_t time_in_seconds)
+void PeerLogicValidation::ConsiderEviction(CNode* pto, int64_t time_in_seconds)
 {
     AssertLockHeld(cs_main);
 

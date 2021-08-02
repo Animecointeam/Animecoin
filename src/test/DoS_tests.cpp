@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(outbound_slow_chain_eviction)
     BOOST_CHECK(dummyNode1.vSendMsg.size() > 0);
     dummyNode1.vSendMsg.clear();
 
-    int64_t nStartTime = GetTime();
+    int64_t nStartTime = Get();
     // Wait 21 minutes
     SetMockTime(nStartTime+21*60);
     peerLogic->SendMessages(&dummyNode1, interruptDummy); // should result in getheaders
@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(DoS_bantime)
     dummyNode.SetSendVersion(PROTOCOL_VERSION);
     peerLogic->InitializeNode(&dummyNode);
     dummyNode.nVersion = 1;
-    dummyNode1.fSuccessfullyConnected = true;
+    dummyNode.fSuccessfullyConnected = true;
 
     Misbehaving(dummyNode.GetId(), 100);
     peerLogic->SendMessages(&dummyNode, interruptDummy);
