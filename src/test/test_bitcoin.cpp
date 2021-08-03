@@ -31,6 +31,18 @@
 // std::unique_ptr<CConnman> g_connman;
 FastRandomContext insecure_rand_ctx;
 
+void CConnmanTest::AddNode(CNode& node)
+{
+    LOCK(g_connman->cs_vNodes);
+    g_connman->vNodes.push_back(&node);
+}
+
+void CConnmanTest::ClearNodes()
+{
+    LOCK(g_connman->cs_vNodes);
+    g_connman->vNodes.clear();
+}
+
 extern bool fPrintToConsole;
 extern void noui_connect();
 
@@ -86,7 +98,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
             threadGroup.create_thread(&ThreadScriptCheck);
         g_connman = std::unique_ptr<CConnman>(new CConnman(0x1337, 0x1337)); // Deterministic randomness for tests.
         connman = g_connman.get();
-        peerLogic.reset(new PeerLogicValidation(connman));
+        peerLogic.reset(new PeerLogicValidation(connman, scheduler));
 }
 
 TestingSetup::~TestingSetup()
