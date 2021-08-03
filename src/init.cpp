@@ -778,7 +778,7 @@ namespace { // Variables internal to initialization process only
 int nMaxConnections;
 int nUserMaxConnections;
 int nFD;
-ServiceFlags nLocalServices = NODE_NETWORK;
+ServiceFlags nLocalServices = ServiceFlags(NODE_NETWORK | NODE_NETWORK_LIMITED);
 
 }
 
@@ -1550,8 +1550,8 @@ bool AppInitMain()
     }
     if (!fAutoRequestBlocks)
     {
-        LogPrintf("Unsetting NODE_NETWORK on SPV mode\n");
-        nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
+        LogPrintf("Unsetting NODE_NETWORK and NODE_NETWORK_LIMITED on SPV mode\n");
+        nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK & ~NODE_NETWORK_LIMITED);
     }
 
     if (Params().GetConsensus().vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout != 0) {
