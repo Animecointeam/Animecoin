@@ -34,6 +34,7 @@
 #include "warnings.h"
 
 #include <atomic>
+#include <future>
 #include <sstream>
 
 #include <boost/algorithm/string/replace.hpp>
@@ -2272,11 +2273,19 @@ bool ActivateBestChain(CValidationState &state, const CChainParams& chainparams,
     // far from a guarantee. Things in the P2P/RPC will often end up calling
     // us in the middle of ProcessNewBlock - do not assume pblock is set
     // sanely for performance or correctness!
+    AssertLockNotHeld(cs_main);
 
     CBlockIndex *pindexMostWork = nullptr;
     CBlockIndex *pindexNewTip = nullptr;
     do {
         boost::this_thread::interruption_point();
+
+        if (GetMainSignals().CallbacksPending() > 10) {
+            // Block until the validation queue drains. This should largely
+            // never happen in normal operation, however may happen during
+            // reindex, causing memory blowup  if we run too far ahead.
+            SyncWithValidationInterfaceQueue();
+        }
 
         const CBlockIndex *pindexFork;
         bool fInitialDownload;
@@ -3039,7 +3048,7 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
         }
         if (fNewBlock) *fNewBlock = true;
 
-        if (!CheckBlock(block, state, chainparams.GetConsensus(), GetAdjustedTime()) ||
+        if (!CheckBlock(block, state, chainparams.GetConsensus()) ||
             !ContextualCheckBlock(block, state, pindex->pprev)) {
             if (state.IsInvalid() && !state.CorruptionPossible()) {
                 pindex->nStatus |= BLOCK_FAILED_VALID;
@@ -3104,15 +3113,22 @@ int CBlockIndex::CalcMajority(int minVersion, const CBlockIndex* pstart, const C
 
 bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<const CBlock> pblock, bool fForceProcessing, bool *fNewBlock, std::shared_ptr<CAuxiliaryBlockRequest> blockRequest)
 {
+    AssertLockNotHeld(cs_main);
     CBlockIndex *pindex = nullptr;
 
     {
-        LOCK(cs_main);
-
-        // Store to disk
         if (fNewBlock) *fNewBlock = false;
         CValidationState state;
-        bool ret = AcceptBlock(pblock, state, chainparams, &pindex, fForceProcessing, nullptr, fNewBlock, (blockRequest != nullptr));
+        // Ensure that CheckBlock() passes before calling AcceptBlock, as
+        // belt-and-suspenders.
+        bool ret = CheckBlock(*pblock, state, chainparams.GetConsensus());
+
+        LOCK(cs_main);
+
+        if (ret) {
+            // Store to disk
+            ret = AcceptBlock(pblock, state, chainparams, &pindex, fForceProcessing, nullptr, fNewBlock, (blockRequest != nullptr));
+        }
         CheckBlockIndex(chainparams.GetConsensus());
         if (!ret) {
             GetMainSignals().BlockChecked(*pblock, state);

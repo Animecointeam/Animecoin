@@ -9,9 +9,11 @@
 #include "sync.h"
 #include "txmempool.h"
 #include "util.h"
+#include <validation.h>
 
 #include <list>
 #include <atomic>
+#include <future>
 #include <utility>
 
 #include <boost/signals2/signal.hpp>
@@ -79,6 +81,11 @@ void CMainSignals::FlushBackgroundCallbacks() {
     }
 }
 
+size_t CMainSignals::CallbacksPending() {
+    if (!m_internals) return 0;
+    return m_internals->m_schedulerClient.CallbacksPending();
+}
+
 void CMainSignals::RegisterWithMempoolSignals(CTxMemPool& pool) {
     g_connNotifyEntryRemoved.emplace(std::piecewise_construct,
         std::forward_as_tuple(&pool),
@@ -126,6 +133,16 @@ void UnregisterAllValidationInterfaces() {
 
 void CallFunctionInValidationInterfaceQueue(std::function<void ()> func) {
     g_signals.m_internals->m_schedulerClient.AddToProcessQueue(std::move(func));
+}
+
+void SyncWithValidationInterfaceQueue() {
+    AssertLockNotHeld(cs_main);
+    // Block until the validation queue drains
+    std::promise<void> promise;
+    CallFunctionInValidationInterfaceQueue([&promise] {
+        promise.set_value();
+    });
+    promise.get_future().wait();
 }
 
 void CMainSignals::MempoolEntryRemoved(CTransactionRef ptx, MemPoolRemovalReason reason) {
