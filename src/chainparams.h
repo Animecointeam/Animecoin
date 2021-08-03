@@ -13,6 +13,7 @@
 #include "protocol.h"
 #include "uint256.h"
 
+#include <memory>
 #include <vector>
 
 class CDNSSeedData {
@@ -88,6 +89,7 @@ public:
     const std::vector<SeedSpec6>& FixedSeeds() const { return vFixedSeeds; }
     const CCheckpointData& Checkpoints() const { return checkpointData; }
     const ChainTxData& TxData() const { return chainTxData; }
+    void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
 protected:
     CChainParams() {}
 
@@ -115,15 +117,17 @@ protected:
 };
 
 /**
- * Return the currently selected parameters. This won't change after app startup
- * outside of the unit tests.
+ * Creates and returns a std::unique_ptr<CChainParams> of the chosen chain.
+ * @returns a CChainParams* of the chosen chain.
+ * @throws a std::runtime_error if the chain is not supported.
  */
-const CChainParams &Params();
+std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain);
 
 /**
- * @returns CChainParams for the given chain name.
+ * Return the currently selected parameters. This won't change after app
+ * startup, except for unit tests.
  */
-CChainParams& Params(const std::string& chain);
+const CChainParams &Params();
 
 /**
  * Sets the params returned by Params() to those for the given chain name.
@@ -132,8 +136,8 @@ CChainParams& Params(const std::string& chain);
 void SelectParams(const std::string& chain);
 
 /**
- * Allows modifying the BIP9 regtest parameters.
+ * Allows modifying the Version Bits regtest parameters.
  */
-void UpdateRegtestBIP9Parameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
+void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
 
 #endif // BITCOIN_CHAINPARAMS_H

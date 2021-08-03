@@ -35,7 +35,6 @@ public:
         nRPCPort = 8332;
     }
 };
-static CBaseMainParams mainParams;
 
 /**
  * Testnet (v3)
@@ -49,7 +48,6 @@ public:
         strDataDir = "testnet3";
     }
 };
-static CBaseTestNetParams testNetParams;
 
 /*
  * Regression test
@@ -62,7 +60,6 @@ public:
         strDataDir = "regtest";
     }
 };
-static CBaseRegTestParams regTestParams;
 
 /*
  * Unit test
@@ -77,24 +74,29 @@ public:
 };
 static CBaseUnitTestParams unitTestParams;
 
-static CBaseChainParams* pCurrentBaseParams = 0;
+static std::unique_ptr<CBaseChainParams> globalChainBaseParams;
 
 const CBaseChainParams& BaseParams()
 {
-    assert(pCurrentBaseParams);
-    return *pCurrentBaseParams;
+    assert(globalChainBaseParams);
+    return *globalChainBaseParams;
+}
+
+std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const std::string& chain)
+{
+    if (chain == CBaseChainParams::MAIN)
+        return std::unique_ptr<CBaseChainParams>(new CBaseMainParams());
+    else if (chain == CBaseChainParams::TESTNET)
+        return std::unique_ptr<CBaseChainParams>(new CBaseTestNetParams());
+    else if (chain == CBaseChainParams::REGTEST)
+        return std::unique_ptr<CBaseChainParams>(new CBaseRegTestParams());
+    else
+        throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
 
 void SelectBaseParams(const std::string& chain)
 {
-    if (chain == CBaseChainParams::MAIN)
-        pCurrentBaseParams = &mainParams;
-    else if (chain == CBaseChainParams::TESTNET)
-        pCurrentBaseParams = &testNetParams;
-    else if (chain == CBaseChainParams::REGTEST)
-        pCurrentBaseParams = &regTestParams;
-    else
-        throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
+    globalChainBaseParams = CreateBaseChainParams(chain);
 }
 
 std::string ChainNameFromCommandLine()
