@@ -46,6 +46,7 @@ static std::map<std::string, unsigned int> mapFlagNames = {
     {std::string("NULLDUMMY"), (unsigned int)SCRIPT_VERIFY_NULLDUMMY},
     {std::string("DISCOURAGE_UPGRADABLE_NOPS"), (unsigned int)SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS},
     {std::string("CLEANSTACK"), (unsigned int)SCRIPT_VERIFY_CLEANSTACK},
+    {std::string("MINIMALIF"), (unsigned int)SCRIPT_VERIFY_MINIMALIF},
     {std::string("CHECKLOCKTIMEVERIFY"), (unsigned int)SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY},
     {std::string("CHECKSEQUENCEVERIFY"), (unsigned int)SCRIPT_VERIFY_CHECKSEQUENCEVERIFY},
     {std::string("WITNESS"), (unsigned int)SCRIPT_VERIFY_WITNESS},
