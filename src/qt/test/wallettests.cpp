@@ -86,7 +86,6 @@ QModelIndex FindTx(const QAbstractItemModel& model, const uint256& txid)
     }
     return {};
 }
-}
 
 //! Invoke bumpfee on txid and check results.
 void BumpFee(TransactionView& view, const uint256& txid, bool expectDisabled, std::string expectError, bool cancel)
@@ -127,7 +126,7 @@ void BumpFee(TransactionView& view, const uint256& txid, bool expectDisabled, st
 //     src/qt/test/test_bitcoin-qt -platform xcb      # Linux
 //     src/qt/test/test_bitcoin-qt -platform windows  # Windows
 //     src/qt/test/test_bitcoin-qt -platform cocoa    # macOS
-void WalletTests::walletTests()
+void TestSendCoins()
 {
     // Set up wallet and chain with 105 blocks (5 mature blocks for spending).
     TestChain100Setup test;
@@ -172,4 +171,10 @@ void WalletTests::walletTests()
 
     bitdb.Flush(true);
     bitdb.Reset();
+}
+}
+
+void WalletTests::walletTests()
+{
+    TestSendCoins();
 }
