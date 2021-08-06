@@ -99,21 +99,21 @@ public:
             LOCK(wallet->cs_wallet);
             for (const std::pair<CTxDestination, CAddressBookData>& item : wallet->mapAddressBook)
             {
-                const CBitcoinAddress& address =  item.first;
-                bool fMine = IsMine(*wallet, address.Get());
-                bool fWatchOnly = (IsMine(*wallet, address.Get()) == ISMINE_WATCH_ONLY ? true : false);
+                const CTxDestination& address = item.first;
+                bool fMine = IsMine(*wallet, address);
+                bool fWatchOnly = (IsMine(*wallet, address) == ISMINE_WATCH_ONLY ? true : false);
                 AddressTableEntry::Type addressType = translateTransactionType(
                         QString::fromStdString(item.second.purpose), fMine, fWatchOnly);
                 const std::string& strName = item.second.name;
 
-                const QString balance = BitcoinUnits::format (BitcoinUnit::ANI , balance_map[address.Get()], true, BitcoinUnits::separatorAlways);
+                const QString balance = BitcoinUnits::format (BitcoinUnit::ANI , balance_map[address], true, BitcoinUnits::separatorAlways);
 
                 if (item.second.purpose == "watchonly")
                 {
                 }
                 cachedAddressTable.append(AddressTableEntry(addressType,
-                                                            QString::fromStdString(strName),
-                                  QString::fromStdString(address.ToString()), balance));
+                                  QString::fromStdString(strName),
+                                  QString::fromStdString(EncodeDestination(address)), balance));
             }
         }
         // std::lower_bound() and std::upper_bound() require our cachedAddressTable list to be sorted in asc order
@@ -284,7 +284,7 @@ bool AddressTableModel::setData(const QModelIndex &index, const QVariant &value,
     if(role == Qt::EditRole)
     {
         LOCK(wallet->cs_wallet); /* For SetAddressBook / DelAddressBook */
-        CTxDestination curAddress = CBitcoinAddress(rec->address.toStdString()).Get();
+        CTxDestination curAddress = DecodeDestination(rec->address.toStdString());
         if(index.column() == Label)
         {
             // Do nothing, if old label == new label
@@ -295,7 +295,7 @@ bool AddressTableModel::setData(const QModelIndex &index, const QVariant &value,
             }
             wallet->SetAddressBook(curAddress, value.toString().toStdString(), strPurpose);
         } else if(index.column() == Address) {
-            CTxDestination newAddress = CBitcoinAddress(value.toString().toStdString()).Get();
+            CTxDestination newAddress = DecodeDestination(value.toString().toStdString());
             // Refuse to set invalid address, set error status and return false
             if(boost::get<CNoDestination>(&newAddress))
             {
@@ -397,7 +397,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
         // Check for duplicate addresses
         {
             LOCK(wallet->cs_wallet);
-            if(wallet->mapAddressBook.count(CBitcoinAddress(strAddress).Get()))
+            if(wallet->mapAddressBook.count(DecodeDestination(strAddress)))
             {
                 editStatus = DUPLICATE_ADDRESS;
                 return QString();
@@ -423,7 +423,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
                 return QString();
             }
         }
-        strAddress = CBitcoinAddress(newKey.GetID()).ToString();
+        strAddress = EncodeDestination(newKey.GetID());
     }
     else
     {
@@ -440,7 +440,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
             strPurpose = "watchonly";
         else
             strPurpose = "receive";
-        wallet->SetAddressBook(CBitcoinAddress(strAddress).Get(), strLabel, strPurpose);
+        wallet->SetAddressBook(DecodeDestination(strAddress), strLabel, strPurpose);
     }
     return QString::fromStdString(strAddress);
 }
@@ -464,7 +464,7 @@ void AddressTableModel::saveReceiveScript(CScript script, CScriptID scriptID, QS
         LOCK(wallet->cs_wallet);
         wallet->AddCScript (script);
         const int64_t now = GetTime();
-        wallet->AddWatchOnly (GetScriptForDestination(CBitcoinAddress(script).Get()), now);
+        wallet->AddWatchOnly (GetScriptForDestination(scriptID), now);
         wallet->SetAddressBook(scriptID, label.toStdString(), "receive");
     }
 }
@@ -481,25 +481,20 @@ bool AddressTableModel::removeRows(int row, int count, const QModelIndex &parent
     }
     {
         LOCK(wallet->cs_wallet);
-        wallet->DelAddressBook(CBitcoinAddress(rec->address.toStdString()).Get());
+        wallet->DelAddressBook(DecodeDestination(rec->address.toStdString()));
     }
     return true;
 }
 
 /* Look up label for address in address book, if not found return empty string.
  */
-QString AddressTableModel::labelForAddress(const QString &address) const
+QString AddressTableModel::labelForAddress(const QString& address) const
 {
-    CBitcoinAddress address_parsed(address.toStdString());
-    return labelForAddress(address_parsed);
+    CTxDestination destination = DecodeDestination(address.toStdString());
+    return labelForDestination(destination);
 }
 
-QString AddressTableModel::labelForAddress(const CBitcoinAddress &address) const
-{
-    return labelForDestination(address.Get());
-}
-
-QString AddressTableModel::labelForDestination(const CTxDestination &dest) const
+QString AddressTableModel::labelForDestination(const CTxDestination& dest) const
 {
     {
         LOCK(wallet->cs_wallet);

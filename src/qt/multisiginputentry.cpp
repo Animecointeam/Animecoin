@@ -180,7 +180,7 @@ void MultisigInputEntry::on_contractAddress_textChanged(const QString& address_i
                         continue;
                     if (pwallet->IsSpent(walletEntry.first, i))
                         continue;
-                    QString addressStr = QString::fromStdString(CBitcoinAddress(addr).ToString());
+                    QString addressStr = QString::fromStdString(EncodeDestination(addr));
                     if (addressStr == address_input)
                     {
                         fitting = true;
@@ -224,8 +224,7 @@ void MultisigInputEntry::on_transactionIdBox_currentIndexChanged(const QString& 
         CTxDestination addr;
         if(ExtractDestination(script, addr))
         {
-            CBitcoinAddress address(addr);
-            QString addressStr(address.ToString().c_str());
+            QString addressStr(QString::fromStdString(EncodeDestination(addr)));
             ui->transactionOutput->addItem(idStr + QString(" - ") + addressStr + QString(" - ") + amountStr + "ANI");
         }
         else

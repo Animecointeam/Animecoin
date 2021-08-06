@@ -53,7 +53,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 {
                     // Received by Bitcoin Address
                     sub.type = TransactionRecord::RecvWithAddress;
-                    sub.strAddress = CBitcoinAddress(address).ToString();
+                    sub.strAddress = EncodeDestination(address);
                 }
                 else
                 {
@@ -67,8 +67,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     sub.type = TransactionRecord::Generated;
                 }
 
-                sub.address.SetString(sub.strAddress);
-                sub.txDest = sub.address.Get();
+                sub.txDest = DecodeDestination(sub.strAddress);
                 parts.append(sub);
             }
         }
@@ -127,7 +126,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 {
                     // Sent to Bitcoin Address
                     sub.type = TransactionRecord::SendToAddress;
-                    sub.strAddress = CBitcoinAddress(address).ToString();
+                    sub.strAddress = EncodeDestination(address);
                 }
                 else
                 {
@@ -145,8 +144,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 }
                 sub.debit = -nValue;
 
-                sub.address.SetString(sub.strAddress);
-                sub.txDest = sub.address.Get();
+                sub.txDest = DecodeDestination(sub.strAddress);
 
                 parts.append(sub);
             }

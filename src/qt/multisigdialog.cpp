@@ -209,9 +209,9 @@ void MultisigDialog::on_createAddressButton_clicked()
 
     CScript script = GetScriptForMultisig (required, pubkeys);
     CScriptID scriptID (script);
-    CBitcoinAddress address(scriptID);
+    CTxDestination dest = scriptID;
 
-    ui->multisigAddress->setText(address.ToString().c_str());
+    ui->multisigAddress->setText(QString::fromStdString(EncodeDestination(dest)));
     ui->redeemScript->setText(HexStr(script.begin(), script.end()).c_str());
 }
 
@@ -259,8 +259,8 @@ void MultisigDialog::on_saveMultisigAddressButton_clicked()
     LOCK(pwallet->cs_wallet);
     if(!pwallet->HaveCScript(scriptID))
         pwallet->AddCScript(script);
-    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
-        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+    if(!pwallet->mapAddressBook.count(DecodeDestination(address)))
+        pwallet->SetAddressBook(DecodeDestination(address), label, "watchonly");
 }
 
 void MultisigDialog::clear()
@@ -368,8 +368,7 @@ void MultisigDialog::on_createTransactionButton_clicked()
             if(entry->validate())
             {
                 SendCoinsRecipient recipient = entry->getValue();
-                CBitcoinAddress address(recipient.address.toStdString());
-                CScript scriptPubKey = GetScriptForDestination (address.Get());
+                CScript scriptPubKey = GetScriptForDestination (DecodeDestination (recipient.address.toStdString()));
                 CAmount amount = recipient.amount;
                 CTxOut output(amount, scriptPubKey);
                 transaction.vout.push_back(output);
@@ -458,7 +457,7 @@ void MultisigDialog::on_transaction_textChanged()
                             CTxDestination dest;
                             if(ExtractDestination(script, dest))
                             {
-                                QString addressStr = QString::fromStdString(CBitcoinAddress(dest).ToString());
+                                QString addressStr = QString::fromStdString(EncodeDestination(dest));
                                 entry->setAddress(addressStr);
                             }
                         }
@@ -477,8 +476,7 @@ void MultisigDialog::on_transaction_textChanged()
             CScript scriptPubKey = txout.scriptPubKey;
             CTxDestination addr;
             ExtractDestination(scriptPubKey, addr);
-            CBitcoinAddress address(addr);
-            if (IsMine(*pwallet, address.Get()) == ISMINE_SPENDABLE)
+            if (IsMine(*pwallet, addr) == ISMINE_SPENDABLE)
             {
                 ui->infoLabel->setText(ui->infoLabel->text()+"your address ");
             }
@@ -488,7 +486,7 @@ void MultisigDialog::on_transaction_textChanged()
             }
 
             SendCoinsRecipient recipient;
-            recipient.address = QString(address.ToString().c_str());
+            recipient.address = QString::fromStdString(EncodeDestination(addr));
             recipient.amount = txout.nValue;
             addOutput();
             index++;
@@ -850,9 +848,9 @@ void MultisigDialog::on_createContractButton_clicked()
 
     CScript script = GetScriptForEscrowCLTV (pubkeys, ui->lockTimeBox->value(), 0);
     CScriptID scriptID (script);
-    CBitcoinAddress address(scriptID);
+    CTxDestination dest = scriptID;
 
-    ui->addressLine->setText(address.ToString().c_str());
+    ui->addressLine->setText(QString::fromStdString(EncodeDestination(dest)));
     ui->scriptLine->setText(HexStr(script.begin(), script.end()).c_str());
 }
 
@@ -887,11 +885,11 @@ void MultisigDialog::on_saveContractButton_clicked()
     LOCK(pwallet->cs_wallet);
     if(!pwallet->HaveCScript(scriptID))
         pwallet->AddCScript(script);
-    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    if(!pwallet->mapAddressBook.count(DecodeDestination(address)))
     {
-        CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
-        ImportScript(pwallet, script, label, false);
-        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+        CScript _script = GetScriptForDestination(DecodeDestination(address));
+        ImportScript(pwallet, _script, label, false);
+        pwallet->SetAddressBook(DecodeDestination(address), label, "watchonly");
     }
 }
 
@@ -941,12 +939,12 @@ void MultisigDialog::on_scriptEdit_textChanged()
         ui->typeLabel->setText(tr("This script is valid but not of a standard type."));
     }
     CScriptID scriptID (script);
-    CBitcoinAddress address(scriptID);
+    CTxDestination dest = scriptID;
 
-    if(!model->validateAddress(QString(address.ToString().c_str())))
+    if(!model->validateAddress(QString::fromStdString(EncodeDestination(dest))))
         ui->addressLabel_2->setText ("Address: invalid address!");
     else
-        ui->addressLabel_2->setText ("Address: " + QString::fromStdString (address.ToString ()));
+        ui->addressLabel_2->setText ("Address: " + QString::fromStdString(EncodeDestination(dest)));
 }
 
 void MultisigDialog::on_importContractButton_clicked()
@@ -960,19 +958,19 @@ void MultisigDialog::on_importContractButton_clicked()
     std::vector<unsigned char> scriptData(ParseHex(redeemScript));
     CScript script(scriptData.begin(), scriptData.end());
     CScriptID scriptID (script);
-    CBitcoinAddress address(scriptID);
+    CTxDestination dest = scriptID;
 
-    if(!model->validateAddress(QString(address.ToString().c_str())))
+    if(!model->validateAddress(QString::fromStdString(EncodeDestination(dest))))
         return;
 
     LOCK(pwallet->cs_wallet);
     if(!pwallet->HaveCScript(scriptID))
         pwallet->AddCScript(script);
-    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    if(!pwallet->mapAddressBook.count(dest))
     {
-        CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
+        CScript script = GetScriptForDestination(dest);
         ImportScript(pwallet, script, label, false);
-        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+        pwallet->SetAddressBook(dest, label, "watchonly");
     }
 }
 
@@ -991,15 +989,16 @@ void MultisigDialog::on_saveHTLCButton_clicked()
     std::vector<unsigned char> scriptData(ParseHex(redeemScript));
     CScript script(scriptData.begin(), scriptData.end());
     CScriptID scriptID (script);
+    CTxDestination dest = scriptID;
 
     LOCK(pwallet->cs_wallet);
     if(!pwallet->HaveCScript(scriptID))
         pwallet->AddCScript(script);
-    if(!pwallet->mapAddressBook.count(CBitcoinAddress(address).Get()))
+    if(!pwallet->mapAddressBook.count(dest))
     {
-        CScript script = GetScriptForDestination(CBitcoinAddress(address).Get());
+        CScript script = GetScriptForDestination(dest);
         ImportScript(pwallet, script, label, false);
-        pwallet->SetAddressBook(CBitcoinAddress(address).Get(), label, "watchonly");
+        pwallet->SetAddressBook(dest, label, "watchonly");
     }
 }
 
@@ -1083,9 +1082,9 @@ void MultisigDialog::on_createHTLCButton_clicked()
 
     CScript script = GetScriptForHTLC(pubkeys[0], pubkeys[1], image, ui->lockTimeBoxHTLC->value(), hasher, OP_CHECKLOCKTIMEVERIFY);
     CScriptID scriptID (script);
-    CBitcoinAddress address(scriptID);
+    CTxDestination dest = scriptID;
 
-    ui->addressLineHTLC->setText(address.ToString().c_str());
+    ui->addressLineHTLC->setText(QString::fromStdString(EncodeDestination(dest)));
     ui->scriptLineHTLC->setText(HexStr(script.begin(), script.end()).c_str());
 }
 

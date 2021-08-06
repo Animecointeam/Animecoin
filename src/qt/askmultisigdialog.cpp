@@ -123,14 +123,13 @@ QString AskMultisigDialog::generateAddress(QString label)
                     strprintf("redeemScript exceeds size limit: %d > %d", script.size(), MAX_SCRIPT_ELEMENT_SIZE)
             );
         CScriptID scriptID(script);
-        CBitcoinAddress address(scriptID);
         _redeemScript = QString::fromStdString(HexStr(script.begin(), script.end()));
         if(_redeemScript.isEmpty())
             throw std::runtime_error("Invalid redeem script.");
 
         // Save
         model->saveReceiveScript(script, scriptID, _label);
-        return QString::fromStdString(address.ToString());
+        return QString::fromStdString(EncodeDestination(scriptID));
     } catch (std::runtime_error& err) {
         QMessageBox::critical(this, QString("Error generating multisig"), QString(err.what()));
 
