@@ -2856,7 +2856,11 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 }
 
                 bool fOnlyValidatedInputs = true;
-
+                for (const auto& pcoin : setCoins)
+                {
+                    if (!mapWallet[pcoin.txout.GetHash()].fValidated)
+                        fOnlyValidatedInputs = false;
+                }
                 // make sure the new txes validation state reflects the used inputs validation state
                 wtxNew.fValidated = fOnlyValidatedInputs;
 
@@ -4424,7 +4428,7 @@ int CMerkleTx::GetDepthInMainChain(const CBlockIndex* &pindexRet) const
     if (mi == mapBlockIndex.end())
         return 0;
     CBlockIndex* pindex = (*mi).second;
-    CChain *chainToUse = (fValidated ? &chainActive : &headersChainActive);
+    CChain* chainToUse = (fValidated ? &chainActive : &headersChainActive);
     if (!pindex || !chainToUse->Contains(pindex))
         return 0;
 
