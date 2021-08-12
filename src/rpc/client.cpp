@@ -134,6 +134,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "requestblocks", 2, "pass-internally" },
     { "setautorequestblocks", 0, "state" },
     { "setspv", 0, "state" },
+    { "addwitnessaddress", 1, "p2sh" },
     // Echo with conversion (For testing only)
     { "echojson", 0, "arg0" },
     { "echojson", 1, "arg1" },
