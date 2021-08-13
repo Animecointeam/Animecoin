@@ -100,6 +100,18 @@ enum WalletFeature
     FEATURE_LATEST = FEATURE_PRE_SPLIT_KEYPOOL
 };
 
+enum OutputType
+{
+    OUTPUT_TYPE_NONE,
+    OUTPUT_TYPE_LEGACY,
+    OUTPUT_TYPE_P2SH_SEGWIT,
+    OUTPUT_TYPE_BECH32,
+
+    OUTPUT_TYPE_DEFAULT = OUTPUT_TYPE_P2SH_SEGWIT
+};
+
+extern OutputType g_address_type;
+extern OutputType g_change_type;
 
 /** A key pool entry */
 class CKeyPool
@@ -953,7 +965,7 @@ public:
     int64_t IncOrderPosNext(CWalletDB *pwalletdb = nullptr);
     DBErrors ReorderTransactions();
     bool AccountMove(std::string strFrom, std::string strTo, CAmount nAmount, std::string strComment = "");
-    bool GetAccountPubkey(CPubKey &pubKey, std::string strAccount, bool bForceNew = false);
+    bool GetAccountDestination(CTxDestination &dest, std::string strAccount, bool bForceNew = false);
 
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose=true);
@@ -1183,6 +1195,26 @@ public:
      */
     void BlockUntilSyncedToCurrentChain();
 
+    /**
+     * Explicitly make the wallet learn the related scripts for outputs to the
+     * given key. This is purely to make the wallet file compatible with older
+     * software, as CBasicKeyStore automatically does this implicitly for all
+     * keys now.
+     */
+    void LearnRelatedScripts(const CPubKey& key, OutputType);
+
+    /**
+     * Same as LearnRelatedScripts, but when the OutputType is not known (and could
+     * be anything).
+     */
+    void LearnAllRelatedScripts(const CPubKey& key);
+
+    /**
+     * Get a destination of the requested type (if possible) to the specified script.
+     * This function will automatically add the necessary scripts to the wallet.
+     */
+    CTxDestination AddAndGetDestinationForScript(const CScript& script, OutputType);
+
     /** Whether a given output is spendable by this wallet */
     bool OutputEligibleForSpending(const COutput& output, const CoinEligibilityFilter& eligibilty_filter) const;
 };
@@ -1251,5 +1283,17 @@ public:
 // be IsAllFromMe).
 int64_t CalculateMaximumSignedTxSize(const CTransaction &tx, const CWallet *wallet);
 int64_t CalculateMaximumSignedTxSize(const CTransaction &tx, const CWallet *wallet, const std::vector<CTxOut>& txouts);
+
+OutputType ParseOutputType(const std::string& str, OutputType default_type = OUTPUT_TYPE_DEFAULT);
+const std::string& FormatOutputType(OutputType type);
+
+/**
+ * Get a destination of the requested type (if possible) to the specified key.
+ * The caller must make sure LearnRelatedScripts has been called beforehand.
+ */
+CTxDestination GetDestinationForKey(const CPubKey& key, OutputType);
+
+/** Get all destinations (potentially) supported by the wallet for the given key. */
+std::vector<CTxDestination> GetAllDestinationsForKey(const CPubKey& key);
 
 #endif // BITCOIN_WALLET_H

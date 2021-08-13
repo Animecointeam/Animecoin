@@ -122,14 +122,15 @@ UniValue getnewaddress(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() > 1)
+    if (request.fHelp || request.params.size() > 2)
         throw std::runtime_error(
-                "getnewaddress ( \"account\" )\n"
+                "getnewaddress ( \"account\" \"address_type\" )\n"
                 "\nReturns a new Animecoin address for receiving payments.\n"
                 "If 'account' is specified (recommended), it is added to the address book \n"
                 "so payments received with the address will be credited to 'account'.\n"
                 "\nArguments:\n"
                 "1. \"account\"        (string, optional) The account name for the address to be linked to. if not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
+                "2. \"address_type\"   (string, optional) The address type to use. Options are \"legacy\", \"p2sh\", and \"bech32\". Default is set by -addresstype.\n"
                 "\nResult:\n"
                 "\"address\"    (string) The new animecoin address\n"
                 "\nExamples:\n"
@@ -146,6 +147,14 @@ UniValue getnewaddress(const JSONRPCRequest& request)
     if (!request.params[0].isNull())
         strAccount = AccountFromValue(request.params[0]);
 
+    OutputType output_type = g_address_type;
+    if (!request.params[1].isNull()) {
+        output_type = ParseOutputType(request.params[1].get_str(), g_address_type);
+        if (output_type == OUTPUT_TYPE_NONE) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[1].get_str()));
+        }
+    }
+
     if (!pwallet->IsLocked()) {
         pwallet->TopUpKeyPool();
     }
@@ -155,22 +164,23 @@ UniValue getnewaddress(const JSONRPCRequest& request)
     if (!pwallet->GetKeyFromPool(newKey)) {
         throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
     }
-    CKeyID keyID = newKey.GetID();
+    pwallet->LearnRelatedScripts(newKey, output_type);
+    CTxDestination dest = GetDestinationForKey(newKey, output_type);
 
-    pwallet->SetAddressBook(keyID, strAccount, "receive");
+    pwallet->SetAddressBook(dest, strAccount, "receive");
 
-    return EncodeDestination(keyID);
+    return EncodeDestination(dest);
 }
 
 
-CTxDestination  GetAccountAddress(CWallet* const pwallet, std::string strAccount, bool bForceNew=false)
+CTxDestination GetAccountDestination(CWallet* const pwallet, std::string strAccount, bool bForceNew=false)
 {
-    CPubKey pubKey;
-    if (!pwallet->GetAccountPubkey(pubKey, strAccount, bForceNew)) {
+    CTxDestination dest;
+    if (!pwallet->GetAccountDestination(dest, strAccount, bForceNew)) {
         throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
     }
 
-    return pubKey.GetID();
+    return dest;
 }
 
 UniValue getaccountaddress(const JSONRPCRequest& request)
@@ -202,7 +212,7 @@ UniValue getaccountaddress(const JSONRPCRequest& request)
 
     UniValue ret(UniValue::VSTR);
 
-    ret = EncodeDestination(GetAccountAddress(pwallet, strAccount));
+    ret = EncodeDestination(GetAccountDestination(pwallet, strAccount));
     return ret;
 }
 
@@ -214,11 +224,13 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() > 0)
+    if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
-            "getrawchangeaddress\n"
+            "getrawchangeaddress ( \"address_type\" )\n"
             "\nReturns a new Animecoin address, for receiving change.\n"
             "This is for use with raw transactions, NOT normal use.\n"
+            "\nArguments:\n"
+            "1. \"address_type\"           (string, optional) The address type to use. Options are \"legacy\", \"p2sh\", and \"bech32\". Default is set by -changetype.\n"
             "\nResult:\n"
             "\"address\"    (string) The address\n"
             "\nExamples:\n"
@@ -232,6 +244,14 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
         pwallet->TopUpKeyPool();
     }
 
+    OutputType output_type = g_change_type;
+    if (!request.params[0].isNull()) {
+        output_type = ParseOutputType(request.params[0].get_str(), g_change_type);
+        if (output_type == OUTPUT_TYPE_NONE) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[0].get_str()));
+        }
+    }
+
     CReserveKey reservekey(pwallet);
     CPubKey vchPubKey;
     if (!reservekey.GetReservedKey(vchPubKey, true))
@@ -239,9 +259,10 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
 
     reservekey.KeepKey();
 
-    CKeyID keyID = vchPubKey.GetID();
+    pwallet->LearnRelatedScripts(vchPubKey, output_type);
+    CTxDestination dest = GetDestinationForKey(vchPubKey, output_type);
 
-    return EncodeDestination(keyID);
+    return EncodeDestination(dest);
 }
 
 
@@ -280,8 +301,8 @@ UniValue setaccount(const JSONRPCRequest& request)
         // Detect when changing the account of an address that is the 'unused current key' of another account:
         if (pwallet->mapAddressBook.count(dest)) {
             std::string strOldAccount = pwallet->mapAddressBook[dest].name;
-            if (dest == GetAccountAddress(pwallet, strOldAccount)) {
-                GetAccountAddress(pwallet, strOldAccount, true);
+            if (dest == GetAccountDestination(pwallet, strOldAccount)) {
+                GetAccountDestination(pwallet, strOldAccount, true);
             }
         }
         pwallet->SetAddressBook(dest, strAccount, "receive");
@@ -1109,7 +1130,7 @@ extern CScript _createmultisig_redeemScript(CWallet * const pwallet, const UniVa
 
 UniValue addmultisigaddress(const JSONRPCRequest& request)
 {
-    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
         return NullUniValue;
     }
@@ -1172,11 +1193,12 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
 
     // Construct using pay-to-script-hash:
     CScript inner = _createmultisig_redeemScript(pwallet, request.params, options);
-    CScriptID innerID(inner);
     pwallet->AddCScript(inner);
 
-    pwallet->SetAddressBook(innerID, strAccount, "send");
-    return EncodeDestination(innerID);
+    CTxDestination dest = pwallet->AddAndGetDestinationForScript(inner, g_address_type);
+
+    pwallet->SetAddressBook(dest, strAccount, "send");
+    return EncodeDestination(dest);
 }
 
 class Witnessifier : public boost::static_visitor<bool>
@@ -1193,12 +1215,7 @@ public:
         if (pwallet) {
             CScript basescript = GetScriptForDestination(keyID);
             CScript witscript = GetScriptForWitness(basescript);
-            SignatureData sigs;
-            // This check is to make sure that the script we created can actually be solved for and signed by us
-            // if we were to have the private keys. This is just to make sure that the script is valid and that,
-            // if found in a transaction, we would still accept and relay that transcation.
-            if (!ProduceSignature(DummySignatureCreator(pwallet), witscript, sigs, 1) ||
-                !VerifyScript(sigs.scriptSig, witscript, &sigs.scriptWitness, MANDATORY_SCRIPT_VERIFY_FLAGS | SCRIPT_VERIFY_WITNESS_PUBKEYTYPE, DummySignatureCreator(pwallet).Checker())) {
+            if (!IsSolvable(*pwallet, witscript)) {
                 return false;
             }
             return ExtractDestination(witscript, result);
@@ -1217,12 +1234,7 @@ public:
                 return true;
             }
             CScript witscript = GetScriptForWitness(subscript);
-            SignatureData sigs;
-            // This check is to make sure that the script we created can actually be solved for and signed by us
-            // if we were to have the private keys. This is just to make sure that the script is valid and that,
-            // if found in a transaction, we would still accept and relay that transcation.
-            if (!ProduceSignature(DummySignatureCreator(pwallet), witscript, sigs, 1) ||
-                !VerifyScript(sigs.scriptSig, witscript, &sigs.scriptWitness, MANDATORY_SCRIPT_VERIFY_FLAGS | SCRIPT_VERIFY_WITNESS_PUBKEYTYPE, DummySignatureCreator(pwallet).Checker())) {
+            if (!IsSolvable(*pwallet, witscript)) {
                 return false;
             }
             return ExtractDestination(witscript, result);
@@ -1305,7 +1317,7 @@ UniValue addwitnessaddress(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_WALLET_ERROR, "Cannot convert between witness address types");
         }
     } else {
-        pwallet->AddCScript(witprogram);
+        pwallet->AddCScript(witprogram); // Implicit for single-key now, but necessary for multisig and for compatibility with older software
         pwallet->SetAddressBook(w.result, "", "receive");
     }
 
@@ -3519,8 +3531,8 @@ static const CRPCCommand commands[] =
   { "wallet",             "getaccount",               &getaccount,               {"address"} },
   { "wallet",             "getaddressesbyaccount",    &getaddressesbyaccount,    {"account"} },
   { "wallet",             "getbalance",               &getbalance,               {"account","minconf","include_watchonly"} },
-  { "wallet",             "getnewaddress",            &getnewaddress,            {"account"} },
-  { "wallet",             "getrawchangeaddress",      &getrawchangeaddress,      {} },
+  { "wallet",             "getnewaddress",            &getnewaddress,            {"account","address_type"} },
+  { "wallet",             "getrawchangeaddress",      &getrawchangeaddress,      {"address_type"} },
   { "wallet",             "getreceivedbyaccount",     &getreceivedbyaccount,     {"account","minconf"} },
   { "wallet",             "getreceivedbyaddress",     &getreceivedbyaddress,     {"address","minconf"} },
   { "wallet",             "gettransaction",           &gettransaction,           {"txid","include_watchonly"} },

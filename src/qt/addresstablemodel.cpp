@@ -379,7 +379,7 @@ void AddressTableModel::updateEntry(const QString &address,
     priv->updateEntry(address, label, isMine, watchOnly, purpose, status, balance);
 }
 
-QString AddressTableModel::addRow(const QString &type, const QString &label, const QString &address, const QString& balance)
+QString AddressTableModel::addRow(const QString& type, const QString& label, const QString& address, const QString& balance)
 {
     std::string strLabel = label.toStdString();
     std::string strAddress = address.toStdString();
@@ -423,7 +423,8 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
                 return QString();
             }
         }
-        strAddress = EncodeDestination(newKey.GetID());
+        wallet->LearnRelatedScripts(newKey, g_address_type);
+        strAddress = EncodeDestination(GetDestinationForKey(newKey, g_address_type));
     }
     else
     {

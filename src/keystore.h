@@ -73,6 +73,8 @@ protected:
     WatchOnlySet setWatchOnly;
     PreimageMap mapPreimages;
 
+    void ImplicitlyLearnRelatedKeyScripts(const CPubKey& pubkey);
+
 public:
     bool AddKeyPubKey(const CKey& key, const CPubKey &pubkey) override;
     bool GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const override;
@@ -136,5 +138,8 @@ typedef std::map<CKeyID, std::pair<CPubKey, std::vector<unsigned char> > > Crypt
 
 /** Checks if a CKey is in the given CKeyStore compressed or otherwise*/
 bool HaveKey(const CKeyStore& store, const CKey& key);
+
+/** Return the CKeyID of the key involved in a script (if there is a unique one). */
+CKeyID GetKeyForDestination(const CKeyStore& store, const CTxDestination& dest);
 
 #endif // BITCOIN_KEYSTORE_H
