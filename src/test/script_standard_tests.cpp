@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(script_standard_ExtractDestination)
     // TX_WITNESS_V0_SCRIPTHASH
     s.clear();
     WitnessV0ScriptHash scripthash;
-    CSHA256().Write(redeemScript.data(), redeemScript.size()).Finalize(scripthash.begin());
+    CSHA256().Write((const unsigned char*)&redeemScript, redeemScript.size()).Finalize(scripthash.begin());
     s << OP_0 << ToByteVector(scripthash);
     BOOST_CHECK(ExtractDestination(s, address));
     BOOST_CHECK(boost::get<WitnessV0ScriptHash>(&address) && *boost::get<WitnessV0ScriptHash>(&address) == scripthash);
