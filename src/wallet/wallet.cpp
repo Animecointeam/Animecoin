@@ -1612,7 +1612,7 @@ bool CWallet::DummySignInput(CTxIn &tx_in, const CTxOut &txout) const
     const CScript& scriptPubKey = txout.scriptPubKey;
     SignatureData sigdata;
 
-    if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, sigdata, 1))
+    if (!ProduceSignature(*this, DUMMY_SIGNATURE_CREATOR, scriptPubKey, sigdata, 1))
     {
         return false;
     } else {
@@ -2599,7 +2599,7 @@ bool CWallet::SignTransaction(CMutableTransaction &tx)
         const CScript& scriptPubKey = mi->second.tx->vout[input.prevout.n].scriptPubKey;
         const CAmount& amount = mi->second.tx->vout[input.prevout.n].nValue;
         SignatureData sigdata;
-        if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, amount, SIGHASH_ALL), scriptPubKey, sigdata, 1)) {
+        if (!ProduceSignature(*this, TransactionSignatureCreator(&txNewConst, nIn, amount, SIGHASH_ALL), scriptPubKey, sigdata, 1)) {
             return false;
         }
         UpdateInput(input, sigdata);
@@ -3008,7 +3008,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
             {
                 const CScript& scriptPubKey = coin.txout.scriptPubKey;
                 SignatureData sigdata;
-                if (!ProduceSignature(TransactionSignatureCreator(this, &txNewConst, nIn, coin.txout.nValue, SIGHASH_ALL), scriptPubKey, sigdata, 1))
+                if (!ProduceSignature(*this, TransactionSignatureCreator(&txNewConst, nIn, coin.txout.nValue, SIGHASH_ALL), scriptPubKey, sigdata, 1))
                 {
                     strFailReason = _("Signing transaction failed");
                     return false;

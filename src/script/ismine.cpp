@@ -169,7 +169,7 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& 
         // TODO: This could be optimized some by doing some work after the above solver
         SignatureData sigs;
         // Assume default non-refund route.
-        return ProduceSignature(DummySignatureCreator(&keystore), scriptPubKey, sigs, 1) ? ISMINE_WATCH_SOLVABLE : ISMINE_WATCH_UNSOLVABLE;
+        return ProduceSignature(keystore, DUMMY_SIGNATURE_CREATOR, scriptPubKey, sigs, 1) ? ISMINE_WATCH_SOLVABLE : ISMINE_WATCH_UNSOLVABLE;
     }
 
     return ISMINE_NO;
