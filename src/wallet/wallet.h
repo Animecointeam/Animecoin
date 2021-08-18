@@ -506,10 +506,10 @@ public:
     int nDepth;
 
     /** Whether we have the private keys to spend this output */
-    bool fMaybeSpendable;
+    bool fSpendable;
 
     /** Whether we know how to spend this output, ignoring the lack of keys */
-    bool fMaybeSolvable;
+    bool fSolvable;
 
     /** Pre-computed estimated size of this output as a fully-signed input in a transaction. Can be -1 if it could not be calculated */
     int nInputBytes;
@@ -523,21 +523,15 @@ public:
 
     COutput(const CWalletTx *txIn, int iIn, int nDepthIn, bool fSpendableIn, bool fSolvableIn, bool fSafeIn)
     {
-        tx = txIn; i = iIn; nDepth = nDepthIn; fMaybeSpendable = fSpendableIn; fMaybeSolvable = fSolvableIn; fSafe = fSafeIn; nInputBytes = -1;
+        tx = txIn; i = iIn; nDepth = nDepthIn; fSpendable = fSpendableIn; fSolvable = fSolvableIn; fSafe = fSafeIn; nInputBytes = -1;
         // If known and signable by the given wallet, compute nInputBytes
         // Failure will keep this value -1
-        if (fMaybeSpendable && tx) {
+        if (fSpendable && tx) {
             nInputBytes = tx->GetSpendSize(i);
         }
     }
 
     std::string ToString() const;
-
-    bool IsMature(int nBlockHeight, int64_t nBlockTime, const CKeyStore& keystore) const;
-    bool IsSpendableAt(int nBlockHeight, int64_t nBlockTime, const CKeyStore& keystore) const;
-    bool IsSpendableAfter(const CBlockIndex& blockindex, const CKeyStore& keystore) const;
-    bool IsSolvableAt(int nBlockHeight, int64_t nBlockTime, const CKeyStore& keystore) const;
-    bool IsSolvableAfter(const CBlockIndex& blockindex, const CKeyStore& keystore) const;
 };
 
 

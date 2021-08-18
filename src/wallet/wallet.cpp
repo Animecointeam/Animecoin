@@ -108,60 +108,6 @@ std::string COutput::ToString() const
     return strprintf("COutput(%s, %d, %d) [%s]", tx->GetHash().ToString(), i, nDepth, FormatMoney(tx->tx->vout[i].nValue));
 }
 
-bool COutput::IsMature(int nBlockHeight, int64_t nBlockTime, const CKeyStore& keystore) const
-{
-    if (!IsFinalTx(*tx, nBlockHeight, nBlockTime)) {
-        return false;
-    }
-
-    const CScript& script = tx->tx->vout[i].scriptPubKey;
-    bool failure;
-    int64_t cltv_height, cltv_time;
-    if (IsSimpleCLTV(script, failure, cltv_height, cltv_time, keystore)) {
-        if (cltv_height && nBlockHeight < cltv_height) {
-            return false;
-        }
-        if (cltv_time /* && nBlockTime < cltv_time */) {
-            // SelectCoins & FundTransaction need to be taught how to deal with this first
-            return false;
-        }
-    } else if (failure) {
-        return false;
-    }
-
-    return true;
-}
-
-bool COutput::IsSpendableAt(int nBlockHeight, int64_t nBlockTime, const CKeyStore& keystore) const
-{
-    if (!fMaybeSpendable) {
-        return false;
-    }
-    if (!IsMature(nBlockHeight, nBlockTime, keystore)) {
-        return false;
-    }
-    return true;
-}
-
-bool COutput::IsSpendableAfter(const CBlockIndex& blockindex, const CKeyStore& keystore) const {
-    return IsSpendableAt(blockindex.nHeight + 1, blockindex.GetMedianTimePast(), keystore);
-}
-
-bool COutput::IsSolvableAt(int nBlockHeight, int64_t nBlockTime, const CKeyStore& keystore) const
-{
-    if (!fMaybeSolvable) {
-        return false;
-    }
-    if (!IsMature(nBlockHeight, nBlockTime, keystore)) {
-        return false;
-    }
-    return true;
-}
-
-bool COutput::IsSolvableAfter(const CBlockIndex& blockindex, const CKeyStore& keystore) const {
-    return IsSolvableAt(blockindex.nHeight + 1, blockindex.GetMedianTimePast(), keystore);
-}
-
 class CAffectedKeysVisitor : public boost::static_visitor<void> {
 private:
     const CKeyStore &keystore;
@@ -2349,7 +2295,7 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
     std::vector<COutput> vCoins;
     AvailableCoins(vCoins, true, coinControl);
     for (const COutput& out : vCoins) {
-        if (out.IsSpendableAfter(*chainActive.Tip(), *this)) {
+        if (out.fSpendable) {
             balance += out.tx->tx->vout[out.i].nValue;
         }
     }
@@ -2454,7 +2400,7 @@ std::map<CTxDestination, std::vector<COutput>> CWallet::ListCoins() const
     LOCK2(cs_main, cs_wallet);
     for (auto& coin : availableCoins) {
         CTxDestination address;
-        if (coin.IsSpendableAfter(*chainActive.Tip(), *this) &&
+        if (coin.fSpendable &&
             ExtractDestination(FindNonChangeParentOutput(*coin.tx->tx, coin.i).scriptPubKey, address)) {
             result[address].emplace_back(std::move(coin));
         }
@@ -2499,7 +2445,7 @@ const CTxOut& CWallet::FindNonChangeParentOutput(const CTransaction& tx, int out
 
 bool CWallet::OutputEligibleForSpending(const COutput& output, const CoinEligibilityFilter& eligibilty_filter) const
 {
-    if (!output.fMaybeSpendable)
+    if (!output.fSpendable)
         return false;
 
     if (output.nDepth < (output.tx->IsFromMe(ISMINE_ALL) ? eligibilty_filter.conf_mine : eligibilty_filter.conf_theirs))
@@ -2574,7 +2520,7 @@ bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAm
 
         for (const COutput& out : vCoins)
         {
-            if (!out.IsSpendableAfter(*chainActive.Tip(), *this))
+            if (!out.fSpendable)
                  continue;
             nValueRet += out.tx->tx->vout[out.i].nValue;
             setCoinsRet.insert(CInputCoin(out.tx->tx, out.i));

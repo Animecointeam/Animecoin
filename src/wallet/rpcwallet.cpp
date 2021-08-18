@@ -2872,8 +2872,8 @@ UniValue listunspent(const JSONRPCRequest& request)
         entry.pushKV("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
         entry.pushKV("amount", ValueFromAmount(out.tx->tx->vout[out.i].nValue));
         entry.pushKV("confirmations", out.nDepth);
-        entry.pushKV("spendable", out.IsSpendableAfter(*chainActive.Tip(), *pwallet));
-        entry.pushKV("solvable", out.IsSolvableAfter(*chainActive.Tip(), *pwallet));
+        entry.pushKV("spendable", out.fSpendable);
+        entry.pushKV("solvable", out.fSolvable);
         entry.pushKV("safe", out.fSafe);
         results.push_back(entry);
     }
