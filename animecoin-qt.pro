@@ -437,6 +437,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/netmessagemaker.h \
     src/script/ismine.h \
     src/policy/rbf.h \
+    src/walletinitinterface.h \
     src/warnings.h
 
 SOURCES += src/qt/bitcoin.cpp \
