@@ -326,10 +326,10 @@ private:
 
 public:
     SignatureExtractorChecker(SignatureData& sigdata, BaseSignatureChecker& checker) : sigdata(sigdata), checker(checker) {}
-    bool CheckSig(const std::vector<unsigned char>& scriptSig, const std::vector<unsigned char>& vchPubKey, const CScript& scriptCode, SigVersion sigversion, bool route) const;
+    bool CheckSig(const std::vector<unsigned char>& scriptSig, const std::vector<unsigned char>& vchPubKey, const CScript& scriptCode, SigVersion sigversion) const override;
 };
 
-bool SignatureExtractorChecker::CheckSig(const std::vector<unsigned char>& scriptSig, const std::vector<unsigned char>& vchPubKey, const CScript& scriptCode, SigVersion sigversion, bool route) const
+bool SignatureExtractorChecker::CheckSig(const std::vector<unsigned char>& scriptSig, const std::vector<unsigned char>& vchPubKey, const CScript& scriptCode, SigVersion sigversion) const
 {
     if (checker.CheckSig(scriptSig, vchPubKey, scriptCode, sigversion)) {
         CPubKey pubkey(vchPubKey);
@@ -417,7 +417,7 @@ SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nI
             for (unsigned int i = last_success_key; i < num_pubkeys; ++i) {
                 const valtype& pubkey = solutions[i+1];
                 // We either have a signature for this pubkey, or we have found a signature and it is valid
-                if (data.signatures.count(CPubKey(pubkey).GetID()) || extractor_checker.CheckSig(sig, pubkey, next_script, sigversion, route)) {
+                if (data.signatures.count(CPubKey(pubkey).GetID()) || extractor_checker.CheckSig(sig, pubkey, next_script, sigversion)) {
                     last_success_key = i + 1;
                     break;
                 }
@@ -440,7 +440,7 @@ SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nI
                 for (unsigned int i = last_success_key; i < num_pubkeys; ++i) {
                     const valtype& pubkey = ms_data[i];
                     // We either have a signature for this pubkey, or we have found a signature and it is valid
-                    if (data.signatures.count(CPubKey(pubkey).GetID()) || extractor_checker.CheckSig(sig, pubkey, next_script, sigversion, route)) {
+                    if (data.signatures.count(CPubKey(pubkey).GetID()) || extractor_checker.CheckSig(sig, pubkey, next_script, sigversion)) {
                         last_success_key = i + 1;
                         break;
                     }
@@ -459,7 +459,7 @@ SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nI
                 for (unsigned int i = last_success_key; i < num_pubkeys; ++i) {
                     const valtype& pubkey = ms_data[i+1];
                     // We either have a signature for this pubkey, or we have found a signature and it is valid
-                    if (data.signatures.count(CPubKey(pubkey).GetID()) || extractor_checker.CheckSig(sig, pubkey, next_script, sigversion, route)) {
+                    if (data.signatures.count(CPubKey(pubkey).GetID()) || extractor_checker.CheckSig(sig, pubkey, next_script, sigversion)) {
                         last_success_key = i + 1;
                         break;
                     }
