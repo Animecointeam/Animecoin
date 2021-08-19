@@ -102,7 +102,6 @@ static bool SignStep(const SigningProvider& provider, const BaseSignatureCreator
     if (!Solver(scriptPubKey, whichTypeRet, vSolutions))
         return false;
 
-    CKeyID keyID;
     bool result = false;
     switch (whichTypeRet)
     {
@@ -129,7 +128,6 @@ static bool SignStep(const SigningProvider& provider, const BaseSignatureCreator
             return true;
         }
         return false;
-        return result;
 
     case TX_MULTISIG: {
         size_t required = vSolutions.front()[0];
@@ -271,10 +269,9 @@ bool ProduceSignature(const SigningProvider& provider, const BaseSignatureCreato
 {
     if (sigdata.complete) return true;
 
-    bool solved = true;
     std::vector<valtype> result;
     txnouttype whichType;
-    solved = SignStep(provider, creator, fromPubKey, result, whichType, SIGVERSION_BASE, sigdata, route);
+    bool solved = SignStep(provider, creator, fromPubKey, result, whichType, SIGVERSION_BASE, sigdata, route);
     bool P2SH = false;
     CScript subscript;
     sigdata.scriptWitness.stack.clear();
@@ -469,8 +466,6 @@ SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nI
                 }
             }
         }
-
-
     }
     return data;
 }
