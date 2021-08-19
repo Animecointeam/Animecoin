@@ -604,10 +604,8 @@ void MultisigDialog::on_signTransactionButton_clicked()
         const CScript& prevPubKey = coin.out.scriptPubKey;
         const CAmount& amount = coin.out.nValue;
 
-        SignatureData sigdata;
+        SignatureData sigdata = DataFromTransaction(mtx, i, coin.out, route);
         ProduceSignature(*pwallet, MutableTransactionSignatureCreator(&mtx, i, amount, SIGHASH_ALL), prevPubKey, sigdata, route);
-
-        sigdata = CombineSignatures(prevPubKey, TransactionSignatureChecker(&txConst, i, amount), sigdata, DataFromTransaction(mtx, i), route);
 
         UpdateInput(txin, sigdata);
 

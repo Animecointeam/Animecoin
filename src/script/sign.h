@@ -21,15 +21,13 @@ class SigningProvider
 {
 public:
     virtual ~SigningProvider() {}
-    virtual bool GetCScript(const CScriptID &scriptid, CScript& script) const =0;
-    virtual bool GetPubKey(const CKeyID &address, CPubKey& pubkey) const =0;
-    virtual bool GetKey(const CKeyID &address, CKey& key) const =0;
-    //! Support for HTLC preimages
-    virtual bool GetPreimage(
-        const std::vector<unsigned char>& image,
-        std::vector<unsigned char>& preimage
-    ) const =0;
+    virtual bool GetCScript(const CScriptID &scriptid, CScript& script) const { return false; }
+    virtual bool GetPubKey(const CKeyID &address, CPubKey& pubkey) const { return false; }
+    virtual bool GetKey(const CKeyID &address, CKey& key) const { return false; }
+    virtual bool GetPreimage(const std::vector<unsigned char>& image, std::vector<unsigned char>& preimage) const { return false; }
 };
+
+extern const SigningProvider& DUMMY_SIGNING_PROVIDER;
 
 /** Interface for signature creators. */
 class BaseSignatureCreator {
@@ -65,12 +63,23 @@ public:
 /** A signature creator that just produces 72-byte empty signatures. */
 extern const BaseSignatureCreator& DUMMY_SIGNATURE_CREATOR;
 
+typedef std::pair<CPubKey, std::vector<unsigned char>> SigPair;
+
+// This struct contains information from a transaction input and also contains signatures for that input.
+// The information contained here can be used to create a signature and is also filled by ProduceSignature
+// in order to construct final scriptSigs and scriptWitnesses.
+
 struct SignatureData {
-    CScript scriptSig;
-    CScriptWitness scriptWitness;
+    bool complete = false; ///< Stores whether the scriptSig and scriptWitness are complete
+    CScript scriptSig; ///< The scriptSig of an input. Contains complete signatures or the traditional partial signatures format
+    CScript redeem_script; ///< The redeemScript (if any) for the input
+    CScript witness_script; ///< The witnessScript (if any) for the input. witnessScripts are used in P2WSH outputs.
+    CScriptWitness scriptWitness; ///< The scriptWitness of an input. Contains complete signatures or the traditional partial signatures format. scriptWitness is part of a transaction input per BIP 144.
+    std::map<CKeyID, SigPair> signatures; ///< BIP 174 style partial signatures for the input. May contain all signatures necessary for producing a final scriptSig or scriptWitness.
 
     SignatureData() {}
     explicit SignatureData(const CScript& script) : scriptSig(script) {}
+    void MergeSignatureData(SignatureData sigdata);
 };
 
 /** Produce a script signature using a generic signature creator. */
@@ -80,11 +89,8 @@ bool ProduceSignature(const SigningProvider& provider, const BaseSignatureCreato
 bool SignSignature(const SigningProvider& provider, const CScript& fromPubKey, CMutableTransaction& txTo, unsigned int nIn, const CAmount& amount, int nHashType, bool route = 1);
 bool SignSignature(const SigningProvider& provider, const CTransaction& txFrom, CMutableTransaction& txTo, unsigned int nIn, int nHashType, bool route = 1);
 
-/** Combine two script signatures using a generic signature checker, intelligently, possibly with OP_0 placeholders. */
-SignatureData CombineSignatures(const CScript& scriptPubKey, const BaseSignatureChecker& checker, const SignatureData& scriptSig1, const SignatureData& scriptSig2, bool route = 1);
-
-/** Extract signature data from a transaction, and insert it. */
-SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nIn);
+/** Extract signature data from a transaction input, and insert it. */
+SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nIn, const CTxOut& txout, bool route);
 void UpdateInput(CTxIn& input, const SignatureData& data);
 
 /* Check whether we know how to sign for an output like this, assuming we
