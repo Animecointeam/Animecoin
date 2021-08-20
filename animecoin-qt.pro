@@ -282,6 +282,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/rpc/rawtransaction.h \
     src/rpc/register.h \
     src/rpc/safemode.h \
+    src/support/events.h \
     src/sync.h \
     src/threadinterrupt.h \
     src/util.h \
