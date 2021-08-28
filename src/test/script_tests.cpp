@@ -1161,7 +1161,7 @@ SignatureData CombineSignatures(const CTxOut& txout, const CMutableTransaction& 
     SignatureData data;
     data.MergeSignatureData(scriptSig1);
     data.MergeSignatureData(scriptSig2);
-    ProduceSignature(DUMMY_SIGNING_PROVIDER, MutableTransactionSignatureCreator(&tx, 0, txout.nValue), txout.scriptPubKey, data);
+    ProduceSignature(DUMMY_SIGNING_PROVIDER, MutableTransactionSignatureCreator(&tx, 0, txout.nValue), txout.scriptPubKey, data, 1);
     return data;
 }
 
@@ -1191,7 +1191,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
 
     // Single signature case:
     SignSignature(keystore, txFrom, txTo, 0, SIGHASH_ALL); // changes scriptSig
-    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
+    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0], 1);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSig, empty);
     BOOST_CHECK(combined.scriptSig == scriptSig.scriptSig);
     combined = CombineSignatures(txFrom.vout[0], txTo, empty, scriptSig);
@@ -1199,7 +1199,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
     SignatureData scriptSigCopy = scriptSig;
     // Signing again will give a different, valid signature:
     SignSignature(keystore, txFrom, txTo, 0, SIGHASH_ALL);
-    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
+    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0], 1);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSigCopy, scriptSig);
     BOOST_CHECK(combined.scriptSig == scriptSigCopy.scriptSig || combined.scriptSig == scriptSig.scriptSig);
 
@@ -1208,14 +1208,14 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
     keystore.AddCScript(pkSingle);
     scriptPubKey = GetScriptForDestination(CScriptID(pkSingle));
     SignSignature(keystore, txFrom, txTo, 0, SIGHASH_ALL);
-    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
+    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0], 1);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSig, empty);
     BOOST_CHECK(combined.scriptSig == scriptSig.scriptSig);
     combined = CombineSignatures(txFrom.vout[0], txTo, empty, scriptSig);
     BOOST_CHECK(combined.scriptSig == scriptSig.scriptSig);
     scriptSigCopy = scriptSig;
     SignSignature(keystore, txFrom, txTo, 0, SIGHASH_ALL);
-    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
+    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0], 1);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSigCopy, scriptSig);
     BOOST_CHECK(combined.scriptSig == scriptSigCopy.scriptSig || combined.scriptSig == scriptSig.scriptSig);
 
@@ -1223,7 +1223,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
     scriptPubKey = GetScriptForMultisig(2, pubkeys);
     keystore.AddCScript(scriptPubKey);
     SignSignature(keystore, txFrom, txTo, 0, SIGHASH_ALL);
-    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
+    scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0], 1);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSig, empty);
     BOOST_CHECK(combined.scriptSig == scriptSig.scriptSig);
     combined = CombineSignatures(txFrom.vout[0], txTo, empty, scriptSig);

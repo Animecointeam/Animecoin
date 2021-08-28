@@ -113,10 +113,6 @@ endif
 test_test_animecoin_SOURCES = $(BITCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
 test_test_animecoin_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS) $(EVENT_CFLAGS)
 test_test_animecoin_LDADD =
-test_test_animecoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-if ENABLE_ZMQ
-test_test_animecoin_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
-endif
 if ENABLE_WALLET
 test_test_animecoin_LDADD += $(LIBBITCOIN_WALLET)
 endif
@@ -128,7 +124,7 @@ test_test_animecoin_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(MINIUPNPC_LIB
 test_test_animecoin_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
 
 if ENABLE_ZMQ
-test_test_animecoin_LDADD += $(ZMQ_LIBS)
+test_test_animecoin_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
 endif
 
 nodist_test_test_animecoin_SOURCES = $(GENERATED_TEST_FILES)
