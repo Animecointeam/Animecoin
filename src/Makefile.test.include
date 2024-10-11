@@ -51,6 +51,7 @@ BITCOIN_TESTS =\
   test/blockencodings_tests.cpp \
   test/checkblock_tests.cpp \
   test/coins_tests.cpp \
+  test/compilerbug_tests.cpp \
   test/compress_tests.cpp \
   test/crypto_tests.cpp \
   test/cuckoocache_tests.cpp \

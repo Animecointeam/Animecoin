@@ -26,6 +26,8 @@ src/qt/moc_*.cpp
 src/qt/forms/ui_*.h
 
 src/qt/test/moc*.cpp
+src/script_invalid.json.gen
+src/script_valid.json.gen
 
 .deps
 .dirstamp
@@ -99,12 +101,20 @@ build-aux/config.guess
 build-aux/config.sub
 build-aux/depcomp
 build-aux/install-sh
+build-aux/install-sh~
 build-aux/ltmain.sh
 build-aux/m4/libtool.m4
 build-aux/m4/lt~obsolete.m4
 build-aux/m4/ltoptions.m4
 build-aux/m4/ltsugar.m4
 build-aux/m4/ltversion.m4
+src/univalue/configure~
+src/univalue/build-aux/install-sh~
+src/univalue/build-aux/m4/libtool.m4
+src/univalue/build-aux/m4/lt~obsolete.m4
+src/univalue/build-aux/m4/ltoptions.m4
+src/univalue/build-aux/m4/ltsugar.m4
+src/univalue/build-aux/m4/ltversion.m4
 build-aux/missing
 build-aux/compile
 build-aux/test-driver
@@ -117,3 +127,8 @@ src/config/bitcoin-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
+
+src/test/__pycache__/
+src/.libs/
+src/obj/build.h
+configure~
