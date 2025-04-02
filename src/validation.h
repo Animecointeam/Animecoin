@@ -41,6 +41,7 @@
 
 class CBlockIndex;
 class CBlockTreeDB;
+class CCoinsViewDB;
 class CChainParams;
 class CBloomFilter;
 class CInv;
@@ -487,6 +488,9 @@ extern CChain chainActive;
 
 /** The currently-connected chain of PoW validated headers (protected by cs_main). */
 extern CChain headersChainActive;
+
+/** Global variable that points to the coins database (protected by cs_main) */
+extern CCoinsViewDB *pcoinsdbview;
 
 /** Global variable that points to the active CCoinsView (protected by cs_main) */
 extern CCoinsViewCache *pcoinsTip;
