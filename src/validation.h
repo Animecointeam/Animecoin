@@ -43,6 +43,7 @@
 
 class CBlockIndex;
 class CBlockTreeDB;
+class CCoinsViewDB;
 class CChainParams;
 class CCoinsViewDB;
 class CBloomFilter;
