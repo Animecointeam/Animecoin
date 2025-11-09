@@ -1084,6 +1084,17 @@ static UniValue BIP9SoftForkDesc(const std::string& name, const Consensus::Param
     rv.pushKV("startTime", consensusParams.vDeployments[id].nStartTime);
     rv.pushKV("timeout", consensusParams.vDeployments[id].nTimeout);
     rv.pushKV("since", VersionBitsTipStateSinceHeight(consensusParams, id));
+    if (THRESHOLD_STARTED == thresholdState)
+    {
+        UniValue statsUV(UniValue::VOBJ);
+        BIP9Stats statsStruct = VersionBitsTipStatistics(consensusParams, id);
+        statsUV.pushKV("period", statsStruct.period);
+        statsUV.pushKV("threshold", statsStruct.threshold);
+        statsUV.pushKV("elapsed", statsStruct.elapsed);
+        statsUV.pushKV("count", statsStruct.count);
+        statsUV.pushKV("possible", statsStruct.possible);
+        rv.pushKV("statistics", statsUV);
+    }
     return rv;
 }
 
@@ -1122,7 +1133,14 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
             "        \"bit\": xx,             (numeric) the bit, 0-28, in the block version field used to signal this soft fork\n"
             "        \"startTime\": xx,       (numeric) the minimum median time past of a block at which the bit gains its meaning\n"
             "        \"timeout\": xx,         (numeric) the median time past of a block at which the deployment is considered failed if not yet locked in\n"
-            "        \"since\": xx            (numeric) height of the first block to which the status applies\n"
+            "        \"since\": xx,           (numeric) height of the first block to which the status applies\n"
+            "        \"statistics\": {        (object) numeric statistics about BIP9 signalling for a softfork (only for \"started\" status)\n"
+            "           \"period\": xx,       (numeric) the length in blocks of the BIP9 signalling period \n"
+            "           \"threshold\": xx,    (numeric) the number of blocks with the version bit set required to activate the feature \n"
+            "           \"elapsed\": xx,      (numeric) the number of blocks elapsed since the beginning of the current period \n"
+            "           \"count\": xx,        (numeric) the number of blocks with the version bit set in the current period \n"
+            "           \"possible\": xx      (boolean) returns false if there are not enough blocks left in this period to pass activation threshold \n"
+            "        }\n"
             "     }\n"
             "  ]\n"
             "}\n"

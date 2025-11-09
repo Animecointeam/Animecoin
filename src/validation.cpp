@@ -4368,6 +4368,12 @@ static const uint64_t MEMPOOL_DUMP_VERSION = 1;
      return pindex->nChainTx / fTxTotal;
  }
 
+ BIP9Stats VersionBitsTipStatistics(const Consensus::Params& params, Consensus::DeploymentPos pos)
+ {
+     LOCK(cs_main);
+     return VersionBitsStatistics(chainActive.Tip(), params, pos);
+ }
+
  int VersionBitsTipStateSinceHeight(const Consensus::Params& params, Consensus::DeploymentPos pos)
  {
      LOCK(cs_main);
