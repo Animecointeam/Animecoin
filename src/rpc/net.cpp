@@ -8,6 +8,7 @@
 #include "net.h"
 #include "net_processing.h"
 #include "netbase.h"
+#include "policy/policy.h"
 #include "protocol.h"
 #include "sync.h"
 #include "timedata.h"
@@ -75,7 +76,8 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
             "  {\n"
             "    \"id\": n,                   (numeric) Peer index\n"
             "    \"addr\":\"host:port\",      (string) The ip address and port of the peer\n"
-            "    \"addrlocal\":\"ip:port\",   (string) local address\n"
+            "    \"addrbind\":\"ip:port\",    (string) Bind address of the connection to the peer\n"
+            "    \"addrlocal\":\"ip:port\",   (string) Local address as reported by the peer\n"
             "    \"services\":\"xxxxxxxxxxxxxxxx\",   (string) The services offered\n"
             "    \"relaytxes\":true|false,    (boolean) Whether peer has asked us to relay transactions to it\n"
             "    \"lastsend\": ttt,           (numeric) The time in seconds since epoch (Jan 1 1970 GMT) of the last send\n"
@@ -89,7 +91,7 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
             "    \"version\": v,              (numeric) The peer version, such as 7001\n"
             "    \"subver\": \"/Satoshi:0.8.5/\",  (string) The string version\n"
             "    \"inbound\": true|false,     (boolean) Inbound (true) or Outbound (false)\n"
-            "    \"addnode\": true|false,     (boolean) Whether connection was due to addnode and is using an addnode slot\n"
+            "    \"addnode\": true|false,     (boolean) Whether connection was due to addnode/-connect or if it was an automatic/inbound connection\n"
             "    \"startingheight\": n,       (numeric) The starting height (block) of the peer\n"
             "    \"banscore\": n,             (numeric) The ban score\n"
             "    \"synced_headers\": n,       (numeric) The last header we have in common with this peer\n"
@@ -131,7 +133,8 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
         obj.pushKV("addr", stats.addrName);
         if (!(stats.addrLocal.empty()))
             obj.pushKV("addrlocal", stats.addrLocal);
-        obj.pushKV("services", strprintf("%016x", stats.nServices));
+        if (stats.addrBind.IsValid())
+            obj.pushKV("addrbind", stats.addrBind.ToString());        obj.pushKV("services", strprintf("%016x", stats.nServices));
         obj.pushKV("relaytxes", stats.fRelayTxes);
         obj.pushKV("lastsend", stats.nLastSend);
         obj.pushKV("lastrecv", stats.nLastRecv);
@@ -148,7 +151,7 @@ UniValue getpeerinfo(const JSONRPCRequest& request)
         // their ver message.
         obj.pushKV("subver", stats.cleanSubVer);
         obj.pushKV("inbound", stats.fInbound);
-        obj.pushKV("addnode", stats.fAddnode);
+        obj.pushKV("addnode", stats.m_manual_connection);
         obj.pushKV("startingheight", stats.nStartingHeight);
         if (fStateStats) {
             obj.pushKV("banscore", statestats.nMisbehavior);
@@ -194,6 +197,8 @@ UniValue addnode(const JSONRPCRequest& request)
                 "addnode \"node\" \"add|remove|onetry\"\n"
                 "\nAttempts add or remove a node from the addnode list.\n"
                 "Or try a connection to a node once.\n"
+                "Nodes added using addnode (or -connect) are protected from DoS disconnection and are not required to be\n"
+                "full nodes/support SegWit as other outbound peers are (though such peers will not be synced from).\n"
                 "\nArguments:\n"
                 "1. \"node\"     (string, required) The node (see getpeerinfo for nodes)\n"
                 "2. \"command\"  (string, required) 'add' to add a node to the list, 'remove' to remove a node from the list, 'onetry' to try a connection to the node once\n"
@@ -210,7 +215,7 @@ UniValue addnode(const JSONRPCRequest& request)
     if (strCommand == "onetry")
     {
         CAddress addr;
-        g_connman->OpenNetworkConnection(addr, false, nullptr, strNode.c_str());
+        g_connman->OpenNetworkConnection(addr, false, nullptr, strNode.c_str(), false, false, true);
         return NullUniValue;
     }
 
@@ -404,7 +409,8 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
             "  }\n"
             "  ,...\n"
             "  ],\n"
-            "  \"relayfee\": x.xxxxxxxx,                (numeric) minimum relay fee for non-free transactions in " + CURRENCY_UNIT + "/kB\n"
+            "  \"relayfee\": x.xxxx,                    (numeric) minimum relay fee for transactions in " + CURRENCY_UNIT + "/kB\n"
+            "  \"incrementalfee\": x.xxxxxxxx,          (numeric) minimum fee increment for mempool limiting or BIP 125 replacement in " + CURRENCY_UNIT + "/kB\n"
             "  \"localaddresses\": [                    (array) list of local addresses\n"
             "  {\n"
             "    \"address\": \"xxxx\",                 (string) network address\n"
@@ -436,6 +442,7 @@ UniValue getnetworkinfo(const JSONRPCRequest& request)
     }
     obj.pushKV("networks",      GetNetworksInfo());
     obj.pushKV("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK()));
+    obj.pushKV("incrementalfee", ValueFromAmount(::incrementalRelayFee.GetFeePerK()));
     UniValue localAddresses(UniValue::VARR);
     {
         LOCK(cs_mapLocalHost);
@@ -625,21 +632,21 @@ UniValue setnetworkactive(const JSONRPCRequest& request)
 }
 
 static const CRPCCommand commands[] =
-{ //  category              name                      actor (function)         okSafeMode
+{ //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
-  { "network",            "getconnectioncount",     &getconnectioncount,     true,  {} },
-  { "network",            "ping",                   &ping,                   true,  {} },
-  { "network",            "getpeerinfo",            &getpeerinfo,            true,  {} },
-  { "network",            "addnode",                &addnode,                true,  {"node","command"} },
-  { "network",            "disconnectnode",         &disconnectnode,         true,  {"node"} },
-  { "network",            "getaddednodeinfo",       &getaddednodeinfo,       true,  {"node"} },
-  { "network",            "getnettotals",           &getnettotals,           true,  {} },
-  { "network",            "getnetworkinfo",         &getnetworkinfo,         true,  {} },
-  { "network",            "setban",                 &setban,                 true,  {"subnet", "command", "bantime", "absolute"} },
-  { "network",            "listbanned",             &listbanned,             true,  {} },
-  { "network",            "clearbanned",            &clearbanned,            true,  {} },
-  { "network",            "setnetworkactive",       &setnetworkactive,       true,  {"state"} },
-  { "util",               "makekeypair",            &makekeypair,            true,  {"prefix"} },
+  { "network",            "getconnectioncount",     &getconnectioncount,     {} },
+  { "network",            "ping",                   &ping,                   {} },
+  { "network",            "getpeerinfo",            &getpeerinfo,            {} },
+  { "network",            "addnode",                &addnode,                {"node","command"} },
+  { "network",            "disconnectnode",         &disconnectnode,         {"node"} },
+  { "network",            "getaddednodeinfo",       &getaddednodeinfo,       {"node"} },
+  { "network",            "getnettotals",           &getnettotals,           {} },
+  { "network",            "getnetworkinfo",         &getnetworkinfo,         {} },
+  { "network",            "setban",                 &setban,                 {"subnet", "command", "bantime", "absolute"} },
+  { "network",            "listbanned",             &listbanned,             {} },
+  { "network",            "clearbanned",            &clearbanned,            {} },
+  { "network",            "setnetworkactive",       &setnetworkactive,       {"state"} },
+  { "util",               "makekeypair",            &makekeypair,            {"prefix"} },
 };
 
 void RegisterNetRPCCommands(CRPCTable &t)

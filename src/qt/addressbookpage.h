@@ -31,7 +31,8 @@ class AddressBookPage : public QDialog
 public:
     enum Tabs {
         SendingTab = 0,
-        ReceivingTab = 1
+        ReceivingTab = 1,
+        WatchonlyTab = 2
     };
 
     enum Mode {
@@ -49,6 +50,7 @@ public:
 public slots:
     void done(int retval);
     void reject ();
+    void activate ();
 
 private:
     Ui::AddressBookPage *ui;
@@ -59,6 +61,7 @@ private:
     QSortFilterProxyModel *proxyModel;
     QMenu *contextMenu;
     QAction *deleteAction; // to be able to explicitly disable it
+    QAction *unlockAction;
     QString newAddressToSelect;
 
 private slots:
@@ -84,6 +87,7 @@ private slots:
 
 signals:
     void sendCoins(QString addr);
+    void unlockFunds(const QString& addr);
 };
 
 #endif // BITCOIN_QT_ADDRESSBOOKPAGE_H

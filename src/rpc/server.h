@@ -23,7 +23,6 @@ namespace RPCServer
 {
     void OnStarted(std::function<void ()> slot);
     void OnStopped(std::function<void ()> slot);
-    void OnPreCommand(std::function<void (const CRPCCommand&)> slot);
     void OnPostCommand(std::function<void (const CRPCCommand&)> slot);
 }
 
@@ -31,7 +30,7 @@ class CBlockIndex;
 class CNetAddr;
 
 /** Wrapper for UniValue::VType, which includes typeAny:
- * Used to denote don't care type. Only used by RPCTypeCheckObj */
+ * Used to denote don't care type. */
 struct UniValueType {
     UniValueType(UniValue::VType _type) : typeAny(false), type(_type) {}
     UniValueType() : typeAny(true) {}
@@ -72,11 +71,11 @@ bool RPCIsInWarmup(std::string *statusOut);
  * the right number of arguments are passed, just that any passed are the correct type.
  */
 void RPCTypeCheck(const UniValue& params,
-                  const std::list<UniValue::VType>& typesExpected, bool fAllowNull=false);
+                  const std::list<UniValueType>& typesExpected, bool fAllowNull=false);
 /**
  * Type-check one argument; throws JSONRPCError if wrong type given.
  */
-void RPCTypeCheckArgument(const UniValue& value, UniValue::VType typeExpected);
+void RPCTypeCheckArgument(const UniValue& value, const UniValueType& typeExpected);
 
 /**
  * Check for expected keys/value types in an Object.
@@ -114,10 +113,12 @@ public:
     virtual RPCTimerBase* NewTimer(std::function<void(void)>& func, int64_t millis) = 0;
 };
 
-/** Register factory function for timers */
-void RPCRegisterTimerInterface(RPCTimerInterface *iface);
-/** Unregister factory function for timers */
-void RPCUnregisterTimerInterface(RPCTimerInterface *iface);
+/** Set the factory function for timers */
+void RPCSetTimerInterface(RPCTimerInterface *iface);
+/** Set the factory function for timer, but only, if unset */
+void RPCSetTimerInterfaceIfUnset(RPCTimerInterface *iface);
+/** Unset factory function for timers */
+void RPCUnsetTimerInterface(RPCTimerInterface *iface);
 
 /**
  * Run func nSeconds from now.
@@ -133,7 +134,6 @@ public:
     std::string category;
     std::string name;
     rpcfn_type actor;
-    bool okSafeMode;
     std::vector<std::string> argNames;
 };
 

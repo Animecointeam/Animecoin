@@ -99,6 +99,7 @@ BITCOIN_CORE_H = \
   alert.h \
   arith_uint256.h \
   base58.h \
+  bech32.h \
   bloom.h \
   blockencodings.h \
   chain.h \
@@ -108,13 +109,13 @@ BITCOIN_CORE_H = \
   checkpoints.h \
   checkqueue.h \
   clientversion.h \
-  coincontrol.h \
   coins.h \
   compat.h \
   compressor.h \
   consensus/consensus.h \
   consensus/merkle.h \
   consensus/params.h \
+  consensus/tx_verify.h \
   core_io.h \
   core_memusage.h \
   crypto/sph_types.h \
@@ -144,6 +145,7 @@ BITCOIN_CORE_H = \
   netbase.h \
   netmessagemaker.h \
   noui.h \
+  policy/feerate.h \
   policy/fees.h \
   policy/policy.h \
   policy/rbf.h \
@@ -155,8 +157,10 @@ BITCOIN_CORE_H = \
   reverse_iterator.h \
   reverselock.h \
   rpc/client.h \
+  rpc/mining.h \
   rpc/protocol.h \
   rpc/register.h \
+  rpc/safemode.h \
   rpc/server.h \
   scheduler.h \
   script/sigcache.h \
@@ -167,6 +171,7 @@ BITCOIN_CORE_H = \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
   support/cleanse.h \
+  support/events.h \
   support/lockedpool.h \
   sync.h \
   threadsafety.h \
@@ -182,10 +187,18 @@ BITCOIN_CORE_H = \
   utiltime.h \
   validation.h \
   validationinterface.h \
+  versionbits.h \
+  walletinitinterface.h \
+  wallet/coincontrol.h \
   wallet/crypter.h \
+  wallet/feebumper.h \
+  wallet/fees.h \
+  wallet/init.h \
   wallet/rpcwallet.h \
   wallet/walletdb.h \
   wallet/wallet.h \
+  wallet/coinselection.h \
+  warnings.h \
   compat/byteswap.h \
   compat/cpuid.h \
   compat/endian.h \
@@ -213,6 +226,7 @@ libanimecoin_server_a_SOURCES = \
   blockencodings.cpp \
   chain.cpp \
   checkpoints.cpp \
+  consensus/tx_verify.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \
@@ -224,12 +238,14 @@ libanimecoin_server_a_SOURCES = \
   noui.cpp \
   policy/fees.cpp \
   policy/policy.cpp \
+  policy/rbf.cpp \
   rest.cpp \
   rpc/blockchain.cpp \
   rpc/mining.cpp \
   rpc/misc.cpp \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
+  rpc/safemode.cpp \
   rpc/server.cpp \
   script/ismine.cpp \
   script/sigcache.cpp \
@@ -240,6 +256,7 @@ libanimecoin_server_a_SOURCES = \
   ui_interface.cpp \
   validation.cpp \
   validationinterface.cpp \
+  versionbits.cpp \
   $(BITCOIN_CORE_H)
 
 if ENABLE_ZMQ
@@ -256,8 +273,12 @@ endif
 libanimecoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_wallet_a_SOURCES = \
+  wallet/coinselection.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
+  wallet/feebumper.cpp \
+  wallet/fees.cpp \
+  wallet/init.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
@@ -362,8 +383,8 @@ libanimecoin_consensus_a_SOURCES = \
 libanimecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libanimecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libanimecoin_common_a_SOURCES = \
-  amount.cpp \
   base58.cpp \
+  bech32.cpp \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
@@ -374,12 +395,14 @@ libanimecoin_common_a_SOURCES = \
   keystore.cpp \
   netaddress.cpp \
   netbase.cpp \
+  policy/feerate.cpp \
   pow.cpp \
   primitives/block.cpp \
   protocol.cpp \
   scheduler.cpp \
   script/sign.cpp \
   script/standard.cpp \
+  warnings.cpp \
   $(BITCOIN_CORE_H)
 
 # util: shared between all executables.
@@ -406,6 +429,7 @@ libanimecoin_util_a_SOURCES = \
   utilstrencodings.cpp \
   utilmoneystr.cpp \
   utiltime.cpp \
+  warnings.cpp \
   $(BITCOIN_CORE_H)
 
 if GLIBC_BACK_COMPAT

@@ -43,6 +43,7 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
         {
         case SendingTab: setWindowTitle(tr("Choose the address to send coins to")); break;
         case ReceivingTab: setWindowTitle(tr("Choose the address to receive coins with")); break;
+        case WatchonlyTab: setWindowTitle(tr("Choose the address to send coins to")); break;
         }
         connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
         ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -56,6 +57,7 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
         {
         case SendingTab: setWindowTitle(tr("Sending addresses")); break;
         case ReceivingTab: setWindowTitle(tr("Receiving addresses")); break;
+        case WatchonlyTab: setWindowTitle(tr("Monitored addresses")); break;
         }
         break;
     }
@@ -69,6 +71,10 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
         ui->labelExplanation->setText(tr("These are your Anime addresses for receiving payments. It is recommended to use a new receiving address for each transaction."));
         ui->deleteAddress->setVisible(false);
         break;
+    case WatchonlyTab:
+        ui->labelExplanation->setText(tr("These are your Anime addresses you monitor. This includes contract addresses."));
+        ui->deleteAddress->setVisible(true);
+        break;
     }
 
     // Context menu actions
@@ -76,14 +82,17 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
     QAction *copyLabelAction = new QAction(tr("Copy &Label"), this);
     QAction *editAction = new QAction(tr("&Edit"), this);
     deleteAction = new QAction(ui->deleteAddress->text(), this);
+    unlockAction = new QAction(tr("&Unlock contract funds"), this);
 
     // Build context menu
     contextMenu = new QMenu(this);
     contextMenu->addAction(copyAddressAction);
     contextMenu->addAction(copyLabelAction);
     contextMenu->addAction(editAction);
-    if(tab == SendingTab)
+    if((tab == SendingTab)||(tab == WatchonlyTab))
         contextMenu->addAction(deleteAction);
+    if(tab == WatchonlyTab)
+        contextMenu->addAction(unlockAction);
     contextMenu->addSeparator();
 
     // Connect signals for context menu actions
@@ -91,6 +100,16 @@ AddressBookPage::AddressBookPage(Mode _mode, Tabs _tab, QWidget *parent) :
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(onCopyLabelAction()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(onEditAction()));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(on_deleteAddress_clicked()));
+    connect(unlockAction, &QAction::triggered, [this]()
+    {
+        QTableView* table = ui->tableView;
+        QModelIndexList selection = table->selectionModel()->selectedRows(AddressTableModel::Address);
+
+        if(!selection.isEmpty())
+        {
+            emit unlockFunds (selection.at(0).data(Qt::EditRole).toString());
+        }
+    });
 
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextualMenu(QPoint)));
 
@@ -128,6 +147,11 @@ void AddressBookPage::setModel(AddressTableModel *_model)
         proxyModel->setFilterRole(AddressTableModel::TypeRole);
         proxyModel->setFilterFixedString(AddressTableModel::Send);
         break;
+    case WatchonlyTab:
+        // Send filter
+        proxyModel->setFilterRole(AddressTableModel::TypeRole);
+        proxyModel->setFilterFixedString(AddressTableModel::Watchonly);
+        break;
     }
     ui->tableView->setModel(proxyModel);
     ui->tableView->sortByColumn(0, Qt::AscendingOrder);
@@ -135,6 +159,7 @@ void AddressBookPage::setModel(AddressTableModel *_model)
     // Set column widths
     ui->tableView->horizontalHeader()->setSectionResizeMode(AddressTableModel::Label, QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(AddressTableModel::Address, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(AddressTableModel::Balance, QHeaderView::ResizeToContents);
 
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChanged()));
@@ -167,7 +192,7 @@ void AddressBookPage::onEditAction()
         return;
 
     EditAddressDialog dlg(
-                tab == SendingTab ?
+                (tab == SendingTab)||(tab == WatchonlyTab) ?
                 EditAddressDialog::EditSendingAddress :
                 EditAddressDialog::EditReceivingAddress, this);
     dlg.setModel(model);
@@ -182,7 +207,7 @@ void AddressBookPage::on_newAddress_clicked()
         return;
 
     EditAddressDialog dlg(
-                tab == SendingTab ?
+                (tab == SendingTab)||(tab == WatchonlyTab) ?
                 EditAddressDialog::NewSendingAddress :
                 EditAddressDialog::NewReceivingAddress, this);
     dlg.setModel(model);
@@ -227,6 +252,11 @@ void AddressBookPage::selectionChanged()
             ui->deleteAddress->setEnabled(false);
             ui->deleteAddress->setVisible(false);
             deleteAction->setEnabled(false);
+            break;
+        case WatchonlyTab:
+            ui->deleteAddress->setEnabled(true);
+            ui->deleteAddress->setVisible(true);
+            deleteAction->setEnabled(true);
             break;
         }
         ui->copyAddress->setEnabled(true);
@@ -310,4 +340,12 @@ void AddressBookPage::reject ()
 {
     if (mode!=ForInlineEditing)
         QDialog::reject();
+}
+
+void AddressBookPage::activate()
+{
+    if (tab == WatchonlyTab)
+        ui->tableView->setColumnHidden(2, false);
+    else
+        ui->tableView->setColumnHidden(2, true);
 }

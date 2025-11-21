@@ -148,7 +148,7 @@ public:
     // Dummy for deserialization
     CBlockHeaderAndShortTxIDs() {}
 
-    CBlockHeaderAndShortTxIDs(const CBlock& block);
+    CBlockHeaderAndShortTxIDs(const CBlock& block, bool fUseWTXID);
 
     uint64_t GetShortID(const uint256& txhash) const;
 
@@ -194,15 +194,16 @@ public:
 class PartiallyDownloadedBlock {
 protected:
     std::vector<CTransactionRef> txn_available;
-    size_t prefilled_count = 0, mempool_count = 0;
+    size_t prefilled_count = 0, mempool_count = 0, extra_count = 0;
     CTxMemPool* pool;
 public:
     CBlockHeader header;
     PartiallyDownloadedBlock(CTxMemPool* poolIn) : pool(poolIn) {}
 
-    ReadStatus InitData(const CBlockHeaderAndShortTxIDs& cmpctblock);
+    // extra_txn is a list of extra transactions to look at, in <witness hash, reference> form
+    ReadStatus InitData(const CBlockHeaderAndShortTxIDs& cmpctblock, const std::vector<std::pair<uint256, CTransactionRef>>& extra_txn);
     bool IsTxAvailable(size_t index) const;
-    ReadStatus FillBlock(CBlock& block, const std::vector<CTransactionRef>& vtx_missing) const;
+    ReadStatus FillBlock(CBlock& block, const std::vector<CTransactionRef>& vtx_missing);
 };
 
 #endif

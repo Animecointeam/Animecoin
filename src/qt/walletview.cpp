@@ -56,6 +56,7 @@ WalletView::WalletView(QWidget *parent):
     addressPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::ReceivingTab, nullptr);
     receiveCoinsPage = new ReceiveCoinsDialog();
     sendCoinsPage = new SendCoinsDialog();
+    watchCoinsPage = new AddressBookPage(AddressBookPage::ForInlineEditing, AddressBookPage::WatchonlyTab, nullptr);
     multisigPage = new MultisigDialog(nullptr);
     aboutPage = new AboutDialog(nullptr);
 
@@ -64,6 +65,7 @@ WalletView::WalletView(QWidget *parent):
     addWidget(addressPage);
     addWidget(receiveCoinsPage);
     addWidget(multisigPage);
+    addWidget(watchCoinsPage);
     addWidget(sendCoinsPage);
     addWidget(aboutPage);
 
@@ -92,6 +94,9 @@ void WalletView::setBitcoinGUI(BitcoinGUI *gui)
 {
     if (gui)
     {
+        // From the watchonly context menu, go to the multisig pending tab
+        connect (watchCoinsPage, SIGNAL(unlockFunds(QString)), gui, SLOT(gotoMultisigPage(QString)));
+
         // Clicking on a transaction on the overview page simply sends you to transaction history page
         connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), gui, SLOT(gotoHistoryPage()));
 
@@ -130,6 +135,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     overviewPage->setWalletModel(_walletModel);
     addressPage->setModel(_walletModel->getAddressTableModel());
     receiveCoinsPage->setModel(_walletModel);
+    watchCoinsPage->setModel(_walletModel->getAddressTableModel());
     sendCoinsPage->setModel(_walletModel);
     multisigPage->setModel(_walletModel);
 
@@ -192,11 +198,18 @@ void WalletView::gotoHistoryPage()
 void WalletView::gotoAddressPage()
 {
     setCurrentWidget(addressPage);
+    addressPage->activate();
 }
 
 void WalletView::gotoReceiveCoinsPage()
 {
     setCurrentWidget(receiveCoinsPage);
+}
+
+void WalletView::gotoWatchCoinsPage()
+{
+    setCurrentWidget(watchCoinsPage);
+    watchCoinsPage->activate();
 }
 
 void WalletView::gotoSendCoinsPage(QString addr)
@@ -207,9 +220,11 @@ void WalletView::gotoSendCoinsPage(QString addr)
         sendCoinsPage->setAddress(addr);
 }
 
-void WalletView::gotoMultisigPage()
+void WalletView::gotoMultisigPage(QString addr)
 {
     setCurrentWidget(multisigPage);
+    if (!addr.isEmpty())
+        multisigPage->setAddress(addr);
 }
 
 void WalletView::gotoAboutPage()
@@ -314,6 +329,7 @@ void WalletView::usedSendingAddresses()
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setModel(walletModel->getAddressTableModel());
     dlg->show();
+    dlg->activate();
 }
 
 void WalletView::usedReceivingAddresses()
@@ -324,6 +340,7 @@ void WalletView::usedReceivingAddresses()
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setModel(walletModel->getAddressTableModel());
     dlg->show();
+    dlg->activate();
 }
 
 void WalletView::showProgress(const QString &title, int nProgress)

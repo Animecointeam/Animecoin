@@ -51,6 +51,12 @@ public:
         return true;
     }
 
+    bool HaveCoin(const COutPoint& outpoint) const override
+    {
+        Coin coin;
+        return GetCoin(outpoint, coin);
+    }
+
     uint256 GetBestBlock() const override { return hashBestBlock_; }
 
     bool BatchWrite(CCoinsMap& mapCoins, const uint256& hashBlock, bool erase = true) override

@@ -8,6 +8,7 @@
 #include "random.h"
 #include "scheduler.h"
 #include "txdb.h"
+#include "txmempool.h"
 
 #include <boost/thread.hpp>
 
@@ -39,9 +40,13 @@ struct BasicTestingSetup {
  * Included are data directory, coins database, script check threads setup.
  */
 class CConnman;
+class CNode;
+struct CConnmanTest {
+    static void AddNode(CNode& node);
+    static void ClearNodes();
+};
 class PeerLogicValidation;
 struct TestingSetup: public BasicTestingSetup {
-    CCoinsViewDB *pcoinsdbview;
     fs::path pathTemp;
     boost::thread_group threadGroup;
     CConnman* connman;
@@ -74,31 +79,29 @@ struct TestChain100Setup : public TestingSetup {
     CKey coinbaseKey; // private/public key needed to spend coinbase transactions
 };
 class CTxMemPoolEntry;
-class CTxMemPool;
 
 struct TestMemPoolEntryHelper
 {
     // Default values
     CAmount nFee;
     int64_t nTime;
-    double dPriority;
     unsigned int nHeight;
     bool spendsCoinbase;
-    unsigned int sigOpCount;
+    unsigned int sigOpCost;
+    LockPoints lp;
 
     TestMemPoolEntryHelper() :
-        nFee(0), nTime(0), dPriority(0.0), nHeight(1),
-        spendsCoinbase(false), sigOpCount(1) { }
+        nFee(0), nTime(0), nHeight(1),
+        spendsCoinbase(false), sigOpCost(4) { }
 
-    CTxMemPoolEntry FromTx(const CMutableTransaction &tx, CTxMemPool *pool = nullptr);
-    CTxMemPoolEntry FromTx(const CTransaction &tx, CTxMemPool *pool = nullptr);
+    CTxMemPoolEntry FromTx(const CMutableTransaction& tx);
+    CTxMemPoolEntry FromTx(const CTransaction& tx);
 
     // Change the default value
     TestMemPoolEntryHelper &Fee(CAmount _fee) { nFee = _fee; return *this; }
     TestMemPoolEntryHelper &Time(int64_t _time) { nTime = _time; return *this; }
-    TestMemPoolEntryHelper &Priority(double _priority) { dPriority = _priority; return *this; }
     TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
     TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
-    TestMemPoolEntryHelper &SigOps(unsigned int _sigops) { sigOpCount = _sigops; return *this; }
+    TestMemPoolEntryHelper &SigOpsCost(unsigned int _sigopsCost) { sigOpCost = _sigopsCost; return *this; }
 };
 #endif

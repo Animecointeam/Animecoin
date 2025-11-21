@@ -57,6 +57,11 @@ int64_t GetTimeMicros()
             boost::posix_time::ptime(boost::gregorian::date(1970,1,1))).total_microseconds();
 }
 
+int64_t GetSystemTimeInSeconds()
+{
+    return GetTimeMicros()/1000000;
+}
+
 /** Return a time useful for the debug log */
 int64_t GetLogTimeMicros()
 {

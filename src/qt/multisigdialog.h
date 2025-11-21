@@ -24,7 +24,11 @@ class MultisigDialog : public QDialog
     void setModel(WalletModel *model);
 
   public slots:
-    MultisigAddressEntry * addPubKey();
+    void setAddress (const QString& address);
+    MultisigAddressEntry* addPubKey();
+    MultisigAddressEntry* addParty();
+    MultisigAddressEntry* addHTLCParty();
+
     void clear();
     void updateRemoveEnabled();
     MultisigInputEntry * addInput();
@@ -35,11 +39,13 @@ class MultisigDialog : public QDialog
     void message(const QString &title, const QString &message, unsigned int style);
 
   private:
-    Ui::MultisigDialog *ui;
-    WalletModel *model;
+    Ui::MultisigDialog* ui;
+    WalletModel* model;
+    CWallet* pwallet;
 
   private slots:
     void on_createAddressButton_clicked();
+    void on_createContractButton_clicked();
     void on_copyMultisigAddressButton_clicked();
     void on_copyRedeemScriptButton_clicked();
     void on_saveRedeemScriptButton_clicked();
@@ -55,6 +61,18 @@ class MultisigDialog : public QDialog
     void removeEntry(MultisigInputEntry *entry);
     void removeEntry(SendCoinsEntry *entry);
     void updateAmounts();
+    void on_copyAddressButton_clicked();
+    void on_copyScriptButton_clicked();
+    void on_saveContractButton_clicked();
+    void on_lockTimeBox_valueChanged(int arg1);
+    void on_scriptEdit_textChanged();
+    void on_importContractButton_clicked();
+    void on_saveHTLCButton_clicked();
+    void on_copyAddressButtonHTLC_clicked();
+    void on_copyScriptButtonHTLC_clicked();
+    void on_lockTimeBoxHTLC_valueChanged(int arg1);
+    void on_createHTLCButton_clicked();
+    void on_pasteImageButton_clicked();
 };
 
 #endif // MULTISIGDIALOG_H

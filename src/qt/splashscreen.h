@@ -8,6 +8,7 @@
 #include <functional>
 #include <QSplashScreen>
 
+class CWallet;
 class NetworkStyle;
 
 /** Class for the splashscreen with information of the running client.
@@ -43,11 +44,15 @@ private:
     void subscribeToCoreSignals();
     /** Disconnect core signals to splash screen */
     void unsubscribeFromCoreSignals();
+    /** Connect wallet signals to splash screen */
+    void ConnectWallet(CWallet*);
 
     QPixmap pixmap;
     QString curMessage;
     QColor curColor;
     int curAlignment;
+
+    QList<CWallet*> connectedWallets;
 };
 
 #endif // BITCOIN_QT_SPLASHSCREEN_H

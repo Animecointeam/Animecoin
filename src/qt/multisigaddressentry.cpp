@@ -71,42 +71,42 @@ void MultisigAddressEntry::on_addressBookButton_clicked()
 
     AddressBookPage dlg(AddressBookPage::ForSelection, AddressBookPage::ReceivingTab, this);
     dlg.setModel(model->getAddressTableModel());
+    dlg.activate();
     if(dlg.exec())
     {
         ui->address->setText(dlg.getReturnValue());
     }
 }
 
-void MultisigAddressEntry::on_pubkey_textChanged(const QString &pubkey)
+void MultisigAddressEntry::on_pubkey_textChanged(const QString& pubkey)
 {
     // Compute address from public key
     std::vector<unsigned char> vchPubKey(ParseHex(pubkey.toStdString().c_str()));
     CPubKey pkey(vchPubKey);
     CKeyID keyID = pkey.GetID();
-    CBitcoinAddress address(keyID);
-    ui->address->setText(address.ToString().c_str());
+    CTxDestination dest = keyID;
+    ui->address->setText(QString::fromStdString(EncodeDestination(dest)));
 
     if(!model)
         return;
 
     // Get label of address
-    QString associatedLabel = model->getAddressTableModel()->labelForAddress(address.ToString());
+    QString associatedLabel = model->getAddressTableModel()->labelForAddress(QString::fromStdString(EncodeDestination(dest)));
     if(!associatedLabel.isEmpty())
         ui->label->setText(associatedLabel);
 }
 
-void MultisigAddressEntry::on_address_textChanged(const QString &address)
+void MultisigAddressEntry::on_address_textChanged(const QString& address)
 {
     if(!model)
         return;
 
     // Get public key of address
-    CBitcoinAddress addr(address.toStdString().c_str());
-    CKeyID keyID;
-    if(addr.GetKeyID(keyID))
-    {
+    CTxDestination destination = DecodeDestination(address.toStdString());
+    const CKeyID* keyID = boost::get<CKeyID>(&destination);
+    if (keyID) {
         CPubKey vchPubKey;
-        model->getPubKey(keyID, vchPubKey);
+        model->getPubKey(*keyID, vchPubKey);
         std::string pubkey = HexStr(vchPubKey);
         if(!pubkey.empty())
             ui->pubkey->setText(pubkey.c_str());

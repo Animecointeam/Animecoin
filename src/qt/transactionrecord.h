@@ -65,13 +65,13 @@ public:
     /** Current number of blocks (to know whether cached status is still valid) */
     int cur_num_blocks;
 
+    bool needsUpdate;
+
     /** Current number of blocks based on the headers chain */
     int cur_num_blocks_headers_chain;
 
     /** true if transaction has been validated (false == spv) */
     bool fValidated;
-
-    bool needsUpdate;
 };
 
 /** UI model for a transaction. A core transaction can be represented by multiple UI transactions if it has
@@ -97,16 +97,14 @@ public:
     TransactionRecord():
         hash(), time(0), type(Other), strAddress(""), debit(0), credit(0), idx(0)
     {
-        address = CBitcoinAddress(strAddress);
-        txDest = address.Get();
+        txDest = DecodeDestination(strAddress);
     }
 
     TransactionRecord(uint256 _hash, qint64 _time):
         hash(_hash), time(_time), type(Other), strAddress(""), debit(0),
             credit(0), idx(0)
     {
-        address = CBitcoinAddress(strAddress);
-        txDest = address.Get();
+        txDest = DecodeDestination(strAddress);
     }
 
     TransactionRecord(uint256 _hash, qint64 _time,
@@ -115,8 +113,7 @@ public:
         hash(_hash), time(_time), type(_type), strAddress(_strAddress), debit(_debit), credit(_credit),
             idx(0)
     {
-        address = CBitcoinAddress(strAddress);
-        txDest = address.Get();
+        txDest = DecodeDestination(strAddress);
     }
 
     /** Decompose CWallet transaction to model transaction records.
@@ -130,7 +127,6 @@ public:
     qint64 time;
     Type type;
     std::string strAddress;
-    CBitcoinAddress address;
     CTxDestination txDest;
 
     CAmount debit;

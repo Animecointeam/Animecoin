@@ -11,6 +11,9 @@
 
 #include "walletmodeltransaction.h"
 
+#include "base58.h"
+#include "key.h"
+#include "serialize.h"
 #include "support/allocators/secure.h"
 
 #include <map>
@@ -177,7 +180,7 @@ public:
     };
 
     // prepare transaction for getting txfee before sending coins
-    SendCoinsReturn prepareTransaction(WalletModelTransaction &transaction, const CCoinControl *coinControl = nullptr);
+    SendCoinsReturn prepareTransaction(WalletModelTransaction& transaction, const CCoinControl& coinControl);
 
     // Send coins to a list of recipients
     SendCoinsReturn sendCoins(WalletModelTransaction &transaction);
@@ -213,7 +216,8 @@ public:
     UnlockContext requestUnlock();
 
     bool getPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const;
-    bool havePrivKey(const CKeyID &address) const;
+    bool IsSpendable(const CTxDestination& dest) const;
+    bool getPrivKey(const CKeyID &address, CKey& vchPrivKeyOut) const;
     void getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs);
     bool isSpent(const COutPoint& outpoint) const;
     void listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const;
@@ -229,11 +233,16 @@ public:
     bool transactionCanBeAbandoned(uint256 hash) const;
     bool abandonTransaction(uint256 hash) const;
 
+    bool transactionCanBeBumped(uint256 hash) const;
+    bool bumpFee(uint256 hash);
+
     bool hdEnabled() const;
     bool spvEnabled() const;
     void setSpvEnabled(bool state);
 
     int getDefaultConfirmTarget() const;
+
+    bool getDefaultWalletRbf() const;
 
 private:
     CWallet *wallet;
@@ -299,7 +308,7 @@ public slots:
     /* New transaction, or transaction changed status */
     void updateTransaction();
     /* New, updated or removed address book entry */
-    void updateAddressBook(const QString &address, const QString &label, bool isMine, const QString &purpose, int status);
+    void updateAddressBook(const QString &address, const QString &label, bool isMine, bool watchOnly, const QString &purpose, int status);
     /* Watch-only added */
     void updateWatchOnlyFlag(bool fHaveWatchonly);
     /* Current, immature or unconfirmed balance might have changed - emit 'balanceChanged' if so */

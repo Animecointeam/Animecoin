@@ -250,15 +250,19 @@ QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wform
 DEPENDPATH += src src/qt
 HEADERS += src/qt/bitcoingui.h \
     src/auxiliaryblockrequest.h \
+    src/bech32.h \
     src/compat/cpuid.h \
+    src/consensus/tx_verify.h \
     src/crypto/aes.h \
     src/crypto/chacha20.h \
     src/fs.h \
     src/indirectmap.h \
     src/net_processing.h \
+    src/policy/feerate.h \
     src/qt/multisigaddressentry.h \
     src/qt/multisigdialog.h \
     src/qt/multisiginputentry.h \
+    src/qt/preimagedialog.h \
     src/qt/transactiontablemodel.h \
     src/qt/addresstablemodel.h \
     src/qt/optionsdialog.h \
@@ -274,7 +278,11 @@ HEADERS += src/qt/bitcoingui.h \
     src/compat.h \
     src/randomenv.h \
     src/robin_hood.h \
+    src/rpc/mining.h \
+    src/rpc/rawtransaction.h \
     src/rpc/register.h \
+    src/rpc/safemode.h \
+    src/support/events.h \
     src/sync.h \
     src/threadinterrupt.h \
     src/util.h \
@@ -316,13 +324,11 @@ HEADERS += src/qt/bitcoingui.h \
     src/version.h \
     src/netbase.h \
     src/clientversion.h \
-	src/coincontrol.h \
     src/txdb.h \
     src/threadsafety.h \
     src/limitedmap.h \
     src/qt/splashscreen.h \
     src/hashblock.h \
-    src/coincontrol.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
     src/chainparams.h \
@@ -389,7 +395,12 @@ HEADERS += src/qt/bitcoingui.h \
     src/scheduler.h \
     src/consensus/params.h \
     src/arith_uint256.h \
+    src/versionbits.h \
+    src/wallet/coinselection.h \
     src/wallet/db.h \
+    src/wallet/feebumper.h \
+    src/wallet/fees.h \
+    src/wallet/init.h \
     src/wallet/wallet.h \
     src/wallet/walletdb.h \
     src/consensus/consensus.h \
@@ -426,10 +437,14 @@ HEADERS += src/qt/bitcoingui.h \
     src/netaddress.h \
     src/netmessagemaker.h \
     src/script/ismine.h \
-    src/policy/rbf.h
+    src/policy/rbf.h \
+    src/walletinitinterface.h \
+    src/warnings.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/auxiliaryblockrequest.cpp \
+    src/bech32.cpp \
+    src/consensus/tx_verify.cpp \
     src/crypto/aes.cpp \
     #src/crypto/ctaes/bench.c \
     src/crypto/chacha20.cpp \
@@ -442,10 +457,12 @@ SOURCES += src/qt/bitcoin.cpp \
     src/crypto/sha256_sse41.cpp \
     src/fs.cpp \
     src/net_processing.cpp \
+    src/policy/feerate.cpp \
     src/qt/bitcoingui.cpp \
     src/qt/multisigaddressentry.cpp \
     src/qt/multisigdialog.cpp \
     src/qt/multisiginputentry.cpp \
+    src/qt/preimagedialog.cpp \
     src/qt/transactiontablemodel.cpp \
     src/qt/addresstablemodel.cpp \
     src/qt/optionsdialog.cpp \
@@ -456,6 +473,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoinaddressvalidator.cpp \
     src/alert.cpp \
     src/randomenv.cpp \
+    src/rpc/safemode.cpp \
     src/sync.cpp \
     src/threadinterrupt.cpp \
     src/util.cpp \
@@ -529,7 +547,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/utilstrencodings.cpp \
     src/core_read.cpp \
     src/core_write.cpp \
-    src/amount.cpp \
     src/pubkey.cpp \
     src/script/bitcoinconsensus.cpp \
     src/script/interpreter.cpp \
@@ -559,7 +576,12 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/newpubkeydialog.cpp \
     src/scheduler.cpp \
     src/validation.cpp \
+    src/versionbits.cpp \
+    src/wallet/coinselection.cpp \
     src/wallet/db.cpp \
+    src/wallet/feebumper.cpp \
+    src/wallet/fees.cpp \
+    src/wallet/init.cpp \
     src/wallet/rpcdump.cpp \
     src/wallet/rpcwallet.cpp \
     src/wallet/wallet.cpp \
@@ -591,7 +613,8 @@ SOURCES += src/qt/bitcoin.cpp \
     src/netaddress.cpp \
     src/ui_interface.cpp \
     src/script/ismine.cpp \
-    src/policy/rbf.cpp
+    src/policy/rbf.cpp \
+    src/warnings.cpp
 
 RESOURCES += src/qt/bitcoin.qrc \
     src/qt/bitcoin_locale.qrc
@@ -601,6 +624,7 @@ FORMS += src/qt/forms/sendcoinsdialog.ui \
     src/qt/forms/multisigaddressentry.ui \
     src/qt/forms/multisigdialog.ui \
     src/qt/forms/multisiginputentry.ui \
+    src/qt/forms/preimagedialog.ui \
     src/qt/forms/signverifymessagedialog.ui \
     src/qt/forms/aboutdialog.ui \
     src/qt/forms/editaddressdialog.ui \

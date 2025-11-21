@@ -2,10 +2,11 @@
 #define MULTISIGINPUTENTRY_H
 
 #include <QFrame>
+#include <QMap>
 
 #include "amount.h"
 #include "uint256.h"
-
+#include "wallet/wallet.h"
 
 class CTxIn;
 class WalletModel;
@@ -20,14 +21,16 @@ class MultisigInputEntry : public QFrame
     Q_OBJECT
 
   public:
-    explicit MultisigInputEntry(QWidget *parent = 0);
+    explicit MultisigInputEntry(CWallet* _pwallet, QWidget *parent = 0);
     ~MultisigInputEntry();
-    void setModel(WalletModel *model);
+    void setModel(WalletModel* model);
     bool validate();
     CTxIn getInput();
     CAmount getAmount();
+    QString getAddress();
     QString getRedeemScript();
-    void setTransactionId(QString transactionId);
+    void setAddress(const QString& address);
+    void setTransactionId(const QString& transactionId);
     void setTransactionOutputIndex(int index);
 
   public slots:
@@ -35,20 +38,22 @@ class MultisigInputEntry : public QFrame
     void clear();
 
   signals:
-    void removeEntry(MultisigInputEntry *entry);
+    void removeEntry(MultisigInputEntry* entry);
     void updateAmount();
 
   private:
-    Ui::MultisigInputEntry *ui;
-    WalletModel *model;
+    Ui::MultisigInputEntry* ui;
+    CWallet* pwallet;
+    WalletModel* model;
     uint256 txHash;
+    QMap <unsigned int, unsigned int> index_map;
 
   private slots:
-    void on_transactionId_textChanged(const QString &transactionId);
-    void on_pasteTransactionIdButton_clicked();
     void on_deleteButton_clicked();
     void on_transactionOutput_currentIndexChanged(int index);
     void on_pasteRedeemScriptButton_clicked();
+    void on_contractAddress_textChanged(const QString& address_input);
+    void on_transactionIdBox_currentIndexChanged(const QString& transactionId);
 };
 
 #endif // MULTISIGINPUTENTRY_H

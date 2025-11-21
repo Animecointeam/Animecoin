@@ -233,7 +233,7 @@ public:
         }
     }
 
-    void updateAddressBook(const QString& address, const QString& label, bool isMine, const QString& purpose, int status)
+    void updateAddressBook(const QString& address, const QString& label, bool isMine, bool watchOnly, const QString& purpose, int status)
     {
         std::string address2 = address.toStdString();
         int index = 0;
@@ -345,10 +345,10 @@ void TransactionTableModel::updateTransaction(const QString &hash, int status, b
     priv->updateWallet(updated, status, showTransaction);
 }
 
-void TransactionTableModel::updateAddressBook(const QString& address, const QString& label, bool isMine,
+void TransactionTableModel::updateAddressBook(const QString& address, const QString& label, bool isMine, bool watchOnly,
                                               const QString& purpose, int status)
 {
-    priv->updateAddressBook(address, label, isMine, purpose, status);
+    priv->updateAddressBook(address, label, isMine, watchOnly, purpose, status);
 }
 
 
@@ -819,12 +819,13 @@ static void NotifyTransactionChanged(TransactionTableModel *ttm, CWallet *wallet
     notification.invoke(ttm);
 }
 
-static void NotifyAddressBookChanged(TransactionTableModel *ttm, CWallet *wallet, const CTxDestination &address, const std::string &label, bool isMine, const std::string &purpose, ChangeType status)
+static void NotifyAddressBookChanged(TransactionTableModel *ttm, CWallet *wallet, const CTxDestination &address, const std::string &label, bool isMine, bool watchOnly, const std::string &purpose, ChangeType status)
 {
     QMetaObject::invokeMethod(ttm, "updateAddressBook", Qt::QueuedConnection,
-                              Q_ARG(QString, QString::fromStdString(CBitcoinAddress(address).ToString())),
+                              Q_ARG(QString, QString::fromStdString(EncodeDestination(address))),
                               Q_ARG(QString, QString::fromStdString(label)),
                               Q_ARG(bool, isMine),
+                              Q_ARG(bool, watchOnly),
                               Q_ARG(QString, QString::fromStdString(purpose)),
                               Q_ARG(int, (int)status));
 }
@@ -854,7 +855,7 @@ void TransactionTableModel::subscribeToCoreSignals()
 {
     // Connect signals to wallet
     wallet->NotifyTransactionChanged.connect(boost::bind(NotifyTransactionChanged, this, _1, _2, _3));
-    wallet->NotifyAddressBookChanged.connect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6));
+    wallet->NotifyAddressBookChanged.connect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6, _7));
     wallet->ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
 }
 
@@ -862,6 +863,6 @@ void TransactionTableModel::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from wallet
     wallet->NotifyTransactionChanged.disconnect(boost::bind(NotifyTransactionChanged, this, _1, _2, _3));
-    wallet->NotifyAddressBookChanged.disconnect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6));
+    wallet->NotifyAddressBookChanged.disconnect(boost::bind(NotifyAddressBookChanged, this, _1, _2, _3, _4, _5, _6, _7));
     wallet->ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
 }

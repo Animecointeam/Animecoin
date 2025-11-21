@@ -36,7 +36,10 @@ public:
     explicit RPCConsole(QWidget *parent);
     ~RPCConsole();
 
-    static bool RPCExecuteCommandLine(std::string &strResult, const std::string &strCommand);
+    static bool RPCParseCommandLine(std::string &strResult, const std::string &strCommand, bool fExecute, std::string * const pstrFilteredOut = nullptr);
+    static bool RPCExecuteCommandLine(std::string &strResult, const std::string &strCommand, std::string * const pstrFilteredOut = nullptr) {
+        return RPCParseCommandLine(strResult, strCommand, true, pstrFilteredOut);
+    }
 
     void setClientModel(ClientModel *model);
 
@@ -123,6 +126,7 @@ private:
     ClientModel *clientModel;
     QStringList history;
     int historyPtr;
+    QString cmdBeforeBrowsing;
     NodeId cachedNodeid;
     RPCTimerInterface *rpcTimerInterface;
     QMenu *peersTableContextMenu;

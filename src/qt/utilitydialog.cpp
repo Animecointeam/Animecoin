@@ -13,7 +13,6 @@
 #ifdef ENABLE_WALLET
 #include "sendcoinsdialog.h"
 #include "sendcoinsentry.h"
-#include "coincontrol.h"
 #include "coincontroldialog.h"
 #endif
 
@@ -26,6 +25,7 @@
 #include "clientversion.h"
 #include "init.h"
 #include "net.h"
+#include "wallet/coincontrol.h"
 
 #include <stdio.h>
 
@@ -278,13 +278,12 @@ void PaperWalletDialog::on_getNewAddress_clicked()
     CPubKey pubkey = privKey.GetPubKey();
 
     // Derive the public key hash
-    CBitcoinAddress pubkeyhash;
-    pubkeyhash.Set(pubkey.GetID());
+    CTxDestination dest = pubkey.GetID();
 
     // Create String versions of each
     std::string myPrivKey = CBitcoinSecret(privKey).ToString();
     std::string myPubKey = HexStr(pubkey.begin(), pubkey.end());
-    std::string myAddress = pubkeyhash.ToString();
+    std::string myAddress = EncodeDestination(dest);
 
 
 #ifdef USE_QRCODE
@@ -459,10 +458,10 @@ void PaperWalletDialog::on_printButton_clicked()
         tx = new WalletModelTransaction(recipients);
 
         WalletModel::SendCoinsReturn prepareStatus;
+        CCoinControl ctrl;
         if (this->model->getOptionsModel()->getCoinControlFeatures()) // coin control enabled
-            prepareStatus = this->model->prepareTransaction(*tx, CoinControlDialog::coinControl);
-        else
-            prepareStatus = this->model->prepareTransaction(*tx);
+            ctrl = *CoinControlDialog::coinControl;
+        prepareStatus = this->model->prepareTransaction(*tx, ctrl);
 
         if (prepareStatus.status == WalletModel::InvalidAddress) {
             QMessageBox::critical(this, tr("Send Coins"), tr("The recipient address is not valid, please recheck."), QMessageBox::Ok, QMessageBox::Ok);

@@ -6,6 +6,7 @@
 #define BITCOIN_POLICYESTIMATOR_H
 
 #include "amount.h"
+#include "feerate.h"
 #include "random.h"
 #include "sync.h"
 #include "uint256.h"
@@ -73,6 +74,33 @@ enum FeeEstimateHorizon {
     LONG_HALFLIFE = 2
 };
 
+std::string StringForFeeEstimateHorizon(FeeEstimateHorizon horizon);
+
+/* Enumeration of reason for returned fee estimate */
+enum class FeeReason {
+    NONE,
+    HALF_ESTIMATE,
+    FULL_ESTIMATE,
+    DOUBLE_ESTIMATE,
+    CONSERVATIVE,
+    MEMPOOL_MIN,
+    PAYTXFEE,
+    FALLBACK,
+    REQUIRED,
+    MAXTXFEE,
+};
+
+std::string StringForFeeReason(FeeReason reason);
+
+/* Used to determine type of fee estimation requested */
+enum class FeeEstimateMode {
+    UNSET,        //! Use default settings based on other criteria
+    ECONOMICAL,   //! Force estimateSmartFee to use non-conservative estimates
+    CONSERVATIVE, //! Force estimateSmartFee to use conservative estimates
+};
+
+bool FeeModeFromString(const std::string& mode_string, FeeEstimateMode& fee_estimate_mode);
+
 /* Used to return detailed information about a feerate bucket */
 struct EstimatorBucket
 {
@@ -89,12 +117,17 @@ struct EstimationResult
 {
     EstimatorBucket pass;
     EstimatorBucket fail;
-    double decay;
-    unsigned int scale;
+    double decay = 0;
+    unsigned int scale = 0;
 };
 
-// QA: deprecated by upstream.
-static const double INF_PRIORITY = 1e9 * MAX_MONEY;
+struct FeeCalculation
+{
+    EstimationResult est;
+    FeeReason reason = FeeReason::NONE;
+    int desiredTarget = 0;
+    int returnedTarget = 0;
+};
 
 /**
  *  We want to be able to estimate feerates that are needed on tx's to be included in
@@ -175,27 +208,13 @@ public:
      *  the closest target where one can be given.  'conservative' estimates are
      *  valid over longer time horizons also.
      */
-    CFeeRate estimateSmartFee(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool, bool conservative = true) const;
+    CFeeRate estimateSmartFee(int confTarget, FeeCalculation *feeCalc, bool conservative) const;
 
     /** Return a specific fee estimate calculation with a given success
      * threshold and time horizon, and optionally return detailed data about
      * calculation
      */
     CFeeRate estimateRawFee(int confTarget, double successThreshold, FeeEstimateHorizon horizon, EstimationResult *result = nullptr) const;
-
-    /** Return a priority estimate.
-     *  DEPRECATED
-     *  Returns -1
-     */
-    double estimatePriority(int confTarget);
-
-    /** Estimate priority needed to get be included in a block within
-     *  confTarget blocks.
-     *  DEPRECATED
-     *  Returns -1 unless mempool is currently limited then returns INF_PRIORITY
-     *  answerFoundAtTarget is set to confTarget
-     */
-    double estimateSmartPriority(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
 
     /** Write estimation data to a file */
     bool Write(CAutoFile& fileout) const;
@@ -205,6 +224,9 @@ public:
 
     /** Empty mempool transactions on shutdown to record failure to confirm for txs still in mempool */
     void FlushUnconfirmed(CTxMemPool& pool);
+
+    /** Calculation of highest target that estimates are tracked for */
+    unsigned int HighestTargetTracked(FeeEstimateHorizon horizon) const;
 
 private:
     unsigned int nBestSeenHeight;
@@ -223,9 +245,9 @@ private:
     std::map<uint256, TxStatsInfo> mapMemPoolTxs;
 
     /** Classes to track historical data on transaction confirmations */
-    TxConfirmStats* feeStats;
-    TxConfirmStats* shortStats;
-    TxConfirmStats* longStats;
+    std::unique_ptr<TxConfirmStats> feeStats;
+    std::unique_ptr<TxConfirmStats> shortStats;
+    std::unique_ptr<TxConfirmStats> longStats;
 
     unsigned int trackedTxs;
     unsigned int untrackedTxs;
@@ -239,9 +261,9 @@ private:
     bool processBlockTx(unsigned int nBlockHeight, const CTxMemPoolEntry* entry);
 
     /** Helper for estimateSmartFee */
-    double estimateCombinedFee(unsigned int confTarget, double successThreshold, bool checkShorterHorizon) const;
+    double estimateCombinedFee(unsigned int confTarget, double successThreshold, bool checkShorterHorizon, EstimationResult *result) const;
     /** Helper for estimateSmartFee */
-    double estimateConservativeFee(unsigned int doubleTarget) const;
+    double estimateConservativeFee(unsigned int doubleTarget, EstimationResult *result) const;
     /** Number of blocks of data recorded while fee estimates have been running */
     unsigned int BlockSpan() const;
     /** Number of blocks of recorded fee estimate data represented in saved data file */

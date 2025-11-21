@@ -5,7 +5,8 @@
 #include "core_io.h"
 
 #include "base58.h"
-#include "primitives/transaction.h"
+#include "consensus/consensus.h"
+#include "consensus/validation.h"
 #include "script/script.h"
 #include "script/standard.h"
 #include "serialize.h"
@@ -32,8 +33,8 @@ string FormatScript(const CScript& script)
 			} else if ((op >= OP_1 && op <= OP_16) || op == OP_1NEGATE) {
 				ret += strprintf("%i ", op - OP_1NEGATE - 1);
 				continue;
-			} else if (op >= OP_NOP && op <= OP_CHECKMULTISIGVERIFY) {
-				string str(GetOpName(op));
+            } else if (op >= OP_NOP && op <= OP_NOP10) {
+                string str(GetOpName(op));
 				if (str.substr(0, 3) == string("OP_")) {
 					ret += str.substr(3, string::npos) + " ";
 					continue;
@@ -42,8 +43,8 @@ string FormatScript(const CScript& script)
 			if (vch.size() > 0) {
 				ret += strprintf("0x%x 0x%x ", HexStr(it2, it - vch.size()), HexStr(it - vch.size(), it));
 			} else {
-				ret += strprintf("0x%x", HexStr(it2, it));
-			}
+                ret += strprintf("0x%x ", HexStr(it2, it));
+            }
 			continue;
 		}
 		ret += strprintf("0x%x ", HexStr(it2, script.end()));
@@ -139,19 +140,22 @@ void ScriptPubKeyToUniv(const CScript& scriptPubKey,
 	out.pushKV("type", GetTxnOutputType(type));
 
 	UniValue a(UniValue::VARR);
-	for (const CTxDestination& addr : addresses)
-		a.push_back(CBitcoinAddress(addr).ToString());
+    for (const CTxDestination& addr : addresses) {
+        a.push_back(EncodeDestination(addr));
+    }
 	out.pushKV("addresses", a);
 }
 
 void TxToUniv(const CTransaction& tx, const uint256& hashBlock, UniValue& entry)
 {
 	entry.pushKV("txid", tx.GetHash().GetHex());
-	entry.pushKV("version", tx.nVersion);
+    entry.pushKV("hash", tx.GetWitnessHash().GetHex());
+    entry.pushKV("version", tx.nVersion);
 	entry.pushKV("locktime", (int64_t)tx.nLockTime);
 
 	UniValue vin(UniValue::VARR);
-	for (const CTxIn& txin : tx.vin) {
+    for (unsigned int i = 0; i < tx.vin.size(); i++) {
+        const CTxIn& txin = tx.vin[i];
 		UniValue in(UniValue::VOBJ);
 		if (tx.IsCoinBase())
 			in.pushKV("coinbase", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
@@ -162,7 +166,14 @@ void TxToUniv(const CTransaction& tx, const uint256& hashBlock, UniValue& entry)
             o.pushKV("asm", ScriptToAsmStr(txin.scriptSig, true));
             o.pushKV("hex", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
 			in.pushKV("scriptSig", o);
-		}
+            if (!tx.vin[i].scriptWitness.IsNull()) {
+                UniValue txinwitness(UniValue::VARR);
+                for (const auto& item : tx.vin[i].scriptWitness.stack) {
+                    txinwitness.push_back(HexStr(item.begin(), item.end()));
+                }
+                in.pushKV("txinwitness", txinwitness);
+            }
+        }
 		in.pushKV("sequence", (int64_t)txin.nSequence);
 		vin.push_back(in);
 	}

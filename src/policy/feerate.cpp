@@ -3,9 +3,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "amount.h"
-
+#include "feerate.h"
 #include "tinyformat.h"
+
+#include <cmath>
 
 const std::string CURRENCY_UNIT = "ANI";
 
@@ -19,10 +20,12 @@ CFeeRate::CFeeRate(const CAmount& nFeePaid, size_t nSize)
 
 CAmount CFeeRate::GetFee(size_t nSize) const
 {
-    CAmount nFee = nSatoshisPerK*nSize / 1000;
+    // Be explicit that we're converting from a double to int64_t (CAmount) here.
+    // We've previously had issues with the silent double->int64_t conversion.
+    CAmount nFee{static_cast<CAmount>(std::ceil(nSatoshisPerK * nSize / 1000.0))};
 
-    if (nFee == 0 && nSatoshisPerK > 0)
-        nFee = nSatoshisPerK;
+    if (nFee == 0 && nSize != 0 && nSatoshisPerK > 0)
+        nFee = CAmount(1);
 
     return nFee;
 }

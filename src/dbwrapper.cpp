@@ -108,7 +108,7 @@ CDBWrapper::CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory, bo
     dbwrapper_private::HandleError(status);
     LogPrintf("Opened LevelDB successfully\n");
 
-    if (GetBoolArg("-forcecompactdb", false)) {
+    if (gArgs.GetBoolArg("-forcecompactdb", false)) {
         LogPrintf("Starting database compaction of %s\n", path.string());
         pdb->CompactRange(nullptr, nullptr);
         LogPrintf("Finished database compaction of %s\n", path.string());
@@ -149,7 +149,7 @@ CDBWrapper::~CDBWrapper()
 
 bool CDBWrapper::WriteBatch(CDBBatch& batch, bool fSync)
 {
-    const bool log_memory = LogAcceptCategory("leveldb");
+    const bool log_memory = LogAcceptCategory(BCLog::LEVELDB);
     double mem_before = 0;
     if (log_memory) {
         mem_before = DynamicMemoryUsage() / 1024 / 1024;
@@ -158,7 +158,7 @@ bool CDBWrapper::WriteBatch(CDBBatch& batch, bool fSync)
     dbwrapper_private::HandleError(status);
     if (log_memory) {
         double mem_after = DynamicMemoryUsage() / 1024 / 1024;
-        LogPrint("leveldb", "WriteBatch memory usage: db=%s, before=%.1fMiB, after=%.1fMiB\n",
+        LogPrint(BCLog::LEVELDB, "WriteBatch memory usage: db=%s, before=%.1fMiB, after=%.1fMiB\n",
                  m_name, mem_before, mem_after);
     }
     return true;
@@ -167,7 +167,7 @@ bool CDBWrapper::WriteBatch(CDBBatch& batch, bool fSync)
 size_t CDBWrapper::DynamicMemoryUsage() const {
     std::string memory;
     if (!pdb->GetProperty("leveldb.approximate-memory-usage", &memory)) {
-        LogPrint("leveldb", "Failed to get approximate-memory-usage property\n");
+        LogPrint(BCLog::LEVELDB, "Failed to get approximate-memory-usage property\n");
         return 0;
     }
     return stoul(memory);

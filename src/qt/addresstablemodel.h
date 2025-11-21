@@ -30,7 +30,8 @@ public:
 
     enum ColumnIndex {
         Label = 0,   /**< User specified label */
-        Address = 1  /**< Bitcoin address */
+        Address = 1,  /**< Bitcoin address */
+        Balance = 2
     };
 
     enum RoleIndex {
@@ -49,6 +50,7 @@ public:
 
     static const QString Send;      /**< Specifies send address */
     static const QString Receive;   /**< Specifies receive address */
+    static const QString Watchonly;
 
     /** @name Methods overridden from QAbstractTableModel
         @{*/
@@ -65,12 +67,12 @@ public:
     /* Add an address to the model.
        Returns the added address on success, and an empty string otherwise.
      */
-    QString addRow(const QString &type, const QString &label, const QString &address);
+    QString addRow(const QString &type, const QString &label, const QString &address, const QString &balance = "");
 
     /* Look up label for address in address book, if not found return empty string.
      */
-    QString labelForAddress(const QString &address) const;
-    QString labelForAddress(const CBitcoinAddress &address) const;
+    QString labelForAddress(const QString& address) const;
+    // QString labelForAddress(const CBitcoinAddress &address) const;
     QString labelForDestination(const CTxDestination &dest) const;
 
     /* Look up row index of an address in the model.
@@ -97,7 +99,7 @@ private:
 public slots:
     /* Update address list from core.
      */
-    void updateEntry(const QString &address, const QString &label, bool isMine, const QString &purpose, int status);
+    void updateEntry(const QString &address, const QString &label, bool isMine, bool watchOnly, const QString &purpose, int status, const QString& balance = "");
 
     friend class AddressTablePriv;
 };

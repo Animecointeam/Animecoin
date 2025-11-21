@@ -2,12 +2,17 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_COINCONTROL_H
-#define BITCOIN_COINCONTROL_H
+#ifndef BITCOIN_WALLET_COINCONTROL_H
+#define BITCOIN_WALLET_COINCONTROL_H
 
+#include "policy/feerate.h"
+#include "policy/fees.h"
 #include "primitives/transaction.h"
 #include "script/standard.h"
 #include "pubkey.h"
+#include "wallet/wallet.h"
+
+#include <boost/optional.hpp>
 
 /** Coin Control Features. */
 class CCoinControl
@@ -20,12 +25,16 @@ public:
     bool fAllowWatchOnly;
     //! Minimum absolute fee (not per kilobyte)
     CAmount nMinimumTotalFee;
-    //! Override estimated feerate
+    //! Override automatic min/max checks on fee, m_feerate must be set if true
     bool fOverrideFeeRate;
-    //! Feerate to use if overrideFeeRate is true
-    CFeeRate nFeeRate;
-    //! Override the default confirmation target, 0 = use default
-    int nConfirmTarget;
+    //! Override the default payTxFee if set
+    boost::optional<CFeeRate> m_feerate;
+    //! Override the default confirmation target if set
+    boost::optional<unsigned int> m_confirm_target;
+    //! Signal BIP-125 replace by fee.
+    bool signalRbf;
+    //! Fee estimation mode to control arguments to estimateSmartFee
+    FeeEstimateMode m_fee_mode;
 
     CCoinControl()
     {
@@ -39,9 +48,11 @@ public:
         fAllowWatchOnly = false;
         setSelected.clear();
         nMinimumTotalFee = 0;
-        nFeeRate = CFeeRate(0);
+        m_feerate.reset();
         fOverrideFeeRate = false;
-        nConfirmTarget = 0;
+        m_confirm_target.reset();
+        signalRbf = fWalletRbf;
+        m_fee_mode = FeeEstimateMode::UNSET;
     }
 
     bool HasSelected() const
@@ -78,4 +89,4 @@ private:
     std::set<COutPoint> setSelected;
 };
 
-#endif // BITCOIN_COINCONTROL_H
+#endif // BITCOIN_WALLET_COINCONTROL_H

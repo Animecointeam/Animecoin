@@ -26,14 +26,28 @@ unsigned int HaveKeys(const vector<valtype>& pubkeys, const CKeyStore& keystore)
     return nResult;
 }
 
-isminetype IsMine(const CKeyStore &keystore, const CTxDestination& dest)
+isminetype IsMine(const CKeyStore& keystore, const CScript& scriptPubKey, SigVersion sigversion)
 {
-    CScript script = GetScriptForDestination(dest);
-    return IsMine(keystore, script);
+    bool isInvalid = false;
+    return IsMine(keystore, scriptPubKey, isInvalid, sigversion);
 }
 
-isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
+isminetype IsMine(const CKeyStore& keystore, const CTxDestination& dest, SigVersion sigversion)
 {
+    bool isInvalid = false;
+    return IsMine(keystore, dest, isInvalid, sigversion);
+}
+
+isminetype IsMine(const CKeyStore &keystore, const CTxDestination& dest, bool& isInvalid, SigVersion sigversion)
+{
+    CScript script = GetScriptForDestination(dest);
+    return IsMine(keystore, script, isInvalid, sigversion);
+}
+
+isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey, bool& isInvalid, SigVersion sigversion)
+{
+    isInvalid = false;
+
     vector<valtype> vSolutions;
     txnouttype whichType;
     if (!Solver(scriptPubKey, whichType, vSolutions)) {
@@ -47,14 +61,39 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
     {
     case TX_NONSTANDARD:
     case TX_NULL_DATA:
+    case TX_WITNESS_UNKNOWN:
         break;
     case TX_PUBKEY:
         keyID = CPubKey(vSolutions[0]).GetID();
+        if (sigversion != SIGVERSION_BASE && vSolutions[0].size() != 33) {
+            isInvalid = true;
+            return ISMINE_NO;
+        }
         if (keystore.HaveKey(keyID))
             return ISMINE_SPENDABLE;
         break;
+    case TX_WITNESS_V0_KEYHASH:
+    {
+        if (!keystore.HaveCScript(CScriptID(CScript() << OP_0 << vSolutions[0]))) {
+            // We do not support bare witness outputs unless the P2SH version of it would be
+            // acceptable as well. This protects against matching before segwit activates.
+            // This also applies to the P2WSH case.
+            break;
+        }
+        isminetype ret = ::IsMine(keystore, GetScriptForDestination(CKeyID(uint160(vSolutions[0]))), isInvalid, SIGVERSION_WITNESS_V0);
+        if (ret == ISMINE_SPENDABLE || ret == ISMINE_WATCH_SOLVABLE || (ret == ISMINE_NO && isInvalid))
+            return ret;
+        break;
+    }
     case TX_PUBKEYHASH:
         keyID = CKeyID(uint160(vSolutions[0]));
+        if (sigversion != SIGVERSION_BASE) {
+            CPubKey pubkey;
+            if (keystore.GetPubKey(keyID, pubkey) && !pubkey.IsCompressed()) {
+                isInvalid = true;
+                return ISMINE_NO;
+            }
+        }
         if (keystore.HaveKey(keyID))
             return ISMINE_SPENDABLE;
         break;
@@ -63,9 +102,36 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
         CScriptID scriptID = CScriptID(uint160(vSolutions[0]));
         CScript subscript;
         if (keystore.GetCScript(scriptID, subscript)) {
-            isminetype ret = IsMine(keystore, subscript);
-            if (ret == ISMINE_SPENDABLE)
+            isminetype ret = IsMine(keystore, subscript, isInvalid);
+            if (ret == ISMINE_SPENDABLE || ret == ISMINE_WATCH_SOLVABLE || (ret == ISMINE_NO && isInvalid))
                 return ret;
+        }
+        break;
+    }
+    case TX_WITNESS_V0_SCRIPTHASH:
+    {
+        if (!keystore.HaveCScript(CScriptID(CScript() << OP_0 << vSolutions[0]))) {
+            break;
+        }
+        uint160 hash;
+        CRIPEMD160().Write(&vSolutions[0][0], vSolutions[0].size()).Finalize(hash.begin());
+        CScriptID scriptID = CScriptID(hash);
+        CScript subscript;
+        if (keystore.GetCScript(scriptID, subscript)) {
+            isminetype ret = IsMine(keystore, subscript, isInvalid, SIGVERSION_WITNESS_V0);
+            if (ret == ISMINE_SPENDABLE || ret == ISMINE_WATCH_SOLVABLE || (ret == ISMINE_NO && isInvalid))
+                return ret;
+        }
+        break;
+    }
+    case TX_HTLC:
+    {
+        // If we own one of the keys, consider this watchonly for now.
+        vector<valtype> keys;
+        keys.push_back(vSolutions[1]);
+        keys.push_back(vSolutions[2]);
+        if (HaveKeys(keys, keystore) >=1) {
+            return ISMINE_WATCH_ONLY;
         }
         break;
     }
@@ -77,16 +143,33 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
         // them) enable spend-out-from-under-you attacks, especially
         // in shared-wallet situations.
         vector<valtype> keys(vSolutions.begin()+1, vSolutions.begin()+vSolutions.size()-1);
+        if (sigversion != SIGVERSION_BASE) {
+            for (size_t i = 0; i < keys.size(); i++) {
+                if (keys[i].size() != 33) {
+                    isInvalid = true;
+                    return ISMINE_NO;
+                }
+            }
+        }
         if (HaveKeys(keys, keystore) == keys.size())
             return ISMINE_SPENDABLE;
+        break;
+    }
+    case TX_ESCROW_CLTV:
+    {
+        //If this contract involves you, mark it as watchonly.
+        vector<valtype> keys(vSolutions.begin()+2, vSolutions.begin()+vSolutions.size()-1);
+        if (HaveKeys(keys, keystore) >=1)
+            return ISMINE_WATCH_ONLY;
         break;
     }
     }
 
     if (keystore.HaveWatchOnly(scriptPubKey)) {
         // TODO: This could be optimized some by doing some work after the above solver
-        CScript scriptSig;
-        return ProduceSignature(DummySignatureCreator(&keystore), scriptPubKey, scriptSig) ? ISMINE_WATCH_SOLVABLE : ISMINE_WATCH_UNSOLVABLE;
+        SignatureData sigs;
+        // Assume default non-refund route.
+        return ProduceSignature(keystore, DUMMY_SIGNATURE_CREATOR, scriptPubKey, sigs, 1) ? ISMINE_WATCH_SOLVABLE : ISMINE_WATCH_UNSOLVABLE;
     }
 
     return ISMINE_NO;
