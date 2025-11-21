@@ -29,6 +29,7 @@ public:
     CFeeRate(const CFeeRate& other) { nSatoshisPerK = other.nSatoshisPerK; }
     /**
      * Return the fee in satoshis for the given size in bytes.
+     * If the calculated fee would have fractional units, then the returned fee will always be rounded up to the nearest.
      */
     CAmount GetFee(size_t nBytes) const;
     /**
