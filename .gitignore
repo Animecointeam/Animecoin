@@ -19,6 +19,7 @@ src/animecoin-cli
 src/animecoin-tx
 src/test/test_animecoin
 src/qt/test/test_animecoin-qt
+/src/test/buildenv.py
 
 Makefile.in
 aclocal.m4
