@@ -92,10 +92,10 @@ public:
         consensus.fPowAllowMinDifficultyBlocks = false;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("00000000000000000000000000000000000000000000000000c9fbd8b6576beb");
+        consensus.nMinimumChainWork = uint256S("00000000000000000000000000000000000000000000000000cbdf70f69aa6c1");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000002459a2ad3fd3049672a9c0a923efb2d7dd7af007fe3cf1737396cb65a"); // 11000000
+        consensus.defaultAssumeValid = uint256S("0x00000a0350786eed860453428d78c4c2d28f7841544299727fd42a99447bdeaf"); // 12000000
 
         consensus.nRuleChangeActivationThreshold = 76; // 95% of
         consensus.nMinerConfirmationWindow = 80; // nPowTargetTimespan / nPowTargetSpacing
@@ -175,12 +175,13 @@ public:
                 { 7000000,     uint256S("00000001967a3b6a95c9265e7250f748044fea9e0c446befdebdd064c966eeba")},
                 { 10000000,    uint256S("00000000105d77b29f8d1d4a76822b19da88f843fd0906c0286cb73fdd9dcce7")},
                 { 11000000,    uint256S("0x00000002459a2ad3fd3049672a9c0a923efb2d7dd7af007fe3cf1737396cb65a")},
+                { 12000000,    uint256S("0x00000a0350786eed860453428d78c4c2d28f7841544299727fd42a99447bdeaf")},
             }
         };
 
         chainTxData = ChainTxData {
-            1713945964, // * UNIX timestamp of last checkpoint block
-            11415794,   // * total number of transactions between genesis and last checkpoint
+            1743008430, // * UNIX timestamp of last checkpoint block
+            12419478,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.035     // * estimated number of transactions per second after that checkpoint
         };
