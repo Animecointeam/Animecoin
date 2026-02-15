@@ -1,6 +1,6 @@
 Animecoin 0.10.2 beta
 ====================
-![Animecoin](https://pool.animeco.in/coin-ANI.png)
+![Animecoin](https://pool.animeco.in/static/coin-ANI.png)
 
 Master branch is there for testers and developers. Check out the Releases section for the current and stable source.
 
